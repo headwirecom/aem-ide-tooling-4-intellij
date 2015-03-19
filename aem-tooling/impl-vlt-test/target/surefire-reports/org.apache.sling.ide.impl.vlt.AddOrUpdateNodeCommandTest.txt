@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.sling.ide.impl.vlt.AddOrUpdateNodeCommandTest
+-------------------------------------------------------------------------------
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 10.058 sec - in org.apache.sling.ide.impl.vlt.AddOrUpdateNodeCommandTest

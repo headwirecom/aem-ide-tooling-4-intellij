@@ -1,0 +1,47 @@
+
+*****************************************************
+Summary
+-------
+Generated at: 2015-03-16T13:40:54-07:00
+Notes: 2
+Binaries: 0
+Archives: 0
+Standards: 8
+
+Apache Licensed: 8
+Generated Documents: 0
+
+JavaDocs are generated and so license header is optional
+Generated files do not required license headers
+
+0 Unknown Licenses
+
+*******************************
+
+Unapproved licenses:
+
+
+*******************************
+
+Archives:
+
+*****************************************************
+  Files with Apache License headers will be marked AL
+  Binary files (which do not require AL headers) will be marked B
+  Compressed archives will be marked A
+  Notices, licenses etc will be marked N
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/pom.xml
+  N     /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/main/resources/META-INF/LICENSE
+  N     /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/main/resources/META-INF/NOTICE
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/test/java/org/apache/sling/ide/filter/IgnoredResourcesTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/test/java/org/apache/sling/ide/serialization/NodeTypeResourceBuilder.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/test/java/org/apache/sling/ide/serialization/SerializationKindManagerTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/test/java/org/apache/sling/ide/serialization/StubRepository.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/test/java/org/apache/sling/ide/transport/FallbackNodeTypeRegistryTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/test/java/org/apache/sling/ide/transport/ResourceProxyTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/api-test/src/test/java/org/apache/sling/ide/util/PathUtilTest.java
+ 
+*****************************************************
+ Printing headers for files without AL header...
+ 
+ 

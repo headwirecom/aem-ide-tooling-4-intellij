@@ -1,0 +1,45 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+Sling IDE Tools: FileVault Implementation Tests
+
+
+From: 'Apache Software Foundation' (http://db.apache.org/)
+  - Apache Derby Database Engine and Embedded JDBC Driver (http://db.apache.org/derby/derby/) org.apache.derby:derby:jar:10.5.3.0_1
+    License: Apache 2  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Dough Lea' (http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html)
+  - Dough Lea's util.concurrent package  concurrent:concurrent:jar:1.3.4
+    License: Public domain, Sun Microsoystems  (>http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html)
+
+From: 'QOS.ch' (http://www.qos.ch)
+  - JCL 1.1.1 implemented over SLF4J (http://www.slf4j.org) org.slf4j:jcl-over-slf4j:jar:1.6.4
+    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
+
+From: 'The Apache Software Foundation' (http://jakarta.apache.org)
+  - Commons DBCP (http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/) commons-dbcp:commons-dbcp:jar:1.2.2
+    License: The Apache Software License, Version 2.0  (/LICENSE.txt)
+  - Commons Pool (http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/) commons-pool:commons-pool:jar:1.3
+    License: The Apache Software License, Version 2.0  (/LICENSE.txt)
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Commons Collections (http://commons.apache.org/collections/) commons-collections:commons-collections:jar:3.2.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Jackrabbit API (http://jackrabbit.apache.org/jackrabbit-api/) org.apache.jackrabbit:jackrabbit-api:bundle:2.4.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackrabbit Core (http://jackrabbit.apache.org/jackrabbit-core/) org.apache.jackrabbit:jackrabbit-core:jar:2.4.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackrabbit SPI (http://jackrabbit.apache.org/jackrabbit-spi/) org.apache.jackrabbit:jackrabbit-spi:bundle:2.4.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackrabbit SPI Commons (http://jackrabbit.apache.org/jackrabbit-spi-commons/) org.apache.jackrabbit:jackrabbit-spi-commons:bundle:2.4.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Lucene Core (http://lucene.apache.org/java/lucene-core) org.apache.lucene:lucene-core:jar:3.0.3
+    License: Apache 2  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Tika core (http://tika.apache.org/) org.apache.tika:tika-core:bundle:1.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+
