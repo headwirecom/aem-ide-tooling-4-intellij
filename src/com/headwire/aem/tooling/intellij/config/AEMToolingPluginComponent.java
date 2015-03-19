@@ -99,7 +99,7 @@ public class AEMToolingPluginComponent
     }
 
     public Icon getIcon() {
-        return IconLoader.getIcon("/images/asm.gif");
+        return IconLoader.getIcon("/images/aem.gif");
     }
 
     public String getHelpTopic() {
