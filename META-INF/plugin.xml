@@ -25,6 +25,8 @@
   <extensions defaultExtensionNs="com.intellij">
       <toolWindow id="AEM" anchor="right" icon="/images/aem.gif"
                   factoryClass="com.headwire.aem.tooling.intellij.SlingServersToolWindowFactory"/>
+      <projectService serviceInterface="com.headwire.aem.tooling.intellij.BytecodeOutline"
+                      serviceImplementation="com.headwire.aem.tooling.intellij.BytecodeOutline"/>
   </extensions>
 
   <application-components>
