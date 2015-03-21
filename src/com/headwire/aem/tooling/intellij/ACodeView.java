@@ -3,6 +3,7 @@ package com.headwire.aem.tooling.intellij;
 import com.headwire.aem.tooling.intellij.config.AEMToolingPluginComponent;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.diff.DiffContent;
 import com.intellij.openapi.diff.DiffManager;
 import com.intellij.openapi.diff.DiffRequest;
@@ -29,6 +30,9 @@ import java.awt.*;
  * Base class for editors which displays bytecode or ASMified code.
  */
 public class ACodeView extends SimpleToolWindowPanel implements Disposable {
+
+    private static final Logger LOGGER = Logger.getInstance(ACodeView.class);
+
     private static final String DIFF_WINDOW_TITLE = "Show differences from previous class contents";
     private static final String[] DIFF_TITLES = {"Previous version", "Current version"};
     protected final Project project;
@@ -46,11 +50,13 @@ public class ACodeView extends SimpleToolWindowPanel implements Disposable {
 
     public ACodeView(final ToolWindowManager toolWindowManager, KeymapManager keymapManager, final Project project, final String fileExtension) {
         super(true, true);
+        LOGGER.debug("Create A Code View");
         this.toolWindowManager = toolWindowManager;
         this.keymapManager = keymapManager;
         this.project = project;
         this.extension = fileExtension;
         setupUI();
+        LOGGER.debug("Created A Code View");
     }
 
     public ACodeView(final ToolWindowManager toolWindowManager, KeymapManager keymapManager, final Project project) {
@@ -58,6 +64,7 @@ public class ACodeView extends SimpleToolWindowPanel implements Disposable {
     }
 
     private void setupUI() {
+        LOGGER.debug("Start Setup UI");
         final EditorFactory editorFactory = EditorFactory.getInstance();
         document = editorFactory.createDocument("");
         editor = editorFactory.createEditor(document, project, FileTypeManager.getInstance().getFileTypeByExtension(extension), true);
@@ -75,6 +82,7 @@ public class ACodeView extends SimpleToolWindowPanel implements Disposable {
         buttonsPanel.add(actionToolBar.getComponent(), BorderLayout.CENTER);
         PopupHandler.installPopupHandler(editor.getContentComponent(), group, "ASM", actionManager);
         setToolbar(buttonsPanel);
+        LOGGER.debug("End Setup UI");
     }
 
     public void setCode(final VirtualFile file, final String code) {

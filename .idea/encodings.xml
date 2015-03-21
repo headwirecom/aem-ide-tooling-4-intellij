@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeStructure.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/ServerNodeDescriptor.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/SlingServerNodeDescriptor.java" charset="UTF-8" />
+  </component>
 </project>

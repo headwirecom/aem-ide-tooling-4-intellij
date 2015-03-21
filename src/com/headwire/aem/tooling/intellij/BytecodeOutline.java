@@ -2,6 +2,7 @@ package com.headwire.aem.tooling.intellij;
 
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.keymap.KeymapManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComponentContainer;
@@ -26,11 +27,15 @@ import java.awt.*;
  */
 public class BytecodeOutline extends ACodeView {
 
+    private static final Logger LOGGER = Logger.getInstance(BytecodeOutline.class);
+
     public BytecodeOutline(final Project project, KeymapManager keymapManager, final ToolWindowManager toolWindowManager) {
         super(toolWindowManager, keymapManager, project);
     }
 
     public static BytecodeOutline getInstance(Project project) {
-        return ServiceManager.getService(project, BytecodeOutline.class);
+        BytecodeOutline ret = ServiceManager.getService(project, BytecodeOutline.class);
+        LOGGER.debug("Bytecode Outline: " + ret);
+        return ret;
     }
 }
