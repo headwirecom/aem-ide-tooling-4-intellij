@@ -3,6 +3,7 @@ package com.headwire.aem.tooling.intellij.explorer;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.ui.ServerConfigurationDialog;
+import com.headwire.aem.tooling.intellij.util.ServerUtil;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.ide.DataManager;
@@ -610,10 +611,18 @@ public class SlingServerExplorer
             }
             else {
                 final TreePath[] paths = myTree.getSelectionPaths();
-//                if (paths != null && paths.length == 1 &&
-//                        ((DefaultMutableTreeNode)paths[0].getLastPathComponent()).getUserObject() instanceof AntBuildFileNodeDescriptor) {
+                if (paths != null && paths.length == 1) {
+                    Object temp = ((DefaultMutableTreeNode)paths[0].getLastPathComponent()).getUserObject();
+                    LOGGER.debug("Selected User Object: '{}'", temp);
+                    if(temp instanceof SlingServerNodeDescriptor) {
+                        SlingServerNodeDescriptor node = (SlingServerNodeDescriptor) temp;
+                        ServerConfiguration serverConfiguration = node.getTarget();
+                        ServerUtil.connectRepository(serverConfiguration);
+                    } else {
+                        LOGGER.debug("Selected object is not a Server Configuration but: '{}'", temp);
+                    }
 //                    presentation.setText(AntBundle.message("run.ant.build.action.name"));
-//                }
+                }
 //                else {
 //                    if (paths == null || paths.length == 1) {
 //                        presentation.setText(AntBundle.message("run.ant.target.action.name"));

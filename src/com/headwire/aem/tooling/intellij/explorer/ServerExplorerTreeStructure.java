@@ -70,7 +70,7 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
       return new TextInfoNodeDescriptor(myProject, parentDescriptor, (String)element);
     }
 
-    if(element instanceof ServerConfiguration) {
+        if(element instanceof ServerConfiguration) {
         return new SlingServerNodeDescriptor(myProject, parentDescriptor, (ServerConfiguration) element);
     }
 
