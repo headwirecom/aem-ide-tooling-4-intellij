@@ -18,6 +18,22 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="org.apache.sling.ide.api" />
+        <module name="org.apache.sling.ide.artifacts" />
+        <module name="org.apache.sling.ide.impl-resource" />
+        <module name="org.apache.sling.ide.impl-vlt" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="org.apache.sling.ide.api" target="1.6" />
+      <module name="org.apache.sling.ide.artifacts" target="1.6" />
+      <module name="org.apache.sling.ide.impl-resource" target="1.6" />
+      <module name="org.apache.sling.ide.impl-vlt" target="1.6" />
+    </bytecodeTargetLevel>
   </component>
 </project>

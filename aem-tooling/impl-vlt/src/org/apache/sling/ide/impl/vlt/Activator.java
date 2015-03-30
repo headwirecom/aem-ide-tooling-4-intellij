@@ -16,10 +16,10 @@
  */
 package org.apache.sling.ide.impl.vlt;
 
-import org.apache.sling.ide.eclipse.core.ServiceUtil;
-import org.apache.sling.ide.eclipse.core.debug.PluginLoggerRegistrar;
+//import org.apache.sling.ide.eclipse.core.ServiceUtil;
+//import org.apache.sling.ide.eclipse.core.debug.PluginLoggerRegistrar;
 import org.apache.sling.ide.log.Logger;
-import org.eclipse.core.runtime.Plugin;
+//import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -33,7 +33,9 @@ import org.osgi.util.tracker.ServiceTracker;
  * entry point to well-known services.
  * </p>
  */
-public class Activator extends Plugin {
+public class Activator
+//    extends Plugin
+{
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.apache.sling.ide.impl-vlt"; //$NON-NLS-1$
@@ -46,10 +48,10 @@ public class Activator extends Plugin {
     private ServiceRegistration<?> tracerRegistration;
 
 	public void start(BundleContext context) throws Exception {
-		super.start(context);
+//		super.start(context);
 		plugin = this;
 
-        tracerRegistration = PluginLoggerRegistrar.register(this);
+//        tracerRegistration = PluginLoggerRegistrar.register(this);
 
         // ugh
         ServiceReference<Object> reference = (ServiceReference<Object>) tracerRegistration.getReference();
@@ -68,7 +70,7 @@ public class Activator extends Plugin {
         tracer.close();
 
         plugin = null;
-		super.stop(context);
+//		super.stop(context);
 	}
 
 	/**
@@ -77,10 +79,48 @@ public class Activator extends Plugin {
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
-		return plugin;
+//AS TODO: Not an OSGi Service in IntelliJ
+        return new Activator();
+//        return plugin;
 	}
 
     public Logger getPluginLogger() {
-        return (Logger) ServiceUtil.getNotNull(tracer);
+        return new Logger() {
+            @Override
+            public void error(String message) {
+
+            }
+
+            @Override
+            public void error(String message, Throwable cause) {
+
+            }
+
+            @Override
+            public void warn(String message) {
+
+            }
+
+            @Override
+            public void warn(String message, Throwable cause) {
+
+            }
+
+            @Override
+            public void trace(String message, Object... arguments) {
+
+            }
+
+            @Override
+            public void trace(String message, Throwable error) {
+
+            }
+
+            @Override
+            public void tracePerformance(String message, long duration, Object... arguments) {
+
+            }
+        };
+//                (Logger) ServiceUtil.getNotNull(tracer);
     }
 }

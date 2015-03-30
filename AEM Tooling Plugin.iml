@@ -8,8 +8,15 @@
     </content>
     <orderEntry type="jdk" jdkName="IDEA IC-139.1117.1" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="org.apache.sling.ide:org.apache.sling.ide.impl-resource:1.0.0" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide:org.apache.sling.ide.api:1.0.0" level="project" />
     <orderEntry type="library" name="org.json:json:20140107" level="project" />
+    <orderEntry type="library" name="javax.jcr:jcr:2.0" level="project" />
+    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.0.0" level="project" />
+    <orderEntry type="library" name="org.apache.jackrabbit.vault:vault-davex:3.0.0" level="project" />
+    <orderEntry type="library" name="org.slf4j:slf4j-simple:1.7.5" level="project" />
+    <orderEntry type="library" name="eclipse:eclipse-runtime:2.1.0" level="project" />
+    <orderEntry type="module" module-name="org.apache.sling.ide.api" />
+    <orderEntry type="module" module-name="org.apache.sling.ide.artifacts" />
+    <orderEntry type="module" module-name="org.apache.sling.ide.impl-resource" />
+    <orderEntry type="module" module-name="org.apache.sling.ide.impl-vlt" />
   </component>
 </module>
