@@ -1,0 +1,60 @@
+
+*****************************************************
+Summary
+-------
+Generated at: 2015-03-16T13:41:08-07:00
+Notes: 2
+Binaries: 0
+Archives: 0
+Standards: 21
+
+Apache Licensed: 21
+Generated Documents: 0
+
+JavaDocs are generated and so license header is optional
+Generated files do not required license headers
+
+0 Unknown Licenses
+
+*******************************
+
+Unapproved licenses:
+
+
+*******************************
+
+Archives:
+
+*****************************************************
+  Files with Apache License headers will be marked AL
+  Binary files (which do not require AL headers) will be marked B
+  Compressed archives will be marked A
+  Notices, licenses etc will be marked N
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/pom.xml
+  N     /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/main/resources/META-INF/LICENSE
+  N     /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/main/resources/META-INF/NOTICE
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/java/org/apache/sling/ide/impl/vlt/AddOrUpdateNodeCommandTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/java/org/apache/sling/ide/impl/vlt/filter/VltFilterTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/java/org/apache/sling/ide/impl/vlt/ReorderChildNodesCommandTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/java/org/apache/sling/ide/impl/vlt/serialization/ContentXmlHandlerTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/java/org/apache/sling/ide/impl/vlt/serialization/VltSerializationManagerTest.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/java/org/apache/sling/ide/impl/vlt/Slf4jLogger.java
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/filter/filter-deep.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/filter/filter-default.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/folder.cnd
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/binary-property.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/encoded-child-content.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/escaped-braces-at-start-of-property.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/file.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/full-coverage-escaped-names.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/full-coverage.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/multivalued-properties-content.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/root-content.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/simple-content.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/serialization/single-explicit-multivalued-properties-content.xml
+  AL    /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/src/test/resources/org/apache/sling/ide/impl/vlt/test-definitions.cnd
+ 
+*****************************************************
+ Printing headers for files without AL header...
+ 
+ 

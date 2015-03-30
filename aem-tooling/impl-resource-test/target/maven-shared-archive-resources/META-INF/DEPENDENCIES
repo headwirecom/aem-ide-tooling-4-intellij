@@ -1,0 +1,21 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+Sling IDE Tools: Resource-based Implementation Tests
+
+
+From: 'JSON' (http://json.org/)
+  - JSON (JavaScript Object Notation) (http://www.json.org/java/index.html) org.json:json:jar:20090211
+    License: provided without support or warranty  (http://www.json.org/license.html)
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Sling IDE Tools: API (http://sling.apache.org/org.apache.sling.ide.api) org.apache.sling.ide:org.apache.sling.ide.api:eclipse-plugin:1.0.7-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Sling IDE Tools: Resource-based Implementation (http://sling.apache.org/org.apache.sling.ide.impl-resource) org.apache.sling.ide:org.apache.sling.ide.impl-resource:eclipse-plugin:1.0.7-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+

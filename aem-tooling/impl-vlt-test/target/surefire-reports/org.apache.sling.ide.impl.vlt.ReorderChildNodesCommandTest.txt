@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.sling.ide.impl.vlt.ReorderChildNodesCommandTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.696 sec - in org.apache.sling.ide.impl.vlt.ReorderChildNodesCommandTest

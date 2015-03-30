@@ -1,0 +1,450 @@
+----------------------------------------------------------------
+2015-03-16 20:40:57.863 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a816c00e-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:40:58.626 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 888c4022-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:40:59.651 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance b9810038-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:00.701 GMT:
+Shutting down instance 888c4022-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:00.717 GMT:
+Shutting down instance b9810038-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:00.724 GMT:
+Shutting down instance a816c00e-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:00.771 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 437c8055-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:00.858 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 05550069-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:01.147 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance c791807d-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:01.512 GMT:
+Shutting down instance 05550069-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:01.519 GMT:
+Shutting down instance c791807d-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:01.527 GMT:
+Shutting down instance 437c8055-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:01.579 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance eb0f4097-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:01.688 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 2e31c0ab-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:01.970 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 71b840bf-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:02.211 GMT:
+Shutting down instance 2e31c0ab-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:02.226 GMT:
+Shutting down instance 71b840bf-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:02.230 GMT:
+Shutting down instance eb0f4097-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:02.268 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 16e300d9-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:02.349 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance db4f80ed-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:02.565 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a0200101-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:02.883 GMT:
+Shutting down instance db4f80ed-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:02.895 GMT:
+Shutting down instance a0200101-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:02.903 GMT:
+Shutting down instance 16e300d9-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:02.938 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 46f7c11b-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:03.010 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 8cae412f-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:03.196 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance d2c8c143-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:03.440 GMT:
+Shutting down instance 8cae412f-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:03.453 GMT:
+Shutting down instance d2c8c143-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:03.458 GMT:
+Shutting down instance 46f7c11b-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:03.517 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance fb4d815d-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:03.578 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance c24e0171-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:03.804 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 89b28185-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:04.053 GMT:
+Shutting down instance c24e0171-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:04.081 GMT:
+Shutting down instance 89b28185-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:04.098 GMT:
+Shutting down instance fb4d815d-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:04.141 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance b3e4419f-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:04.313 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance fc2ec1b3-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:04.515 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 44dd41c7-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:04.740 GMT:
+Shutting down instance fc2ec1b3-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:04.750 GMT:
+Shutting down instance 44dd41c7-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:04.763 GMT:
+Shutting down instance b3e4419f-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:04.792 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance f0bc01e1-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:04.850 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance ba5081f5-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:05.070 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 84490209-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:05.357 GMT:
+Shutting down instance ba5081f5-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:05.364 GMT:
+Shutting down instance 84490209-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:05.371 GMT:
+Shutting down instance f0bc01e1-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:05.421 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 31d4c223-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:05.484 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 7cb34237-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:05.654 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance c7f5c24b-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:05.865 GMT:
+Shutting down instance 7cb34237-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:05.870 GMT:
+Shutting down instance c7f5c24b-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:05.874 GMT:
+Shutting down instance 31d4c223-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:05.907 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance f72e8265-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:05.984 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance c3570279-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:06.156 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 8fe3828d-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:06.366 GMT:
+Shutting down instance c3570279-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:06.375 GMT:
+Shutting down instance 8fe3828d-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:06.379 GMT:
+Shutting down instance f72e8265-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:06.423 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance c0c942a7-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:06.490 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 0e3bc2bb-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:06.654 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 5c1242cf-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:06.824 GMT:
+Shutting down instance 0e3bc2bb-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:06.833 GMT:
+Shutting down instance 5c1242cf-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:06.836 GMT:
+Shutting down instance c0c942a7-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:06.905 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 0ea502e9-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:06.955 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance dd6182fd-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:07.168 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance ac820311-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:07.338 GMT:
+Shutting down instance dd6182fd-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:07.342 GMT:
+Shutting down instance ac820311-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:07.347 GMT:
+Shutting down instance 0ea502e9-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:07.372 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 60c1c32b-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:07.421 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance b0c8433f-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:07.597 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 0132c353-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:07.728 GMT:
+Shutting down instance b0c8433f-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:07.738 GMT:
+Shutting down instance 0132c353-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:07.742 GMT:
+Shutting down instance 60c1c32b-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:07.765 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 371f836d-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:07.815 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 08700381-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:07.951 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance da248395-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:08.141 GMT:
+Shutting down instance 08700381-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:08.154 GMT:
+Shutting down instance da248395-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:08.159 GMT:
+Shutting down instance 371f836d-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+----------------------------------------------------------------
+2015-03-16 20:41:08.189 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 11be43af-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:08.247 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 6458c3c3-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2015-03-16 20:41:08.398 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance b75743d7-014c-2451-6a84-000006e1f890
+on database directory /Users/schaefa/Development/headwire/AdobeAEM.projects/ide/impl-vlt-test/target/jackrabbit/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2015-03-16 20:41:08.566 GMT:
+Shutting down instance 6458c3c3-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:08.573 GMT:
+Shutting down instance b75743d7-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
+
+2015-03-16 20:41:08.578 GMT:
+Shutting down instance 11be43af-014c-2451-6a84-000006e1f890
+----------------------------------------------------------------
