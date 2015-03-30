@@ -91,7 +91,7 @@ public class ListTreeCommand extends JcrCommand<ResourceProxy> {
         props.put(CommandExecutionProperties.TIMESTAMP_START, start);
         props.put(CommandExecutionProperties.TIMESTAMP_END, end);
         Event event = new Event(CommandExecutionProperties.REPOSITORY_TOPIC, props);
-        eventAdmin.postEvent(event);
+//        eventAdmin.postEvent(event);
     }
 
 }

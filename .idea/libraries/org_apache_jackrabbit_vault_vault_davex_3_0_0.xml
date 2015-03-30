@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="org.apache.jackrabbit.vault:vault-davex:3.0.0" type="repository">
+    <properties maven-id="org.apache.jackrabbit.vault:vault-davex:3.0.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/vault-davex-3.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-commons-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-client-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.5.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi-commons-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr2spi-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi2dav-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackrabbit-webdav-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-httpclient-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-codec-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jcl-over-slf4j-1.5.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jcr-2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

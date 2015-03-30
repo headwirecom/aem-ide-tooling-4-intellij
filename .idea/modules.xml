@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AEM Tooling Plugin.iml" filepath="$PROJECT_DIR$/AEM Tooling Plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aem-tooling/api/org.apache.sling.ide.api.iml" filepath="$PROJECT_DIR$/aem-tooling/api/org.apache.sling.ide.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aem-tooling/artifacts/org.apache.sling.ide.artifacts.iml" filepath="$PROJECT_DIR$/aem-tooling/artifacts/org.apache.sling.ide.artifacts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aem-tooling/impl-resource/org.apache.sling.ide.impl-resource.iml" filepath="$PROJECT_DIR$/aem-tooling/impl-resource/org.apache.sling.ide.impl-resource.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aem-tooling/impl-vlt/org.apache.sling.ide.impl-vlt.iml" filepath="$PROJECT_DIR$/aem-tooling/impl-vlt/org.apache.sling.ide.impl-vlt.iml" />
     </modules>
   </component>
 </project>

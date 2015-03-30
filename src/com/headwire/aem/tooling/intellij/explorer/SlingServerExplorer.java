@@ -40,6 +40,12 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileAdapter;
+import com.intellij.openapi.vfs.VirtualFileCopyEvent;
+import com.intellij.openapi.vfs.VirtualFileEvent;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.vfs.VirtualFileMoveEvent;
+import com.intellij.openapi.vfs.VirtualFilePropertyEvent;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.DoubleClickListener;
 import com.intellij.ui.PopupHandler;
@@ -54,7 +60,17 @@ import com.intellij.util.ui.tree.TreeUtil;
 import com.intellij.util.xml.DomEventListener;
 import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.events.DomEvent;
+import org.apache.sling.ide.impl.vlt.AddOrUpdateNodeCommand;
+import org.apache.sling.ide.impl.vlt.VltRepositoryFactory;
+import org.apache.sling.ide.transport.Command;
+import org.apache.sling.ide.transport.FileInfo;
+import org.apache.sling.ide.transport.Repository;
+import org.apache.sling.ide.transport.RepositoryException;
+import org.apache.sling.ide.transport.RepositoryFactory;
+import org.apache.sling.ide.transport.RepositoryInfo;
+import org.apache.sling.ide.transport.ResourceProxy;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -76,12 +92,16 @@ public class SlingServerExplorer
 {
     private static final Logger LOGGER = Logger.getInstance(SlingServerExplorer.class);
 
+    public static final String ROOT_FOLDER = "/jcr_root/";
+
     private Project myProject;
     private ServerExplorerTreeBuilder myBuilder;
     private Tree myTree;
     private KeymapListener myKeymapListener;
 //    private final AntBuildFilePropertiesAction myAntBuildFilePropertiesAction;
     private ServerConfigurationManager myConfig;
+
+    private Repository repository;
 
     private final TreeExpander myTreeExpander = new TreeExpander() {
         public void expandAll() {
@@ -161,6 +181,65 @@ public class SlingServerExplorer
                 myBuilder.queueUpdate();
             }
         });
+
+        // Create FileVault Repository Access
+        LOGGER.debug("Before Create Repository Info");
+        RepositoryInfo repositoryInfo = new RepositoryInfo("admin", "admin", "http://localhost:4502/");
+        LOGGER.debug("After Create Repository Info: " + repositoryInfo);
+        RepositoryFactory factory = new VltRepositoryFactory();
+        LOGGER.debug("After Creating Repository Factory: " + factory);
+        try {
+            repository = factory.connectRepository(repositoryInfo);
+            LOGGER.debug("After Creating Repository: " + repository);
+        } catch (RepositoryException e) {
+            LOGGER.error("Failed to connect to VLT Repository", e);
+        }
+
+        VirtualFileManager.getInstance().addVirtualFileListener(new VirtualFileAdapter() {
+            @Override
+            public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
+                LOGGER.debug("VFS Property Changed Event: " + event.getFileName());
+            }
+            @Override
+            public void contentsChanged(@NotNull VirtualFileEvent event) {
+                String fileName = event.getFileName();
+                LOGGER.debug("VFS Content Changed Event: " + fileName);
+                String filePath = event.getFile().getPath();
+                int index = filePath.indexOf(ROOT_FOLDER);
+                if(index > 0) {
+                    String jcrPath = filePath.substring(index + ROOT_FOLDER.length() - 1);
+                    LOGGER.debug("Supported JCR Path: " + jcrPath);
+                    if(repository != null) {
+                        ResourceProxy resource = new ResourceProxy(jcrPath);
+                        resource.addProperty("jcr:primaryType", "nt:unstructured");
+                        FileInfo info = new FileInfo(
+                            filePath, jcrPath, fileName
+                        );
+                        LOGGER.debug("Before Create Command");
+                        Command<Void> cmd = repository.newAddOrUpdateNodeCommand(info, resource);
+                        LOGGER.debug("Before Execute Create Command: " + cmd);
+                        cmd.execute();
+                        LOGGER.debug("After Execute Create Command: " + cmd);
+                    }
+                }
+            }
+            @Override
+            public void fileCreated(@NotNull VirtualFileEvent event) {
+                LOGGER.debug("VFS File Created Event: " + event.getFileName());
+            }
+            @Override
+            public void fileDeleted(@NotNull VirtualFileEvent event) {
+                LOGGER.debug("VFS File Deleted Event: " + event.getFileName());
+            }
+            @Override
+            public void fileMoved(@NotNull VirtualFileMoveEvent event) {
+                LOGGER.debug("VFS File Moved Event: " + event.getFileName());
+            }
+            @Override
+            public void fileCopied(@NotNull VirtualFileCopyEvent event) {
+                LOGGER.debug("VFS File Copied Event: " + event.getFileName());
+            }
+        }, project);
     }
 
     public void dispose() {

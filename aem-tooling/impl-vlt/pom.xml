@@ -25,6 +25,7 @@
   </parent>
   <artifactId>org.apache.sling.ide.impl-vlt</artifactId>
   <!--<packaging>eclipse-plugin</packaging>-->
+  <packaging>jar</packaging>
   <name>Sling IDE Tools: FileVault implementation</name>
 
   <scm>
