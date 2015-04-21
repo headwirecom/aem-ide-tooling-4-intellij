@@ -6,6 +6,7 @@ import com.headwire.aem.tooling.intellij.ui.ServerConfigurationDialog;
 import com.headwire.aem.tooling.intellij.util.ServerUtil;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
+import com.intellij.icons.AllIcons;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.TreeExpander;
 import com.intellij.ide.dnd.FileCopyPasteUtil;
@@ -675,44 +676,50 @@ public class SlingServerExplorer
         public RunAction() {
 //            super(AntBundle.message("run.ant.file.or.target.action.name"), AntBundle.message("run.ant.file.or.target.action.description"),
 //                    AllIcons.Actions.Execute);
-            super("Run Action", "Description", null);
+            super("Run Action", "Hot Swap Class", AllIcons.Actions.Execute);
         }
 
         public void actionPerformed(AnActionEvent e) {
-            runSelection(e.getDataContext());
+//            runSelection(e.getDataContext());
+            // Create a Connection
+            // Create a Virtual Machine
+            // Load the Compiled Class
+            // Obtain the Reference Type
+            // Redefine the Class on the Remote Server
         }
 
         public void update(AnActionEvent event) {
             final Presentation presentation = event.getPresentation();
-            final String place = event.getPlace();
-            if (ActionPlaces.ANT_EXPLORER_TOOLBAR.equals(place)) {
-//                presentation.setText(AntBundle.message("run.ant.file.or.target.action.name"));
-            }
-            else {
-                final TreePath[] paths = myTree.getSelectionPaths();
-                if (paths != null && paths.length == 1) {
-                    Object temp = ((DefaultMutableTreeNode)paths[0].getLastPathComponent()).getUserObject();
-                    LOGGER.debug("Selected User Object: '{}'", temp);
-                    if(temp instanceof SlingServerNodeDescriptor) {
-                        SlingServerNodeDescriptor node = (SlingServerNodeDescriptor) temp;
-                        ServerConfiguration serverConfiguration = node.getTarget();
-                        ServerUtil.connectRepository(serverConfiguration);
-                    } else {
-                        LOGGER.debug("Selected object is not a Server Configuration but: '{}'", temp);
-                    }
-//                    presentation.setText(AntBundle.message("run.ant.build.action.name"));
-                }
-//                else {
-//                    if (paths == null || paths.length == 1) {
-//                        presentation.setText(AntBundle.message("run.ant.target.action.name"));
+//            final String place = event.getPlace();
+//            if (ActionPlaces.ANT_EXPLORER_TOOLBAR.equals(place)) {
+////                presentation.setText(AntBundle.message("run.ant.file.or.target.action.name"));
+//            }
+//            else {
+//                final TreePath[] paths = myTree.getSelectionPaths();
+//                if (paths != null && paths.length == 1) {
+//                    Object temp = ((DefaultMutableTreeNode)paths[0].getLastPathComponent()).getUserObject();
+//                    LOGGER.debug("Selected User Object: '{}'", temp);
+//                    if(temp instanceof SlingServerNodeDescriptor) {
+//                        SlingServerNodeDescriptor node = (SlingServerNodeDescriptor) temp;
+//                        ServerConfiguration serverConfiguration = node.getTarget();
+//                        ServerUtil.connectRepository(serverConfiguration);
+//                    } else {
+//                        LOGGER.debug("Selected object is not a Server Configuration but: '{}'", temp);
 //                    }
-//                    else {
-//                        presentation.setText(AntBundle.message("run.ant.targets.action.name"));
-//                    }
+////                    presentation.setText(AntBundle.message("run.ant.build.action.name"));
 //                }
-            }
-
-            presentation.setEnabled(canRunSelection());
+////                else {
+////                    if (paths == null || paths.length == 1) {
+////                        presentation.setText(AntBundle.message("run.ant.target.action.name"));
+////                    }
+////                    else {
+////                        presentation.setText(AntBundle.message("run.ant.targets.action.name"));
+////                    }
+////                }
+//            }
+//
+//            presentation.setEnabled(canRunSelection());
+            presentation.setEnabled(true);
         }
     }
     private final class MakeAntRunConfigurationAction extends AnAction {
