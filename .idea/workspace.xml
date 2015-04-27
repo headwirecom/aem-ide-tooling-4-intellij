@@ -2,10 +2,837 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e8001779-2c80-4417-9343-f2a698fc0cd2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AEM Tooling Plugin.zip" afterPath="$PROJECT_DIR$/AEM Tooling Plugin.zip" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AEM Tooling Plugin.iml" afterPath="$PROJECT_DIR$/AEM Tooling Plugin.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/util/ServerUtil.java" afterPath="$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/util/ServerUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java" afterPath="$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.contributions.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.contributions.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.contributors.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.contributors.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.extraData.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.extraData.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.manager/.fileTableLock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.manager/.fileTableLock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.launcher/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.tests/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.apps/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.content/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/.location" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.mainData.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.mainData.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/core/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.launcher/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.tests/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.apps/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.content/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/.markers" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.namespaces.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.namespaces.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.orphans.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.orphans.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.team.cvs.core/.running" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.table.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.table.1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.root/1.tree" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/1118053744.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1118053744.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/1216856303.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1216856303.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1222684567.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/1271342938.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1271342938.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/1309641473.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1309641473.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/1384487945.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1384487945.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/1538322233.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1538322233.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/156905802.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/156905802.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/1819685514.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1819685514.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/1833648217.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/1833648217.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/186161366.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/186161366.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.root/2.tree" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2010203950.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2010203950.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2110179300.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2110179300.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2134148029.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2134148029.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2198004188.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2198004188.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2211237043.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2211237043.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2233891185.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2253321858.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2253321858.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2326154075.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2326659272.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2326659272.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2354410914.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2354410914.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2443666730.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2443666730.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2445720820.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2545238116.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2545238116.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2580288823.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2608217774.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2710454683.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2710454683.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/272178059.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/272178059.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2802798175.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2802798175.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/286665837.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2893627436.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2893627436.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2922135979.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2922135979.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2922413551.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2922413551.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/2937271218.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/2937271218.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3000285004.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3000285004.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3004609673.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3004609673.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3031519042.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3031519042.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3121954395.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3121954395.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3144355619.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3266567714.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3266567714.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3302703152.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3302703152.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3321539481.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3321539481.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3480640680.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3480640680.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3480884635.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3569144417.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3569144417.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3712507179.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3712507179.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3923815108.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3923815108.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/3954040986.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/3954040986.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/4238052447.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/4238052447.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/4249315662.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/4249315662.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/446940426.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/446940426.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/450555687.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/450555687.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/509309667.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/509309667.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/572894277.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/572894277.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/599857961.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/599857961.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/669861535.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/669861535.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/695205061.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/695205061.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/765977872.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/765977872.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/770573466.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/770573466.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/831617981.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/831617981.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/84777399.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/84777399.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/89533047.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/89533047.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_0.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_0.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_0.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_0.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_0_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_0_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_0_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_0_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_1.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_1.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_1.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_1.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_1_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_1_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_2.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_2.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_2_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_2_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_3.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_3.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_3_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_3_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_4.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_4.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_4_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_4_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_5.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_5.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_a.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_a_3.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_b.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_c.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_d.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_d_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/en/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/fr/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_e.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_e_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_f.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_f_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_g.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_g_1.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_h.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_k.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_k_5.del" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_l.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_m.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_n.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_o.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_p.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_q.cfs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/aem-tooling-test-project.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/aem-tooling-test-project.core.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/aem-tooling-test-project.core.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/aem-tooling-test-project.it.launcher.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/aem-tooling-test-project.it.launcher.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/aem-tooling-test-project.it.tests.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/aem-tooling-test-project.it.tests.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/aem-tooling-test-project.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/aem-tooling-test-project.ui.apps.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/aem-tooling-test-project.ui.apps.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/aem-tooling-test-project.ui.content.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/aem-tooling-test-project.ui.content.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.jdt/core.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/core.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.validation/dep.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.validation/dep.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/eclipse-aem-tooling-test-project.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/eclipse-aem-tooling-test-project.core.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/eclipse-aem-tooling-test-project.core.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/eclipse-aem-tooling-test-project.it.launcher.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/eclipse-aem-tooling-test-project.it.launcher.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/eclipse-aem-tooling-test-project.it.tests.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/eclipse-aem-tooling-test-project.it.tests.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/eclipse-aem-tooling-test-project.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/eclipse-aem-tooling-test-project.ui.apps.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/eclipse-aem-tooling-test-project.ui.apps.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.jdt/eclipse-aem-tooling-test-project.ui.content.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/eclipse-aem-tooling-test-project.ui.content.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.core/externalLibsTimeStamps" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/externalLibsTimeStamps" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/favicon.ico" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/_jcr_content/image/file" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/en/_jcr_content/image/file" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/en/_jcr_content/par/image_1/file" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/fr/_jcr_content/image/file" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/fr/_jcr_content/par/image_1/file" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/.indexes/af/history.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/.indexes/af/history.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/.indexes/af/history.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.indexes/af/history.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/.indexes/af/history.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/_jcr_content/page-home/logo/image" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/_jcr_content/page/logo/image" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/invalidArchivesCache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/invalidArchivesCache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.jdt/it.launcher.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/it.launcher.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.jdt/it.tests.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/it.tests.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.rse.core/initializerMarks/org.eclipse.rse.internal.core.RSELocalConnectionInitializer.mark" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.rse.core/initializerMarks/org.eclipse.rse.internal.core.RSELocalConnectionInitializer.mark" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/core/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.launcher/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.tests/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.apps/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.content/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/Servers/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.server.core/publish/publish0.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.mylyn/repositories.xml.zip" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.mylyn/repositories.xml.zip" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/segments.gen" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/segments.gen" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/segments.gen" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/segments.gen" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/segments.gen" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/segments.gen" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/segments_3" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/segments_3" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/segments_7" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/segments_7" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/segments_i" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/segments_q" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/core/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.launcher/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.tests/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.apps/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.content/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/org.eclipse.jdt.core/state.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.jdt/ui.apps.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/ui.apps.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.jdt/ui.content.container" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/ui.content.lifecyclemapping" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.core/variablesAndContainers.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/variablesAndContainers.dat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/write.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/write.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/write.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/write.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/write.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/write.lock" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/servicecomponent/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/title/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/title/_cq_dialog/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/page/page/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/page/page-home/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/templates/page/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/templates/page-home/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/tests/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/_jcr_content/page-home/logo/image.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/_jcr_content/page/logo/image.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/clientlib/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/clientlib/css/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/clientlib/js/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/_jcr_content/image/file.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/en/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/en/_jcr_content/image/file.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/en/_jcr_content/par/image_1/file.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/fr/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/fr/_jcr_content/image/file.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/aemtoolingtestproject/fr/_jcr_content/par/image_1/file.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/dam/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/jcr_root/content/dam/aemtoolingtestproject/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.manager/.fileTable.7" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.manager/.fileTable.7" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.extensions/.manager/.fileTable.8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.extensions/.manager/.fileTable.8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.launching/.install.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.launching/.install.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.rse.core/.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.rse.ui/.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.rse.core/.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.rse.ui/.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/RemoteSystemsTempFiles/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/Servers/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/8f/00c41fc118ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/33/106dc9bd18ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/80/10a6ecc018ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/27/10b613c118ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.local_targets/1430161711748.target" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.local_targets/1430164836365.target" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/65/2081cfc018ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/sling/servlet/errorhandler/404.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/3d/40ba11c118ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/88/40cfcfc018ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/57/50161ec118ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/56/701febc018ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/32/7044d0c018ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/8d/70ae77be18ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/page/page/CopyrightHelper.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/core/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.launcher/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/it.tests/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.apps/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.resources/.projects/ui.content/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/Servers/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project/org.eclipse.egit.core/GitProjectData.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/src/main/java/com/headwire/aem/tooling/aem_tooling_test_project/core/HelloService.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/src/main/java/com/headwire/aem/tooling/aem_tooling_test_project/core/impl/HelloServiceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/servicecomponent/HelloServiceProxy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/src/main/java/com/headwire/aem/tooling/aem_tooling_test_project/it/tests/HelloServiceServerSideTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.debug.core/.launches/Localhost.launch" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/src/main/java/com/headwire/aem/tooling/aem_tooling_test_project/core/impl/filters/LoggingFilter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__biz_aQute_bndlib_1_50_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__com_adobe_aem_aem_api_6_0_0_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__commons_codec_commons_codec_1_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__commons_io_commons_io_1_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__javax_jcr_jcr_2_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__javax_servlet_servlet_api_2_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__junit_addons_junit_addons_1_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__junit_junit_4_8_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_commons_commons_exec_1_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_felix_org_apache_felix_scr_1_6_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_felix_org_apache_felix_scr_annotations_1_9_6.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_osgi_4_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_nio_4_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_osgi_4_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_commons_json_2_0_6.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_core_1_0_8.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_remote_1_0_8.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_scriptable_1_0_8.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_launchpad_base_war_webapp_2_3_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_launchpad_standalone_6.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_servlets_post_2_3_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_testing_tools_1_0_8.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_mockito_mockito_all_1_9_5.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_osgi_org_osgi_compendium_4_2_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_osgi_org_osgi_core_4_2_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_slf4j_slf4j_api_1_5_11.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__org_slf4j_slf4j_simple_1_5_11.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__xerces_xercesImpl_2_6_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/libraries/Maven__xerces_xmlParserAPIs_2_6_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.ui/OpenTypeHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.ui/OpenTypeHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.ui/QualifiedTypeNameHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.ui/QualifiedTypeNameHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/tests/SampleTests.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/SavedExternalPluginList.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/SavedExternalPluginList.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/src/main/java/com/headwire/aem/tooling/aem_tooling_test_project/core/impl/listeners/SimpleResourceListener.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/src/main/java/com/headwire/aem/tooling/aem_tooling_test_project/core/impl/schedulers/SimpleScheduledTask.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/src/main/java/com/headwire/aem/tooling/aem_tooling_test_project/core/impl/servlets/SimpleServlet.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/src/test/java/com/headwire/aem/tooling/aem_tooling_test_project/it/launcher/SlingServerSideTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/src/test/java/com/headwire/aem/tooling/aem_tooling_test_project/it/launcher/SlingServerSideTestsBase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/src/test/java/com/headwire/aem/tooling/aem_tooling_test_project/core/impl/TestHelloServiceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/topnav/Topnav.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/servicecomponent/_cq_editConfig.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/title/_cq_editConfig.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/aem-tooling-test-project.core.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/aem-tooling-test-project.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/aem-tooling-test-project.it.launcher.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/aem-tooling-test-project.it.tests.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/aem-tooling-test-project.ui.apps.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/aem-tooling-test-project.ui.content.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/7/b04a78be18ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/baseBrowserLibrary.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/baseBrowserLibrary.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/browserWindow.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/browserWindow.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/d8/c0271fc118ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/22/c0e2ebc018ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/12/c0f212c118ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.internet.cache/cache.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.internet.cache/cache.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.pde.core/.cache/clean-cache.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.cache/clean-cache.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/META-INF/vault/config.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/META-INF/vault/config.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/clientlib/css.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/5a/d09878be18ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.xml.core/default_catalog.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.xml.core/default_catalog.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core.ui/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.ui.intro/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.ltk.ui.refactoring/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.ui.intro/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/dom5.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/dom5.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/52/e0751fc118ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/bc/f057ecc018ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/51/f06713c118ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/94/f0c69bc018ed0014181296ed9c18d6d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/felix-scr.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/META-INF/vault/filter.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/META-INF/vault/filter.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/page/page/footer.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/page/page/header.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/indexNamesMap.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/indexNamesMap.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/tests/js.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/clientlib/js.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.debug.ui/launchConfigurationHistory.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.launching/libraryInfos.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.launching/libraryInfos.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.1.5.1.20150109-1820.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.1.5.1.20150109-1820.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/page/page/main.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.server.core/monitors.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/clientlib/js/mycustom.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.rse.core/profiles/PRF.andreass-mac-pro-2_131344/node.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.rse.core/profiles/PRF.andreass-mac-pro-2_131344/FP.local.files_0/node.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.rse.core/profiles/PRF.andreass-mac-pro-2_131344/H.local_16/node.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.rse.core/profiles/PRF.andreass-mac-pro-2_131344/node.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.rse.core/profiles/PRF.andreass-mac-pro-2_131344/FP.local.files_0/node.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.rse.core/profiles/PRF.andreass-mac-pro-2_131344/H.local_16/node.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/config/org.apache.sling.commons.log.LogManager.factory.config-mgp.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/config.dev/org.apache.sling.commons.log.LogManager.factory.config-my-granite-project.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.debug.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.egit.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.egit.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jst.j2ee.webservice.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jst.j2ee.webservice.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.m2e.discovery.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.m2e.discovery.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.context.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.context.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.monitor.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.monitor.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.tasks.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.tasks.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.pde.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.pde.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/.settings/org.eclipse.pde.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/.settings/org.eclipse.pde.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.rse.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.rse.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.rse.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.rse.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.team.cvs.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.team.cvs.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.team.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.team.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.workbench.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.workbench.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.wst.jsdt.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.wst.jsdt.ui.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.wst.server.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/Servers/.settings/org.eclipse.wst.server.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.wst.ws.service.policy.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/src/main/java/com/headwire/aem/tooling/aem_tooling_test_project/core/package-info.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/page/page/page.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/core/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.launcher/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/it.tests/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.server.core/publish.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.ltk.core.refactoring/.refactorings/.workspace/2015/4/18/refactorings.history" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.ltk.core.refactoring/.refactorings/.workspace/2015/4/18/refactorings.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/scopes/scope_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.server.core/servers.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/servicecomponent/servicecomponent.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/META-INF/vault/settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.content/src/main/content/META-INF/vault/settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/etc/designs/aemtoolingtestproject/clientlib/css/static.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/system.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/system.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.xml.core/system_catalog.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.xml.core/system_catalog.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.sse.core/task-tags.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.sse.core/task-tags.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/title/title.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/title/title.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/components/content/topnav/topnav.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/version.ini" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/version.ini" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.m2e.core/workspacestate.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/workspacestate.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/xhr.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/xhr.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/.name" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/.name" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/compiler.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/compiler.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/copyright/profiles_settings.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/encodings.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/encodings.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/felix-scr.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/felix-scr.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__biz_aQute_bndlib_1_50_0.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__biz_aQute_bndlib_1_50_0.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__com_adobe_aem_aem_api_6_0_0_1.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__com_adobe_aem_aem_api_6_0_0_1.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__commons_codec_commons_codec_1_4.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__commons_codec_commons_codec_1_4.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__commons_io_commons_io_1_4.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__commons_io_commons_io_1_4.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__javax_jcr_jcr_2_0.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__javax_jcr_jcr_2_0.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__javax_servlet_servlet_api_2_4.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__javax_servlet_servlet_api_2_4.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__junit_addons_junit_addons_1_4.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__junit_addons_junit_addons_1_4.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__junit_junit_4_8_2.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__junit_junit_4_8_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_commons_commons_exec_1_1.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_commons_commons_exec_1_1.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_felix_org_apache_felix_scr_1_6_0.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_felix_org_apache_felix_scr_1_6_0.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_felix_org_apache_felix_scr_annotations_1_9_6.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_felix_org_apache_felix_scr_annotations_1_9_6.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_1.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_1.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_1_2.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_1_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_osgi_4_1_2.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_osgi_4_1_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_1.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_1.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_nio_4_1_2.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_nio_4_1_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_osgi_4_1_2.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_osgi_4_1_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_1.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_1.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_commons_json_2_0_6.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_sling_org_apache_sling_commons_json_2_0_6.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_core_1_0_8.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_core_1_0_8.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_remote_1_0_8.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_remote_1_0_8.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_scriptable_1_0_8.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_scriptable_1_0_8.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_launchpad_base_war_webapp_2_3_0.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_sling_org_apache_sling_launchpad_base_war_webapp_2_3_0.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_launchpad_standalone_6.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_sling_org_apache_sling_launchpad_standalone_6.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_servlets_post_2_3_4.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_sling_org_apache_sling_servlets_post_2_3_4.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_testing_tools_1_0_8.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_apache_sling_org_apache_sling_testing_tools_1_0_8.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_mockito_mockito_all_1_9_5.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_mockito_mockito_all_1_9_5.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_osgi_org_osgi_compendium_4_2_0.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_osgi_org_osgi_compendium_4_2_0.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_osgi_org_osgi_core_4_2_0.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_osgi_org_osgi_core_4_2_0.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_slf4j_slf4j_api_1_5_11.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_slf4j_slf4j_api_1_5_11.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__org_slf4j_slf4j_simple_1_5_11.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__org_slf4j_slf4j_simple_1_5_11.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__xerces_xercesImpl_2_6_2.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__xerces_xercesImpl_2_6_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/libraries/Maven__xerces_xmlParserAPIs_2_6_2.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/libraries/Maven__xerces_xmlParserAPIs_2_6_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/misc.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/misc.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/modules.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/modules.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/scopes/scope_settings.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/scopes/scope_settings.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/vcs.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/vcs.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/.idea/workspace.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/README.md" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/README.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ReadFirst.md" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ReadFirst.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/RemoteSystemsTempFiles/.project" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/RemoteSystemsTempFiles/.project" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/Servers/.project" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/Servers/.project" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/Servers/.settings/org.eclipse.wst.server.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/Servers/.settings/org.eclipse.wst.server.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/.classpath" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/.classpath" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/.project" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/.project" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/.settings/org.eclipse.core.resources.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/.settings/org.eclipse.core.resources.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/.settings/org.eclipse.jdt.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/.settings/org.eclipse.m2e.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/.settings/org.eclipse.pde.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/.settings/org.eclipse.pde.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/.settings/org.eclipse.wst.common.project.facet.core.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/eclipse-tooling-test.core.iml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/eclipse-tooling-test.core.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/failed.reload.txt" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/failed.reload.txt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/pom.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/pom.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/HelloService.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/HelloService.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/GoodbyeServiceImpl.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/GoodbyeServiceImpl.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/HelloServiceImpl.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/HelloServiceImpl.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/filters/LoggingFilter.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/filters/LoggingFilter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/listeners/SimpleResourceListener.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/listeners/SimpleResourceListener.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/schedulers/SimpleScheduledTask.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/schedulers/SimpleScheduledTask.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/servlets/HelloServlet.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/servlets/HelloServlet.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/servlets/SimpleServlet.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/servlets/SimpleServlet.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/package-info.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/package-info.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/src/test/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/TestHelloServiceImpl.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/src/test/java/com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/TestHelloServiceImpl.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/core/successful.reload.txt" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/core/successful.reload.txt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/eclipse-tooling-test.iml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/eclipse-tooling-test.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/.classpath" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/.classpath" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/.project" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/.project" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/.settings/org.eclipse.core.resources.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/.settings/org.eclipse.core.resources.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/.settings/org.eclipse.jdt.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/.settings/org.eclipse.m2e.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/eclipse-tooling-test.it.launcher.iml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/eclipse-tooling-test.it.launcher.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/pom.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/pom.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/src/test/java/com/headwire/tooling/eclipse/eclipse_tooling_test/it/launcher/SlingServerSideTest.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/src/test/java/com/headwire/tooling/eclipse/eclipse_tooling_test/it/launcher/SlingServerSideTest.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.launcher/src/test/java/com/headwire/tooling/eclipse/eclipse_tooling_test/it/launcher/SlingServerSideTestsBase.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.launcher/src/test/java/com/headwire/tooling/eclipse/eclipse_tooling_test/it/launcher/SlingServerSideTestsBase.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/.classpath" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/.classpath" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/.project" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/.project" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/.settings/org.eclipse.core.resources.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/.settings/org.eclipse.core.resources.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/.settings/org.eclipse.jdt.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/.settings/org.eclipse.m2e.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/.settings/org.eclipse.pde.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/.settings/org.eclipse.pde.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/.settings/org.eclipse.wst.common.project.facet.core.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/eclipse-tooling-test.it.tests.iml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/eclipse-tooling-test.it.tests.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/pom.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/pom.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/it.tests/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/it/tests/HelloServiceServerSideTest.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/it.tests/src/main/java/com/headwire/tooling/eclipse/eclipse_tooling_test/it/tests/HelloServiceServerSideTest.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/pom.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/pom.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/.classpath" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/.classpath" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/.project" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/.project" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/.settings/org.eclipse.core.resources.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/.settings/org.eclipse.core.resources.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/.settings/org.eclipse.jdt.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/.settings/org.eclipse.m2e.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/.settings/org.eclipse.wst.common.project.facet.core.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/eclipse-tooling-test.ui.apps.iml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/eclipse-tooling-test.ui.apps.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/pom.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/pom.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/META-INF/vault/config.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/META-INF/vault/config.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/META-INF/vault/filter.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/META-INF/vault/filter.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/META-INF/vault/settings.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/META-INF/vault/settings.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/servicecomponent/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/servicecomponent/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/servicecomponent/HelloServiceProxy.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/servicecomponent/HelloServiceProxy.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/servicecomponent/_cq_editConfig.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/servicecomponent/_cq_editConfig.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/servicecomponent/servicecomponent.html" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/servicecomponent/servicecomponent.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/_cq_dialog/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/_cq_dialog/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/_cq_editConfig.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/_cq_editConfig.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/title.html" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/title.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/title.js" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/title/title.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/topnav/Topnav.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/topnav/Topnav.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/topnav/topnav.html" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/content/topnav/topnav.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page-home/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page-home/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/CopyrightHelper.java" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/CopyrightHelper.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/footer.html" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/footer.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/header.html" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/header.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/main.html" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/main.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/page.html" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/components/page/page/page.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/config.dev/org.apache.sling.commons.log.LogManager.factory.config-my-granite-project.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/config.dev/org.apache.sling.commons.log.LogManager.factory.config-my-granite-project.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/config/org.apache.sling.commons.log.LogManager.factory.config-mgp.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/config/org.apache.sling.commons.log.LogManager.factory.config-mgp.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/templates/page-home/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/templates/page-home/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/templates/page/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/templates/page/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/tests/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/tests/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/tests/SampleTests.js" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/tests/SampleTests.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/tests/js.txt" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/eclipsetoolingtest/tests/js.txt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/apps/sling/servlet/errorhandler/404.jsp" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/apps/sling/servlet/errorhandler/404.jsp" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/_jcr_content/page-home/logo/image" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/_jcr_content/page-home/logo/image" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/_jcr_content/page-home/logo/image.dir/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/_jcr_content/page-home/logo/image.dir/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/_jcr_content/page/logo/image" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/_jcr_content/page/logo/image" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/_jcr_content/page/logo/image.dir/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/_jcr_content/page/logo/image.dir/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/css.txt" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/css.txt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/css/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/css/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/css/static.css" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/css/static.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/js.txt" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/js.txt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/js/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/js/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/js/mycustom.js" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/clientlib/js/mycustom.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/favicon.ico" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.apps/src/main/content/jcr_root/etc/designs/eclipsetoolingtest/favicon.ico" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/.classpath" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/.classpath" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/.project" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/.project" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/.settings/org.eclipse.core.resources.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/.settings/org.eclipse.core.resources.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/.settings/org.eclipse.jdt.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/.settings/org.eclipse.m2e.core.prefs" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/.settings/org.eclipse.wst.common.project.facet.core.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/eclipse-tooling-test.ui.content.iml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/eclipse-tooling-test.ui.content.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/pom.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/pom.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/META-INF/vault/config.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/META-INF/vault/config.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/META-INF/vault/filter.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/META-INF/vault/filter.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/META-INF/vault/settings.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/META-INF/vault/settings.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/dam/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/dam/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/dam/eclipsetoolingtest/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/dam/eclipsetoolingtest/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/_jcr_content/image/file" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/_jcr_content/image/file" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/_jcr_content/image/file.dir/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/_jcr_content/image/file.dir/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/image/file" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/image/file" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/image/file.dir/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/image/file.dir/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/par/image_1/file" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/par/image_1/file" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/par/image_1/file.dir/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/en/_jcr_content/par/image_1/file.dir/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/image/file" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/image/file" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/image/file.dir/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/image/file.dir/.content.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/par/image_1/file" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/par/image_1/file" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/par/image_1/file.dir/.content.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project.old/ui.content/src/main/content/jcr_root/content/eclipsetoolingtest/fr/_jcr_content/par/image_1/file.dir/.content.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Readme.md" afterPath="$PROJECT_DIR$/Readme.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AEM Tooling Plugin.iws" />
@@ -48,11 +875,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerUtil.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ServerUtil.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/util/ServerUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3578838" vertical-offset="0" max-vertical-offset="3525">
-              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3525">
+              <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -80,27 +907,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Readme.md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Readme.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Readme.md">
           <provider editor-type-id="MarkdownPreviewEditor">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="105">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReadFirst.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ReadFirst.md">
-          <provider editor-type-id="MarkdownPreviewEditor">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-25.5" vertical-offset="0" max-vertical-offset="870">
-              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.28460997" vertical-offset="0" max-vertical-offset="1423">
+              <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -151,6 +965,7 @@
         <option value="$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ReadFirst.md" />
         <option value="$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java" />
         <option value="$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/util/ServerUtil.java" />
+        <option value="$PROJECT_DIR$/Readme.md" />
       </list>
     </option>
   </component>
@@ -326,7 +1141,39 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
+              <option name="myItemId" value="eclipse.aem.tooling.workspace" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eclipse.aem.tooling.workspace" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aem-tooling-test-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eclipse.aem.tooling.generatedd.test.project.old" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -463,7 +1310,7 @@
     <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/org.eclipse.jdt.debug.extract-1.0.0-SNAPSHOT-sources.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Support/aem-eclipse-tooling-code-base/aem-eclipse-developer-tools" />
     <property name="FullScreen" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
@@ -481,6 +1328,12 @@
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.headwire.aem.tooling.intellij.explorer" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/eclipse.aem.tooling.workspace" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project" />
     </key>
   </component>
   <component name="RunManager" selected="Remote.IntelliJ 14 CE Remote">
@@ -793,46 +1646,46 @@
       <workItem from="1427592514793" duration="4761000" />
       <workItem from="1429567552068" duration="6989000" />
       <workItem from="1429637358413" duration="28582000" />
-      <workItem from="1430152889073" duration="1658000" />
+      <workItem from="1430152889073" duration="6901000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="109629000" />
+    <option name="totallyTimeSpent" value="114872000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1573" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49959448" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Notes" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3301823" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980143" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24980143" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.381499" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Notes" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3301823" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980143" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.381499" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1244,44 +2097,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Readme.md">
-      <provider editor-type-id="MarkdownPreviewEditor">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1425">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5925">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ui.content/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53608245" vertical-offset="1275" max-vertical-offset="3195">
-          <caret line="137" column="34" selection-start-line="137" selection-start-column="16" selection-end-line="137" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/eclipse.aem.tooling.generatedd.test.project/ReadFirst.md">
-      <provider editor-type-id="MarkdownPreviewEditor">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-25.5" vertical-offset="0" max-vertical-offset="870">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/ServersToolWindowFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
@@ -1318,11 +2133,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/util/ServerUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3578838" vertical-offset="0" max-vertical-offset="3525">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3525">
+          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/.name">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1453">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Readme.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28460997" vertical-offset="0" max-vertical-offset="1423">
+          <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
+          <folding />
         </state>
       </provider>
     </entry>
