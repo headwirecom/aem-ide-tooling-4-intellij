@@ -8,14 +8,14 @@ import java.util.Set;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.intellij.openapi.diagnostic.Logger;
-//import org.apache.sling.ide.impl.resource.transport.RepositoryFactoryImpl;
-//import org.apache.sling.ide.transport.Command;
-//import org.apache.sling.ide.transport.Repository;
-//import org.apache.sling.ide.transport.RepositoryException;
-//import org.apache.sling.ide.transport.RepositoryFactory;
-//import org.apache.sling.ide.transport.RepositoryInfo;
-//import org.apache.sling.ide.transport.ResourceProxy;
-//import org.apache.sling.ide.transport.Result;
+import org.apache.sling.ide.impl.resource.transport.RepositoryFactoryImpl;
+import org.apache.sling.ide.transport.Command;
+import org.apache.sling.ide.transport.Repository;
+import org.apache.sling.ide.transport.RepositoryException;
+import org.apache.sling.ide.transport.RepositoryFactory;
+import org.apache.sling.ide.transport.RepositoryInfo;
+import org.apache.sling.ide.transport.ResourceProxy;
+import org.apache.sling.ide.transport.Result;
 
 //AS TOOD: Copy from the Eclipse Project -> Clean up
 public abstract class ServerUtil {

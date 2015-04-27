@@ -16,5 +16,8 @@
     <orderEntry type="library" name="org.slf4j:slf4j-simple:1.7.5" level="project" />
     <orderEntry type="library" name="eclipse:eclipse-runtime:2.1.0" level="project" />
     <orderEntry type="library" name="com.ibm.icu:icu4j:55.1" level="project" />
+    <orderEntry type="library" name="org.apache.sling:org.apache.sling.api:2.3.0" level="project" />
+    <orderEntry type="library" name="org.apache.sling.ide:org.apache.sling.ide.api:1.0.0" level="project" />
+    <orderEntry type="library" name="org.apache.sling.ide:org.apache.sling.ide.impl-resource:1.0.0" level="project" />
   </component>
 </module>
