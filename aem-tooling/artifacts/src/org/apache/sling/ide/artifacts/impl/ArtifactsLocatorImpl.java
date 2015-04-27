@@ -44,7 +44,7 @@ public class ArtifactsLocatorImpl implements EmbeddedArtifactLocator {
         String artifactId = "org.apache.sling.tooling.support.install";
         String extension = "jar";
 
-        URL jarUrl = loadResource(bundleContext, ARTIFACTS_LOCATION + "/sling-tooling-support-install/" + artifactId
+        URL jarUrl = loadResource(bundleContext, ARTIFACTS_LOCATION + "/sling-tooling-support-install-2/" + artifactId
                 + "." + extension);
 
         return new EmbeddedArtifact(artifactId + "-" + version + "." + extension, version, jarUrl);

@@ -1,11 +1,22 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
+import com.intellij.debugger.DebuggerBundle;
+import com.intellij.debugger.DebuggerManager;
+
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.ui.ServerConfigurationDialog;
 import com.headwire.aem.tooling.intellij.util.ServerUtil;
+import com.intellij.debugger.DebuggerManagerEx;
+import com.intellij.debugger.impl.DebuggerManagerAdapter;
+import com.intellij.debugger.impl.DebuggerSession;
+import com.intellij.debugger.impl.HotSwapFile;
+import com.intellij.debugger.impl.HotSwapManager;
+import com.intellij.debugger.ui.HotSwapVetoableListener;
+import com.intellij.execution.ExecutionException;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
+import com.intellij.execution.configurations.RemoteConnection;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.TreeExpander;
@@ -28,6 +39,10 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ToggleAction;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.compiler.CompilationStatusListener;
+import com.intellij.openapi.compiler.CompileContext;
+import com.intellij.openapi.compiler.CompilerTopics;
+import com.intellij.openapi.compiler.ex.CompilerPathsEx;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
@@ -36,9 +51,14 @@ import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileAdapter;
@@ -56,23 +76,34 @@ import com.intellij.ui.TreeSpeedSearch;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.IconUtil;
-import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.containers.*;
+import com.intellij.util.messages.MessageBus;
+import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.ui.tree.TreeUtil;
 import com.intellij.util.xml.DomEventListener;
 import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.events.DomEvent;
-import org.apache.sling.ide.impl.vlt.AddOrUpdateNodeCommand;
-import org.apache.sling.ide.impl.vlt.VltRepositoryFactory;
-import org.apache.sling.ide.transport.Command;
-import org.apache.sling.ide.transport.FileInfo;
-import org.apache.sling.ide.transport.Repository;
-import org.apache.sling.ide.transport.RepositoryException;
-import org.apache.sling.ide.transport.RepositoryFactory;
-import org.apache.sling.ide.transport.RepositoryInfo;
-import org.apache.sling.ide.transport.ResourceProxy;
+import com.sun.jdi.Bootstrap;
+import com.sun.jdi.ReferenceType;
+import com.sun.jdi.VirtualMachine;
+import com.sun.jdi.VirtualMachineManager;
+import com.sun.jdi.connect.Connector;
+import com.sun.jdi.connect.IllegalConnectorArgumentsException;
+import com.sun.jdi.connect.spi.Connection;
+import gnu.trove.THashSet;
+//import org.apache.sling.ide.impl.vlt.AddOrUpdateNodeCommand;
+//import org.apache.sling.ide.impl.vlt.VltRepositoryFactory;
+//import org.apache.sling.ide.transport.Command;
+//import org.apache.sling.ide.transport.FileInfo;
+//import org.apache.sling.ide.transport.Repository;
+//import org.apache.sling.ide.transport.RepositoryException;
+//import org.apache.sling.ide.transport.RepositoryFactory;
+//import org.apache.sling.ide.transport.RepositoryInfo;
+//import org.apache.sling.ide.transport.ResourceProxy;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jps.util.JpsPathUtil;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -83,7 +114,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by schaefa on 3/19/15.
@@ -102,7 +140,7 @@ public class SlingServerExplorer
 //    private final AntBuildFilePropertiesAction myAntBuildFilePropertiesAction;
     private ServerConfigurationManager myConfig;
 
-    private Repository repository;
+//    private Repository repository;
 
     private final TreeExpander myTreeExpander = new TreeExpander() {
         public void expandAll() {
@@ -183,64 +221,95 @@ public class SlingServerExplorer
             }
         });
 
-        // Create FileVault Repository Access
-        LOGGER.debug("Before Create Repository Info");
-        RepositoryInfo repositoryInfo = new RepositoryInfo("admin", "admin", "http://localhost:4502/");
-        LOGGER.debug("After Create Repository Info: " + repositoryInfo);
-        RepositoryFactory factory = new VltRepositoryFactory();
-        LOGGER.debug("After Creating Repository Factory: " + factory);
-        try {
-            repository = factory.connectRepository(repositoryInfo);
-            LOGGER.debug("After Creating Repository: " + repository);
-        } catch (RepositoryException e) {
-            LOGGER.error("Failed to connect to VLT Repository", e);
-        }
+//        // Create FileVault Repository Access
+//        LOGGER.debug("Before Create Repository Info");
+//        RepositoryInfo repositoryInfo = new RepositoryInfo("admin", "admin", "http://localhost:4502/");
+//        LOGGER.debug("After Create Repository Info: " + repositoryInfo);
+//        RepositoryFactory factory = new VltRepositoryFactory();
+//        LOGGER.debug("After Creating Repository Factory: " + factory);
+//        try {
+//            repository = factory.connectRepository(repositoryInfo);
+//            LOGGER.debug("After Creating Repository: " + repository);
+//        } catch (RepositoryException e) {
+//            LOGGER.error("Failed to connect to VLT Repository", e);
+//        }
+//
+//        VirtualFileManager.getInstance().addVirtualFileListener(new VirtualFileAdapter() {
+//            @Override
+//            public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
+//                LOGGER.debug("VFS Property Changed Event: " + event.getFileName());
+//            }
+//            @Override
+//            public void contentsChanged(@NotNull VirtualFileEvent event) {
+//                String fileName = event.getFileName();
+//                LOGGER.debug("VFS Content Changed Event: " + fileName);
+//                String filePath = event.getFile().getPath();
+//                int index = filePath.indexOf(ROOT_FOLDER);
+//                if(index > 0) {
+//                    String jcrPath = filePath.substring(index + ROOT_FOLDER.length() - 1);
+//                    LOGGER.debug("Supported JCR Path: " + jcrPath);
+//                    if(repository != null) {
+//                        ResourceProxy resource = new ResourceProxy(jcrPath);
+//                        resource.addProperty("jcr:primaryType", "nt:unstructured");
+//                        FileInfo info = new FileInfo(
+//                            filePath, jcrPath, fileName
+//                        );
+//                        LOGGER.debug("Before Create Command");
+//                        Command<Void> cmd = repository.newAddOrUpdateNodeCommand(info, resource);
+//                        LOGGER.debug("Before Execute Create Command: " + cmd);
+//                        cmd.execute();
+//                        LOGGER.debug("After Execute Create Command: " + cmd);
+//                    }
+//                }
+//            }
+//            @Override
+//            public void fileCreated(@NotNull VirtualFileEvent event) {
+//                LOGGER.debug("VFS File Created Event: " + event.getFileName());
+//            }
+//            @Override
+//            public void fileDeleted(@NotNull VirtualFileEvent event) {
+//                LOGGER.debug("VFS File Deleted Event: " + event.getFileName());
+//            }
+//            @Override
+//            public void fileMoved(@NotNull VirtualFileMoveEvent event) {
+//                LOGGER.debug("VFS File Moved Event: " + event.getFileName());
+//            }
+//            @Override
+//            public void fileCopied(@NotNull VirtualFileCopyEvent event) {
+//                LOGGER.debug("VFS File Copied Event: " + event.getFileName());
+//            }
+//        }, project);
 
-        VirtualFileManager.getInstance().addVirtualFileListener(new VirtualFileAdapter() {
-            @Override
-            public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
-                LOGGER.debug("VFS Property Changed Event: " + event.getFileName());
-            }
-            @Override
-            public void contentsChanged(@NotNull VirtualFileEvent event) {
-                String fileName = event.getFileName();
-                LOGGER.debug("VFS Content Changed Event: " + fileName);
-                String filePath = event.getFile().getPath();
-                int index = filePath.indexOf(ROOT_FOLDER);
-                if(index > 0) {
-                    String jcrPath = filePath.substring(index + ROOT_FOLDER.length() - 1);
-                    LOGGER.debug("Supported JCR Path: " + jcrPath);
-                    if(repository != null) {
-                        ResourceProxy resource = new ResourceProxy(jcrPath);
-                        resource.addProperty("jcr:primaryType", "nt:unstructured");
-                        FileInfo info = new FileInfo(
-                            filePath, jcrPath, fileName
-                        );
-                        LOGGER.debug("Before Create Command");
-                        Command<Void> cmd = repository.newAddOrUpdateNodeCommand(info, resource);
-                        LOGGER.debug("Before Execute Create Command: " + cmd);
-                        cmd.execute();
-                        LOGGER.debug("After Execute Create Command: " + cmd);
+        // Hook into the Debugger Manager
+        DebuggerManager debugManager = myProject.getComponent(DebuggerManager.class);
+//        final MessageBus bus = myProject.getComponent(MessageBus.class);
+        final MessageBus bus = myProject.getMessageBus();
+        ((DebuggerManagerEx) debugManager).addDebuggerManagerListener(
+            new DebuggerManagerAdapter() {
+                private MessageBusConnection myConn = null;
+                private int mySessionCount = 0;
+
+                @Override
+                public void sessionAttached(DebuggerSession session) {
+                    if(mySessionCount++ == 0) {
+                        myConn = bus.connect();
+                        myConn.subscribe(CompilerTopics.COMPILATION_STATUS, new MyCompilationStatusListener());
+                    }
+                }
+
+                @Override
+                public void sessionDetached(DebuggerSession session) {
+                    mySessionCount = Math.max(0, mySessionCount - 1);
+                    if(mySessionCount == 0) {
+                        final MessageBusConnection conn = myConn;
+                        if(conn != null) {
+                            Disposer.dispose(conn);
+                            myConn = null;
+                        }
                     }
                 }
             }
-            @Override
-            public void fileCreated(@NotNull VirtualFileEvent event) {
-                LOGGER.debug("VFS File Created Event: " + event.getFileName());
-            }
-            @Override
-            public void fileDeleted(@NotNull VirtualFileEvent event) {
-                LOGGER.debug("VFS File Deleted Event: " + event.getFileName());
-            }
-            @Override
-            public void fileMoved(@NotNull VirtualFileMoveEvent event) {
-                LOGGER.debug("VFS File Moved Event: " + event.getFileName());
-            }
-            @Override
-            public void fileCopied(@NotNull VirtualFileCopyEvent event) {
-                LOGGER.debug("VFS File Copied Event: " + event.getFileName());
-            }
-        }, project);
+        );
     }
 
     public void dispose() {
@@ -680,6 +749,15 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
+            Map<String,List<String>> generated = new HashMap<String, List<String>>();
+            List<String> classes = new ArrayList<String>();
+            classes.add("com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/HelloServiceImpl.class");
+            generated.put(
+                "/Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/hotswap.issue/eclips.aem.tooling.example/core/target/classes",
+                classes
+            );
+            hotSwapClass(generated);
+
 //            runSelection(e.getDataContext());
             // Create a Connection
             // Create a Virtual Machine
@@ -1066,5 +1144,279 @@ public class SlingServerExplorer
 
             return VfsUtil.toVirtualFileArray(virtualFileList);
         }
+    }
+
+    private class MyCompilationStatusListener implements CompilationStatusListener {
+
+        private final AtomicReference<Map<String, List<String>>>
+            myGeneratedPaths = new AtomicReference<Map<String, List<String>>>(new HashMap<String, List<String>>());
+        private final THashSet<File> myOutputRoots;
+
+        private MyCompilationStatusListener() {
+            myOutputRoots = new THashSet<File>(FileUtil.FILE_HASHING_STRATEGY);
+            for (final String path : CompilerPathsEx.getOutputPaths(ModuleManager.getInstance(myProject).getModules())) {
+                myOutputRoots.add(new File(path));
+            }
+        }
+
+        public void fileGenerated(String outputRoot, String relativePath) {
+            if (StringUtil.endsWith(relativePath, ".class") && JpsPathUtil.isUnder(myOutputRoots, new File(outputRoot))) {
+                // collect only classes
+                final Map<String, List<String>> map = myGeneratedPaths.get();
+                List<String> paths = map.get(outputRoot);
+                if (paths == null) {
+                    paths = new ArrayList<String>();
+                    map.put(outputRoot, paths);
+                }
+                paths.add(relativePath);
+            }
+        }
+
+        public void compilationFinished(boolean aborted, int errors, int warnings, CompileContext compileContext) {
+            final Map<String, List<String>> generated = myGeneratedPaths.getAndSet(new HashMap<String, List<String>>());
+            if (myProject.isDisposed()) {
+                return;
+            }
+
+//            if (errors == 0 && !aborted && myPerformHotswapAfterThisCompilation) {
+//                for (HotSwapVetoableListener listener : myListeners) {
+//                    if (!listener.shouldHotSwap(compileContext)) {
+//                        return;
+//                    }
+//                }
+
+            hotSwapClass(generated);
+//            }
+//            myPerformHotswapAfterThisCompilation = true;
+        }
+    }
+
+    private void hotSwapClass(Map<String, List<String>> generated) {
+//        final List<DebuggerSession> sessions = new ArrayList<DebuggerSession>();
+//        Collection<DebuggerSession> debuggerSessions = DebuggerManagerEx.getInstanceEx(myProject).getSessions();
+//        for (final DebuggerSession debuggerSession : debuggerSessions) {
+//            if (debuggerSession.isAttached() && debuggerSession.getProcess().canRedefineClasses()) {
+//                sessions.add(debuggerSession);
+//            }
+//        }
+//        if (!sessions.isEmpty()) {
+//            Map<DebuggerSession, Map<String, byte[]>> modifiedClasses = findModifiedClasses(sessions, generated);
+            Map<Object, Map<String, byte[]>> modifiedClasses = findModifiedClasses2(generated);
+            // Here he go, prepare and call Eclipse's JDI/JDT Hot Swap
+            VirtualMachineManagerImpl virtualMachineManager = new VirtualMachineManagerImpl();
+//                    Connection connection = sessions.get(0);
+            SocketTransportImpl transport = new SocketTransportImpl();
+            Connection connection = null;
+            try {
+//                RemoteConnection remoteConnection = sessions.get(0).getProcess().getConnection();
+//                String hostname = remoteConnection.getHostName();
+//                String port = remoteConnection.getAddress();
+//                LOGGER.debug("Debugger Host Name: '{}', Port: '{}'", hostname, port);
+                connection = transport.attach(
+                    "localhost",
+                    30306,
+                    50000,
+                    0
+                );
+//                        connection = transport.attach(
+//                            hostname,
+//                            Integer.parseInt(port),
+//                            0,
+//                            0
+//                        );
+            } catch (IOException e) {
+                LOGGER.warn("Could not open socket connection", e);
+            } catch (IllegalArgumentException e) {
+                LOGGER.warn("Could not open socket connection due to arguments", e);
+            }
+            try {
+                if(connection != null) {
+                    VirtualMachine vm = virtualMachineManager.createVirtualMachine(connection);
+                    Map<ReferenceType, byte[]> classes = new HashMap<ReferenceType, byte[]>();
+                    for(Map<String, byte[]> classMap: modifiedClasses.values()) {
+                        for(String className: classMap.keySet()) {
+                            List<ReferenceType> referenceTypeList = vm.classesByName(className);
+                            if(!referenceTypeList.isEmpty()) {
+                                classes.put(referenceTypeList.get(0), classMap.get(className));
+                            }
+                        }
+                    }
+                    vm.redefineClasses(classes);
+                }
+            } catch(IOException e) {
+                LOGGER.warn("Failed to Create Virtual Machine", e);
+            }
+//                    hotSwapSessions(sessions, generated);
+//        }
+    }
+
+
+//    private Connector findConnector(String connectorName) throws ExecutionException {
+//        VirtualMachineManager virtualMachineManager;
+//        try {
+//            virtualMachineManager = Bootstrap.virtualMachineManager();
+//        }
+//        catch (Error e) {
+//            final String error = e.getClass().getName() + " : " + e.getLocalizedMessage();
+//            throw new ExecutionException(DebuggerBundle.message("debugger.jdi.bootstrap.error", error));
+//        }
+//        List connectors;
+//        if (SOCKET_ATTACHING_CONNECTOR_NAME.equals(connectorName) || SHMEM_ATTACHING_CONNECTOR_NAME.equals(connectorName)) {
+//            connectors = virtualMachineManager.attachingConnectors();
+//        }
+//        else if (SOCKET_LISTENING_CONNECTOR_NAME.equals(connectorName) || SHMEM_LISTENING_CONNECTOR_NAME.equals(connectorName)) {
+//            connectors = virtualMachineManager.listeningConnectors();
+//        }
+//        else {
+//            return null;
+//        }
+//        for (Object connector1 : connectors) {
+//            Connector connector = (Connector)connector1;
+//            if (connectorName.equals(connector.name())) {
+//                return connector;
+//            }
+//        }
+//        return null;
+//    }
+
+    private static final String CLASS_EXTENSION = ".class";
+
+    private final Map<DebuggerSession, Long> myTimeStamps = new com.intellij.util.containers.HashMap<DebuggerSession, Long>();
+
+    private long getTimeStamp(DebuggerSession session) {
+        Long tStamp = myTimeStamps.get(session);
+        return tStamp != null ? tStamp.longValue() : 0;
+    }
+
+    public Map<Object, Map<String, byte[]>> findModifiedClasses2(Map<String, List<String>> generatedPaths) {
+        final Map<Object, Map<String, byte[]>> result = new java.util.HashMap<Object, Map<String, byte[]>>();
+        for (Map.Entry<String, List<String>> entry : generatedPaths.entrySet()) {
+            final File root = new File(entry.getKey());
+            for (String relativePath : entry.getValue()) {
+                if (SystemInfo.isFileSystemCaseSensitive? StringUtil.endsWith(relativePath, CLASS_EXTENSION) : StringUtil.endsWithIgnoreCase(relativePath, CLASS_EXTENSION)) {
+                    final String qualifiedName = relativePath.substring(0, relativePath.length() - CLASS_EXTENSION.length()).replace('/', '.');
+                    final File file = new File(root, relativePath);
+                    final byte[] content = getResourceContentsAsByteArray(file);
+                    final long fileStamp = file.lastModified();
+                    Map<String, byte[]> container = new java.util.HashMap<String, byte[]>();
+                    container.put(qualifiedName, content);
+                    result.put(new Object(), container);
+                }
+            }
+        }
+        return result;
+    }
+
+    public Map<DebuggerSession, Map<String, byte[]>> findModifiedClasses(List<DebuggerSession> sessions, Map<String, List<String>> generatedPaths) {
+        final Map<DebuggerSession, Map<String, byte[]>> result = new java.util.HashMap<DebuggerSession, Map<String, byte[]>>();
+        List<Pair<DebuggerSession, Long>> sessionWithStamps = new ArrayList<Pair<DebuggerSession, Long>>();
+        for (DebuggerSession session : sessions) {
+            sessionWithStamps.add(new Pair<DebuggerSession, Long>(session, getTimeStamp(session)));
+        }
+        for (Map.Entry<String, List<String>> entry : generatedPaths.entrySet()) {
+            final File root = new File(entry.getKey());
+            for (String relativePath : entry.getValue()) {
+                if (SystemInfo.isFileSystemCaseSensitive? StringUtil.endsWith(relativePath, CLASS_EXTENSION) : StringUtil.endsWithIgnoreCase(relativePath, CLASS_EXTENSION)) {
+                    final String qualifiedName = relativePath.substring(0, relativePath.length() - CLASS_EXTENSION.length()).replace('/', '.');
+                    final File file = new File(root, relativePath);
+                    final byte[] content = getResourceContentsAsByteArray(file);
+                    final long fileStamp = file.lastModified();
+                    for (Pair<DebuggerSession, Long> pair : sessionWithStamps) {
+                        final DebuggerSession session = pair.first;
+                        if (fileStamp > pair.second) {
+                            Map<String, byte[]> container = result.get(session);
+                            if (container == null) {
+                                container = new java.util.HashMap<String, byte[]>();
+                                result.put(session, container);
+                            }
+                            container.put(qualifiedName, content);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static byte[] getResourceContentsAsByteArray(File file) {
+        InputStream stream = null;
+        try {
+            stream = new FileInputStream(file);
+            return getInputStreamAsByteArray(stream, -1);
+        } catch(FileNotFoundException e) {
+            throw new RuntimeException("Failed to open file", e);
+        } catch(IOException e) {
+            throw new RuntimeException("Failed to read file", e);
+        } finally {
+            try {
+                if(stream != null) {
+                    stream.close();
+                }
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+    }
+
+    private static final int DEFAULT_READING_SIZE = 8192;
+
+    /**
+     * Returns the given input stream's contents as a byte array.
+     * If a length is specified (i.e. if length != -1), only length bytes
+     * are returned. Otherwise all bytes in the stream are returned.
+     * Note this doesn't close the stream.
+     * @throws IOException if a problem occured reading the stream.
+     */
+    public static byte[] getInputStreamAsByteArray(InputStream stream, int length)
+        throws IOException {
+        byte[] contents;
+        if (length == -1) {
+            contents = new byte[0];
+            int contentsLength = 0;
+            int amountRead = -1;
+            do {
+                int amountRequested = Math.max(stream.available(), DEFAULT_READING_SIZE);  // read at least 8K
+
+                // resize contents if needed
+                if (contentsLength + amountRequested > contents.length) {
+                    System.arraycopy(
+                        contents,
+                        0,
+                        contents = new byte[contentsLength + amountRequested],
+                        0,
+                        contentsLength);
+                }
+
+                // read as many bytes as possible
+                amountRead = stream.read(contents, contentsLength, amountRequested);
+
+                if (amountRead > 0) {
+                    // remember length of contents
+                    contentsLength += amountRead;
+                }
+            } while (amountRead != -1);
+
+            // resize contents if necessary
+            if (contentsLength < contents.length) {
+                System.arraycopy(
+                    contents,
+                    0,
+                    contents = new byte[contentsLength],
+                    0,
+                    contentsLength);
+            }
+        } else {
+            contents = new byte[length];
+            int len = 0;
+            int readSize = 0;
+            while ((readSize != -1) && (len != length)) {
+                // See PR 1FMS89U
+                // We record first the read size. In this case len is the actual read size.
+                len += readSize;
+                readSize = stream.read(contents, len, length - len);
+            }
+        }
+
+        return contents;
     }
 }
