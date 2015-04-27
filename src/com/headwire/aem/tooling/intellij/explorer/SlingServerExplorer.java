@@ -293,7 +293,7 @@ public class SlingServerExplorer
                 public void sessionAttached(DebuggerSession session) {
                     if(mySessionCount++ == 0) {
                         myConn = bus.connect();
-                        myConn.subscribe(CompilerTopics.COMPILATION_STATUS, new MyCompilationStatusListener());
+//                        myConn.subscribe(CompilerTopics.COMPILATION_STATUS, new MyCompilationStatusListener());
                     }
                 }
 
@@ -749,15 +749,6 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            Map<String,List<String>> generated = new HashMap<String, List<String>>();
-            List<String> classes = new ArrayList<String>();
-            classes.add("com/headwire/tooling/eclipse/eclipse_tooling_test/core/impl/HelloServiceImpl.class");
-            generated.put(
-                "/Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/hotswap.issue/eclips.aem.tooling.example/core/target/classes",
-                classes
-            );
-            hotSwapClass(generated);
-
 //            runSelection(e.getDataContext());
             // Create a Connection
             // Create a Virtual Machine
@@ -1145,111 +1136,6 @@ public class SlingServerExplorer
             return VfsUtil.toVirtualFileArray(virtualFileList);
         }
     }
-
-    private class MyCompilationStatusListener implements CompilationStatusListener {
-
-        private final AtomicReference<Map<String, List<String>>>
-            myGeneratedPaths = new AtomicReference<Map<String, List<String>>>(new HashMap<String, List<String>>());
-        private final THashSet<File> myOutputRoots;
-
-        private MyCompilationStatusListener() {
-            myOutputRoots = new THashSet<File>(FileUtil.FILE_HASHING_STRATEGY);
-            for (final String path : CompilerPathsEx.getOutputPaths(ModuleManager.getInstance(myProject).getModules())) {
-                myOutputRoots.add(new File(path));
-            }
-        }
-
-        public void fileGenerated(String outputRoot, String relativePath) {
-            if (StringUtil.endsWith(relativePath, ".class") && JpsPathUtil.isUnder(myOutputRoots, new File(outputRoot))) {
-                // collect only classes
-                final Map<String, List<String>> map = myGeneratedPaths.get();
-                List<String> paths = map.get(outputRoot);
-                if (paths == null) {
-                    paths = new ArrayList<String>();
-                    map.put(outputRoot, paths);
-                }
-                paths.add(relativePath);
-            }
-        }
-
-        public void compilationFinished(boolean aborted, int errors, int warnings, CompileContext compileContext) {
-            final Map<String, List<String>> generated = myGeneratedPaths.getAndSet(new HashMap<String, List<String>>());
-            if (myProject.isDisposed()) {
-                return;
-            }
-
-//            if (errors == 0 && !aborted && myPerformHotswapAfterThisCompilation) {
-//                for (HotSwapVetoableListener listener : myListeners) {
-//                    if (!listener.shouldHotSwap(compileContext)) {
-//                        return;
-//                    }
-//                }
-
-            hotSwapClass(generated);
-//            }
-//            myPerformHotswapAfterThisCompilation = true;
-        }
-    }
-
-    private void hotSwapClass(Map<String, List<String>> generated) {
-//        final List<DebuggerSession> sessions = new ArrayList<DebuggerSession>();
-//        Collection<DebuggerSession> debuggerSessions = DebuggerManagerEx.getInstanceEx(myProject).getSessions();
-//        for (final DebuggerSession debuggerSession : debuggerSessions) {
-//            if (debuggerSession.isAttached() && debuggerSession.getProcess().canRedefineClasses()) {
-//                sessions.add(debuggerSession);
-//            }
-//        }
-//        if (!sessions.isEmpty()) {
-//            Map<DebuggerSession, Map<String, byte[]>> modifiedClasses = findModifiedClasses(sessions, generated);
-            Map<Object, Map<String, byte[]>> modifiedClasses = findModifiedClasses2(generated);
-            // Here he go, prepare and call Eclipse's JDI/JDT Hot Swap
-            VirtualMachineManagerImpl virtualMachineManager = new VirtualMachineManagerImpl();
-//                    Connection connection = sessions.get(0);
-            SocketTransportImpl transport = new SocketTransportImpl();
-            Connection connection = null;
-            try {
-//                RemoteConnection remoteConnection = sessions.get(0).getProcess().getConnection();
-//                String hostname = remoteConnection.getHostName();
-//                String port = remoteConnection.getAddress();
-//                LOGGER.debug("Debugger Host Name: '{}', Port: '{}'", hostname, port);
-                connection = transport.attach(
-                    "localhost",
-                    30306,
-                    50000,
-                    0
-                );
-//                        connection = transport.attach(
-//                            hostname,
-//                            Integer.parseInt(port),
-//                            0,
-//                            0
-//                        );
-            } catch (IOException e) {
-                LOGGER.warn("Could not open socket connection", e);
-            } catch (IllegalArgumentException e) {
-                LOGGER.warn("Could not open socket connection due to arguments", e);
-            }
-            try {
-                if(connection != null) {
-                    VirtualMachine vm = virtualMachineManager.createVirtualMachine(connection);
-                    Map<ReferenceType, byte[]> classes = new HashMap<ReferenceType, byte[]>();
-                    for(Map<String, byte[]> classMap: modifiedClasses.values()) {
-                        for(String className: classMap.keySet()) {
-                            List<ReferenceType> referenceTypeList = vm.classesByName(className);
-                            if(!referenceTypeList.isEmpty()) {
-                                classes.put(referenceTypeList.get(0), classMap.get(className));
-                            }
-                        }
-                    }
-                    vm.redefineClasses(classes);
-                }
-            } catch(IOException e) {
-                LOGGER.warn("Failed to Create Virtual Machine", e);
-            }
-//                    hotSwapSessions(sessions, generated);
-//        }
-    }
-
 
 //    private Connector findConnector(String connectorName) throws ExecutionException {
 //        VirtualMachineManager virtualMachineManager;
