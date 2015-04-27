@@ -8,16 +8,6 @@
     <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="CA96FC27612F7E33AFC88BDE0DC27209" />
-  <component name="MavenProjectsManager">
-    <option name="originalFiles">
-      <list>
-        <option value="$PROJECT_DIR$/aem-tooling/api/pom.xml" />
-        <option value="$PROJECT_DIR$/aem-tooling/artifacts/pom.xml" />
-        <option value="$PROJECT_DIR$/aem-tooling/impl-resource/pom.xml" />
-        <option value="$PROJECT_DIR$/aem-tooling/impl-vlt/pom.xml" />
-      </list>
-    </option>
-  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
@@ -28,7 +18,7 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IC-139.1117.1" project-jdk-type="IDEA JDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

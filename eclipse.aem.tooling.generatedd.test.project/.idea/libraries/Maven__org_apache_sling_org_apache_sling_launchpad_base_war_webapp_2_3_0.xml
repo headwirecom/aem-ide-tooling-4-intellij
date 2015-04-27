@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.sling:org.apache.sling.launchpad.base:war:webapp:2.3.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/org.apache.sling.launchpad.base/2.3.0/org.apache.sling.launchpad.base-2.3.0-webapp.war!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/org.apache.sling.launchpad.base/2.3.0/org.apache.sling.launchpad.base-2.3.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/org.apache.sling.launchpad.base/2.3.0/org.apache.sling.launchpad.base-2.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

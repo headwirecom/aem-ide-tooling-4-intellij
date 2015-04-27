@@ -5,6 +5,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/eclipse.aem.tooling.generatedd.test.project" />
     </content>
     <orderEntry type="jdk" jdkName="IDEA IC-139.1117.1" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -14,9 +15,6 @@
     <orderEntry type="library" name="org.apache.jackrabbit.vault:vault-davex:3.0.0" level="project" />
     <orderEntry type="library" name="org.slf4j:slf4j-simple:1.7.5" level="project" />
     <orderEntry type="library" name="eclipse:eclipse-runtime:2.1.0" level="project" />
-    <orderEntry type="module" module-name="org.apache.sling.ide.api" />
-    <orderEntry type="module" module-name="org.apache.sling.ide.artifacts" />
-    <orderEntry type="module" module-name="org.apache.sling.ide.impl-resource" />
-    <orderEntry type="module" module-name="org.apache.sling.ide.impl-vlt" />
+    <orderEntry type="library" name="com.ibm.icu:icu4j:55.1" level="project" />
   </component>
 </module>
