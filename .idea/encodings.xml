@@ -2,12 +2,15 @@
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$/aem-tooling/api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aem-tooling/api-test" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/aem-tooling/artifacts" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/aem-tooling/impl-resource" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aem-tooling/impl-resource-test" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/aem-tooling/impl-vlt" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeStructure.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/ServerNodeDescriptor.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/headwire/aem/tooling/intellij/explorer/SlingServerNodeDescriptor.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aem-tooling/impl-vlt-test" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeStructure.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerNodeDescriptor.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerNodeDescriptor.java" charset="UTF-8" />
   </component>
 </project>

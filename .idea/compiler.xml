@@ -23,13 +23,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="org.apache.sling.ide.impl-vlt-test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="org.apache.sling.ide.api" target="1.6" />
+      <module name="org.apache.sling.ide.api-test" target="1.6" />
       <module name="org.apache.sling.ide.artifacts" target="1.6" />
       <module name="org.apache.sling.ide.impl-resource" target="1.6" />
+      <module name="org.apache.sling.ide.impl-resource-test" target="1.6" />
       <module name="org.apache.sling.ide.impl-vlt" target="1.6" />
+      <module name="org.apache.sling.ide.impl-vlt-test" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

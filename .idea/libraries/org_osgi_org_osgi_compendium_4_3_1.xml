@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="org.osgi:org.osgi.compendium:4.3.1" type="repository">
+    <properties maven-id="org.osgi:org.osgi.compendium:4.3.1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
