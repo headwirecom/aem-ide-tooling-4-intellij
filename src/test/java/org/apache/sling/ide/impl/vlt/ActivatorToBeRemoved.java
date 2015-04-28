@@ -33,13 +33,13 @@ import org.osgi.util.tracker.ServiceTracker;
  * entry point to well-known services.
  * </p>
  */
-public class Activator extends Plugin {
+public class ActivatorToBeRemoved extends Plugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.apache.sling.ide.impl-vlt"; //$NON-NLS-1$
 
     // The shared instance
-    private static Activator plugin;
+    private static ActivatorToBeRemoved plugin;
 
     private ServiceTracker<?, ?> tracer;
 
@@ -76,7 +76,7 @@ public class Activator extends Plugin {
      *
      * @return the shared instance
      */
-    public static Activator getDefault() {
+    public static ActivatorToBeRemoved getDefault() {
         return plugin;
     }
 

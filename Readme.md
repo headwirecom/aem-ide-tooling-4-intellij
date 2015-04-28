@@ -19,6 +19,18 @@ The Sling IDE plugin depends on this codebase which must be downloaded and insta
 
     svn checkout https://svn.apache.org/repos/asf/sling/trunk/tooling/support
 
+#### IntelliJ Debug Setup
+
+Like in the Eclipse Debug Setup we could use the Remote Debugging feature of Java but because this is IntelliJ to IntelliJ
+debugging we can use the built-in **Plugin** setup. Do the following:
+
+1. Open Menu -> Run -> Edit Configurations
+2. Add a new **Plugin** setup
+3. Give it a name like **AEM Tooling Plugin** and save it
+4. Open Menu -> Run -> **Debug 'AEM Tooling Plugin'**
+5. Wait for IntelliJ to come up (IntelliJ starts an IntelliJ CE in another process)
+6. Load or select the AEM Eclipse Tooling Test Project
+7. Debug the plugin
 
 #### Eclipse Debug Setup
 
