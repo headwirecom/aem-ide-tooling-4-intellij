@@ -1,22 +1,15 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
-import com.intellij.debugger.DebuggerBundle;
 import com.intellij.debugger.DebuggerManager;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.ui.ServerConfigurationDialog;
-import com.headwire.aem.tooling.intellij.util.ServerUtil;
 import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.debugger.impl.DebuggerManagerAdapter;
 import com.intellij.debugger.impl.DebuggerSession;
-import com.intellij.debugger.impl.HotSwapFile;
-import com.intellij.debugger.impl.HotSwapManager;
-import com.intellij.debugger.ui.HotSwapVetoableListener;
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
-import com.intellij.execution.configurations.RemoteConnection;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.TreeExpander;
@@ -39,34 +32,18 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ToggleAction;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.compiler.CompilationStatusListener;
-import com.intellij.openapi.compiler.CompileContext;
-import com.intellij.openapi.compiler.CompilerTopics;
-import com.intellij.openapi.compiler.ex.CompilerPathsEx;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog;
-import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileAdapter;
-import com.intellij.openapi.vfs.VirtualFileCopyEvent;
-import com.intellij.openapi.vfs.VirtualFileEvent;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.vfs.VirtualFileMoveEvent;
-import com.intellij.openapi.vfs.VirtualFilePropertyEvent;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.DoubleClickListener;
 import com.intellij.ui.PopupHandler;
@@ -83,27 +60,8 @@ import com.intellij.util.ui.tree.TreeUtil;
 import com.intellij.util.xml.DomEventListener;
 import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.events.DomEvent;
-import com.sun.jdi.Bootstrap;
-import com.sun.jdi.ReferenceType;
-import com.sun.jdi.VirtualMachine;
-import com.sun.jdi.VirtualMachineManager;
-import com.sun.jdi.connect.Connector;
-import com.sun.jdi.connect.IllegalConnectorArgumentsException;
-import com.sun.jdi.connect.spi.Connection;
-import gnu.trove.THashSet;
-//import org.apache.sling.ide.impl.vlt.AddOrUpdateNodeCommand;
-//import org.apache.sling.ide.impl.vlt.VltRepositoryFactory;
-//import org.apache.sling.ide.transport.Command;
-//import org.apache.sling.ide.transport.FileInfo;
-//import org.apache.sling.ide.transport.Repository;
-//import org.apache.sling.ide.transport.RepositoryException;
-//import org.apache.sling.ide.transport.RepositoryFactory;
-//import org.apache.sling.ide.transport.RepositoryInfo;
-//import org.apache.sling.ide.transport.ResourceProxy;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jps.util.JpsPathUtil;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -114,14 +72,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.ArrayList;
 
 /**
  * Created by schaefa on 3/19/15.
@@ -136,11 +87,8 @@ public class SlingServerExplorer
     private Project myProject;
     private ServerExplorerTreeBuilder myBuilder;
     private Tree myTree;
-    private KeymapListener myKeymapListener;
-//    private final AntBuildFilePropertiesAction myAntBuildFilePropertiesAction;
+    private KeyMapListener myKeyMapListener;
     private ServerConfigurationManager myConfig;
-
-//    private Repository repository;
 
     private final TreeExpander myTreeExpander = new TreeExpander() {
         public void expandAll() {
@@ -208,7 +156,7 @@ public class SlingServerExplorer
         setToolbar(createToolbarPanel());
         setContent(ScrollPaneFactory.createScrollPane(myTree));
         ToolTipManager.sharedInstance().registerComponent(myTree);
-        myKeymapListener = new KeymapListener();
+        myKeyMapListener = new KeyMapListener();
 
         DomManager.getDomManager(project).addDomEventListener(new DomEventListener() {
             public void eventOccured(DomEvent event) {
@@ -313,9 +261,9 @@ public class SlingServerExplorer
     }
 
     public void dispose() {
-        final KeymapListener listener = myKeymapListener;
+        final KeyMapListener listener = myKeyMapListener;
         if (listener != null) {
-            myKeymapListener = null;
+            myKeyMapListener = null;
             listener.stopListen();
         }
 
@@ -342,6 +290,7 @@ public class SlingServerExplorer
         final DefaultActionGroup group = new DefaultActionGroup();
         group.add(new AddAction());
         group.add(new RemoveAction());
+        group.add(new EditAction());
         group.add(new RunAction());
 //        group.add(new ShowAllTargetsAction());
 //        AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
@@ -359,14 +308,14 @@ public class SlingServerExplorer
         return buttonsPanel;
     }
 
-    private void addServerConfiguration() {
-
-//        final FileChooserDescriptor descriptor = createXmlDescriptor();
-////        descriptor.setTitle(AntBundle.message("select.ant.build.file.dialog.title"));
-////        descriptor.setDescription(AntBundle.message("select.ant.build.file.dialog.description"));
-//        final VirtualFile[] files = FileChooser.chooseFiles(descriptor, myProject, null);
-//        addBuildFile(files);
-    }
+//    private void addServerConfiguration() {
+//
+////        final FileChooserDescriptor descriptor = createXmlDescriptor();
+//////        descriptor.setTitle(AntBundle.message("select.ant.build.file.dialog.title"));
+//////        descriptor.setDescription(AntBundle.message("select.ant.build.file.dialog.description"));
+////        final VirtualFile[] files = FileChooser.chooseFiles(descriptor, myProject, null);
+////        addBuildFile(files);
+//    }
 
     private void addBuildFile(final VirtualFile[] files) {
         if (files.length == 0) {
@@ -507,12 +456,46 @@ public class SlingServerExplorer
 //        return targets.toArray(new AntBuildTargetBase[targets.size()]);
 //    }
 
-    public boolean isBuildFileSelected() {
-//        if( myProject == null) return false;
-//        final AntBuildFileBase file = getCurrentBuildFile();
-//        return file != null && file.exists();
-        return false;
+    public boolean isConfigurationSelected() {
+        boolean ret = false;
+        if(myProject != null) {
+            ret = getCurrentConfiguration() != null;
+        }
+        return ret;
     }
+
+    @Nullable
+    private ServerConfiguration getCurrentConfiguration() {
+        final SlingServerNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
+        return descriptor == null ? null : descriptor.getTarget();
+    }
+
+    @Nullable
+    private SlingServerNodeDescriptor getCurrentConfigurationDescriptor() {
+        SlingServerNodeDescriptor ret = null;
+        if(myTree != null) {
+            final TreePath path = myTree.getSelectionPath();
+            if(path != null) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
+                while (node != null) {
+                    final Object userObject = node.getUserObject();
+                    if(userObject instanceof SlingServerNodeDescriptor) {
+                        ret = (SlingServerNodeDescriptor) userObject;
+                        break;
+                    }
+                    node = (DefaultMutableTreeNode) node.getParent();
+                }
+            }
+        }
+        return ret;
+    }
+
+//    public boolean isBuildFileSelected() {
+////        if( myProject == null) return false;
+////        final AntBuildFileBase file = getCurrentBuildFile();
+////        return file != null && file.exists();
+//        return false;
+//    }
 
 //    @Nullable
 //    private AntBuildFileBase getCurrentBuildFile() {
@@ -737,7 +720,34 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-//            event.getPresentation().setEnabled(getCurrentBuildFile() != null);
+            event.getPresentation().setEnabled(isConfigurationSelected());
+        }
+    }
+
+    private final class EditAction extends AnAction {
+        public EditAction() {
+//            super(AntBundle.message("remove.ant.file.action.name"), AntBundle.message("remove.ant.file.action.description"),
+//                    IconUtil.getRemoveIcon());
+            super("Edit Action", "Edit the Server Connection Configuration", AllIcons.Actions.EditSource);
+        }
+
+        public void actionPerformed(AnActionEvent e) {
+            ServerConfiguration serverConfiguration = getCurrentConfiguration();
+            ServerConfigurationDialog dialog = new ServerConfigurationDialog(e.getProject(), serverConfiguration);
+
+            if (!dialog.showAndGet()) {
+//                historyService.setCanceledCommand(dialog.getGoals());
+                return;
+            }
+            dialog.getConfiguration();
+            //AS TODO: Already added to the Tree so only repaint is needed
+//            myConfig.getServerConfigurationList().add(serverConfiguration);
+            myTree.repaint();
+//            addServerConfiguration();
+        }
+
+        public void update(AnActionEvent event) {
+            event.getPresentation().setEnabled(isConfigurationSelected());
         }
     }
 
@@ -1069,28 +1079,28 @@ public class SlingServerExplorer
         }
     }
 
-    private class KeymapListener implements KeymapManagerListener, Keymap.Listener {
-        private Keymap myCurrentKeymap = null;
+    private class KeyMapListener implements KeymapManagerListener, Keymap.Listener {
+        private Keymap myCurrentKeyMap = null;
 
-        public KeymapListener() {
-            final KeymapManagerEx keymapManager = KeymapManagerEx.getInstanceEx();
-            final Keymap activeKeymap = keymapManager.getActiveKeymap();
+        public KeyMapListener() {
+            final KeymapManagerEx keyMapManager = KeymapManagerEx.getInstanceEx();
+            final Keymap activeKeymap = keyMapManager.getActiveKeymap();
             listenTo(activeKeymap);
-            keymapManager.addKeymapManagerListener(this);
+            keyMapManager.addKeymapManagerListener(this);
         }
 
-        public void activeKeymapChanged(Keymap keymap) {
-            listenTo(keymap);
+        public void activeKeymapChanged(Keymap keyMap) {
+            listenTo(keyMap);
             updateTree();
         }
 
-        private void listenTo(Keymap keymap) {
-            if (myCurrentKeymap != null) {
-                myCurrentKeymap.removeShortcutChangeListener(this);
+        private void listenTo(Keymap keyMap) {
+            if (myCurrentKeyMap != null) {
+                myCurrentKeyMap.removeShortcutChangeListener(this);
             }
-            myCurrentKeymap = keymap;
-            if (myCurrentKeymap != null) {
-                myCurrentKeymap.addShortcutChangeListener(this);
+            myCurrentKeyMap = keyMap;
+            if (myCurrentKeyMap != null) {
+                myCurrentKeyMap.addShortcutChangeListener(this);
             }
         }
 
@@ -1135,174 +1145,5 @@ public class SlingServerExplorer
 
             return VfsUtil.toVirtualFileArray(virtualFileList);
         }
-    }
-
-//    private Connector findConnector(String connectorName) throws ExecutionException {
-//        VirtualMachineManager virtualMachineManager;
-//        try {
-//            virtualMachineManager = Bootstrap.virtualMachineManager();
-//        }
-//        catch (Error e) {
-//            final String error = e.getClass().getName() + " : " + e.getLocalizedMessage();
-//            throw new ExecutionException(DebuggerBundle.message("debugger.jdi.bootstrap.error", error));
-//        }
-//        List connectors;
-//        if (SOCKET_ATTACHING_CONNECTOR_NAME.equals(connectorName) || SHMEM_ATTACHING_CONNECTOR_NAME.equals(connectorName)) {
-//            connectors = virtualMachineManager.attachingConnectors();
-//        }
-//        else if (SOCKET_LISTENING_CONNECTOR_NAME.equals(connectorName) || SHMEM_LISTENING_CONNECTOR_NAME.equals(connectorName)) {
-//            connectors = virtualMachineManager.listeningConnectors();
-//        }
-//        else {
-//            return null;
-//        }
-//        for (Object connector1 : connectors) {
-//            Connector connector = (Connector)connector1;
-//            if (connectorName.equals(connector.name())) {
-//                return connector;
-//            }
-//        }
-//        return null;
-//    }
-
-    private static final String CLASS_EXTENSION = ".class";
-
-    private final Map<DebuggerSession, Long> myTimeStamps = new com.intellij.util.containers.HashMap<DebuggerSession, Long>();
-
-    private long getTimeStamp(DebuggerSession session) {
-        Long tStamp = myTimeStamps.get(session);
-        return tStamp != null ? tStamp.longValue() : 0;
-    }
-
-    public Map<Object, Map<String, byte[]>> findModifiedClasses2(Map<String, List<String>> generatedPaths) {
-        final Map<Object, Map<String, byte[]>> result = new java.util.HashMap<Object, Map<String, byte[]>>();
-        for (Map.Entry<String, List<String>> entry : generatedPaths.entrySet()) {
-            final File root = new File(entry.getKey());
-            for (String relativePath : entry.getValue()) {
-                if (SystemInfo.isFileSystemCaseSensitive? StringUtil.endsWith(relativePath, CLASS_EXTENSION) : StringUtil.endsWithIgnoreCase(relativePath, CLASS_EXTENSION)) {
-                    final String qualifiedName = relativePath.substring(0, relativePath.length() - CLASS_EXTENSION.length()).replace('/', '.');
-                    final File file = new File(root, relativePath);
-                    final byte[] content = getResourceContentsAsByteArray(file);
-                    final long fileStamp = file.lastModified();
-                    Map<String, byte[]> container = new java.util.HashMap<String, byte[]>();
-                    container.put(qualifiedName, content);
-                    result.put(new Object(), container);
-                }
-            }
-        }
-        return result;
-    }
-
-    public Map<DebuggerSession, Map<String, byte[]>> findModifiedClasses(List<DebuggerSession> sessions, Map<String, List<String>> generatedPaths) {
-        final Map<DebuggerSession, Map<String, byte[]>> result = new java.util.HashMap<DebuggerSession, Map<String, byte[]>>();
-        List<Pair<DebuggerSession, Long>> sessionWithStamps = new ArrayList<Pair<DebuggerSession, Long>>();
-        for (DebuggerSession session : sessions) {
-            sessionWithStamps.add(new Pair<DebuggerSession, Long>(session, getTimeStamp(session)));
-        }
-        for (Map.Entry<String, List<String>> entry : generatedPaths.entrySet()) {
-            final File root = new File(entry.getKey());
-            for (String relativePath : entry.getValue()) {
-                if (SystemInfo.isFileSystemCaseSensitive? StringUtil.endsWith(relativePath, CLASS_EXTENSION) : StringUtil.endsWithIgnoreCase(relativePath, CLASS_EXTENSION)) {
-                    final String qualifiedName = relativePath.substring(0, relativePath.length() - CLASS_EXTENSION.length()).replace('/', '.');
-                    final File file = new File(root, relativePath);
-                    final byte[] content = getResourceContentsAsByteArray(file);
-                    final long fileStamp = file.lastModified();
-                    for (Pair<DebuggerSession, Long> pair : sessionWithStamps) {
-                        final DebuggerSession session = pair.first;
-                        if (fileStamp > pair.second) {
-                            Map<String, byte[]> container = result.get(session);
-                            if (container == null) {
-                                container = new java.util.HashMap<String, byte[]>();
-                                result.put(session, container);
-                            }
-                            container.put(qualifiedName, content);
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    public static byte[] getResourceContentsAsByteArray(File file) {
-        InputStream stream = null;
-        try {
-            stream = new FileInputStream(file);
-            return getInputStreamAsByteArray(stream, -1);
-        } catch(FileNotFoundException e) {
-            throw new RuntimeException("Failed to open file", e);
-        } catch(IOException e) {
-            throw new RuntimeException("Failed to read file", e);
-        } finally {
-            try {
-                if(stream != null) {
-                    stream.close();
-                }
-            } catch (IOException e) {
-                // ignore
-            }
-        }
-    }
-
-    private static final int DEFAULT_READING_SIZE = 8192;
-
-    /**
-     * Returns the given input stream's contents as a byte array.
-     * If a length is specified (i.e. if length != -1), only length bytes
-     * are returned. Otherwise all bytes in the stream are returned.
-     * Note this doesn't close the stream.
-     * @throws IOException if a problem occured reading the stream.
-     */
-    public static byte[] getInputStreamAsByteArray(InputStream stream, int length)
-        throws IOException {
-        byte[] contents;
-        if (length == -1) {
-            contents = new byte[0];
-            int contentsLength = 0;
-            int amountRead = -1;
-            do {
-                int amountRequested = Math.max(stream.available(), DEFAULT_READING_SIZE);  // read at least 8K
-
-                // resize contents if needed
-                if (contentsLength + amountRequested > contents.length) {
-                    System.arraycopy(
-                        contents,
-                        0,
-                        contents = new byte[contentsLength + amountRequested],
-                        0,
-                        contentsLength);
-                }
-
-                // read as many bytes as possible
-                amountRead = stream.read(contents, contentsLength, amountRequested);
-
-                if (amountRead > 0) {
-                    // remember length of contents
-                    contentsLength += amountRead;
-                }
-            } while (amountRead != -1);
-
-            // resize contents if necessary
-            if (contentsLength < contents.length) {
-                System.arraycopy(
-                    contents,
-                    0,
-                    contents = new byte[contentsLength],
-                    0,
-                    contentsLength);
-            }
-        } else {
-            contents = new byte[length];
-            int len = 0;
-            int readSize = 0;
-            while ((readSize != -1) && (len != length)) {
-                // See PR 1FMS89U
-                // We record first the read size. In this case len is the actual read size.
-                len += readSize;
-                readSize = stream.read(contents, len, length - len);
-            }
-        }
-
-        return contents;
     }
 }

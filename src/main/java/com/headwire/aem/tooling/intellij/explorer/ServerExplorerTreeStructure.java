@@ -122,7 +122,7 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
   public Object getParentElement(Object element) {
       if(element instanceof ServerConfiguration) {
           ServerConfiguration serverConfiguration = (ServerConfiguration) element;
-          return serverConfiguration.getServerName() + " at " + serverConfiguration.getHostName();
+          return serverConfiguration.getName() + " at " + serverConfiguration.getHost();
       }
 
 //    if (element instanceof AntBuildTarget) {

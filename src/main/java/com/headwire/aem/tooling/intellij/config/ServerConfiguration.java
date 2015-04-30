@@ -1,10 +1,6 @@
 package com.headwire.aem.tooling.intellij.config;
 
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
-import com.intellij.openapi.components.StorageScheme;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -23,37 +19,60 @@ public class ServerConfiguration
     implements PersistentStateComponent<ServerConfiguration>
 {
 
+    public static final String DEFAULT_DESCRIPTION = "No Description";
+    public static final String DEFAULT_NAME = "Default Configuration";
+    public static final String DEFAULT_HOST = "localhost";
     public static final int DEFAULT_CONNECTION_PORT = 4052;
     public static final int DEFAULT_DEBUG_CONNECTION_PORT = 30303;
     public static final String DEFAULT_USER_NAME = "admin";
     public static final String DEFAULT_CONTEXT_PATH = "/";
     public static final int DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS = 30;
     public static final int DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS = 15;
+    public static final PublishType DEFAULT_PUBLISH_TYPE = PublishType.automaticallyOnChange;
+    public static final InstallationType DEFAULT_INSTALL_TYPE = InstallationType.installViaBundleUpload;
+    public static final ServerStatus DEFAULT_SERVER_STATUS = ServerStatus.notConnected;
 
     protected static final String COMPONENT_NAME = "ServerConfiguration";
 
     public enum PublishType {never, automaticallyOnChange, getAutomaticallyOnBuild};
     public enum InstallationType {installViaBundleUpload, installFromFilesystem};
+    public enum ServerStatus {
+        notConnected("not connected"), connecting, connected, disconnecting;
+
+        private String name;
+
+        ServerStatus() {
+            this.name = this.name();
+        }
+
+        ServerStatus(String name) {
+            this.name = name;
+        }
+
+        public String getName() { return name; }
+    };
 
     private String name = "";
     private String host = "";
     private String description = "";
     private int connectionPort = DEFAULT_CONNECTION_PORT;
-    private int debugConnectionPort = DEFAULT_DEBUG_CONNECTION_PORT;
+    private int connectionDebugPort = DEFAULT_DEBUG_CONNECTION_PORT;
     private String userName = DEFAULT_USER_NAME;
     private char[] password = DEFAULT_USER_NAME.toCharArray();
     private String contextPath = DEFAULT_CONTEXT_PATH;
     private int startConnectionTimeout = DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS;
     private int stopConnectionTimeout = DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS;
-    private PublishType publishType = PublishType.automaticallyOnChange;
-    public InstallationType installationType = InstallationType.installViaBundleUpload;
+    private PublishType publishType = DEFAULT_PUBLISH_TYPE;
+    private InstallationType installationType = DEFAULT_INSTALL_TYPE;
+
+    private ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
 
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = StringUtils.isNotBlank(name) ? name : "";
+        this.name = StringUtils.isNotBlank(name) ? name : DEFAULT_NAME;
     }
 
     public String getHost() {
@@ -61,7 +80,7 @@ public class ServerConfiguration
     }
 
     public void setHost(String host) {
-        this.host = StringUtils.isNotBlank(host) ? host : "";
+        this.host = StringUtils.isNotBlank(host) ? host : DEFAULT_HOST;
     }
 
     public String getDescription() {
@@ -69,7 +88,7 @@ public class ServerConfiguration
     }
 
     public void setDescription(String description) {
-        this.description = StringUtils.isNotBlank(description) ? description : "No Description";
+        this.description = StringUtils.isNotBlank(description) ? description : DEFAULT_DESCRIPTION;
     }
 
     public int getConnectionPort() {
@@ -80,12 +99,12 @@ public class ServerConfiguration
         this.connectionPort = connectionPort > 0 ? connectionPort : DEFAULT_CONNECTION_PORT;
     }
 
-    public int getDebugConnectionPort() {
-        return debugConnectionPort;
+    public int getConnectionDebugPort() {
+        return connectionDebugPort;
     }
 
-    public void setDebugConnectionPort(int debugConnectionPort) {
-        this.debugConnectionPort = debugConnectionPort > 0 ? debugConnectionPort : DEFAULT_DEBUG_CONNECTION_PORT;
+    public void setConnectionDebugPort(int connectionDebugPort) {
+        this.connectionDebugPort = connectionDebugPort > 0 ? connectionDebugPort : DEFAULT_DEBUG_CONNECTION_PORT;
     }
 
     public String getUserName() {
@@ -137,7 +156,7 @@ public class ServerConfiguration
     }
 
     public void setPublishType(PublishType publishType) {
-        this.publishType = publishType;
+        this.publishType = publishType != null ? publishType : DEFAULT_PUBLISH_TYPE;
     }
 
     public InstallationType getInstallationType() {
@@ -145,7 +164,13 @@ public class ServerConfiguration
     }
 
     public void setInstallationType(InstallationType installationType) {
-        this.installationType = installationType;
+        this.installationType = installationType != null ? installationType : DEFAULT_INSTALL_TYPE;
+    }
+
+    public ServerStatus getServerStatus() { return serverStatus; }
+
+    public void setServerStatus(ServerStatus serverStatus) {
+        this.serverStatus = serverStatus != null ? serverStatus : DEFAULT_SERVER_STATUS;
     }
 
     @Nullable

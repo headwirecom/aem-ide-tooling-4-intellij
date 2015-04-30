@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.config;
 
+import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -86,10 +87,19 @@ public class ServerConfigurationManager
         int i = 0;
         for(ServerConfiguration serverConfiguration: serverConfigurationList) {
             Element childNode = new Element("ssc-" + i);
-            childNode.setAttribute("serverName", serverConfiguration.getServerName());
-            childNode.setAttribute("hostName", serverConfiguration.getHostName());
-            childNode.setAttribute("runtimeEnvironment", serverConfiguration.getRuntimeEnvironment() + "");
-            childNode.setAttribute("configurationPath", serverConfiguration.getConfigurationPath());
+            childNode.setAttribute("name", serverConfiguration.getName());
+            childNode.setAttribute("host", serverConfiguration.getHost());
+            childNode.setAttribute("description", serverConfiguration.getDescription());
+            childNode.setAttribute("connectionPort", serverConfiguration.getConnectionPort() + "");
+            childNode.setAttribute("connectionDebugPort", serverConfiguration.getConnectionDebugPort() + "");
+            childNode.setAttribute("userName", serverConfiguration.getUserName());
+            //AS TODO: Can we store that in an encrypted form?
+            childNode.setAttribute("password", new String(serverConfiguration.getPassword()));
+            childNode.setAttribute("contextPath", serverConfiguration.getContextPath());
+            childNode.setAttribute("startConnectionTimeout", serverConfiguration.getStartConnectionTimeoutInSeconds() + "");
+            childNode.setAttribute("stopConnectionTimeout", serverConfiguration.getStopConnectionTimeoutInSeconds() + "");
+            childNode.setAttribute("publishType", serverConfiguration.getPublishType() + "");
+            childNode.setAttribute("installationType", serverConfiguration.getInstallationType() + "");
             root.addContent(childNode);
         }
         LOGGER.debug("SCM.getState(), end -> returns: " + root);
@@ -103,15 +113,18 @@ public class ServerConfigurationManager
         serverConfigurationList.clear();
         for(Element child: elementList) {
             ServerConfiguration serverConfiguration = new ServerConfiguration();
-            serverConfiguration.setServerName(child.getAttributeValue("serverName"));
-            serverConfiguration.setHostName(child.getAttributeValue("hostName"));
-            String temp = child.getAttributeValue("runtimeEnvironment");
-            try {
-                serverConfiguration.setRuntimeEnvironment(Integer.parseInt(temp));
-            } catch(NumberFormatException e) {
-                // Ignore
-            }
-            serverConfiguration.setConfigurationPath(child.getAttributeValue("configurationPath"));
+            serverConfiguration.setName(child.getAttributeValue("name"));
+            serverConfiguration.setHost(child.getAttributeValue("host"));
+            serverConfiguration.setDescription(child.getAttributeValue("description"));
+            serverConfiguration.setConnectionPort(Util.convertToInt(child.getAttributeValue("connectionPort"), 0));
+            serverConfiguration.setConnectionDebugPort(Util.convertToInt(child.getAttributeValue("connectionDebugPort"), 0));
+            serverConfiguration.setUserName(child.getAttributeValue("userName"));
+            serverConfiguration.setPassword(child.getAttributeValue("password").toCharArray());
+            serverConfiguration.setContextPath(child.getAttributeValue("contextPath"));
+            serverConfiguration.setStartConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue("startConnectionTimeout"), -1));
+            serverConfiguration.setStopConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue("stopConnectionTimeout"), -1));
+            serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue("publishType"), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
+            serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue("installationType"), ServerConfiguration.DEFAULT_INSTALL_TYPE));
             LOGGER.debug("SCM.loadState(), add Server Configuration: " + serverConfiguration);
             serverConfigurationList.add(serverConfiguration);
         }
@@ -130,7 +143,9 @@ public class ServerConfigurationManager
                         ApplicationManager.getApplication().runReadAction(
                             new Runnable() {
                                 public void run() {
-                                    configurationListener.configurationLoaded();
+                                    if(configurationListener != null) {
+                                        configurationListener.configurationLoaded();
+                                    }
                                 }
                             }
                         );
