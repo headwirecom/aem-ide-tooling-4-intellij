@@ -23,53 +23,45 @@ public class ServerConfiguration
     implements PersistentStateComponent<ServerConfiguration>
 {
 
+    public static final int DEFAULT_CONNECTION_PORT = 4052;
+    public static final int DEFAULT_DEBUG_CONNECTION_PORT = 30303;
+    public static final String DEFAULT_USER_NAME = "admin";
+    public static final String DEFAULT_CONTEXT_PATH = "/";
+    public static final int DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS = 30;
+    public static final int DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS = 15;
+
     protected static final String COMPONENT_NAME = "ServerConfiguration";
 
-    private String serverName = "";
-    private String hostName = "";
-    private int runtimeEnvironment = 0;
-    private String configurationPath = "";
-    private String serverStatus = "";
+    public enum PublishType {never, automaticallyOnChange, getAutomaticallyOnBuild};
+    public enum InstallationType {installViaBundleUpload, installFromFilesystem};
+
+    private String name = "";
+    private String host = "";
     private String description = "";
+    private int connectionPort = DEFAULT_CONNECTION_PORT;
+    private int debugConnectionPort = DEFAULT_DEBUG_CONNECTION_PORT;
+    private String userName = DEFAULT_USER_NAME;
+    private char[] password = DEFAULT_USER_NAME.toCharArray();
+    private String contextPath = DEFAULT_CONTEXT_PATH;
+    private int startConnectionTimeout = DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS;
+    private int stopConnectionTimeout = DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS;
+    private PublishType publishType = PublishType.automaticallyOnChange;
+    public InstallationType installationType = InstallationType.installViaBundleUpload;
 
-    public String getServerName() {
-        return serverName;
+    public String getName() {
+        return name;
     }
 
-    public void setServerName(String serverName) {
-        this.serverName = StringUtils.isNotBlank(serverName) ? serverName : "";
+    public void setName(String name) {
+        this.name = StringUtils.isNotBlank(name) ? name : "";
     }
 
-    public String getHostName() {
-        return hostName;
+    public String getHost() {
+        return host;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = StringUtils.isNotBlank(hostName) ? hostName : "";
-    }
-
-    public int getRuntimeEnvironment() {
-        return runtimeEnvironment;
-    }
-
-    public void setRuntimeEnvironment(int runtimeEnvironment) {
-        this.runtimeEnvironment = runtimeEnvironment;
-    }
-
-    public String getConfigurationPath() {
-        return configurationPath;
-    }
-
-    public void setConfigurationPath(String configurationPath) {
-        this.configurationPath = StringUtils.isNotBlank(configurationPath) ? configurationPath : "";
-    }
-
-    public String getServerStatus() {
-        return serverStatus;
-    }
-
-    public void setServerStatus(String serverStatus) {
-        this.serverStatus = StringUtils.isNotBlank(serverStatus) ? serverStatus : "";
+    public void setHost(String host) {
+        this.host = StringUtils.isNotBlank(host) ? host : "";
     }
 
     public String getDescription() {
@@ -78,6 +70,82 @@ public class ServerConfiguration
 
     public void setDescription(String description) {
         this.description = StringUtils.isNotBlank(description) ? description : "No Description";
+    }
+
+    public int getConnectionPort() {
+        return connectionPort;
+    }
+
+    public void setConnectionPort(int connectionPort) {
+        this.connectionPort = connectionPort > 0 ? connectionPort : DEFAULT_CONNECTION_PORT;
+    }
+
+    public int getDebugConnectionPort() {
+        return debugConnectionPort;
+    }
+
+    public void setDebugConnectionPort(int debugConnectionPort) {
+        this.debugConnectionPort = debugConnectionPort > 0 ? debugConnectionPort : DEFAULT_DEBUG_CONNECTION_PORT;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = StringUtils.isNotBlank(userName) ? userName : DEFAULT_USER_NAME;
+    }
+
+    public char[] getPassword() {
+        return password;
+    }
+
+    public void setPassword(char[] password) {
+        this.password = password == null || password.length == 0 ? DEFAULT_USER_NAME.toCharArray() : password;
+    }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = StringUtils.isNotBlank(contextPath) ? description : DEFAULT_CONTEXT_PATH;
+    }
+
+    public int getStartConnectionTimeoutInSeconds() {
+        return startConnectionTimeout;
+    }
+
+    public void setStartConnectionTimeoutInSeconds(int startConnectionTimeoutInSeconds) {
+        this.startConnectionTimeout = startConnectionTimeoutInSeconds > 0 ?
+            startConnectionTimeoutInSeconds :
+            DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS;
+    }
+
+    public int getStopConnectionTimeoutInSeconds() {
+        return stopConnectionTimeout;
+    }
+
+    public void setStopConnectionTimeoutInSeconds(int stopConnectionTimeoutInSeconds) {
+        this.stopConnectionTimeout = stopConnectionTimeoutInSeconds > 0 ?
+            stopConnectionTimeoutInSeconds :
+            DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS;
+    }
+
+    public PublishType getPublishType() {
+        return publishType;
+    }
+
+    public void setPublishType(PublishType publishType) {
+        this.publishType = publishType;
+    }
+
+    public InstallationType getInstallationType() {
+        return installationType;
+    }
+
+    public void setInstallationType(InstallationType installationType) {
+        this.installationType = installationType;
     }
 
     @Nullable
