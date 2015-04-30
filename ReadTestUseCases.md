@@ -8,6 +8,33 @@ expected results to pass. The tests are grouped based on their features.
 
 ### Overview
 
+### Development Tests
+
+#### Introduction
+
+These tests are just here to document how we test the Application during development. They are not necessarily meant
+for production test but rather to ensure code quality.
+
+#### Create New Server Connection
+
+This test is creating a new Server Connection.
+
+1. **Preparation**
+    1. Make sure that IntelliJ does not have the Plugin installed
+    2. Make sure that you have a Debug Configurations Setup as described in the **Readme.md** file in section **IntelliJ Debug Setup**.
+2. Start IntelliJ IDEA CE with the Plugin (Debug 'AEM Tooling Plugin')
+3. Open the AEM Plugin window on the right (AEM)
+4. Click on the Tree Node Triangle on the Top named **Server Configurations**
+5. Click on the + button in the toolbar on top of the window to create a new server configuration
+6. **Test**: an empty Dialog should show that completely empty
+7. Enter values for all fields including the tabs at the bottom
+8. Click the OK Button
+9. Click on the Top Tree Node Triangle (named **Server Configurations**) to close it and once more to reopen
+10. **Test**: The new entry should show in the tree
+11. Click on the new Entry
+12. **Test**: The Edit Icon (3rd from the Left) should become active
+13. Click on the Edit Icon
+14. **Test**: the same Dialog should show all values except the password.
 
 ### Project Setup
 

@@ -3,6 +3,7 @@ package com.headwire.aem.tooling.intellij.ui;
 import javax.swing.*;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
 import org.apache.commons.lang.StringUtils;
@@ -22,13 +23,15 @@ public class ServerConfigurationDialog
     private JSpinner stopConnectionTimeout;
     private JSpinner startConnectionTimeout;
     private JRadioButton neverAutomaticallyPublishContentRadioButton;
-    private JRadioButton automaticallyPublishResourcesOnRadioButton;
-    private JRadioButton automaticallyPublishContentOnRadioButton;
+    private JRadioButton automaticallyPublishOnChangeRadioButton;
+    private JRadioButton automaticallyPublishOnBuildRadioButton;
     private JRadioButton installBundlesViaBundleRadioButton;
     private JRadioButton installBundlesDirectlyFromRadioButton;
     private JButton installButton;
     private JTextField name;
     private JTextField description;
+
+    private ServerConfiguration serverConfiguration;
 
     public ServerConfigurationDialog(@Nullable Project project) {
         super(project);
@@ -49,33 +52,78 @@ public class ServerConfigurationDialog
     }
 
     public ServerConfiguration getConfiguration() {
-        ServerConfiguration ret = new ServerConfiguration();
+        ServerConfiguration ret = serverConfiguration != null ? serverConfiguration : new ServerConfiguration();
         ret.setName(name.getText());
         ret.setHost(host.getText());
         ret.setDescription(description.getText());
         ret.setConnectionPort(obtainInteger(connectionPort, 0));
-        ret.setDebugConnectionPort(obtainInteger(connectionDebugPort, 0));
+        ret.setConnectionDebugPort(obtainInteger(connectionDebugPort, 0));
         ret.setUserName(connectionUserName.getText());
-        ret.setPassword(connectionPassword.getPassword());
+        char[] password = connectionPassword.getPassword();
+        // If password is already set and we did not add anything then we don't changes it. If empty we set it anyway
+        if(ret.getPassword() != null) {
+            if(password != null && password.length > 0) {
+                ret.setPassword(password);
+            }
+        } else {
+            ret.setPassword(password);
+        }
         ret.setContextPath(connectionContextPath.getText());
         ret.setStartConnectionTimeoutInSeconds(obtainInteger(startConnectionTimeout, -1));
         ret.setStopConnectionTimeoutInSeconds(obtainInteger(stopConnectionTimeout, -1));
-
-        
-        ret.setName(name.getText());
-        ret.setName(name.getText());
-        ret.setName(name.getText());
-        ret.setServerName(configurationName.getText());
-        ret.setHostName(host.getText());
-        ret.setRuntimeEnvironment(runtimeEnvironment.getSelectedIndex());
-        ret.setConfigurationPath(configurationPath.getText());
+        ServerConfiguration.PublishType publishType =
+            neverAutomaticallyPublishContentRadioButton.isSelected() ? ServerConfiguration.PublishType.never :
+                automaticallyPublishOnChangeRadioButton.isSelected() ? ServerConfiguration.PublishType.automaticallyOnChange :
+                    automaticallyPublishOnBuildRadioButton.isSelected() ? ServerConfiguration.PublishType.getAutomaticallyOnBuild :
+                        null;
+        ret.setPublishType(publishType);
+        ServerConfiguration.InstallationType installationType =
+            installBundlesViaBundleRadioButton.isSelected() ? ServerConfiguration.InstallationType.installViaBundleUpload :
+                installBundlesDirectlyFromRadioButton.isSelected() ? ServerConfiguration.InstallationType.installViaBundleUpload :
+                        null;
+        ret.setInstallationType(installationType);
 
         return ret;
     }
 
-    private void setUpDialog(ServerConfiguration serverConfiguration) {
-//        if(serverConfiguration != null) {
-//            name.setText(serverConfiguration.);
+    private void setUpDialog(ServerConfiguration configuration) {
+        serverConfiguration = configuration;
+        if(serverConfiguration != null) {
+            name.setText(serverConfiguration.getName());
+            host.setText(serverConfiguration.getHost());
+            description.setText(serverConfiguration.getDescription());
+            connectionPort.setText(serverConfiguration.getConnectionPort() + "");
+            connectionDebugPort.setText(serverConfiguration.getConnectionDebugPort() + "");
+            connectionUserName.setText(serverConfiguration.getUserName());
+            connectionContextPath.setText(serverConfiguration.getContextPath());
+            startConnectionTimeout.setValue(serverConfiguration.getStartConnectionTimeoutInSeconds());
+            stopConnectionTimeout.setValue(serverConfiguration.getStopConnectionTimeoutInSeconds());
+            switch(serverConfiguration.getPublishType()) {
+                case never:
+                    neverAutomaticallyPublishContentRadioButton.setSelected(true);
+                    break;
+                case automaticallyOnChange:
+                    automaticallyPublishOnChangeRadioButton.setSelected(true);
+                    break;
+                case getAutomaticallyOnBuild:
+                    automaticallyPublishOnBuildRadioButton.setSelected(true);
+                    break;
+                default:
+                    automaticallyPublishOnChangeRadioButton.setSelected(true);
+                    break;
+            }
+            switch(serverConfiguration.getInstallationType()) {
+                case installViaBundleUpload:
+                    installBundlesViaBundleRadioButton.setSelected(true);
+                    break;
+                case installFromFilesystem:
+                    installBundlesDirectlyFromRadioButton.setSelected(true);
+                    break;
+                default:
+                    installBundlesViaBundleRadioButton.setSelected(true);
+                    break;
+            }
+        }
     }
 
 //
@@ -100,14 +148,7 @@ public class ServerConfigurationDialog
     private int obtainInteger(JTextField textField, int defaultValue) {
         int ret = defaultValue;
         if(textField != null) {
-            String value = textField.getText();
-            if(StringUtils.isNotBlank(value)) {
-                try {
-                    ret = Integer.parseInt(value);
-                } catch(NumberFormatException e) {
-                    // Ignore
-                }
-            }
+            ret = Util.convertToInt(textField.getText(), defaultValue);
         }
         return ret;
     }
@@ -115,14 +156,7 @@ public class ServerConfigurationDialog
     private int obtainInteger(JSpinner spinner, int defaultValue) {
         int ret = defaultValue;
         if(spinner != null) {
-            String value = spinner.getValue() + "";
-            if(StringUtils.isNotBlank(value)) {
-                try {
-                    ret = Integer.parseInt(value);
-                } catch(NumberFormatException e) {
-                    // Ignore
-                }
-            }
+            ret = Util.convertToInt(spinner.getValue() + "", defaultValue);
         }
         return ret;
     }

@@ -76,7 +76,7 @@ final class SlingServerNodeDescriptor
 //    TextAttributes nameAttributes = new TextAttributes(color, null, null, EffectType.BOXED, myTarget.isDefault() ? Font.BOLD : Font.PLAIN);
     TextAttributes nameAttributes = new TextAttributes(color, null, null, EffectType.BOXED, Font.PLAIN);
 
-    myHighlightedText.getEnding().addText(myTarget.getServerName() + " at " + myTarget.getHostName(), nameAttributes);
+    myHighlightedText.getEnding().addText(myTarget.getName() + " at " + myTarget.getHost(), nameAttributes);
 
 //    AntConfigurationBase antConfiguration = AntConfigurationBase.getInstance(myProject);
 //    final ArrayList<String> addedNames = new ArrayList<String>(4);
@@ -93,7 +93,7 @@ final class SlingServerNodeDescriptor
 //      }
 //      if (!addedNames.contains(presentableName)) {
 //        addedNames.add(presentableName);
-      if(StringUtils.isNotBlank(myTarget.getServerStatus())) {
+      if(myTarget.getServerStatus() != null) {
           myHighlightedText.getEnding().addText(" (" + myTarget.getServerStatus() + ')', ourPostfixAttributes);
       }
 //      }

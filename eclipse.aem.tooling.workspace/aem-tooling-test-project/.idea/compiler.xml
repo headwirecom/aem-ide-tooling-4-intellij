@@ -25,16 +25,46 @@
         <processorPath useClasspath="true">
           <entry name="$PROJECT_DIR$/../../apache.felix/releases/org.apache.felix.scr.generator-1.3.0/target/org.apache.felix.scr.generator-1.3.0.jar" />
         </processorPath>
-        <module name="aem-tooling-test-project.core" />
-        <module name="aem-tooling-test-project.it.launcher" />
-        <module name="aem-tooling-test-project.it.tests" />
-        <module name="aem-tooling-test-project.ui.apps" />
-        <module name="aem-tooling-test-project.ui.content" />
         <module name="eclipse-tooling-test.core" />
         <module name="eclipse-tooling-test.it.launcher" />
         <module name="eclipse-tooling-test.it.tests" />
         <module name="eclipse-tooling-test.ui.apps" />
         <module name="eclipse-tooling-test.ui.content" />
+      </profile>
+      <profile default="false" name="Annotation profile for aem-tooling-test-project.ui.content" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="aem-tooling-test-project.ui.content" />
+      </profile>
+      <profile default="false" name="Annotation profile for aem-tooling-test-project.ui.apps" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="aem-tooling-test-project.ui.apps" />
+      </profile>
+      <profile default="false" name="Annotation profile for aem-tooling-test-project.it.tests" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="aem-tooling-test-project.it.tests" />
+      </profile>
+      <profile default="false" name="Annotation profile for aem-tooling-test-project.it.launcher" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="aem-tooling-test-project.it.launcher" />
+      </profile>
+      <profile default="false" name="Annotation profile for aem-tooling-test-project.core" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="aem-tooling-test-project.core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

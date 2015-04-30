@@ -66,8 +66,8 @@
                   </component>
                   <tabbedpane id="a340a" binding="tabbedPane1" default-binding="true">
                     <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                        <preferred-size width="200" height="200"/>
+                      <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="2" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="500" height="200"/>
                       </grid>
                     </constraints>
                     <properties/>
@@ -255,7 +255,7 @@
                               <text value="Never Automatically Publish Content"/>
                             </properties>
                           </component>
-                          <component id="1ad4d" class="javax.swing.JRadioButton" binding="automaticallyPublishResourcesOnRadioButton" default-binding="true">
+                          <component id="1ad4d" class="javax.swing.JRadioButton" binding="automaticallyPublishOnChangeRadioButton">
                             <constraints>
                               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -263,7 +263,7 @@
                               <text value="Automatically Publish Resources on Change"/>
                             </properties>
                           </component>
-                          <component id="3b756" class="javax.swing.JRadioButton" binding="automaticallyPublishContentOnRadioButton" default-binding="true">
+                          <component id="3b756" class="javax.swing.JRadioButton" binding="automaticallyPublishOnBuildRadioButton">
                             <constraints>
                               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                             </constraints>
