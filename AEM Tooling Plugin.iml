@@ -16,5 +16,6 @@
     <orderEntry type="library" name="org.apache.sling.ide.api-1.0.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.osgi:org.osgi.compendium:4.3.1" level="project" />
     <orderEntry type="library" name="org.apache.sling.ide.impl-vlt-1.0.7-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="idea" level="project" />
   </component>
 </module>
