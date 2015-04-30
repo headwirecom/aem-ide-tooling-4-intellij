@@ -1,11 +1,6 @@
 package com.headwire.aem.tooling.intellij.ui;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.intellij.openapi.project.Project;
@@ -19,7 +14,21 @@ public class ServerConfigurationDialog
     private JTextField hostName;
     private JTextField configurationPath;
     private JComboBox runtimeEnvironment;
-    private JTextField serverName;
+    private JTextField configurationName;
+    private JTabbedPane tabbedPane1;
+    private JTextField connectionDebugPort;
+    private JTextField connectionUserName;
+    private JPasswordField connectionPassword;
+    private JTextField connectionPort;
+    private JTextField connectionContextPath;
+    private JSpinner stopConnectionTimeout;
+    private JSpinner startConnectionTimeout;
+    private JRadioButton neverAutomaticallyPublishContentRadioButton;
+    private JRadioButton automaticallyPublishResourcesOnRadioButton;
+    private JRadioButton automaticallyPublishContentOnRadioButton;
+    private JRadioButton installBundlesViaBundleRadioButton;
+    private JRadioButton installBundlesDirectlyFromRadioButton;
+    private JButton installButton;
     private TextFieldWithBrowseButton workDirectoryField;
 
     public ServerConfigurationDialog(@Nullable Project project) {
@@ -33,7 +42,7 @@ public class ServerConfigurationDialog
 
     public ServerConfiguration getConfiguration() {
         ServerConfiguration ret = new ServerConfiguration();
-        ret.setServerName(serverName.getText());
+        ret.setServerName(configurationName.getText());
         ret.setHostName(hostName.getText());
         ret.setRuntimeEnvironment(runtimeEnvironment.getSelectedIndex());
         ret.setConfigurationPath(configurationPath.getText());

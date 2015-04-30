@@ -1483,3 +1483,16 @@ org.apache.sling.ide.osgi.OsgiClientException: Unable to install/update bundle f
 	at org.eclipse.wst.server.core.internal.Server.publishImpl(Server.java:3157)
 	at org.eclipse.wst.server.core.internal.Server$PublishJob.run(Server.java:345)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2015-04-29 14:24:22.722 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-04-29 14:25:00.114
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-04-29 14:25:14.668
+!MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aem-tooling-test-project.it.tests.*] 
