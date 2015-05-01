@@ -691,7 +691,11 @@ public class SlingServerExplorer
     private final class AddAction extends AnAction {
         public AddAction() {
 //            super(AntBundle.message("add.ant.file.action.name"), AntBundle.message("add.ant.file.action.description"), IconUtil.getAddIcon());
-            super("Add Action", "Add a New Server Configuration", IconUtil.getAddIcon());
+            super(
+                AEMBundle.message("add.configuration.action.name"),
+                AEMBundle.message("add.configuration.action.description"),
+                IconUtil.getAddIcon()
+            );
         }
 
         public void actionPerformed(AnActionEvent e) {
@@ -712,7 +716,11 @@ public class SlingServerExplorer
         public RemoveAction() {
 //            super(AntBundle.message("remove.ant.file.action.name"), AntBundle.message("remove.ant.file.action.description"),
 //                    IconUtil.getRemoveIcon());
-            super("Remove Action", "Description", IconUtil.getRemoveIcon());
+            super(
+                AEMBundle.message("remove.configuration.action.name"),
+                AEMBundle.message("remove.configuration.action.description"),
+                IconUtil.getRemoveIcon()
+            );
         }
 
         public void actionPerformed(AnActionEvent e) {
@@ -728,7 +736,12 @@ public class SlingServerExplorer
         public EditAction() {
 //            super(AntBundle.message("remove.ant.file.action.name"), AntBundle.message("remove.ant.file.action.description"),
 //                    IconUtil.getRemoveIcon());
-            super("Edit Action", "Edit the Server Connection Configuration", AllIcons.Actions.EditSource);
+            super(
+                AEMBundle.message("edit.configuration.action.name"),
+                AEMBundle.message("edit.configuration.action.description"),
+                AllIcons.Actions.EditSource
+            );
+//            super("Edit Action", "Edit the Server Connection Configuration", AllIcons.Actions.EditSource);
         }
 
         public void actionPerformed(AnActionEvent e) {

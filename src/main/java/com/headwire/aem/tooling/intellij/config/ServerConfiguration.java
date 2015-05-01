@@ -42,7 +42,7 @@ public class ServerConfiguration
         private String name;
 
         ServerStatus() {
-            this.name = this.name();
+            this.name = name();
         }
 
         ServerStatus(String name) {
