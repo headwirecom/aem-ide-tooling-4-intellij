@@ -44,8 +44,27 @@ public class ServerConfigurationManager
         this.project = project;
     }
 
-    public List<ServerConfiguration> getServerConfigurationList() {
-        return serverConfigurationList;
+    public ServerConfiguration[] getServerConfigurations() {
+        return serverConfigurationList.toArray(new ServerConfiguration[] {});
+    }
+
+    public int serverConfigurationSize() {
+        return serverConfigurationList.size();
+    }
+
+    public void addServerConfiguration(ServerConfiguration serverConfiguration) {
+        serverConfigurationList.add(serverConfiguration);
+        configurationListener.configurationLoaded();
+    }
+
+    public void removeServerConfiguration(ServerConfiguration serverConfiguration) {
+        serverConfigurationList.remove(serverConfiguration);
+        configurationListener.configurationLoaded();
+    }
+
+    public void updateServerConfiguration(ServerConfiguration serverConfiguration) {
+//        serverConfigurationList.remove(serverConfiguration);
+        configurationListener.configurationLoaded();
     }
 
     private volatile Boolean myIsInitialized = null;

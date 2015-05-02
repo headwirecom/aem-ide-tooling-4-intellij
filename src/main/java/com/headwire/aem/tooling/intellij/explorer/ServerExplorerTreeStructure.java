@@ -93,8 +93,8 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
       if (!configuration.isInitialized()) {
         return new Object[] {"Loading Server Configurations"};
       }
-      final List<ServerConfiguration> serverConfigurationsList = configuration.getServerConfigurationList();
-      return serverConfigurationsList.isEmpty() ? new Object[]{"Server Configuration Loading"} : serverConfigurationsList.toArray();
+      final ServerConfiguration[] serverConfigurations = configuration.getServerConfigurations();
+      return serverConfigurations.length == 0 ? new Object[]{"Server Configuration Loading"} : serverConfigurations;
     }
 
 //    if (element instanceof ServerConfiguration) {
@@ -121,8 +121,9 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
   @Nullable
   public Object getParentElement(Object element) {
       if(element instanceof ServerConfiguration) {
-          ServerConfiguration serverConfiguration = (ServerConfiguration) element;
-          return serverConfiguration.getName() + " at " + serverConfiguration.getHost();
+          return myRoot;
+//          ServerConfiguration serverConfiguration = (ServerConfiguration) element;
+//          return serverConfiguration.getName() + " at " + serverConfiguration.getHost();
       }
 
 //    if (element instanceof AntBuildTarget) {

@@ -1,8 +1,0 @@
-# AEM Bundle Messages
-
-add.configuration.action.name=Add New Configuration
-add.configuration.action.description=Add a New Server Connection Configuration
-remove.configuration.action.name=Remove Configuration
-remove.configuration.action.description=Remove Selected Server Connection Configuration
-edit.configuration.action.name=Edit Configuration
-edit.configuration.action.description=Edit Selected Server Connection Configuration

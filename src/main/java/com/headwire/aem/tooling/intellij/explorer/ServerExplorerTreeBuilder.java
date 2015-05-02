@@ -76,8 +76,8 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
   }
 
   protected boolean isAutoExpandNode(NodeDescriptor nodeDescriptor) {
-//    return ((AntNodeDescriptor)nodeDescriptor).isAutoExpand();
-      return false;
+      // This is what expands the tree automatically when it opens
+        return ((ServerNodeDescriptor)nodeDescriptor).isAutoExpand();
   }
 
   public void setTargetsFiltered(boolean value) {
