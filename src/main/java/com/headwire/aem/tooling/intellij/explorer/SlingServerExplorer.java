@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.debugger.DebuggerManager;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
@@ -11,6 +12,7 @@ import com.intellij.debugger.impl.DebuggerSession;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.TreeExpander;
 import com.intellij.ide.dnd.FileCopyPasteUtil;
@@ -97,7 +99,7 @@ public class SlingServerExplorer
 
         public boolean canExpand() {
             final ServerConfigurationManager config = myConfig;
-            return config != null && config.getServerConfigurationList().size() != 0;
+            return config != null && config.serverConfigurationSize() > 0;
         }
 
         public void collapseAll() {
@@ -116,7 +118,6 @@ public class SlingServerExplorer
         myConfig = ServerConfigurationManager.getInstance(project);
         final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
         myTree = new Tree(model);
-//        myTree.setRootVisible(false);
         myTree.setRootVisible(true);
         myTree.setShowsRootHandles(true);
         myTree.setCellRenderer(new NodeRenderer());
@@ -292,15 +293,14 @@ public class SlingServerExplorer
         group.add(new RemoveAction());
         group.add(new EditAction());
         group.add(new RunAction());
-//        group.add(new ShowAllTargetsAction());
-//        AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
-//        action.getTemplatePresentation().setDescription(AntBundle.message("ant.explorer.expand.all.nodes.action.description"));
-//        group.add(action);
-//        action = CommonActionsManager.getInstance().createCollapseAllAction(myTreeExpander, this);
-//        action.getTemplatePresentation().setDescription(AntBundle.message("ant.explorer.collapse.all.nodes.action.description"));
-//        group.add(action);
-//        group.add(myAntBuildFilePropertiesAction);
-//        group.add(new ContextHelpAction(HelpID.ANT));
+        group.add(new DebugAction());
+        group.add(new StopAction());
+        AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
+        action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
+        group.add(action);
+        action = CommonActionsManager.getInstance().createCollapseAllAction(myTreeExpander, this);
+        action.getTemplatePresentation().setDescription(AEMBundle.message("aem.explorer.collapse.all.nodes.action.description"));
+        group.add(action);
 
         final ActionToolbar actionToolBar = ActionManager.getInstance().createActionToolbar(ActionPlaces.ANT_EXPLORER_TOOLBAR, group, true);
         final JPanel buttonsPanel = new JPanel(new BorderLayout());
@@ -317,68 +317,68 @@ public class SlingServerExplorer
 ////        addBuildFile(files);
 //    }
 
-    private void addBuildFile(final VirtualFile[] files) {
-        if (files.length == 0) {
-            return;
-        }
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            public void run() {
-//                final AntConfiguration antConfiguration = myConfig;
-//                if (antConfiguration == null) {
-//                    return;
-//                }
-//                final java.util.List<VirtualFile> ignoredFiles = new ArrayList<VirtualFile>();
-//                for (VirtualFile file : files) {
-//                    try {
-//                        antConfiguration.addBuildFile(file);
-//                    }
-//                    catch (AntNoFileException e) {
-//                        ignoredFiles.add(e.getFile());
-//                    }
-//                }
-//                if (ignoredFiles.size() != 0) {
-//                    String messageText;
-//                    final StringBuilder message = StringBuilderSpinAllocator.alloc();
-//                    try {
-//                        String separator = "";
-//                        for (final VirtualFile virtualFile : ignoredFiles) {
-//                            message.append(separator);
-//                            message.append(virtualFile.getPresentableUrl());
-//                            separator = "\n";
-//                        }
-//                        messageText = message.toString();
-//                    }
-//                    finally {
-//                        StringBuilderSpinAllocator.dispose(message);
-//                    }
-//                    Messages.showWarningDialog(myProject, messageText, AntBundle.message("cannot.add.ant.files.dialog.title"));
-//                }
-            }
-        });
-    }
-
-    public void removeBuildFile() {
-//        final AntBuildFile buildFile = getCurrentBuildFile();
-//        if (buildFile == null) {
+//    private void addBuildFile(final VirtualFile[] files) {
+//        if (files.length == 0) {
 //            return;
 //        }
-//        final String fileName = buildFile.getPresentableUrl();
-//        final int result = Messages.showYesNoDialog(myProject, AntBundle.message("remove.the.reference.to.file.confirmation.text", fileName),
-//                AntBundle.message("confirm.remove.dialog.title"), Messages.getQuestionIcon());
-//        if (result != Messages.YES) {
-//            return;
-//        }
-//        myConfig.removeBuildFile(buildFile);
-    }
+//        ApplicationManager.getApplication().invokeLater(new Runnable() {
+//            public void run() {
+////                final AntConfiguration antConfiguration = myConfig;
+////                if (antConfiguration == null) {
+////                    return;
+////                }
+////                final java.util.List<VirtualFile> ignoredFiles = new ArrayList<VirtualFile>();
+////                for (VirtualFile file : files) {
+////                    try {
+////                        antConfiguration.addBuildFile(file);
+////                    }
+////                    catch (AntNoFileException e) {
+////                        ignoredFiles.add(e.getFile());
+////                    }
+////                }
+////                if (ignoredFiles.size() != 0) {
+////                    String messageText;
+////                    final StringBuilder message = StringBuilderSpinAllocator.alloc();
+////                    try {
+////                        String separator = "";
+////                        for (final VirtualFile virtualFile : ignoredFiles) {
+////                            message.append(separator);
+////                            message.append(virtualFile.getPresentableUrl());
+////                            separator = "\n";
+////                        }
+////                        messageText = message.toString();
+////                    }
+////                    finally {
+////                        StringBuilderSpinAllocator.dispose(message);
+////                    }
+////                    Messages.showWarningDialog(myProject, messageText, AntBundle.message("cannot.add.ant.files.dialog.title"));
+////                }
+//            }
+//        });
+//    }
 
-    public void setBuildFileProperties() {
-//        final AntBuildFileBase buildFile = getCurrentBuildFile();
-//        if (buildFile != null && BuildFilePropertiesPanel.editBuildFile(buildFile, myProject)) {
-//            myConfig.updateBuildFile(buildFile);
-//            myBuilder.queueUpdate();
-//            myTree.repaint();
-//        }
-    }
+//    public void removeBuildFile() {
+////        final AntBuildFile buildFile = getCurrentBuildFile();
+////        if (buildFile == null) {
+////            return;
+////        }
+////        final String fileName = buildFile.getPresentableUrl();
+////        final int result = Messages.showYesNoDialog(myProject, AntBundle.message("remove.the.reference.to.file.confirmation.text", fileName),
+////                AntBundle.message("confirm.remove.dialog.title"), Messages.getQuestionIcon());
+////        if (result != Messages.YES) {
+////            return;
+////        }
+////        myConfig.removeBuildFile(buildFile);
+//    }
+
+//    public void setBuildFileProperties() {
+////        final AntBuildFileBase buildFile = getCurrentBuildFile();
+////        if (buildFile != null && BuildFilePropertiesPanel.editBuildFile(buildFile, myProject)) {
+////            myConfig.updateBuildFile(buildFile);
+////            myBuilder.queueUpdate();
+////            myTree.repaint();
+////        }
+//    }
 
     private void runSelection(final DataContext dataContext) {
         if (!canRunSelection()) {
@@ -460,6 +460,15 @@ public class SlingServerExplorer
         boolean ret = false;
         if(myProject != null) {
             ret = getCurrentConfiguration() != null;
+        }
+        return ret;
+    }
+
+    public boolean isConnectionEstablished() {
+        boolean ret = false;
+        if(myProject != null) {
+//AS TODO: Add the check if there is a Connection Established
+//            ret = getCurrentConfiguration() != null;
         }
         return ret;
     }
@@ -690,7 +699,6 @@ public class SlingServerExplorer
 
     private final class AddAction extends AnAction {
         public AddAction() {
-//            super(AntBundle.message("add.ant.file.action.name"), AntBundle.message("add.ant.file.action.description"), IconUtil.getAddIcon());
             super(
                 AEMBundle.message("add.configuration.action.name"),
                 AEMBundle.message("add.configuration.action.description"),
@@ -706,16 +714,15 @@ public class SlingServerExplorer
                 return;
             }
             ServerConfiguration serverConfiguration = dialog.getConfiguration();
-            myConfig.getServerConfigurationList().add(serverConfiguration);
-            myTree.repaint();
+            myConfig.addServerConfiguration(serverConfiguration);
+//            myConfig.getServerConfigurationList().add(serverConfiguration);
+//            myTree.repaint();
 //            addServerConfiguration();
         }
     }
 
     private final class RemoveAction extends AnAction {
         public RemoveAction() {
-//            super(AntBundle.message("remove.ant.file.action.name"), AntBundle.message("remove.ant.file.action.description"),
-//                    IconUtil.getRemoveIcon());
             super(
                 AEMBundle.message("remove.configuration.action.name"),
                 AEMBundle.message("remove.configuration.action.description"),
@@ -724,7 +731,10 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            removeBuildFile();
+            ServerConfiguration serverConfiguration = getCurrentConfiguration();
+            myConfig.removeServerConfiguration(serverConfiguration);
+//            myConfig.getServerConfigurationList().remove(serverConfiguration);
+//            myTree.repaint();
         }
 
         public void update(AnActionEvent event) {
@@ -734,14 +744,11 @@ public class SlingServerExplorer
 
     private final class EditAction extends AnAction {
         public EditAction() {
-//            super(AntBundle.message("remove.ant.file.action.name"), AntBundle.message("remove.ant.file.action.description"),
-//                    IconUtil.getRemoveIcon());
             super(
                 AEMBundle.message("edit.configuration.action.name"),
                 AEMBundle.message("edit.configuration.action.description"),
                 AllIcons.Actions.EditSource
             );
-//            super("Edit Action", "Edit the Server Connection Configuration", AllIcons.Actions.EditSource);
         }
 
         public void actionPerformed(AnActionEvent e) {
@@ -753,9 +760,10 @@ public class SlingServerExplorer
                 return;
             }
             dialog.getConfiguration();
+            myConfig.updateServerConfiguration(serverConfiguration);
             //AS TODO: Already added to the Tree so only repaint is needed
 //            myConfig.getServerConfigurationList().add(serverConfiguration);
-            myTree.repaint();
+//            myTree.repaint();
 //            addServerConfiguration();
         }
 
@@ -766,54 +774,57 @@ public class SlingServerExplorer
 
     private final class RunAction extends AnAction {
         public RunAction() {
-//            super(AntBundle.message("run.ant.file.or.target.action.name"), AntBundle.message("run.ant.file.or.target.action.description"),
-//                    AllIcons.Actions.Execute);
-            super("Run Action", "Hot Swap Class", AllIcons.Actions.Execute);
+            super(
+                AEMBundle.message("run.configuration.action.name"),
+                AEMBundle.message("run.configuration.action.description"),
+                AllIcons.Actions.Execute
+            );
         }
 
         public void actionPerformed(AnActionEvent e) {
-//            runSelection(e.getDataContext());
-            // Create a Connection
-            // Create a Virtual Machine
-            // Load the Compiled Class
-            // Obtain the Reference Type
-            // Redefine the Class on the Remote Server
+            // Create Remote Connection to Server using the IntelliJ Run / Debug Connection
+            //AS TODO: How to create a Connection Configuration and Start it on the fly without storing it in IntelliJ IDEA? If not can we manage the Configurations from the Plugin?
         }
 
         public void update(AnActionEvent event) {
-            final Presentation presentation = event.getPresentation();
-//            final String place = event.getPlace();
-//            if (ActionPlaces.ANT_EXPLORER_TOOLBAR.equals(place)) {
-////                presentation.setText(AntBundle.message("run.ant.file.or.target.action.name"));
-//            }
-//            else {
-//                final TreePath[] paths = myTree.getSelectionPaths();
-//                if (paths != null && paths.length == 1) {
-//                    Object temp = ((DefaultMutableTreeNode)paths[0].getLastPathComponent()).getUserObject();
-//                    LOGGER.debug("Selected User Object: '{}'", temp);
-//                    if(temp instanceof SlingServerNodeDescriptor) {
-//                        SlingServerNodeDescriptor node = (SlingServerNodeDescriptor) temp;
-//                        ServerConfiguration serverConfiguration = node.getTarget();
-//                        ServerUtil.connectRepository(serverConfiguration);
-//                    } else {
-//                        LOGGER.debug("Selected object is not a Server Configuration but: '{}'", temp);
-//                    }
-////                    presentation.setText(AntBundle.message("run.ant.build.action.name"));
-//                }
-////                else {
-////                    if (paths == null || paths.length == 1) {
-////                        presentation.setText(AntBundle.message("run.ant.target.action.name"));
-////                    }
-////                    else {
-////                        presentation.setText(AntBundle.message("run.ant.targets.action.name"));
-////                    }
-////                }
-//            }
-//
-//            presentation.setEnabled(canRunSelection());
-            presentation.setEnabled(true);
+            event.getPresentation().setEnabled(isConfigurationSelected());
         }
     }
+
+    private final class DebugAction extends AnAction {
+        public DebugAction() {
+            super(
+                AEMBundle.message("debug.configuration.action.name"),
+                AEMBundle.message("debug.configuration.action.description"),
+                AllIcons.General.Debug
+            );
+        }
+
+        public void actionPerformed(AnActionEvent e) {
+        }
+
+        public void update(AnActionEvent event) {
+            event.getPresentation().setEnabled(isConfigurationSelected());
+        }
+    }
+
+    private final class StopAction extends AnAction {
+        public StopAction() {
+            super(
+                AEMBundle.message("stop.configuration.action.name"),
+                AEMBundle.message("stop.configuration.action.description"),
+                AllIcons.Process.Stop
+            );
+        }
+
+        public void actionPerformed(AnActionEvent e) {
+        }
+
+        public void update(AnActionEvent event) {
+            event.getPresentation().setEnabled(isConnectionEstablished());
+        }
+    }
+
     private final class MakeAntRunConfigurationAction extends AnAction {
         public MakeAntRunConfigurationAction() {
 //            super(AntBundle.message("make.ant.runconfiguration.name"), null, AntIcons.Build);
@@ -1131,12 +1142,13 @@ public class SlingServerExplorer
         }
     }
 
+//AS TODO: Do we really need this (transfer of what)
     private final class MyTransferHandler extends TransferHandler {
 
         @Override
         public boolean importData(final TransferSupport support) {
             if (canImport(support)) {
-                addBuildFile(getAntFiles(support));
+//                addBuildFile(getAntFiles(support));
                 return true;
             }
             return false;
