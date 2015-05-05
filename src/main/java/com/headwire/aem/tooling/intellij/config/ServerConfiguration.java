@@ -37,7 +37,7 @@ public class ServerConfiguration
     public enum PublishType {never, automaticallyOnChange, getAutomaticallyOnBuild};
     public enum InstallationType {installViaBundleUpload, installFromFilesystem};
     public enum ServerStatus {
-        notConnected("not connected"), connecting, connected, disconnecting;
+        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed;
 
         private String name;
 
@@ -66,6 +66,30 @@ public class ServerConfiguration
     private InstallationType installationType = DEFAULT_INSTALL_TYPE;
 
     private ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
+
+    public ServerConfiguration() {
+    }
+
+    /** Copy Constructor **/
+    public ServerConfiguration(ServerConfiguration source) {
+        copy(source);
+    }
+
+    void copy(ServerConfiguration source) {
+        name = source.name;
+        host = source.host;
+        description = source.description;
+        connectionPort = source.connectionPort;
+        connectionDebugPort = source.connectionDebugPort;
+        userName = source.userName;
+        password = source.password;
+        contextPath = source.contextPath;
+        startConnectionTimeout = source.startConnectionTimeout;
+        stopConnectionTimeout = source.stopConnectionTimeout;
+        publishType = source.publishType;
+        installationType = source.installationType;
+        serverStatus = source.serverStatus;
+    }
 
     public String getName() {
         return name;
