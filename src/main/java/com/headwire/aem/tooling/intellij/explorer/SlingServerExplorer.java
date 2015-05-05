@@ -9,8 +9,24 @@ import com.headwire.aem.tooling.intellij.ui.ServerConfigurationDialog;
 import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.debugger.impl.DebuggerManagerAdapter;
 import com.intellij.debugger.impl.DebuggerSession;
+import com.intellij.execution.ExecutionAdapter;
+import com.intellij.execution.ExecutionListener;
+import com.intellij.execution.ExecutionManager;
+import com.intellij.execution.Executor;
+import com.intellij.execution.ExecutorRegistry;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
+import com.intellij.execution.RunnerAndConfigurationSettings;
+import com.intellij.execution.configurations.RunConfiguration;
+import com.intellij.execution.configurations.RunProfile;
+import com.intellij.execution.executors.DefaultRunExecutor;
+import com.intellij.execution.impl.RunManagerImpl;
+import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl;
+import com.intellij.execution.process.ProcessHandler;
+import com.intellij.execution.remote.RemoteConfiguration;
+import com.intellij.execution.remote.RemoteConfigurationType;
+import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.runners.ExecutionUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DataManager;
@@ -46,6 +62,7 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.wm.ToolWindowId;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.DoubleClickListener;
 import com.intellij.ui.PopupHandler;
@@ -58,11 +75,13 @@ import com.intellij.util.IconUtil;
 import com.intellij.util.containers.*;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
+import com.intellij.util.messages.Topic;
 import com.intellij.util.ui.tree.TreeUtil;
 import com.intellij.util.xml.DomEventListener;
 import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.events.DomEvent;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -83,6 +102,8 @@ public class SlingServerExplorer
         extends SimpleToolWindowPanel implements DataProvider, Disposable
 {
     private static final Logger LOGGER = Logger.getInstance(SlingServerExplorer.class);
+    public static final Topic<ExecutionListener> EXECUTION_TOPIC =
+        Topic.create("AEM configuration executed", ExecutionListener.class, Topic.BroadcastDirection.TO_PARENT);
 
     public static final String ROOT_FOLDER = "/jcr_root/";
 
@@ -91,6 +112,7 @@ public class SlingServerExplorer
     private Tree myTree;
     private KeyMapListener myKeyMapListener;
     private ServerConfigurationManager myConfig;
+    private RunManagerEx myRunManager;
 
     private final TreeExpander myTreeExpander = new TreeExpander() {
         public void expandAll() {
@@ -164,11 +186,14 @@ public class SlingServerExplorer
                 myBuilder.queueUpdate();
             }
         }, this);
-        RunManagerEx.getInstanceEx(myProject).addRunManagerListener(new RunManagerAdapter() {
-            public void beforeRunTasksChanged() {
-                myBuilder.queueUpdate();
+        myRunManager = RunManagerEx.getInstanceEx(myProject);
+        myRunManager.addRunManagerListener(
+            new RunManagerAdapter() {
+                public void beforeRunTasksChanged() {
+                    myBuilder.queueUpdate();
+                }
             }
-        });
+        );
 
 //        // Create FileVault Repository Access
 //        LOGGER.debug("Before Create Repository Info");
@@ -239,15 +264,62 @@ public class SlingServerExplorer
                 private int mySessionCount = 0;
 
                 @Override
-                public void sessionAttached(DebuggerSession session) {
-                    if(mySessionCount++ == 0) {
+                public void sessionCreated(DebuggerSession session) {
+                    if(mySessionCount == 0) {
+                        mySessionCount += 1;
                         myConn = bus.connect();
-//                        myConn.subscribe(CompilerTopics.COMPILATION_STATUS, new MyCompilationStatusListener());
+                        myConn.subscribe(
+                            ExecutionManager.EXECUTION_TOPIC,
+                            new ExecutionAdapter() {
+//                                @Override
+//                                public void processStartScheduled(String executorId, ExecutionEnvironment env) {
+//                                    super.processStartScheduled(executorId, env);
+//                                }
+//
+//                                @Override
+//                                public void processStarting(String executorId, @NotNull ExecutionEnvironment env) {
+//                                    super.processStarting(executorId, env);
+//                                }
+
+                                @Override
+                                public void processNotStarted(String executorId, @NotNull ExecutionEnvironment env) {
+                                    // This is called when the Debug Session failed to start and / or connect
+                                    super.processNotStarted(executorId, env);
+                                }
+
+                                @Override
+                                public void processStarted(String executorId, @NotNull ExecutionEnvironment env, @NotNull ProcessHandler handler) {
+                                    // This is called when the Debug Session successfully started and connected
+                                    super.processStarted(executorId, env, handler);
+                                }
+
+//                                @Override
+//                                public void processTerminating(@NotNull RunProfile runProfile, @NotNull ProcessHandler handler) {
+//                                    super.processTerminating(runProfile, handler);
+//                                }
+
+                                @Override
+                                public void processTerminated(@NotNull RunProfile runProfile, @NotNull ProcessHandler handler) {
+                                    // Called when a successful connected session is stopped
+                                    super.processTerminated(runProfile, handler);
+                                }
+                            }
+                        );
                     }
                 }
 
                 @Override
+                public void sessionAttached(DebuggerSession session) {
+                    mySessionCount = mySessionCount;
+                }
+
+                @Override
                 public void sessionDetached(DebuggerSession session) {
+                    mySessionCount = mySessionCount;
+                }
+
+                @Override
+                public void sessionRemoved(DebuggerSession session) {
                     mySessionCount = Math.max(0, mySessionCount - 1);
                     if(mySessionCount == 0) {
                         final MessageBusConnection conn = myConn;
@@ -761,10 +833,7 @@ public class SlingServerExplorer
             }
             dialog.getConfiguration();
             myConfig.updateServerConfiguration(serverConfiguration);
-            //AS TODO: Already added to the Tree so only repaint is needed
-//            myConfig.getServerConfigurationList().add(serverConfiguration);
-//            myTree.repaint();
-//            addServerConfiguration();
+            //AS TODO: if the name of the configuration has changed we need to remove the outdated server configuration
         }
 
         public void update(AnActionEvent event) {
@@ -782,11 +851,13 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            // Create Remote Connection to Server using the IntelliJ Run / Debug Connection
-            //AS TODO: How to create a Connection Configuration and Start it on the fly without storing it in IntelliJ IDEA? If not can we manage the Configurations from the Plugin?
+            // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
+            // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
+            //AS TODO: Create that and also add this to the Debug
         }
 
         public void update(AnActionEvent event) {
+            //AS TODO: Disabled this when a session is started and (re)enable it when it is stopped
             event.getPresentation().setEnabled(isConfigurationSelected());
         }
     }
@@ -801,9 +872,34 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
+            // Create Remote Connection to Server using the IntelliJ Run / Debug Connection
+            //AS TODO: It is working but the configuration is listed and made persistent. That is not too bad because
+            //AS TODO: after changes a reconnect will update the configuration.
+            RemoteConfigurationType remoteConfigurationType = new RemoteConfigurationType();
+            RunConfiguration runConfiguration = remoteConfigurationType.getFactory().createTemplateConfiguration(myProject);
+            RemoteConfiguration remoteConfiguration = (RemoteConfiguration) runConfiguration;
+            // Server means if you are listening. If not you are attaching.
+            remoteConfiguration.SERVER_MODE = false;
+            remoteConfiguration.USE_SOCKET_TRANSPORT = true;
+            remoteConfiguration.HOST = getCurrentConfiguration().getHost();
+            remoteConfiguration.PORT = getCurrentConfiguration().getConnectionDebugPort() + "";
+            // Set a Name of the Configuration so that it is properly listed.
+            remoteConfiguration.setName(getCurrentConfiguration().getName());
+            RunnerAndConfigurationSettings configuration = new RunnerAndConfigurationSettingsImpl(
+                (RunManagerImpl) myRunManager,
+                runConfiguration,
+                false
+            );
+            myRunManager.setTemporaryConfiguration(configuration);
+//            myRunManager.setSelectedConfiguration(configuration);
+            //AS TODO: Make sure that this is the proper way to obtain the DEBUG Executor
+            Executor executor = ExecutorRegistry.getInstance().getExecutorById(ToolWindowId.DEBUG);
+            ExecutionUtil.runConfiguration(configuration, executor);
+            // Now we need to create a Connection to the AEM Server to deploy OSGI Bundles and Sling Packages
         }
 
         public void update(AnActionEvent event) {
+            //AS TODO: Disabled this when a session is started and (re)enable it when it is stopped
             event.getPresentation().setEnabled(isConfigurationSelected());
         }
     }

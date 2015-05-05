@@ -32,7 +32,7 @@
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ServerConfiguration">
-    <ssc-0 name="Test Configuration 2" host="localhost" description="Test AEM Connection to Author on Localhost 22" connectionPort="4503" connectionDebugPort="30304" userName="admin1" password="admin" contextPath="Test AEM Connection to Author on Localhost 22" startConnectionTimeout="31" stopConnectionTimeout="14" publishType="getAutomaticallyOnBuild" installationType="installViaBundleUpload" />
+    <ssc-0 name="Test Configuration" host="localhost" description="Test AEM Connection to Author on Localhost" connectionPort="4503" connectionDebugPort="30304" userName="admin" password="admin" contextPath="Test AEM Connection to Author on Localhost" startConnectionTimeout="31" stopConnectionTimeout="14" publishType="getAutomaticallyOnBuild" installationType="installViaBundleUpload" />
     <ssc-0 name="Test Me Now" host="test-server" description="Test Server Connection Configuration" connectionPort="14052" connectionDebugPort="130303" userName="myAdmin" password="myAdmin" contextPath="Test Server Connection Configuration" startConnectionTimeout="20" stopConnectionTimeout="10" publishType="getAutomaticallyOnBuild" installationType="installViaBundleUpload" />
   </component>
 </project>
