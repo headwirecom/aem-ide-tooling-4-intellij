@@ -34,25 +34,27 @@ public class ServerConfigurationDialog
     private ServerConfiguration serverConfiguration;
 
     public ServerConfigurationDialog(@Nullable Project project) {
-        super(project);
-
-        setTitle("Create Server Connection Properties");
-        setModal(true);
-        setUpDialog(null);
-        init();
+        this(project, null);
+//        super(project);
+//
+//        setTitle("Create Server Connection Properties");
+//        setModal(true);
+//        setUpDialog(null);
+//        init();
     }
 
     public ServerConfigurationDialog(@Nullable Project project, @Nullable ServerConfiguration serverConfiguration) {
         super(project);
 
-        setTitle("Edit Server Connection Properties");
+        setTitle((serverConfiguration == null ? "Create" :"Edit") + " Server Connection Properties");
         setModal(true);
-        setUpDialog(serverConfiguration);
+        setUpDialog(serverConfiguration == null ? getConfiguration() : serverConfiguration);
         init();
     }
 
     public ServerConfiguration getConfiguration() {
-        ServerConfiguration ret = serverConfiguration != null ? serverConfiguration : new ServerConfiguration();
+        // Use the Copy Constructor to return a Copy to be able to undo changes even after the configuration has changed
+        ServerConfiguration ret = serverConfiguration != null ? new ServerConfiguration(serverConfiguration) : new ServerConfiguration();
         ret.setName(name.getText());
         ret.setHost(host.getText());
         ret.setDescription(description.getText());

@@ -52,18 +52,52 @@ public class ServerConfigurationManager
         return serverConfigurationList.size();
     }
 
+    public ServerConfiguration findServerConfigurationByName(String configurationName) {
+        ServerConfiguration ret = null;
+        for(ServerConfiguration serverConfiguration: serverConfigurationList) {
+            if(serverConfiguration.getName().equals(configurationName)) {
+                ret = serverConfiguration;
+                break;
+            }
+        }
+        return ret;
+    }
+
     public void addServerConfiguration(ServerConfiguration serverConfiguration) {
+        String name = serverConfiguration.getName();
+        if(findServerConfigurationByName(name) != null) {
+            throw new IllegalArgumentException("Duplicate Name: " + name);
+        }
         serverConfigurationList.add(serverConfiguration);
         configurationListener.configurationLoaded();
     }
 
     public void removeServerConfiguration(ServerConfiguration serverConfiguration) {
-        serverConfigurationList.remove(serverConfiguration);
+        ServerConfiguration configuration = findServerConfigurationByName(serverConfiguration.getName());
+        if(configuration != null) {
+            serverConfigurationList.remove(configuration);
+        }
         configurationListener.configurationLoaded();
     }
 
+    /** @param serverConfiguration Update Server Configuration. Attention: the name cannot have changed here **/
     public void updateServerConfiguration(ServerConfiguration serverConfiguration) {
-//        serverConfigurationList.remove(serverConfiguration);
+        ServerConfiguration configuration = findServerConfigurationByName(serverConfiguration.getName());
+        if(configuration != null) {
+            configuration.copy(serverConfiguration);
+        }
+        configurationListener.configurationLoaded();
+    }
+
+    /**
+     *  @param previous Existing Server Configuration if there is a chance that the name changed
+     *  @param current new Server Configuration which can have the name changed
+     **/
+    public void updateServerConfiguration(ServerConfiguration previous, ServerConfiguration current) {
+        ServerConfiguration configuration = findServerConfigurationByName(previous.getName());
+        if(configuration != null) {
+            configuration.copy(current);
+        }
         configurationListener.configurationLoaded();
     }
 

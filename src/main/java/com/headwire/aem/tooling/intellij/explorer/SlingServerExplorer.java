@@ -32,6 +32,10 @@ import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.TreeExpander;
 import com.intellij.ide.dnd.FileCopyPasteUtil;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroup;
+import com.intellij.notification.NotificationListener;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -58,11 +62,14 @@ import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindowId;
+import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.DoubleClickListener;
 import com.intellij.ui.PopupHandler;
@@ -76,6 +83,7 @@ import com.intellij.util.containers.*;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
+import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import com.intellij.util.xml.DomEventListener;
 import com.intellij.util.xml.DomManager;
@@ -85,6 +93,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -104,6 +113,7 @@ public class SlingServerExplorer
     private static final Logger LOGGER = Logger.getInstance(SlingServerExplorer.class);
     public static final Topic<ExecutionListener> EXECUTION_TOPIC =
         Topic.create("AEM configuration executed", ExecutionListener.class, Topic.BroadcastDirection.TO_PARENT);
+    private static final NotificationGroup NOTIFICATION_GROUP = NotificationGroup.balloonGroup("AEM Tooling");
 
     public static final String ROOT_FOLDER = "/jcr_root/";
 
@@ -284,13 +294,13 @@ public class SlingServerExplorer
                                 @Override
                                 public void processNotStarted(String executorId, @NotNull ExecutionEnvironment env) {
                                     // This is called when the Debug Session failed to start and / or connect
-                                    super.processNotStarted(executorId, env);
+                                    markConfigurationAsFailed(env.getRunProfile().getName());
                                 }
 
                                 @Override
                                 public void processStarted(String executorId, @NotNull ExecutionEnvironment env, @NotNull ProcessHandler handler) {
                                     // This is called when the Debug Session successfully started and connected
-                                    super.processStarted(executorId, env, handler);
+                                    markConfigurationAsStarted(env.getRunProfile().getName());
                                 }
 
 //                                @Override
@@ -301,7 +311,7 @@ public class SlingServerExplorer
                                 @Override
                                 public void processTerminated(@NotNull RunProfile runProfile, @NotNull ProcessHandler handler) {
                                     // Called when a successful connected session is stopped
-                                    super.processTerminated(runProfile, handler);
+                                    markConfigurationAsTerminated(runProfile.getName());
                                 }
                             }
                         );
@@ -378,6 +388,36 @@ public class SlingServerExplorer
         final JPanel buttonsPanel = new JPanel(new BorderLayout());
         buttonsPanel.add(actionToolBar.getComponent(), BorderLayout.CENTER);
         return buttonsPanel;
+    }
+
+    private void markConfigurationAsFailed(String configurationName) {
+        ServerConfiguration configuration = myConfig.findServerConfigurationByName(configurationName);
+        if(configuration != null) {
+            configuration.setServerStatus(ServerConfiguration.ServerStatus.failed);
+            myConfig.updateServerConfiguration(configuration);
+            //AS TODO: Update Bundle Status
+            // Mark any Bundles inside the Tree as unknown
+        }
+    }
+
+    private void markConfigurationAsStarted(String configurationName) {
+        ServerConfiguration configuration = myConfig.findServerConfigurationByName(configurationName);
+        if(configuration != null) {
+            configuration.setServerStatus(ServerConfiguration.ServerStatus.connected);
+            myConfig.updateServerConfiguration(configuration);
+            //AS TODO: Update Bundle Status
+            // Now obtain the Status of the Bundles inside AEM and add as entries to the Tree underneath the Configuration Entry
+        }
+    }
+
+    private void markConfigurationAsTerminated(String configurationName) {
+        ServerConfiguration configuration = myConfig.findServerConfigurationByName(configurationName);
+        if(configuration != null) {
+            configuration.setServerStatus(ServerConfiguration.ServerStatus.disconnected);
+            myConfig.updateServerConfiguration(configuration);
+            //AS TODO: Update Bundle Status
+            // Mark any Bundles inside the Tree as disconnected
+        }
     }
 
 //    private void addServerConfiguration() {
@@ -779,17 +819,22 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            ServerConfigurationDialog dialog = new ServerConfigurationDialog(e.getProject());
-
-            if (!dialog.showAndGet()) {
-//                historyService.setCanceledCommand(dialog.getGoals());
-                return;
-            }
-            ServerConfiguration serverConfiguration = dialog.getConfiguration();
-            myConfig.addServerConfiguration(serverConfiguration);
-//            myConfig.getServerConfigurationList().add(serverConfiguration);
-//            myTree.repaint();
-//            addServerConfiguration();
+            ServerConfiguration serverConfiguration = null;
+            do {
+                ServerConfigurationDialog dialog = new ServerConfigurationDialog(e.getProject(), serverConfiguration);
+                if(!dialog.showAndGet()) {
+                    return;
+                }
+                serverConfiguration = dialog.getConfiguration();
+                if(myConfig.findServerConfigurationByName(serverConfiguration.getName()) != null) {
+                    //AS TODO: Alert Collision
+                    // Display Alert that Configuration Already Exists
+                    NOTIFICATION_GROUP.createNotification("Cannot Change Configuration", "Cannot Change Configuration with new Name '" + serverConfiguration.getName() + " because this Configuration Already Exists", NotificationType.ERROR, null).notify(myProject);
+                } else {
+                    myConfig.addServerConfiguration(serverConfiguration);
+                    break;
+                }
+            } while(true);
         }
     }
 
@@ -824,16 +869,30 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            ServerConfiguration serverConfiguration = getCurrentConfiguration();
-            ServerConfigurationDialog dialog = new ServerConfigurationDialog(e.getProject(), serverConfiguration);
+            ServerConfiguration source = getCurrentConfiguration();
 
-            if (!dialog.showAndGet()) {
-//                historyService.setCanceledCommand(dialog.getGoals());
-                return;
-            }
-            dialog.getConfiguration();
-            myConfig.updateServerConfiguration(serverConfiguration);
-            //AS TODO: if the name of the configuration has changed we need to remove the outdated server configuration
+            do {
+                ServerConfigurationDialog dialog = new ServerConfigurationDialog(e.getProject(), source);
+                if (!dialog.showAndGet()) {
+                    return;
+                }
+                // Check if there is not a name collision due to changed name
+                ServerConfiguration target = dialog.getConfiguration();
+                boolean isOk = true;
+                if(!source.getName().equals(target.getName())) {
+                    // Name has changed => check for name collisions
+                    ServerConfiguration other = myConfig.findServerConfigurationByName(target.getName());
+                    if(other != null) {
+                        // Collision found -> alert and retry
+                        //AS TODO: Alert Collision
+                        isOk = false;
+                    }
+                }
+                if(isOk) {
+                    myConfig.updateServerConfiguration(source, target);
+                    break;
+                }
+            } while(true);
         }
 
         public void update(AnActionEvent event) {
