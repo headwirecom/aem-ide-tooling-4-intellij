@@ -2,20 +2,14 @@ package com.headwire.aem.tooling.intellij.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.intellij.openapi.diagnostic.Logger;
-//import org.apache.sling.ide.impl.resource.transport.RepositoryFactoryImpl;
-import org.apache.sling.ide.transport.Command;
+import org.apache.sling.ide.impl.resource.transport.RepositoryFactoryImpl;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.RepositoryException;
 import org.apache.sling.ide.transport.RepositoryFactory;
 import org.apache.sling.ide.transport.RepositoryInfo;
-import org.apache.sling.ide.transport.ResourceProxy;
-import org.apache.sling.ide.transport.Result;
 
 //AS TOOD: Copy from the Eclipse Project -> Clean up
 public abstract class ServerUtil {
@@ -129,19 +123,21 @@ public abstract class ServerUtil {
 //        }
 //    }
 
-//    public static Repository connectRepository(IServer server, IProgressMonitor monitor) throws CoreException {
-//        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
-//        try {
-//            RepositoryInfo repositoryInfo = getRepositoryInfo(server, monitor);
-//            return repository.connectRepository(repositoryInfo);
-//        } catch (URISyntaxException e) {
-//            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-//        } catch (RuntimeException e) {
-//            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-//        } catch (RepositoryException e) {
-//            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-//        }
-//    }
+    public static Repository connectRepository(ServerConfiguration serverConfiguration)
+        throws ServerException
+    {
+        RepositoryFactory repository = new RepositoryFactoryImpl();
+        try {
+            RepositoryInfo repositoryInfo = getRepositoryInfo(serverConfiguration);
+            return repository.connectRepository(repositoryInfo);
+        } catch (URISyntaxException e) {
+            throw new ServerException("URI Exception: " + e.getMessage(), e);
+        } catch (RuntimeException e) {
+            throw new ServerException("Unexpected Exception", e);
+        } catch (RepositoryException e) {
+            throw new ServerException("Repository Exception", e);
+        }
+    }
 
 //    public static Repository connectRepository(ServerConfiguration server) {
 ////        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
@@ -181,19 +177,17 @@ public abstract class ServerUtil {
 //    }
     
     
-//    public static RepositoryInfo getRepositoryInfo(IServer server, IProgressMonitor monitor) throws URISyntaxException {
-//
-//        ISlingLaunchpadServer launchpadServer = (ISlingLaunchpadServer) server.loadAdapter(SlingLaunchpadServer.class,
-//                monitor);
-//
-//        ISlingLaunchpadConfiguration configuration = launchpadServer.getConfiguration();
-//
-//        // TODO configurable scheme?
-//        URI uri = new URI("http", null, server.getHost(), configuration.getPort(), configuration.getContextPath(),
-//                null, null);
-//        return new RepositoryInfo(configuration.getUsername(),
-//                configuration.getPassword(), uri.toString());
-//    }
+    public static RepositoryInfo getRepositoryInfo(ServerConfiguration serverConfiguration)
+        throws URISyntaxException
+    {
+        // TODO configurable scheme?
+        URI uri = new URI("http", null, serverConfiguration.getHost(), serverConfiguration.getConnectionPort(), serverConfiguration.getContextPath(),
+                null, null);
+        return new RepositoryInfo(
+            serverConfiguration.getUserName(),
+            new String(serverConfiguration.getPassword()),
+            uri.toString());
+    }
 
     private ServerUtil() {
 

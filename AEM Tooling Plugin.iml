@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/eclipse-fix/java" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/eclipse.aem.tooling.generatedd.test.project" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intelliJ" />
     </content>
     <orderEntry type="jdk" jdkName="IDEA IC-141.713.2" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -16,5 +17,9 @@
     <orderEntry type="library" name="org.apache.sling.ide.api-1.0.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.osgi:org.osgi.compendium:4.3.1" level="project" />
     <orderEntry type="library" name="org.apache.sling.ide.impl-vlt-1.0.7-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.apache.sling.ide:org.apache.sling.ide.impl-resource:1.0.0" level="project" />
+    <orderEntry type="library" name="org.apache.sling.ide:org.apache.sling.ide.artifacts:1.0.0" level="project" />
+    <orderEntry type="library" name="commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20090211" level="project" />
   </component>
 </module>

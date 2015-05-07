@@ -65,7 +65,9 @@ public class ServerConfiguration
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
     private InstallationType installationType = DEFAULT_INSTALL_TYPE;
 
-    private ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
+    // Don't store Server Status as it is reset when the Configuration is loaded again
+    //AS TODO: Not sure about this -> Check if that works
+    private transient ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
 
     public ServerConfiguration() {
     }
@@ -89,6 +91,27 @@ public class ServerConfiguration
         publishType = source.publishType;
         installationType = source.installationType;
         serverStatus = source.serverStatus;
+    }
+
+    public String verify() {
+        String ret = null;
+        // First make sure all mandatory fields are provided
+        if(StringUtils.isBlank(name)) {
+            ret = "server.configuration.missing.name";
+        } else if(StringUtils.isBlank(host)) {
+            ret = "server.configuration.missing.host";
+        } else if(connectionPort <= 0) {
+            ret = "server.configuration.invalid.port";
+        } else if(connectionDebugPort <= 0 || connectionPort == connectionDebugPort) {
+            ret = "server.configuration.invalid.debug.port";
+        } else if(StringUtils.isBlank(userName)) {
+            ret = "server.configuration.missing.user.name";
+        } else if(StringUtils.isBlank(contextPath)) {
+            ret = "server.configuration.missing.context.path";
+        } else if(!contextPath.startsWith("/")) {
+            ret = "server.configuration.invalid.context.path";
+        }
+        return ret;
     }
 
     public String getName() {
@@ -152,7 +175,7 @@ public class ServerConfiguration
     }
 
     public void setContextPath(String contextPath) {
-        this.contextPath = StringUtils.isNotBlank(contextPath) ? description : DEFAULT_CONTEXT_PATH;
+        this.contextPath = StringUtils.isNotBlank(contextPath) ? contextPath : DEFAULT_CONTEXT_PATH;
     }
 
     public int getStartConnectionTimeoutInSeconds() {
