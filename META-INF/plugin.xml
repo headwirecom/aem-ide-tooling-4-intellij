@@ -25,17 +25,28 @@
   <extensions defaultExtensionNs="com.intellij">
       <toolWindow id="AEM" anchor="right" icon="/images/aem.gif"
                   factoryClass="com.headwire.aem.tooling.intellij.ServersToolWindowFactory"/>
+      <toolWindow id="AEM Console" anchor="bottom" secondary="true"
+                  icon="AllIcons.Ide.NoNotifications13"
+                  factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
       <projectService serviceInterface="com.headwire.aem.tooling.intellij.BytecodeOutline"
                       serviceImplementation="com.headwire.aem.tooling.intellij.BytecodeOutline"/>
+      <projectService serviceInterface="com.headwire.aem.tooling.intellij.console.SlingServerReportView"
+                      serviceImplementation="com.headwire.aem.tooling.intellij.console.SlingServerReportView"/>
   </extensions>
 
   <application-components>
     <!-- Add your application components here -->
+      <component>
+          <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog</implementation-class>
+      </component>
   </application-components>
 
   <project-components>
       <component>
           <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager</implementation-class>
+      </component>
+      <component>
+          <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog$ProjectTracker</implementation-class>
       </component>
   </project-components>
 

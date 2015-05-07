@@ -1,25 +1,28 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
+import com.headwire.aem.tooling.intellij.console.ConsoleLog;
+import com.headwire.aem.tooling.intellij.console.ConsoleLogCategory;
+import com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
-import com.intellij.debugger.DebuggerManager;
+import com.headwire.aem.tooling.intellij.console.SlingServerReportView;
+import com.headwire.aem.tooling.intellij.util.OSGiFactory;
+import com.headwire.aem.tooling.intellij.util.ServerException;
+import com.headwire.aem.tooling.intellij.util.ServerUtil;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.ui.ServerConfigurationDialog;
-import com.intellij.debugger.DebuggerManagerEx;
-import com.intellij.debugger.impl.DebuggerManagerAdapter;
-import com.intellij.debugger.impl.DebuggerSession;
 import com.intellij.execution.ExecutionAdapter;
 import com.intellij.execution.ExecutionListener;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
 import com.intellij.execution.ExecutorRegistry;
+import com.intellij.execution.KillableProcess;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunProfile;
-import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.impl.RunManagerImpl;
 import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl;
 import com.intellij.execution.process.ProcessHandler;
@@ -27,14 +30,13 @@ import com.intellij.execution.remote.RemoteConfiguration;
 import com.intellij.execution.remote.RemoteConfigurationType;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ExecutionUtil;
+import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.TreeExpander;
 import com.intellij.ide.dnd.FileCopyPasteUtil;
-import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationGroup;
-import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -53,7 +55,7 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ToggleAction;
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileTypes.StdFileTypes;
@@ -62,12 +64,12 @@ import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowId;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.ColoredTreeCellRenderer;
@@ -83,26 +85,41 @@ import com.intellij.util.containers.*;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.Topic;
-import com.intellij.util.ui.UIUtil;
 import com.intellij.util.ui.tree.TreeUtil;
 import com.intellij.util.xml.DomEventListener;
 import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.events.DomEvent;
+import org.apache.commons.io.IOUtils;
+import org.apache.sling.ide.artifacts.EmbeddedArtifact;
+import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
+import org.apache.sling.ide.osgi.OsgiClient;
+import org.apache.sling.ide.osgi.OsgiClientException;
+import org.apache.sling.ide.transport.Command;
+import org.apache.sling.ide.transport.Repository;
+import org.apache.sling.ide.transport.RepositoryInfo;
+import org.apache.sling.ide.transport.ResourceProxy;
+import org.apache.sling.ide.transport.Result;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.osgi.framework.Version;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+//import java.awt.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by schaefa on 3/19/15.
@@ -113,7 +130,13 @@ public class SlingServerExplorer
     private static final Logger LOGGER = Logger.getInstance(SlingServerExplorer.class);
     public static final Topic<ExecutionListener> EXECUTION_TOPIC =
         Topic.create("AEM configuration executed", ExecutionListener.class, Topic.BroadcastDirection.TO_PARENT);
-    private static final NotificationGroup NOTIFICATION_GROUP = NotificationGroup.balloonGroup("AEM Tooling");
+    public static final String TOOL_WINDOW_ID = "AEM";
+    private static final NotificationGroup NOTIFICATION_GROUP = NotificationGroup.toolWindowGroup(ConsoleLogCategory.CONSOLE_LOG_CATEGORY, ConsoleLogToolWindowFactory.TOOL_WINDOW_ID);
+    private static List<ServerConfiguration.ServerStatus> CONFIGURATION_IN_USE = Arrays.asList(
+        ServerConfiguration.ServerStatus.connecting,
+        ServerConfiguration.ServerStatus.connected,
+        ServerConfiguration.ServerStatus.disconnecting
+    );
 
     public static final String ROOT_FOLDER = "/jcr_root/";
 
@@ -123,6 +146,7 @@ public class SlingServerExplorer
     private KeyMapListener myKeyMapListener;
     private ServerConfigurationManager myConfig;
     private RunManagerEx myRunManager;
+    private MessageBusConnection myConn = null;
 
     private final TreeExpander myTreeExpander = new TreeExpander() {
         public void expandAll() {
@@ -264,83 +288,47 @@ public class SlingServerExplorer
 //            }
 //        }, project);
 
-        // Hook into the Debugger Manager
-        DebuggerManager debugManager = myProject.getComponent(DebuggerManager.class);
-//        final MessageBus bus = myProject.getComponent(MessageBus.class);
         final MessageBus bus = myProject.getMessageBus();
-        ((DebuggerManagerEx) debugManager).addDebuggerManagerListener(
-            new DebuggerManagerAdapter() {
-                private MessageBusConnection myConn = null;
-                private int mySessionCount = 0;
-
+        // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
+        // and when it is taken down even when not started or stopped through the Plugin
+        myConn = bus.connect();
+        myConn.subscribe(
+            ExecutionManager.EXECUTION_TOPIC,
+            new ExecutionAdapter() {
                 @Override
-                public void sessionCreated(DebuggerSession session) {
-                    if(mySessionCount == 0) {
-                        mySessionCount += 1;
-                        myConn = bus.connect();
-                        myConn.subscribe(
-                            ExecutionManager.EXECUTION_TOPIC,
-                            new ExecutionAdapter() {
-//                                @Override
-//                                public void processStartScheduled(String executorId, ExecutionEnvironment env) {
-//                                    super.processStartScheduled(executorId, env);
-//                                }
-//
-//                                @Override
-//                                public void processStarting(String executorId, @NotNull ExecutionEnvironment env) {
-//                                    super.processStarting(executorId, env);
-//                                }
-
-                                @Override
-                                public void processNotStarted(String executorId, @NotNull ExecutionEnvironment env) {
-                                    // This is called when the Debug Session failed to start and / or connect
-                                    markConfigurationAsFailed(env.getRunProfile().getName());
-                                }
-
-                                @Override
-                                public void processStarted(String executorId, @NotNull ExecutionEnvironment env, @NotNull ProcessHandler handler) {
-                                    // This is called when the Debug Session successfully started and connected
-                                    markConfigurationAsStarted(env.getRunProfile().getName());
-                                }
-
-//                                @Override
-//                                public void processTerminating(@NotNull RunProfile runProfile, @NotNull ProcessHandler handler) {
-//                                    super.processTerminating(runProfile, handler);
-//                                }
-
-                                @Override
-                                public void processTerminated(@NotNull RunProfile runProfile, @NotNull ProcessHandler handler) {
-                                    // Called when a successful connected session is stopped
-                                    markConfigurationAsTerminated(runProfile.getName());
-                                }
-                            }
-                        );
-                    }
+                public void processNotStarted(String executorId, @NotNull ExecutionEnvironment env) {
+                    // This is called when the Debug Session failed to start and / or connect
+                    markConfigurationAsFailed(env.getRunProfile().getName());
                 }
 
                 @Override
-                public void sessionAttached(DebuggerSession session) {
-                    mySessionCount = mySessionCount;
+                public void processStarted(String executorId, @NotNull ExecutionEnvironment env, @NotNull ProcessHandler handler) {
+                    // This is called when the Debug Session successfully started and connected
+                    markConfigurationAsStarted(env.getRunProfile().getName());
                 }
 
                 @Override
-                public void sessionDetached(DebuggerSession session) {
-                    mySessionCount = mySessionCount;
-                }
-
-                @Override
-                public void sessionRemoved(DebuggerSession session) {
-                    mySessionCount = Math.max(0, mySessionCount - 1);
-                    if(mySessionCount == 0) {
-                        final MessageBusConnection conn = myConn;
-                        if(conn != null) {
-                            Disposer.dispose(conn);
-                            myConn = null;
-                        }
-                    }
+                public void processTerminated(@NotNull RunProfile runProfile, @NotNull ProcessHandler handler) {
+                    // Called when a successful connected session is stopped
+                    markConfigurationAsTerminated(runProfile.getName());
                 }
             }
         );
+
+
+//        ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
+//        ToolWindow toolWindow = toolWindowManager.getToolWindow(SlingServerReportView.TOOL_WINDOW_ID);
+//        if(toolWindow == null) {
+//            toolWindow = toolWindowManager.registerToolWindow(SlingServerReportView.TOOL_WINDOW_ID, true, ToolWindowAnchor.BOTTOM, myProject, true);
+//AS TODO: Provide Tool Window Icon
+//            toolWindow.setIcon(descriptor.getFramework().getToolWindowIcon());
+//AS TODO: Not sure if that is needed as we use the initToolWindow() method below
+//            descriptor.createToolWindowContent(myProject, toolWindow);
+//            ServiceManager.getService(project, SlingServerReportView.class).initToolWindow(toolWindow, myProject);
+//            ConsoleLog.getProjectComponent(myProject).initDefaultContent();
+//            ConsoleLog.ProjectTracker projectTracker = new ConsoleLog.ProjectTracker(myProject);
+//        }
+
     }
 
     public void dispose() {
@@ -365,6 +353,8 @@ public class SlingServerExplorer
             myTree = null;
         }
 
+        Disposer.dispose(myConn);
+        myConn = null;
         myProject = null;
 //        myConfig = null;
     }
@@ -576,14 +566,14 @@ public class SlingServerExplorer
         return ret;
     }
 
-    public boolean isConnectionEstablished() {
-        boolean ret = false;
-        if(myProject != null) {
-//AS TODO: Add the check if there is a Connection Established
-//            ret = getCurrentConfiguration() != null;
-        }
-        return ret;
-    }
+//    public boolean isConnectionEstablished() {
+//        boolean ret = false;
+//        if(myProject != null) {
+////AS TODO: Add the check if there is a Connection Established
+////            ret = getCurrentConfiguration() != null;
+//        }
+//        return ret;
+//    }
 
     @Nullable
     private ServerConfiguration getCurrentConfiguration() {
@@ -819,22 +809,7 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            ServerConfiguration serverConfiguration = null;
-            do {
-                ServerConfigurationDialog dialog = new ServerConfigurationDialog(e.getProject(), serverConfiguration);
-                if(!dialog.showAndGet()) {
-                    return;
-                }
-                serverConfiguration = dialog.getConfiguration();
-                if(myConfig.findServerConfigurationByName(serverConfiguration.getName()) != null) {
-                    //AS TODO: Alert Collision
-                    // Display Alert that Configuration Already Exists
-                    NOTIFICATION_GROUP.createNotification("Cannot Change Configuration", "Cannot Change Configuration with new Name '" + serverConfiguration.getName() + " because this Configuration Already Exists", NotificationType.ERROR, null).notify(myProject);
-                } else {
-                    myConfig.addServerConfiguration(serverConfiguration);
-                    break;
-                }
-            } while(true);
+            editServerConfiguration(e.getProject(), null);
         }
     }
 
@@ -855,7 +830,7 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected());
+            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(getCurrentConfiguration()));
         }
     }
 
@@ -870,34 +845,56 @@ public class SlingServerExplorer
 
         public void actionPerformed(AnActionEvent e) {
             ServerConfiguration source = getCurrentConfiguration();
+            editServerConfiguration(e.getProject(), source);
+        }
 
-            do {
-                ServerConfigurationDialog dialog = new ServerConfigurationDialog(e.getProject(), source);
-                if (!dialog.showAndGet()) {
-                    return;
-                }
+        public void update(AnActionEvent event) {
+            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(getCurrentConfiguration()));
+        }
+    }
+
+    /**
+     *  Adds or Edits a Server Configuration and makes sure the configuration is valid
+     *  @param project The Current Project
+     *  @param source The Server Configuration that needs to be edited. Null if a new one should be created.
+     **/
+    private void editServerConfiguration(@NotNull Project project, @Nullable ServerConfiguration source) {
+        boolean isOk;
+        do {
+            isOk = true;
+            ServerConfigurationDialog dialog = new ServerConfigurationDialog(project, source);
+            if(dialog.showAndGet()) {
                 // Check if there is not a name collision due to changed name
                 ServerConfiguration target = dialog.getConfiguration();
-                boolean isOk = true;
-                if(!source.getName().equals(target.getName())) {
+                if(source != null && !source.getName().equals(target.getName())) {
                     // Name has changed => check for name collisions
                     ServerConfiguration other = myConfig.findServerConfigurationByName(target.getName());
                     if(other != null) {
                         // Collision found -> alert and retry
-                        //AS TODO: Alert Collision
                         isOk = false;
+                        sendErrorNotification("aem.explorer.cannot.change.configuration", target.getName());
+                    }
+                } else {
+                    // Verity Content
+                    String message = target.verify();
+                    if(message != null) {
+                        isOk = false;
+                        sendErrorNotification("aem.explorer.server.configuration.invalid", AEMBundle.message(message));
                     }
                 }
                 if(isOk) {
-                    myConfig.updateServerConfiguration(source, target);
-                    break;
+                    if(source != null) {
+                        myConfig.updateServerConfiguration(source, target);
+                    } else {
+                        myConfig.addServerConfiguration(target);
+                    }
                 }
-            } while(true);
-        }
+            }
+        } while(!isOk);
+    }
 
-        public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected());
-        }
+    private boolean isConfigurationInUse(ServerConfiguration serverConfiguration) {
+        return serverConfiguration != null && CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus());
     }
 
     private final class RunAction extends AnAction {
@@ -913,11 +910,72 @@ public class SlingServerExplorer
             // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
             // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
             //AS TODO: Create that and also add this to the Debug
+            ServerConfiguration serverConfiguration = getCurrentConfiguration();
+            boolean success = false;
+            Result<ResourceProxy> result = null;
+            try {
+                sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+                Repository repository = ServerUtil.connectRepository(serverConfiguration);
+                //AS TODO: Now What?
+                Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
+                result = command.execute();
+                success = result.isSuccess();
+
+//AS TODO: This brings up Message Bunbles with are very clunky. Need to report them into the Control Panel which needs to be created, added to the bottom on the Editor, shown and the message sent there.
+                sendInfoNotification("aem.explorer.connected.sling.repository", success);
+
+                RepositoryInfo repositoryInfo;
+                try {
+                    repositoryInfo = ServerUtil.getRepositoryInfo(serverConfiguration);
+//AS TODO: Activator is an Eclipse OSGi component and so we need to find a way to extract this and code it so that it works for Eclipse and IntelliJ
+//                    OsgiClient client = Activator.getDefault().getOsgiClientFactory().createOsgiClient(repositoryInfo);
+                    OsgiClient client = OSGiFactory.getOSGiClientFactory().createOsgiClient(repositoryInfo);
+//                    EmbeddedArtifactLocator artifactLocator = Activator.getDefault().getArtifactLocator();
+                    EmbeddedArtifactLocator artifactLocator = OSGiFactory.getArtifactLocator();
+                    Version remoteVersion = client.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
+
+                    sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
+//                    monitor.worked(1); // 4/5 done
+
+                    final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
+
+                    final Version embeddedVersion = new Version(supportBundle.getVersion());
+
+//                    ISlingLaunchpadServer launchpadServer = (ISlingLaunchpadServer) getServer().loadAdapter(SlingLaunchpadServer.class,
+//                        monitor);
+                    if (remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
+                        InputStream contents = null;
+                        try {
+                            sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
+                            contents = supportBundle.openInputStream();
+                            client.installBundle(contents, supportBundle.getName());
+                        } finally {
+                            IOUtils.closeQuietly(contents);
+                        }
+                        remoteVersion = embeddedVersion;
+
+                    }
+//                    launchpadServer.setBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME, remoteVersion,
+//                        monitor);
+
+                    sendInfoNotification("aem.explorer.finished.connection.to.remote");
+//                    monitor.worked(1); // 5/5 done
+
+                } catch(IOException e2) {
+                    sendErrorNotification("aem.explorer.cannot.read.installation.support.bundle", serverConfiguration.getName(), e2.getMessage());
+                } catch(URISyntaxException e2) {
+                    sendErrorNotification("aem.explorer.server.uri.bad", serverConfiguration.getName(), e2.getMessage());
+                } catch (OsgiClientException e2) {
+                    sendErrorNotification("aem.explorer.osgi.client.problem", serverConfiguration.getName(), e2.getMessage());
+                }
+            } catch(ServerException e1) {
+                sendErrorNotification("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e1.getMessage());
+            }
         }
 
         public void update(AnActionEvent event) {
             //AS TODO: Disabled this when a session is started and (re)enable it when it is stopped
-            event.getPresentation().setEnabled(isConfigurationSelected());
+            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(getCurrentConfiguration()));
         }
     }
 
@@ -959,7 +1017,7 @@ public class SlingServerExplorer
 
         public void update(AnActionEvent event) {
             //AS TODO: Disabled this when a session is started and (re)enable it when it is stopped
-            event.getPresentation().setEnabled(isConfigurationSelected());
+            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(getCurrentConfiguration()));
         }
     }
 
@@ -973,11 +1031,73 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
+            // This code was taken from the 'com.intellij.execution.actions.StopAction' which is the Stop Action of
+            // Debug Stop Button but it was simplified because we have a connection or not and no UI.
+            final DataContext dataContext = e.getDataContext();
+            ProcessHandler activeProcessHandler = getHandler(dataContext);
+
+            if(canBeStopped(activeProcessHandler)) {
+                stopProcess(activeProcessHandler);
+            }
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConnectionEstablished());
+            event.getPresentation().setEnabled(isConfigurationSelected() && isConfigurationInUse(getCurrentConfiguration()));
         }
+
+        private void stopProcess(@NotNull ProcessHandler processHandler) {
+            if (processHandler instanceof KillableProcess && processHandler.isProcessTerminating()) {
+                ((KillableProcess)processHandler).killProcess();
+                return;
+            }
+
+            if (processHandler.detachIsDefault()) {
+                processHandler.detachProcess();
+            }
+            else {
+                processHandler.destroyProcess();
+            }
+        }
+
+        @Nullable
+        private ProcessHandler getHandler(@NotNull DataContext dataContext) {
+            final RunContentDescriptor contentDescriptor = LangDataKeys.RUN_CONTENT_DESCRIPTOR.getData(dataContext);
+            if (contentDescriptor != null) {
+                // toolwindow case
+                return contentDescriptor.getProcessHandler();
+            }
+            else {
+                // main menu toolbar
+                final Project project = CommonDataKeys.PROJECT.getData(dataContext);
+                final RunContentDescriptor selectedContent =
+                    project == null ? null : ExecutionManager.getInstance(project).getContentManager().getSelectedContent();
+                return selectedContent == null ? null : selectedContent.getProcessHandler();
+            }
+        }
+
+        private boolean canBeStopped(@Nullable ProcessHandler processHandler) {
+            return processHandler != null && !processHandler.isProcessTerminated()
+                && (!processHandler.isProcessTerminating()
+                || processHandler instanceof KillableProcess && ((KillableProcess)processHandler).canKillProcess());
+        }
+    }
+
+    private void sendInfoNotification(String bundleMessageId, Object ... params) {
+        NOTIFICATION_GROUP.createNotification(
+            AEMBundle.message(bundleMessageId + ".title"),
+            AEMBundle.message(bundleMessageId + ".description", params),
+            NotificationType.INFORMATION,
+            null
+            ).notify(myProject);
+    }
+
+    private void sendErrorNotification(String bundleMessageId, Object ... params) {
+        NOTIFICATION_GROUP.createNotification(
+            AEMBundle.message(bundleMessageId + ".title"),
+            AEMBundle.message(bundleMessageId + ".description", params),
+            NotificationType.ERROR,
+            null
+            ).notify(myProject);
     }
 
     private final class MakeAntRunConfigurationAction extends AnAction {

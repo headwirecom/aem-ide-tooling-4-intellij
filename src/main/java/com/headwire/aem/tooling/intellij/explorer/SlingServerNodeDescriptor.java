@@ -94,7 +94,7 @@ final class SlingServerNodeDescriptor
 //      if (!addedNames.contains(presentableName)) {
 //        addedNames.add(presentableName);
       if(myTarget.getServerStatus() != null) {
-          myHighlightedText.getEnding().addText(" (" + myTarget.getServerStatus() + ')', ourPostfixAttributes);
+          myHighlightedText.getEnding().addText(" (" + myTarget.getServerStatus().getName() + ')', ourPostfixAttributes);
       }
 //      }
 //    }
