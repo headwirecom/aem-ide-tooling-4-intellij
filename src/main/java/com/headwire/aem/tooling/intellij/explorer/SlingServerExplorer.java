@@ -1,10 +1,8 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
-import com.headwire.aem.tooling.intellij.console.ConsoleLog;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogCategory;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
-import com.headwire.aem.tooling.intellij.console.SlingServerReportView;
 import com.headwire.aem.tooling.intellij.util.OSGiFactory;
 import com.headwire.aem.tooling.intellij.util.ServerException;
 import com.headwire.aem.tooling.intellij.util.ServerUtil;
@@ -55,7 +53,6 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ToggleAction;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileTypes.StdFileTypes;
@@ -63,15 +60,19 @@ import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.ProjectFileIndex;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowId;
-import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.psi.PsiFile;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.DoubleClickListener;
 import com.intellij.ui.PopupHandler;
@@ -119,13 +120,15 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by schaefa on 3/19/15.
  */
 public class SlingServerExplorer
-        extends SimpleToolWindowPanel implements DataProvider, Disposable
+    extends SimpleToolWindowPanel
+    implements DataProvider, Disposable
 {
     private static final Logger LOGGER = Logger.getInstance(SlingServerExplorer.class);
     public static final Topic<ExecutionListener> EXECUTION_TOPIC =
@@ -178,7 +181,6 @@ public class SlingServerExplorer
         myTree.setShowsRootHandles(true);
         myTree.setCellRenderer(new NodeRenderer());
         myBuilder = new ServerExplorerTreeBuilder(project, myTree, model);
-//        myBuilder.setTargetsFiltered(AntConfigurationBase.getInstance(project).isFilterTargets());
         TreeUtil.installActions(myTree);
         new TreeSpeedSearch(myTree);
         myTree.addMouseListener(new PopupHandler() {
@@ -192,9 +194,9 @@ public class SlingServerExplorer
             protected boolean onDoubleClick(MouseEvent e) {
                 final int eventY = e.getY();
                 final int row = myTree.getClosestRowForLocation(e.getX(), eventY);
-                if (row >= 0) {
+                if(row >= 0) {
                     final Rectangle bounds = myTree.getRowBounds(row);
-                    if (bounds != null && eventY > bounds.getY() && eventY < bounds.getY() + bounds.getHeight()) {
+                    if(bounds != null && eventY > bounds.getY() && eventY < bounds.getY() + bounds.getHeight()) {
                         runSelection(DataManager.getInstance().getDataContext(myTree));
                         return true;
                     }
@@ -333,21 +335,21 @@ public class SlingServerExplorer
 
     public void dispose() {
         final KeyMapListener listener = myKeyMapListener;
-        if (listener != null) {
+        if(listener != null) {
             myKeyMapListener = null;
             listener.stopListen();
         }
 
         final ServerExplorerTreeBuilder builder = myBuilder;
-        if (builder != null) {
+        if(builder != null) {
             Disposer.dispose(builder);
             myBuilder = null;
         }
 
         final Tree tree = myTree;
-        if (tree != null) {
+        if(tree != null) {
             ToolTipManager.sharedInstance().unregisterComponent(tree);
-            for (KeyStroke keyStroke : tree.getRegisteredKeyStrokes()) {
+            for(KeyStroke keyStroke : tree.getRegisteredKeyStrokes()) {
                 tree.unregisterKeyboardAction(keyStroke);
             }
             myTree = null;
@@ -364,7 +366,7 @@ public class SlingServerExplorer
         group.add(new AddAction());
         group.add(new RemoveAction());
         group.add(new EditAction());
-        group.add(new RunAction());
+        group.add(new CheckAction());
         group.add(new DebugAction());
         group.add(new StopAction());
         AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
@@ -483,7 +485,7 @@ public class SlingServerExplorer
 //    }
 
     private void runSelection(final DataContext dataContext) {
-        if (!canRunSelection()) {
+        if(!canRunSelection()) {
             return;
         }
 //        final AntBuildFileBase buildFile = getCurrentBuildFile();
@@ -495,11 +497,11 @@ public class SlingServerExplorer
     }
 
     private boolean canRunSelection() {
-        if (myTree == null) {
+        if(myTree == null) {
             return false;
         }
         final TreePath[] paths = myTree.getSelectionPaths();
-        if (paths == null) {
+        if(paths == null) {
             return false;
         }
 //        final AntBuildFile buildFile = getCurrentBuildFile();
@@ -528,8 +530,8 @@ public class SlingServerExplorer
 
     private static String[] getTargetNamesFromPaths(TreePath[] paths) {
         final java.util.List<String> targets = new ArrayList<String>();
-        for (final TreePath path : paths) {
-            final Object userObject = ((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject();
+        for(final TreePath path : paths) {
+            final Object userObject = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
 //            if (!(userObject instanceof AntTargetNodeDescriptor)) {
 //                continue;
 //            }
@@ -587,8 +589,8 @@ public class SlingServerExplorer
         if(myTree != null) {
             final TreePath path = myTree.getSelectionPath();
             if(path != null) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-                while (node != null) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                while(node != null) {
                     final Object userObject = node.getUserObject();
                     if(userObject instanceof SlingServerNodeDescriptor) {
                         ret = (SlingServerNodeDescriptor) userObject;
@@ -637,14 +639,14 @@ public class SlingServerExplorer
     private void popupInvoked(final Component comp, final int x, final int y) {
         Object userObject = null;
         final TreePath path = myTree.getSelectionPath();
-        if (path != null) {
-            final DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-            if (node != null) {
+        if(path != null) {
+            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            if(node != null) {
                 userObject = node.getUserObject();
             }
         }
         final DefaultActionGroup group = new DefaultActionGroup();
-        group.add(new RunAction());
+        group.add(new CheckAction());
 //        group.add(new CreateMetaTargetAction());
         group.add(new MakeAntRunConfigurationAction());
 //        group.add(new RemoveMetaTargetsOrBuildFileAction());
@@ -670,7 +672,7 @@ public class SlingServerExplorer
 
     @Nullable
     public Object getData(@NonNls String dataId) {
-        if (CommonDataKeys.NAVIGATABLE.is(dataId)) {
+        if(CommonDataKeys.NAVIGATABLE.is(dataId)) {
 //            final AntBuildFile buildFile = getCurrentBuildFile();
 //            if (buildFile == null) {
 //                return null;
@@ -680,11 +682,11 @@ public class SlingServerExplorer
 //                return null;
 //            }
             final TreePath treePath = myTree.getLeadSelectionPath();
-            if (treePath == null) {
+            if(treePath == null) {
                 return null;
             }
-            final DefaultMutableTreeNode node = (DefaultMutableTreeNode)treePath.getLastPathComponent();
-            if (node == null) {
+            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
+            if(node == null) {
                 return null;
             }
 //            if (node.getUserObject() instanceof AntTargetNodeDescriptor) {
@@ -701,15 +703,12 @@ public class SlingServerExplorer
 //            if (file.isValid()) {
 //                return new OpenFileDescriptor(myProject, file);
 //            }
-        }
-        else if (PlatformDataKeys.HELP_ID.is(dataId)) {
+        } else if(PlatformDataKeys.HELP_ID.is(dataId)) {
 //            return HelpID.ANT;
             return null;
-        }
-        else if (PlatformDataKeys.TREE_EXPANDER.is(dataId)) {
-            return myProject != null? myTreeExpander : null;
-        }
-        else if (CommonDataKeys.VIRTUAL_FILE_ARRAY.is(dataId)) {
+        } else if(PlatformDataKeys.TREE_EXPANDER.is(dataId)) {
+            return myProject != null ? myTreeExpander : null;
+        } else if(CommonDataKeys.VIRTUAL_FILE_ARRAY.is(dataId)) {
 //            final java.util.List<VirtualFile> virtualFiles = collectAntFiles(new Function<AntBuildFile, VirtualFile>() {
 //                @Override
 //                public VirtualFile fun(AntBuildFile buildFile) {
@@ -722,8 +721,7 @@ public class SlingServerExplorer
 //            });
 //            return virtualFiles == null ? null : virtualFiles.toArray(new VirtualFile[virtualFiles.size()]);
             return null;
-        }
-        else if (LangDataKeys.PSI_ELEMENT_ARRAY.is(dataId)) {
+        } else if(LangDataKeys.PSI_ELEMENT_ARRAY.is(dataId)) {
 //            final java.util.List<PsiElement> elements = collectAntFiles(new Function<AntBuildFile, PsiElement>() {
 //                @Override
 //                public PsiElement fun(AntBuildFile buildFile) {
@@ -768,10 +766,10 @@ public class SlingServerExplorer
 //    }
 
     public static FileChooserDescriptor createXmlDescriptor() {
-        return new FileChooserDescriptor(true, false, false, false, false, true){
+        return new FileChooserDescriptor(true, false, false, false, false, true) {
             public boolean isFileVisible(VirtualFile file, boolean showHiddenFiles) {
                 boolean b = super.isFileVisible(file, showHiddenFiles);
-                if (!file.isDirectory()) {
+                if(!file.isDirectory()) {
                     b &= StdFileTypes.XML.equals(file.getFileType());
                 }
                 return b;
@@ -787,13 +785,12 @@ public class SlingServerExplorer
                                           boolean leaf,
                                           int row,
                                           boolean hasFocus) {
-            final Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
+            final Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
             LOGGER.debug("Node Renderer: user object: " + userObject);
-            if (userObject instanceof ServerNodeDescriptor) {
-                final ServerNodeDescriptor descriptor = (ServerNodeDescriptor)userObject;
+            if(userObject instanceof ServerNodeDescriptor) {
+                final ServerNodeDescriptor descriptor = (ServerNodeDescriptor) userObject;
                 descriptor.customize(this);
-            }
-            else {
+            } else {
                 append(tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus), SimpleTextAttributes.REGULAR_ATTRIBUTES);
             }
         }
@@ -854,10 +851,11 @@ public class SlingServerExplorer
     }
 
     /**
-     *  Adds or Edits a Server Configuration and makes sure the configuration is valid
-     *  @param project The Current Project
-     *  @param source The Server Configuration that needs to be edited. Null if a new one should be created.
-     **/
+     * Adds or Edits a Server Configuration and makes sure the configuration is valid
+     *
+     * @param project The Current Project
+     * @param source  The Server Configuration that needs to be edited. Null if a new one should be created.
+     */
     private void editServerConfiguration(@NotNull Project project, @Nullable ServerConfiguration source) {
         boolean isOk;
         do {
@@ -897,11 +895,11 @@ public class SlingServerExplorer
         return serverConfiguration != null && CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus());
     }
 
-    private final class RunAction extends AnAction {
-        public RunAction() {
+    private final class CheckAction extends AnAction {
+        public CheckAction() {
             super(
-                AEMBundle.message("run.configuration.action.name"),
-                AEMBundle.message("run.configuration.action.description"),
+                AEMBundle.message("check.configuration.action.name"),
+                AEMBundle.message("check.configuration.action.description"),
                 AllIcons.Actions.Execute
             );
         }
@@ -909,21 +907,17 @@ public class SlingServerExplorer
         public void actionPerformed(AnActionEvent e) {
             // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
             // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
-            //AS TODO: Create that and also add this to the Debug
             ServerConfiguration serverConfiguration = getCurrentConfiguration();
             boolean success = false;
             Result<ResourceProxy> result = null;
             try {
                 sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
                 Repository repository = ServerUtil.connectRepository(serverConfiguration);
-                //AS TODO: Now What?
                 Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
                 result = command.execute();
                 success = result.isSuccess();
 
-//AS TODO: This brings up Message Bunbles with are very clunky. Need to report them into the Control Panel which needs to be created, added to the bottom on the Editor, shown and the message sent there.
                 sendInfoNotification("aem.explorer.connected.sling.repository", success);
-
                 RepositoryInfo repositoryInfo;
                 try {
                     repositoryInfo = ServerUtil.getRepositoryInfo(serverConfiguration);
@@ -935,15 +929,11 @@ public class SlingServerExplorer
                     Version remoteVersion = client.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 
                     sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
-//                    monitor.worked(1); // 4/5 done
 
                     final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
-
                     final Version embeddedVersion = new Version(supportBundle.getVersion());
 
-//                    ISlingLaunchpadServer launchpadServer = (ISlingLaunchpadServer) getServer().loadAdapter(SlingLaunchpadServer.class,
-//                        monitor);
-                    if (remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
+                    if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
                         InputStream contents = null;
                         try {
                             sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
@@ -953,19 +943,22 @@ public class SlingServerExplorer
                             IOUtils.closeQuietly(contents);
                         }
                         remoteVersion = embeddedVersion;
-
                     }
-//                    launchpadServer.setBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME, remoteVersion,
-//                        monitor);
+//AS TODO: Check if all supported Modules are installed and up to date with current version
+                    Module[] modules = ModuleManager.getInstance(myProject).getModules();
+                    for(Module module: modules) {
+                        ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+//                        ModifiableRootModel modifiableModel = moduleRootManager.getModifiableModel();
+                        String extension = module.getModuleFile().getExtension();
+                        
+                    }
 
                     sendInfoNotification("aem.explorer.finished.connection.to.remote");
-//                    monitor.worked(1); // 5/5 done
-
                 } catch(IOException e2) {
                     sendErrorNotification("aem.explorer.cannot.read.installation.support.bundle", serverConfiguration.getName(), e2.getMessage());
                 } catch(URISyntaxException e2) {
                     sendErrorNotification("aem.explorer.server.uri.bad", serverConfiguration.getName(), e2.getMessage());
-                } catch (OsgiClientException e2) {
+                } catch(OsgiClientException e2) {
                     sendErrorNotification("aem.explorer.osgi.client.problem", serverConfiguration.getName(), e2.getMessage());
                 }
             } catch(ServerException e1) {
@@ -974,8 +967,7 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-            //AS TODO: Disabled this when a session is started and (re)enable it when it is stopped
-            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(getCurrentConfiguration()));
+            event.getPresentation().setEnabled(isConfigurationSelected());
         }
     }
 
@@ -1046,15 +1038,14 @@ public class SlingServerExplorer
         }
 
         private void stopProcess(@NotNull ProcessHandler processHandler) {
-            if (processHandler instanceof KillableProcess && processHandler.isProcessTerminating()) {
-                ((KillableProcess)processHandler).killProcess();
+            if(processHandler instanceof KillableProcess && processHandler.isProcessTerminating()) {
+                ((KillableProcess) processHandler).killProcess();
                 return;
             }
 
-            if (processHandler.detachIsDefault()) {
+            if(processHandler.detachIsDefault()) {
                 processHandler.detachProcess();
-            }
-            else {
+            } else {
                 processHandler.destroyProcess();
             }
         }
@@ -1062,11 +1053,10 @@ public class SlingServerExplorer
         @Nullable
         private ProcessHandler getHandler(@NotNull DataContext dataContext) {
             final RunContentDescriptor contentDescriptor = LangDataKeys.RUN_CONTENT_DESCRIPTOR.getData(dataContext);
-            if (contentDescriptor != null) {
+            if(contentDescriptor != null) {
                 // toolwindow case
                 return contentDescriptor.getProcessHandler();
-            }
-            else {
+            } else {
                 // main menu toolbar
                 final Project project = CommonDataKeys.PROJECT.getData(dataContext);
                 final RunContentDescriptor selectedContent =
@@ -1078,26 +1068,26 @@ public class SlingServerExplorer
         private boolean canBeStopped(@Nullable ProcessHandler processHandler) {
             return processHandler != null && !processHandler.isProcessTerminated()
                 && (!processHandler.isProcessTerminating()
-                || processHandler instanceof KillableProcess && ((KillableProcess)processHandler).canKillProcess());
+                || processHandler instanceof KillableProcess && ((KillableProcess) processHandler).canKillProcess());
         }
     }
 
-    private void sendInfoNotification(String bundleMessageId, Object ... params) {
+    private void sendInfoNotification(String bundleMessageId, Object... params) {
         NOTIFICATION_GROUP.createNotification(
             AEMBundle.message(bundleMessageId + ".title"),
             AEMBundle.message(bundleMessageId + ".description", params),
             NotificationType.INFORMATION,
             null
-            ).notify(myProject);
+        ).notify(myProject);
     }
 
-    private void sendErrorNotification(String bundleMessageId, Object ... params) {
+    private void sendErrorNotification(String bundleMessageId, Object... params) {
         NOTIFICATION_GROUP.createNotification(
             AEMBundle.message(bundleMessageId + ".title"),
             AEMBundle.message(bundleMessageId + ".description", params),
             NotificationType.ERROR,
             null
-            ).notify(myProject);
+        ).notify(myProject);
     }
 
     private final class MakeAntRunConfigurationAction extends AnAction {
@@ -1280,13 +1270,13 @@ public class SlingServerExplorer
 
         private void doAction() {
             final TreePath[] paths = myTree.getSelectionPaths();
-            if (paths == null) {
+            if(paths == null) {
                 return;
             }
             try {
                 // try to remove build file
-                if (paths.length == 1) {
-                    final DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
+                if(paths.length == 1) {
+                    final DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0].getLastPathComponent();
 //                    if (node.getUserObject() instanceof AntBuildFileNodeDescriptor) {
 //                        final AntBuildFileNodeDescriptor descriptor = (AntBuildFileNodeDescriptor)node.getUserObject();
 //                        if (descriptor.getBuildFile().equals(getCurrentBuildFile())) {
@@ -1307,8 +1297,7 @@ public class SlingServerExplorer
 //                        }
 //                    }
 //                }
-            }
-            finally {
+            } finally {
                 myBuilder.queueUpdate();
                 myTree.repaint();
             }
@@ -1317,12 +1306,12 @@ public class SlingServerExplorer
         public void update(AnActionEvent e) {
             final Presentation presentation = e.getPresentation();
             final TreePath[] paths = myTree.getSelectionPaths();
-            if (paths == null) {
+            if(paths == null) {
                 presentation.setEnabled(false);
                 return;
             }
 
-            if (paths.length == 1) {
+            if(paths.length == 1) {
 //                String text = AntBundle.message("remove.meta.target.action.name");
 //                boolean enabled = false;
 //                final DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
@@ -1344,8 +1333,7 @@ public class SlingServerExplorer
 //                }
 //                presentation.setText(text);
 //                presentation.setEnabled(enabled);
-            }
-            else {
+            } else {
 //                presentation.setText(AntBundle.message("remove.selected.meta.targets.action.name"));
 //                final AntBuildTarget[] targets = getTargetObjectsFromPaths(paths);
 //                boolean enabled = targets.length > 0;
@@ -1394,11 +1382,11 @@ public class SlingServerExplorer
         }
 
         private void listenTo(Keymap keyMap) {
-            if (myCurrentKeyMap != null) {
+            if(myCurrentKeyMap != null) {
                 myCurrentKeyMap.removeShortcutChangeListener(this);
             }
             myCurrentKeyMap = keyMap;
-            if (myCurrentKeyMap != null) {
+            if(myCurrentKeyMap != null) {
                 myCurrentKeyMap.addShortcutChangeListener(this);
             }
         }
@@ -1417,12 +1405,12 @@ public class SlingServerExplorer
         }
     }
 
-//AS TODO: Do we really need this (transfer of what)
+    //AS TODO: Do we really need this (transfer of what)
     private final class MyTransferHandler extends TransferHandler {
 
         @Override
         public boolean importData(final TransferSupport support) {
-            if (canImport(support)) {
+            if(canImport(support)) {
 //                addBuildFile(getAntFiles(support));
                 return true;
             }
@@ -1437,8 +1425,8 @@ public class SlingServerExplorer
         private VirtualFile[] getAntFiles(final TransferSupport support) {
             java.util.List<VirtualFile> virtualFileList = new ArrayList<VirtualFile>();
             final java.util.List<File> fileList = FileCopyPasteUtil.getFileList(support.getTransferable());
-            if (fileList != null) {
-                for (File file : fileList ) {
+            if(fileList != null) {
+                for(File file : fileList) {
                     ContainerUtil.addIfNotNull(virtualFileList, VfsUtil.findFileByIoFile(file, true));
                 }
             }

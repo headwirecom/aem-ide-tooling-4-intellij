@@ -1509,3 +1509,55 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-05 10:34:40.619
 !MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aem-tooling-test-project.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-07 13:58:32.262
+!MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.core:bundle:0.0.1-SNAPSHOT : Unused Private-Package instructions, no such package(s) on the class path: [!*]
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-07 13:58:32.265
+!MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.core:bundle:0.0.1-SNAPSHOT : The JAR is empty: The instructions for the JAR named com.headwire.aem.tooling.aem-tooling-test-project.core did not cause any content to be included, this is likely wrong
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-07 13:58:38.136
+!MESSAGE Authentication required to access repository descriptors
+
+!ENTRY org.apache.sling.ide.eclipse-core 4 0 2015-05-07 14:28:19.601
+!MESSAGE Publishing failed
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-05-07 14:28:19.601
+!MESSAGE Failed installing bundle : java.net.ConnectException: Connection refused
+!STACK 0
+org.apache.sling.ide.osgi.OsgiClientException: java.net.ConnectException: Connection refused
+	at org.apache.sling.ide.osgi.impl.HttpOsgiClient.getBundleVersion(HttpOsgiClient.java:95)
+	at org.apache.sling.ide.osgi.impl.TracingOsgiClient.getBundleVersion(TracingOsgiClient.java:46)
+	at org.apache.sling.ide.eclipse.core.internal.SlingLaunchpadBehaviour.publishBundleModule(SlingLaunchpadBehaviour.java:315)
+	at org.apache.sling.ide.eclipse.core.internal.SlingLaunchpadBehaviour.publishModule(SlingLaunchpadBehaviour.java:221)
+	at org.eclipse.wst.server.core.model.ServerBehaviourDelegate.publishModule(ServerBehaviourDelegate.java:1091)
+	at org.eclipse.wst.server.core.model.ServerBehaviourDelegate.publishModules(ServerBehaviourDelegate.java:1183)
+	at org.apache.sling.ide.eclipse.core.internal.ServerBehaviourDelegateWithModulePublishSupport.publish(ServerBehaviourDelegateWithModulePublishSupport.java:137)
+	at org.eclipse.wst.server.core.model.ServerBehaviourDelegate.publish(ServerBehaviourDelegate.java:774)
+	at org.apache.sling.ide.eclipse.core.internal.ServerBehaviourDelegateWithModulePublishSupport.publish(ServerBehaviourDelegateWithModulePublishSupport.java:54)
+	at org.eclipse.wst.server.core.internal.Server.publishImpl(Server.java:3157)
+	at org.eclipse.wst.server.core.internal.Server$PublishJob.run(Server.java:345)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.net.ConnectException: Connection refused
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:345)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.apache.commons.httpclient.protocol.ReflectionSocketFactory.createSocket(ReflectionSocketFactory.java:140)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:125)
+	at org.apache.commons.httpclient.HttpConnection.open(HttpConnection.java:707)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeWithRetry(HttpMethodDirector.java:387)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeMethod(HttpMethodDirector.java:171)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:397)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:323)
+	at org.apache.sling.ide.osgi.impl.HttpOsgiClient.getBundleVersion(HttpOsgiClient.java:71)
+	... 11 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-05-07 14:28:19.602
+!MESSAGE Failed publishing path=/apps, result=JcrResult[ success:false, exception: org.apache.sling.ide.transport.RepositoryException - javax.jcr.RepositoryException: Connection refused]
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-05-07 14:28:19.602
+!MESSAGE Failed publishing path=/content, result=JcrResult[ success:false, exception: org.apache.sling.ide.transport.RepositoryException - javax.jcr.RepositoryException: Connection refused]
