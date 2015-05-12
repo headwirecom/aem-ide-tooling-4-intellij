@@ -21,6 +21,7 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
+    <depends>org.jetbrains.idea.maven</depends>
 
   <extensions defaultExtensionNs="com.intellij">
       <toolWindow id="AEM" anchor="right" icon="/images/aem.gif"

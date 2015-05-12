@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="maven">
+    <CLASSES>
+      <root url="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -4,6 +4,11 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.osgi.framework.Bundle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by schaefa on 3/19/15.
@@ -36,8 +41,24 @@ public class ServerConfiguration
 
     public enum PublishType {never, automaticallyOnChange, getAutomaticallyOnBuild};
     public enum InstallationType {installViaBundleUpload, installFromFilesystem};
+    public enum BundleStatus {
+        notChecked("not checked"), failed, upToDate("synchronized"), outdated("out dated"), unsupported;
+
+        private String name;
+
+        BundleStatus() {
+            this.name = name();
+        }
+
+        BundleStatus(String name) {
+            this.name = name;
+        }
+
+        public String getName() { return name; }
+    }
+
     public enum ServerStatus {
-        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed;
+        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed, upToDate("synchronized"), outdated("out dated");
 
         private String name;
 
@@ -68,6 +89,7 @@ public class ServerConfiguration
     // Don't store Server Status as it is reset when the Configuration is loaded again
     //AS TODO: Not sure about this -> Check if that works
     private transient ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
+    private transient List<Module> moduleList = new ArrayList<Module>();
 
     public ServerConfiguration() {
     }
@@ -226,8 +248,114 @@ public class ServerConfiguration
         return this;
     }
 
+    public List<Module> getModuleList() { return moduleList; }
+
+    public Module obtainModuleBySymbolicName(String symbolicName) {
+        Module ret = null;
+        if(name != null) {
+            for(Module module : moduleList) {
+                if(name.equals(module.getName())) {
+                    ret = module;
+                    break;
+                }
+            }
+        }
+        return ret;
+    }
+
+//    public Module obtainModuleByA(String artifactId) {
+//        Module ret = null;
+//        if(artifactId != null) {
+//            for(Module module : moduleList) {
+//                if(artifactId.equals(module.getArtifactId())) {
+//                    ret = module;
+//                    break;
+//                }
+//            }
+//        }
+//        return ret;
+//    }
+
+//    public Module addModule(String name, String artifactId, String version, MavenProject project) {
+    public Module addModule(MavenProject project) {
+        Module ret = obtainModuleBySymbolicName(name);
+        if(ret == null) {
+            ret = new Module(project, this);
+            moduleList.add(ret);
+        }
+        return ret;
+    }
+
     @Override
     public void loadState(ServerConfiguration serverConfiguration) {
         XmlSerializerUtil.copyBean(serverConfiguration, this);
+    }
+
+    public static class Module {
+        private ServerConfiguration parent;
+//        private String name;
+//        private String artifactId;
+//        private String version;
+        private MavenProject project;
+        private BundleStatus status = BundleStatus.notChecked;
+
+//        private Module(String name, String artifactId, String version, MavenProject project, ServerConfiguration parent) {
+        private Module(MavenProject project, ServerConfiguration parent) {
+            this.parent = parent;
+            this.project = project;
+//            this.name = name;
+//            this.artifactId = artifactId;
+//            this.version = version;
+        }
+
+        public static String getSymbolicName(MavenProject project) {
+            return project.getMavenId().getGroupId() + "." + project.getMavenId().getArtifactId();
+        }
+
+        public ServerConfiguration getParent() {
+            return parent;
+        }
+
+        public String getSymbolicName() {
+            return getSymbolicName(project);
+        }
+
+        public String getName() {
+            return project.getName();
+        }
+
+        public String getArtifactId() {
+            return project.getMavenId().getArtifactId();
+        }
+
+        public String getVersion() {
+            return project.getMavenId().getVersion();
+        }
+
+        public MavenProject getProject() {
+            return project;
+        }
+
+        public BundleStatus getStatus() {
+            return status;
+        }
+
+        public boolean isOSGiBundle() {
+            return project.getPackaging().equalsIgnoreCase("bundle");
+        }
+
+        public boolean isSlingPackage() {
+            return project.getPackaging().equalsIgnoreCase("content-package");
+        }
+
+//        public void update(String newVersion) {
+//            this.version = newVersion;
+//        }
+//
+        public void setStatus(BundleStatus status) {
+            if(status != null) {
+                this.status = status;
+            }
+        }
     }
 }

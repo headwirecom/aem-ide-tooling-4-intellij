@@ -17,18 +17,19 @@ public class ArtifactsLocatorImpl
     @Override
     public EmbeddedArtifact loadToolingSupportBundle() {
 
-        String version = "1.0.0"; // TODO - remove version hardcoding
+        String version = "1.0.2"; // TODO - remove version hardcoding
         String artifactId = "org.apache.sling.tooling.support.install";
         String extension = "jar";
 
+        String fileName = artifactId
+            + (version != null || version.trim().length() > 0 ? "-" + version : "")
+            + "." + extension;
         URL jarUrl = loadResource(
 //            bundleContext,
-            ARTIFACTS_LOCATION + "/sling-tooling-support-install/" + artifactId + "." + extension
+            ARTIFACTS_LOCATION + "/sling-tooling-support-install/" + fileName
         );
 
-//        return new EmbeddedArtifact(artifactId + "-" + version + "." + extension, version, jarUrl);
-        //AS TODO: No Versions anymore
-        return new EmbeddedArtifact(artifactId + "." + extension, version, jarUrl);
+        return new EmbeddedArtifact(fileName, version, jarUrl);
     }
 
     private URL loadResource(

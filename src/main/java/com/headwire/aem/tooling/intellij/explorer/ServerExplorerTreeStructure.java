@@ -28,17 +28,11 @@ import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 final class ServerExplorerTreeStructure extends AbstractTreeStructure {
-  private static final Logger LOG = Logger.getInstance("#com.intellij.lang.ant.config.explorer.AntExplorerTreeStructure");
-  private final Project myProject;
-  private final Object myRoot = new Object();
-  private boolean myFilteredTargets = false;
+    private static final Logger LOG = Logger.getInstance("#com.intellij.lang.ant.config.explorer.AntExplorerTreeStructure");
+    private final Project myProject;
+    private final Object myRoot = new Object();
+    private boolean myFilteredTargets = false;
 //  private static final Comparator<AntBuildTarget> ourTargetComparator = new Comparator<AntBuildTarget>() {
 //    @Override
 //    public int compare(final AntBuildTarget target1, final AntBuildTarget target2) {
@@ -50,29 +44,33 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
 //    }
 //  };
 
-  public ServerExplorerTreeStructure(final Project project) {
-    myProject = project;
-  }
-
-  @Override
-  public boolean isToBuildChildrenInBackground(final Object element) {
-    return true;
-  }
-
-  @Override
-  @NotNull
-  public ServerNodeDescriptor createDescriptor(Object element, NodeDescriptor parentDescriptor) {
-    if (element == myRoot) {
-      return new RootNodeDescriptor(myProject, parentDescriptor);
+    public ServerExplorerTreeStructure(final Project project) {
+        myProject = project;
     }
 
-    if (element instanceof String) {
-      return new TextInfoNodeDescriptor(myProject, parentDescriptor, (String)element);
+    @Override
+    public boolean isToBuildChildrenInBackground(final Object element) {
+        return true;
     }
+
+    @Override
+    @NotNull
+    public ServerNodeDescriptor createDescriptor(Object element, NodeDescriptor parentDescriptor) {
+        if(element == myRoot) {
+            return new RootNodeDescriptor(myProject, parentDescriptor);
+        }
+
+        if(element instanceof String) {
+            return new TextInfoNodeDescriptor(myProject, parentDescriptor, (String) element);
+        }
 
         if(element instanceof ServerConfiguration) {
-        return new SlingServerNodeDescriptor(myProject, parentDescriptor, (ServerConfiguration) element);
-    }
+            return new SlingServerNodeDescriptor(myProject, parentDescriptor, (ServerConfiguration) element);
+        }
+
+        if(element instanceof ServerConfiguration.Module) {
+            return new SlingServerModuleNodeDescriptor(myProject, parentDescriptor, (ServerConfiguration.Module) element);
+        }
 
 //    if (element instanceof AntBuildFileBase) {
 //      return new AntBuildFileNodeDescriptor(myProject, parentDescriptor, (AntBuildFileBase)element);
@@ -82,24 +80,24 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
 //      return new AntTargetNodeDescriptor(myProject, parentDescriptor, (AntBuildTargetBase)element);
 //    }
 
-    LOG.error("Unknown element for this tree structure " + element);
-    return null;
-  }
-
-  @Override
-  public Object[] getChildElements(Object element) {
-    final ServerConfigurationManager configuration = ServerConfigurationManager.getInstance(myProject);
-    if (element == myRoot) {
-      if (!configuration.isInitialized()) {
-        return new Object[] {"Loading Server Configurations"};
-      }
-      final ServerConfiguration[] serverConfigurations = configuration.getServerConfigurations();
-      return serverConfigurations.length == 0 ? new Object[]{"Server Configuration Loading"} : serverConfigurations;
+        LOG.error("Unknown element for this tree structure " + element);
+        return null;
     }
 
-//    if (element instanceof ServerConfiguration) {
-//        return Arrays.asList(element).toArray();
-//    }
+    @Override
+    public Object[] getChildElements(Object element) {
+        final ServerConfigurationManager configuration = ServerConfigurationManager.getInstance(myProject);
+        if(element == myRoot) {
+            if(!configuration.isInitialized()) {
+                return new Object[]{"Loading Server Configurations"};
+            }
+            final ServerConfiguration[] serverConfigurations = configuration.getServerConfigurations();
+            return serverConfigurations.length == 0 ? new Object[]{"Server Configuration Loading"} : serverConfigurations;
+        }
+
+        if (element instanceof ServerConfiguration) {
+            return ((ServerConfiguration) element).getModuleList().toArray();
+        }
 //      final AntBuildFile buildFile = (AntBuildFile)element;
 //      final AntBuildModel model = buildFile.getModel();
 //
@@ -114,17 +112,19 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
 //      return targets.toArray(new AntBuildTarget[targets.size()]);
 //    }
 
-    return ArrayUtil.EMPTY_OBJECT_ARRAY;
-  }
+        return ArrayUtil.EMPTY_OBJECT_ARRAY;
+    }
 
-  @Override
-  @Nullable
-  public Object getParentElement(Object element) {
-      if(element instanceof ServerConfiguration) {
-          return myRoot;
-//          ServerConfiguration serverConfiguration = (ServerConfiguration) element;
-//          return serverConfiguration.getName() + " at " + serverConfiguration.getHost();
-      }
+    @Override
+    @Nullable
+    public Object getParentElement(Object element) {
+        if(element instanceof ServerConfiguration) {
+            return myRoot;
+        }
+
+        if(element instanceof ServerConfiguration.Module) {
+            return ((ServerConfiguration.Module) element).getParent();
+        }
 
 //    if (element instanceof AntBuildTarget) {
 //      if (element instanceof MetaTarget) {
@@ -136,78 +136,78 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
 //    if (element instanceof AntBuildFile) {
 //      return myRoot;
 //    }
-    
-    return null;
-  }
 
-  @Override
-  public void commit() {
-    PsiDocumentManager.getInstance(myProject).commitAllDocuments();
-  }
-
-  @Override
-  public boolean hasSomethingToCommit() {
-    return PsiDocumentManager.getInstance(myProject).hasUncommitedDocuments();
-  }
-
-  @NotNull
-  @Override
-  public ActionCallback asyncCommit() {
-    return asyncCommitDocuments(myProject);
-  }
-
-  @Override
-  public Object getRootElement() {
-    return myRoot;
-  }
-
-  public void setFilteredTargets(boolean value) {
-    myFilteredTargets = value;
-  }
-
-  private final class RootNodeDescriptor extends ServerNodeDescriptor {
-    public RootNodeDescriptor(Project project, NodeDescriptor parentDescriptor) {
-      super(project, parentDescriptor);
-      myName = "Server Configurations";
+        return null;
     }
 
     @Override
-    public boolean isAutoExpand() {
-      return true;
+    public void commit() {
+        PsiDocumentManager.getInstance(myProject).commitAllDocuments();
     }
 
     @Override
-    public Object getElement() {
-      return myRoot;
+    public boolean hasSomethingToCommit() {
+        return PsiDocumentManager.getInstance(myProject).hasUncommitedDocuments();
+    }
+
+    @NotNull
+    @Override
+    public ActionCallback asyncCommit() {
+        return asyncCommitDocuments(myProject);
     }
 
     @Override
-    public boolean update() {
+    public Object getRootElement() {
+        return myRoot;
+    }
+
+    public void setFilteredTargets(boolean value) {
+        myFilteredTargets = value;
+    }
+
+    private final class RootNodeDescriptor extends ServerNodeDescriptor {
+        public RootNodeDescriptor(Project project, NodeDescriptor parentDescriptor) {
+            super(project, parentDescriptor);
+            myName = "Server Configurations";
+        }
+
+        @Override
+        public boolean isAutoExpand() {
+            return true;
+        }
+
+        @Override
+        public Object getElement() {
+            return myRoot;
+        }
+
+        @Override
+        public boolean update() {
 //      myName = "";
-      return false;
-    }
-  }
-
-  private static final class TextInfoNodeDescriptor extends ServerNodeDescriptor {
-    public TextInfoNodeDescriptor(Project project, NodeDescriptor parentDescriptor, String text) {
-      super(project, parentDescriptor);
-      myName = text;
-      myColor = JBColor.blue;
+            return false;
+        }
     }
 
-    @Override
-    public Object getElement() {
-      return myName;
-    }
+    private static final class TextInfoNodeDescriptor extends ServerNodeDescriptor {
+        public TextInfoNodeDescriptor(Project project, NodeDescriptor parentDescriptor, String text) {
+            super(project, parentDescriptor);
+            myName = text;
+            myColor = JBColor.blue;
+        }
 
-    @Override
-    public boolean update() {
-      return true;
-    }
+        @Override
+        public Object getElement() {
+            return myName;
+        }
 
-    @Override
-    public boolean isAutoExpand() {
-      return true;
+        @Override
+        public boolean update() {
+            return true;
+        }
+
+        @Override
+        public boolean isAutoExpand() {
+            return true;
+        }
     }
-  }
 }
