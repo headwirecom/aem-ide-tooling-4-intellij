@@ -60,19 +60,15 @@ import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.openapi.roots.ModuleRootManager;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindowId;
-import com.intellij.psi.PsiFile;
+import org.jetbrains.idea.maven.model.MavenId;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.DoubleClickListener;
 import com.intellij.ui.PopupHandler;
@@ -117,10 +113,10 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -369,6 +365,7 @@ public class SlingServerExplorer
         group.add(new CheckAction());
         group.add(new DebugAction());
         group.add(new StopAction());
+        group.add(new DeployAction());
         AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
         action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
         group.add(action);
@@ -406,6 +403,26 @@ public class SlingServerExplorer
         ServerConfiguration configuration = myConfig.findServerConfigurationByName(configurationName);
         if(configuration != null) {
             configuration.setServerStatus(ServerConfiguration.ServerStatus.disconnected);
+            myConfig.updateServerConfiguration(configuration);
+            //AS TODO: Update Bundle Status
+            // Mark any Bundles inside the Tree as disconnected
+        }
+    }
+
+    private void markConfigurationAsSynchronized(String configurationName) {
+        ServerConfiguration configuration = myConfig.findServerConfigurationByName(configurationName);
+        if(configuration != null) {
+            configuration.setServerStatus(ServerConfiguration.ServerStatus.upToDate);
+            myConfig.updateServerConfiguration(configuration);
+            //AS TODO: Update Bundle Status
+            // Mark any Bundles inside the Tree as disconnected
+        }
+    }
+
+    private void markConfigurationAsOutDated(String configurationName) {
+        ServerConfiguration configuration = myConfig.findServerConfigurationByName(configurationName);
+        if(configuration != null) {
+            configuration.setServerStatus(ServerConfiguration.ServerStatus.outdated);
             myConfig.updateServerConfiguration(configuration);
             //AS TODO: Update Bundle Status
             // Mark any Bundles inside the Tree as disconnected
@@ -647,9 +664,8 @@ public class SlingServerExplorer
         }
         final DefaultActionGroup group = new DefaultActionGroup();
         group.add(new CheckAction());
-//        group.add(new CreateMetaTargetAction());
-        group.add(new MakeAntRunConfigurationAction());
-//        group.add(new RemoveMetaTargetsOrBuildFileAction());
+        group.add(new DebugAction());
+        group.add(new DeployAction());
         group.add(ActionManager.getInstance().getAction(IdeActions.ACTION_EDIT_SOURCE));
 //        if (userObject instanceof AntBuildFileNodeDescriptor) {
 //            group.add(new RemoveBuildFileAction(this));
@@ -908,67 +924,129 @@ public class SlingServerExplorer
             // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
             // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
             ServerConfiguration serverConfiguration = getCurrentConfiguration();
-            boolean success = false;
-            Result<ResourceProxy> result = null;
-            try {
-                sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
-                Repository repository = ServerUtil.connectRepository(serverConfiguration);
-                Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
-                result = command.execute();
-                success = result.isSuccess();
-
-                sendInfoNotification("aem.explorer.connected.sling.repository", success);
-                RepositoryInfo repositoryInfo;
-                try {
-                    repositoryInfo = ServerUtil.getRepositoryInfo(serverConfiguration);
-//AS TODO: Activator is an Eclipse OSGi component and so we need to find a way to extract this and code it so that it works for Eclipse and IntelliJ
-//                    OsgiClient client = Activator.getDefault().getOsgiClientFactory().createOsgiClient(repositoryInfo);
-                    OsgiClient client = OSGiFactory.getOSGiClientFactory().createOsgiClient(repositoryInfo);
-//                    EmbeddedArtifactLocator artifactLocator = Activator.getDefault().getArtifactLocator();
-                    EmbeddedArtifactLocator artifactLocator = OSGiFactory.getArtifactLocator();
-                    Version remoteVersion = client.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
-
-                    sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
-
-                    final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
-                    final Version embeddedVersion = new Version(supportBundle.getVersion());
-
-                    if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
-                        InputStream contents = null;
-                        try {
-                            sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
-                            contents = supportBundle.openInputStream();
-                            client.installBundle(contents, supportBundle.getName());
-                        } finally {
-                            IOUtils.closeQuietly(contents);
-                        }
-                        remoteVersion = embeddedVersion;
-                    }
-//AS TODO: Check if all supported Modules are installed and up to date with current version
-                    Module[] modules = ModuleManager.getInstance(myProject).getModules();
-                    for(Module module: modules) {
-                        ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-//                        ModifiableRootModel modifiableModel = moduleRootManager.getModifiableModel();
-                        String extension = module.getModuleFile().getExtension();
-                        
-                    }
-
-                    sendInfoNotification("aem.explorer.finished.connection.to.remote");
-                } catch(IOException e2) {
-                    sendErrorNotification("aem.explorer.cannot.read.installation.support.bundle", serverConfiguration.getName(), e2.getMessage());
-                } catch(URISyntaxException e2) {
-                    sendErrorNotification("aem.explorer.server.uri.bad", serverConfiguration.getName(), e2.getMessage());
-                } catch(OsgiClientException e2) {
-                    sendErrorNotification("aem.explorer.osgi.client.problem", serverConfiguration.getName(), e2.getMessage());
+            OsgiClient osgiClient = obtainSGiClient(serverConfiguration);
+            if(osgiClient != null) {
+                BundleStatus status = checkAndUpdateSupportBundle(serverConfiguration, osgiClient, false);
+                if(status != BundleStatus.failed) {
+                    checkModules(serverConfiguration, osgiClient);
                 }
-            } catch(ServerException e1) {
-                sendErrorNotification("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e1.getMessage());
             }
         }
 
         public void update(AnActionEvent event) {
             event.getPresentation().setEnabled(isConfigurationSelected());
         }
+    }
+
+    private void checkModules(ServerConfiguration serverConfiguration, OsgiClient osgiClient) {
+        // We only support Maven Modules as of now
+        //AS TODO: are we support Facets as well -> check later
+        MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(myProject);
+        sendBareInfoNotification("Maven Module", "Maven Projects Manager: '" + mavenProjectsManager);
+        boolean allSynchronized = true;
+        List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
+        for(MavenProject mavenProject: mavenProjects) {
+            MavenId mavenId = mavenProject.getMavenId();
+            String moduleName = mavenProject.getName();
+            String artifactId = mavenId.getArtifactId();
+            String version = mavenId.getVersion();
+            // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
+            sendBareInfoNotification("Maven Module", "Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
+            // Ignore the Unnamed Projects
+            if(moduleName == null) { continue; }
+            // Change any dashes to dots
+            version = version.replaceAll("-", ".");
+            Version localVersion = new Version(version);
+            ServerConfiguration.Module module = serverConfiguration.addModule(mavenProject);
+            try {
+                Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
+                sendBareInfoNotification("Check OSGi Module", "Check OSGi Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
+                boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
+                if(moduleUpToDate) {
+                    // Mark as synchronized
+                    module.setStatus(ServerConfiguration.BundleStatus.upToDate);
+                } else {
+                    // Mark as out of date
+                    module.setStatus(ServerConfiguration.BundleStatus.outdated);
+                    allSynchronized = false;
+                }
+            } catch(OsgiClientException e1) {
+                // Mark connection as failed
+                module.setStatus(ServerConfiguration.BundleStatus.failed);
+                allSynchronized = false;
+            }
+        }
+        if(allSynchronized) {
+            markConfigurationAsSynchronized(serverConfiguration.getName());
+        } else {
+            markConfigurationAsOutDated(serverConfiguration.getName());
+        }
+    }
+
+    public enum BundleStatus { upToDate, outDated, failed };
+    private BundleStatus checkAndUpdateSupportBundle(ServerConfiguration serverConfiguration, OsgiClient osgiClient, boolean onlyCheck) {
+        BundleStatus ret = BundleStatus.failed;
+        try {
+            EmbeddedArtifactLocator artifactLocator = OSGiFactory.getArtifactLocator();
+            Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
+
+            sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
+
+            final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
+            final Version embeddedVersion = new Version(supportBundle.getVersion());
+
+            if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
+                ret = BundleStatus.outDated;
+                if(!onlyCheck) {
+                    InputStream contents = null;
+                    try {
+                        sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
+                        contents = supportBundle.openInputStream();
+                        osgiClient.installBundle(contents, supportBundle.getName());
+                        ret = BundleStatus.upToDate;
+                    } finally {
+                        IOUtils.closeQuietly(contents);
+                    }
+                    remoteVersion = embeddedVersion;
+                }
+            } else {
+                ret = BundleStatus.upToDate;
+            }
+            sendInfoNotification("aem.explorer.finished.connection.to.remote");
+        } catch(IOException e) {
+            sendErrorNotification("aem.explorer.cannot.read.installation.support.bundle", serverConfiguration.getName(), e.getMessage());
+        } catch(OsgiClientException e) {
+            sendErrorNotification("aem.explorer.osgi.client.problem", serverConfiguration.getName(), e.getMessage());
+        }
+        return ret;
+    }
+
+    private OsgiClient obtainSGiClient(ServerConfiguration serverConfiguration) {
+        OsgiClient ret = null;
+
+        try {
+            boolean success = false;
+            Result<ResourceProxy> result = null;
+            sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+            Repository repository = ServerUtil.connectRepository(serverConfiguration);
+            Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
+            result = command.execute();
+            success = result.isSuccess();
+
+            sendInfoNotification("aem.explorer.connected.sling.repository", success);
+            if(success) {
+                RepositoryInfo repositoryInfo = ServerUtil.getRepositoryInfo(serverConfiguration);
+                //AS TODO: Activator is an Eclipse OSGi component and so we need to find a way to extract this and code it so that it works for Eclipse and IntelliJ
+                //                    OsgiClient client = Activator.getDefault().getOsgiClientFactory().createOsgiClient(repositoryInfo);
+                ret = OSGiFactory.getOSGiClientFactory().createOsgiClient(repositoryInfo);
+            }
+        } catch(URISyntaxException e) {
+            sendErrorNotification("aem.explorer.server.uri.bad", serverConfiguration.getName(), e.getMessage());
+        } catch(ServerException e) {
+            sendErrorNotification("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e.getMessage());
+        }
+
+        return ret;
     }
 
     private final class DebugAction extends AnAction {
@@ -981,6 +1059,7 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
+            ServerConfiguration serverConfiguration = getCurrentConfiguration();
             // Create Remote Connection to Server using the IntelliJ Run / Debug Connection
             //AS TODO: It is working but the configuration is listed and made persistent. That is not too bad because
             //AS TODO: after changes a reconnect will update the configuration.
@@ -990,10 +1069,10 @@ public class SlingServerExplorer
             // Server means if you are listening. If not you are attaching.
             remoteConfiguration.SERVER_MODE = false;
             remoteConfiguration.USE_SOCKET_TRANSPORT = true;
-            remoteConfiguration.HOST = getCurrentConfiguration().getHost();
-            remoteConfiguration.PORT = getCurrentConfiguration().getConnectionDebugPort() + "";
+            remoteConfiguration.HOST = serverConfiguration.getHost();
+            remoteConfiguration.PORT = serverConfiguration.getConnectionDebugPort() + "";
             // Set a Name of the Configuration so that it is properly listed.
-            remoteConfiguration.setName(getCurrentConfiguration().getName());
+            remoteConfiguration.setName(serverConfiguration.getName());
             RunnerAndConfigurationSettings configuration = new RunnerAndConfigurationSettingsImpl(
                 (RunManagerImpl) myRunManager,
                 runConfiguration,
@@ -1004,7 +1083,14 @@ public class SlingServerExplorer
             //AS TODO: Make sure that this is the proper way to obtain the DEBUG Executor
             Executor executor = ExecutorRegistry.getInstance().getExecutorById(ToolWindowId.DEBUG);
             ExecutionUtil.runConfiguration(configuration, executor);
-            // Now we need to create a Connection to the AEM Server to deploy OSGI Bundles and Sling Packages
+            // Update the Modules with the Remote Sling Server
+            OsgiClient osgiClient = obtainSGiClient(serverConfiguration);
+            if(osgiClient != null) {
+                BundleStatus status = checkAndUpdateSupportBundle(serverConfiguration, osgiClient, false);
+                if(status != BundleStatus.failed) {
+                    checkModules(serverConfiguration, osgiClient);
+                }
+            }
         }
 
         public void update(AnActionEvent event) {
@@ -1072,6 +1158,15 @@ public class SlingServerExplorer
         }
     }
 
+    private void sendBareInfoNotification(String title, String message) {
+        NOTIFICATION_GROUP.createNotification(
+            title,
+            message,
+            NotificationType.INFORMATION,
+            null
+        ).notify(myProject);
+    }
+
     private void sendInfoNotification(String bundleMessageId, Object... params) {
         NOTIFICATION_GROUP.createNotification(
             AEMBundle.message(bundleMessageId + ".title"),
@@ -1090,22 +1185,42 @@ public class SlingServerExplorer
         ).notify(myProject);
     }
 
-    private final class MakeAntRunConfigurationAction extends AnAction {
-        public MakeAntRunConfigurationAction() {
-//            super(AntBundle.message("make.ant.runconfiguration.name"), null, AntIcons.Build);
-            super("Make / Run Action", "Description", null);
+    private final class DeployAction extends AnAction {
+        public DeployAction() {
+            super(
+                AEMBundle.message("deploy.configuration.action.name"),
+                AEMBundle.message("deploy.configuration.action.description"),
+                AllIcons.Actions.Export
+            );
         }
 
         @Override
-        public void update(AnActionEvent e) {
-            super.update(e);
-
-            final Presentation presentation = e.getPresentation();
-            presentation.setEnabled(myTree.getSelectionCount() == 1 && canRunSelection());
+        public void update(AnActionEvent event) {
+//            event.getPresentation().setEnabled(isConfigurationSelected() && isConfigurationInUse(getCurrentConfiguration()));
+            event.getPresentation().setEnabled(true);
         }
 
         @Override
         public void actionPerformed(AnActionEvent e) {
+            // First Check if the Install Support Bundle is installed
+            ServerConfiguration serverConfiguration = getCurrentConfiguration();
+            OsgiClient osgiClient = obtainSGiClient(serverConfiguration);
+            BundleStatus bundleStatus = checkAndUpdateSupportBundle(serverConfiguration, osgiClient, true);
+            if(bundleStatus == BundleStatus.upToDate) {
+                TreePath selectionPath = myTree.getSelectionPath();
+                if(selectionPath != null) {
+                    final DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
+                    final Object userObject = node.getUserObject();
+                    List<ServerConfiguration.Module> moduleList = new ArrayList<ServerConfiguration.Module>();
+                    if(userObject instanceof SlingServerModuleNodeDescriptor) {
+                        moduleList.add(((SlingServerModuleNodeDescriptor) userObject).getTarget());
+                    } else {
+                        moduleList.addAll(serverConfiguration.getModuleList());
+                    }
+                    // Deploy all selected Modules
+                    deployModules(osgiClient, moduleList);
+                }
+            }
 //            final AntBuildFile buildFile = getCurrentBuildFile();
 //            if (buildFile == null || !buildFile.exists()) {
 //                return;
@@ -1142,6 +1257,44 @@ public class SlingServerExplorer
 //                runManager.setSelectedConfiguration(settings);
 //            }
         }
+
+        private void deployModules(OsgiClient osgiClient, List<ServerConfiguration.Module> moduleList) {
+            for(ServerConfiguration.Module module: moduleList) {
+                InputStream contents = null;
+                // Check if this is a OSGi Bundle
+                if(module.getProject().getPackaging().equalsIgnoreCase("bundle")) {
+                    try {
+//                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
+                        File buildDirectory = new File(module.getProject().getBuildDirectory());
+                        if(buildDirectory.exists() && buildDirectory.isDirectory()) {
+                            File buildFile = new File(buildDirectory, module.getProject().getFinalName() + ".jar");
+                            sendBareInfoNotification("Build File Name", "Build File Name: " + buildFile.toURL());
+                            if(buildFile.exists()) {
+                                EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
+                                contents = bundle.openInputStream();
+                                osgiClient.installBundle(contents, bundle.getName());
+                                module.setStatus(ServerConfiguration.BundleStatus.upToDate);
+                                //                            ret = BundleStatus.upToDate;
+                            }
+                        }
+                    } catch(MalformedURLException e) {
+                        module.setStatus(ServerConfiguration.BundleStatus.failed);
+                        sendBareInfoNotification("Deploy Module", "Deploy Module Failed due to Malformed URL: " + e.getMessage());
+                    } catch(OsgiClientException e) {
+                        module.setStatus(ServerConfiguration.BundleStatus.failed);
+                        sendBareInfoNotification("Deploy Module", "Deploy Module Failed due to OSGi Client Exception: " + e.getMessage());
+                    } catch(IOException e) {
+                        module.setStatus(ServerConfiguration.BundleStatus.failed);
+                        sendBareInfoNotification("Deploy Module", "Deploy Module Failed IO Exception: " + e.getMessage());
+                    } finally {
+                        IOUtils.closeQuietly(contents);
+                    }
+                } else {
+                    module.setStatus(ServerConfiguration.BundleStatus.unsupported);
+                    sendBareInfoNotification("Deploy Module", "Module: '" + module.getName() + "' is not an OSGi Bundle");
+                }
+            }
+        }
     }
 
 
@@ -1149,7 +1302,7 @@ public class SlingServerExplorer
         public ShowAllTargetsAction() {
 //            super(AntBundle.message("filter.ant.targets.action.name"), AntBundle.message("filter.ant.targets.action.description"),
 //                    AllIcons.General.Filter);
-            super("Show ALl Taget Action", "Description", null);
+            super("Show All Target Action", "Description", null);
         }
 
         public boolean isSelected(AnActionEvent event) {

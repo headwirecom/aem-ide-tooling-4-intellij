@@ -14,6 +14,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeStructure.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerNodeDescriptor.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerModuleNodeDescriptor.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerNodeDescriptor.java" charset="UTF-8" />
   </component>
 </project>
