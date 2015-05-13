@@ -3,6 +3,7 @@ package com.headwire.aem.tooling.intellij.config;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.osgi.framework.Bundle;
@@ -27,7 +28,7 @@ public class ServerConfiguration
     public static final String DEFAULT_DESCRIPTION = "No Description";
     public static final String DEFAULT_NAME = "Default Configuration";
     public static final String DEFAULT_HOST = "localhost";
-    public static final int DEFAULT_CONNECTION_PORT = 4052;
+    public static final int DEFAULT_CONNECTION_PORT = 4502;
     public static final int DEFAULT_DEBUG_CONNECTION_PORT = 30303;
     public static final String DEFAULT_USER_NAME = "admin";
     public static final String DEFAULT_CONTEXT_PATH = "/";
@@ -89,7 +90,8 @@ public class ServerConfiguration
     // Don't store Server Status as it is reset when the Configuration is loaded again
     //AS TODO: Not sure about this -> Check if that works
     private transient ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
-    private transient List<Module> moduleList = new ArrayList<Module>();
+    // Modules must be stored because they carry the info if a project is part of the deployment build
+    private List<Module> moduleList = new ArrayList<Module>();
 
     public ServerConfiguration() {
     }
@@ -252,9 +254,9 @@ public class ServerConfiguration
 
     public Module obtainModuleBySymbolicName(String symbolicName) {
         Module ret = null;
-        if(name != null) {
+        if(symbolicName != null) {
             for(Module module : moduleList) {
-                if(name.equals(module.getName())) {
+                if(symbolicName.equals(module.getSymbolicName())) {
                     ret = module;
                     break;
                 }
@@ -263,24 +265,20 @@ public class ServerConfiguration
         return ret;
     }
 
-//    public Module obtainModuleByA(String artifactId) {
-//        Module ret = null;
-//        if(artifactId != null) {
-//            for(Module module : moduleList) {
-//                if(artifactId.equals(module.getArtifactId())) {
-//                    ret = module;
-//                    break;
-//                }
-//            }
-//        }
-//        return ret;
-//    }
+    public boolean addModule(Module module) {
+        boolean ret = false;
+        Module existing = obtainModuleBySymbolicName(name);
+        if(existing == null) {
+            moduleList.add(module);
+            ret = true;
+        }
+        return ret;
+    }
 
-//    public Module addModule(String name, String artifactId, String version, MavenProject project) {
     public Module addModule(MavenProject project) {
         Module ret = obtainModuleBySymbolicName(name);
         if(ret == null) {
-            ret = new Module(project, this);
+            ret = new Module(this, project);
             moduleList.add(ret);
         }
         return ret;
@@ -293,23 +291,34 @@ public class ServerConfiguration
 
     public static class Module {
         private ServerConfiguration parent;
-//        private String name;
-//        private String artifactId;
-//        private String version;
-        private MavenProject project;
-        private BundleStatus status = BundleStatus.notChecked;
+        private String symbolicName;
+        private boolean partOfBuild = false;
+        private transient MavenProject project;
+        private transient BundleStatus status = BundleStatus.notChecked;
 
-//        private Module(String name, String artifactId, String version, MavenProject project, ServerConfiguration parent) {
-        private Module(MavenProject project, ServerConfiguration parent) {
+        public Module(@NotNull ServerConfiguration parent, @NotNull String symbolicName, boolean partOfBuild) {
             this.parent = parent;
-            this.project = project;
-//            this.name = name;
-//            this.artifactId = artifactId;
-//            this.version = version;
+            this.symbolicName = symbolicName;
+            this.partOfBuild = partOfBuild;
+        }
+
+        private Module(@NotNull ServerConfiguration parent, @NotNull MavenProject project) {
+            this.parent = parent;
+//            this.project = project;
+            this.symbolicName = getSymbolicName(project);
+            rebind(project);
         }
 
         public static String getSymbolicName(MavenProject project) {
             return project.getMavenId().getGroupId() + "." + project.getMavenId().getArtifactId();
+        }
+
+        public boolean isPartOfBuild() {
+            return partOfBuild;
+        }
+
+        public void setPartOfBuild(boolean partOfBuild) {
+            this.partOfBuild = partOfBuild;
         }
 
         public ServerConfiguration getParent() {
@@ -317,19 +326,19 @@ public class ServerConfiguration
         }
 
         public String getSymbolicName() {
-            return getSymbolicName(project);
+            return symbolicName;
         }
 
         public String getName() {
-            return project.getName();
+            return project == null ? "No Project" : project.getName();
         }
 
         public String getArtifactId() {
-            return project.getMavenId().getArtifactId();
+            return project == null ? "No Project" : project.getMavenId().getArtifactId();
         }
 
         public String getVersion() {
-            return project.getMavenId().getVersion();
+            return project == null ? "No Project" : project.getMavenId().getVersion();
         }
 
         public MavenProject getProject() {
@@ -341,17 +350,27 @@ public class ServerConfiguration
         }
 
         public boolean isOSGiBundle() {
-            return project.getPackaging().equalsIgnoreCase("bundle");
+            return project != null && project.getPackaging().equalsIgnoreCase("bundle");
         }
 
         public boolean isSlingPackage() {
-            return project.getPackaging().equalsIgnoreCase("content-package");
+            return project != null && project.getPackaging().equalsIgnoreCase("content-package");
         }
 
-//        public void update(String newVersion) {
-//            this.version = newVersion;
-//        }
-//
+        public boolean rebind(@NotNull MavenProject project) {
+            boolean ret = false;
+            // Check if the Symbolic Name match
+            String symbolicName = getSymbolicName(project);
+            if(this.symbolicName.equals(symbolicName)) {
+                this.project = project;
+                if(!isOSGiBundle() && !isSlingPackage()) {
+                    setStatus(BundleStatus.unsupported);
+                }
+                ret = true;
+            }
+            return ret;
+        }
+
         public void setStatus(BundleStatus status) {
             if(status != null) {
                 this.status = status;

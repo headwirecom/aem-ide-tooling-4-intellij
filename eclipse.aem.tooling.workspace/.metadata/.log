@@ -1561,3 +1561,38 @@ Caused by: java.net.ConnectException: Connection refused
 !MESSAGE Failed publishing path=/apps, result=JcrResult[ success:false, exception: org.apache.sling.ide.transport.RepositoryException - javax.jcr.RepositoryException: Connection refused]
 !SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-05-07 14:28:19.602
 !MESSAGE Failed publishing path=/content, result=JcrResult[ success:false, exception: org.apache.sling.ide.transport.RepositoryException - javax.jcr.RepositoryException: Connection refused]
+!SESSION 2015-05-12 10:25:01.593 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-05-12 10:25:10.863
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-12 10:25:27.627
+!MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aem-tooling-test-project.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-12 10:25:49.676
+!MESSAGE Authentication required to access repository descriptors
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-12 10:26:17.449
+!MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aem-tooling-test-project.it.tests.*] 
+!SESSION 2015-05-13 07:46:46.465 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-05-13 07:46:56.807
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-13 07:47:12.509
+!MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aem-tooling-test-project.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-13 07:48:32.568
+!MESSAGE Authentication required to access repository descriptors
