@@ -3,6 +3,8 @@ package com.headwire.aem.tooling.intellij.explorer;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogCategory;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.listener.ContentResourceChangeListener;
+import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
 import com.headwire.aem.tooling.intellij.util.OSGiFactory;
 import com.headwire.aem.tooling.intellij.util.ServerException;
 import com.headwire.aem.tooling.intellij.util.ServerUtil;
@@ -65,6 +67,9 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileAdapter;
+import com.intellij.openapi.vfs.VirtualFileEvent;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.wm.ToolWindowId;
 import org.jetbrains.idea.maven.model.MavenId;
 import org.jetbrains.idea.maven.project.MavenProject;
@@ -117,7 +122,9 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by schaefa on 3/19/15.
@@ -142,6 +149,7 @@ public class SlingServerExplorer
     private Project myProject;
     private ServerExplorerTreeBuilder myBuilder;
     private Tree myTree;
+    private ServerTreeSelectionHandler selectionHandler;
     private KeyMapListener myKeyMapListener;
     private ServerConfigurationManager myConfig;
     private RunManagerEx myRunManager;
@@ -176,6 +184,7 @@ public class SlingServerExplorer
         myTree.setRootVisible(true);
         myTree.setShowsRootHandles(true);
         myTree.setCellRenderer(new NodeRenderer());
+        selectionHandler = new ServerTreeSelectionHandler(myTree);
         myBuilder = new ServerExplorerTreeBuilder(project, myTree, model);
         TreeUtil.installActions(myTree);
         new TreeSpeedSearch(myTree);
@@ -184,7 +193,6 @@ public class SlingServerExplorer
                 popupInvoked(comp, x, y);
             }
         });
-
         new DoubleClickListener() {
             @Override
             protected boolean onDoubleClick(MouseEvent e) {
@@ -212,6 +220,7 @@ public class SlingServerExplorer
         setContent(ScrollPaneFactory.createScrollPane(myTree));
         ToolTipManager.sharedInstance().registerComponent(myTree);
         myKeyMapListener = new KeyMapListener();
+        new ContentResourceChangeListener(myProject, selectionHandler);
 
         DomManager.getDomManager(project).addDomEventListener(new DomEventListener() {
             public void eventOccured(DomEvent event) {
@@ -351,7 +360,9 @@ public class SlingServerExplorer
             myTree = null;
         }
 
-        Disposer.dispose(myConn);
+        if(myConn != null) {
+            Disposer.dispose(myConn);
+        }
         myConn = null;
         myProject = null;
 //        myConfig = null;
@@ -580,7 +591,7 @@ public class SlingServerExplorer
     public boolean isConfigurationSelected() {
         boolean ret = false;
         if(myProject != null) {
-            ret = getCurrentConfiguration() != null;
+            ret = selectionHandler.getCurrentConfiguration() != null;
         }
         return ret;
     }
@@ -593,32 +604,6 @@ public class SlingServerExplorer
 //        }
 //        return ret;
 //    }
-
-    @Nullable
-    private ServerConfiguration getCurrentConfiguration() {
-        final SlingServerNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
-        return descriptor == null ? null : descriptor.getTarget();
-    }
-
-    @Nullable
-    private SlingServerNodeDescriptor getCurrentConfigurationDescriptor() {
-        SlingServerNodeDescriptor ret = null;
-        if(myTree != null) {
-            final TreePath path = myTree.getSelectionPath();
-            if(path != null) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                while(node != null) {
-                    final Object userObject = node.getUserObject();
-                    if(userObject instanceof SlingServerNodeDescriptor) {
-                        ret = (SlingServerNodeDescriptor) userObject;
-                        break;
-                    }
-                    node = (DefaultMutableTreeNode) node.getParent();
-                }
-            }
-        }
-        return ret;
-    }
 
 //    public boolean isBuildFileSelected() {
 ////        if( myProject == null) return false;
@@ -836,14 +821,14 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            ServerConfiguration serverConfiguration = getCurrentConfiguration();
+            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             myConfig.removeServerConfiguration(serverConfiguration);
 //            myConfig.getServerConfigurationList().remove(serverConfiguration);
 //            myTree.repaint();
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(getCurrentConfiguration()));
+            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(selectionHandler.getCurrentConfiguration()));
         }
     }
 
@@ -857,12 +842,12 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            ServerConfiguration source = getCurrentConfiguration();
+            ServerConfiguration source = selectionHandler.getCurrentConfiguration();
             editServerConfiguration(e.getProject(), source);
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(getCurrentConfiguration()));
+            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(selectionHandler.getCurrentConfiguration()));
         }
     }
 
@@ -923,7 +908,7 @@ public class SlingServerExplorer
         public void actionPerformed(AnActionEvent e) {
             // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
             // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
-            ServerConfiguration serverConfiguration = getCurrentConfiguration();
+            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             OsgiClient osgiClient = obtainSGiClient(serverConfiguration);
             if(osgiClient != null) {
                 BundleStatus status = checkAndUpdateSupportBundle(serverConfiguration, osgiClient, false);
@@ -957,18 +942,30 @@ public class SlingServerExplorer
             // Change any dashes to dots
             version = version.replaceAll("-", ".");
             Version localVersion = new Version(version);
-            ServerConfiguration.Module module = serverConfiguration.addModule(mavenProject);
+            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(mavenProject));
+            if(module == null) {
+                module = serverConfiguration.addModule(mavenProject);
+            } else {
+                // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
+                module.rebind(mavenProject);
+            }
             try {
-                Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
-                sendBareInfoNotification("Check OSGi Module", "Check OSGi Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
-                boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
-                if(moduleUpToDate) {
-                    // Mark as synchronized
-                    module.setStatus(ServerConfiguration.BundleStatus.upToDate);
-                } else {
-                    // Mark as out of date
-                    module.setStatus(ServerConfiguration.BundleStatus.outdated);
-                    allSynchronized = false;
+                if(module.isOSGiBundle()) {
+                    Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
+                    sendBareInfoNotification("Check OSGi Module", "Check OSGi Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
+                    boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
+                    Object state = BundleStateHelper.getBundleState(module);
+                    sendBareInfoNotification("Bundle State", "Bundle State of Module: '" + module.getName() + "', state: '" + state + "'");
+                    if(moduleUpToDate) {
+                        // Mark as synchronized
+                        module.setStatus(ServerConfiguration.BundleStatus.upToDate);
+                    } else {
+                        // Mark as out of date
+                        module.setStatus(ServerConfiguration.BundleStatus.outdated);
+                        allSynchronized = false;
+                    }
+                } else if(module.isSlingPackage()) {
+                    //AS TODO: Handle Sling Package
                 }
             } catch(OsgiClientException e1) {
                 // Mark connection as failed
@@ -1059,7 +1056,7 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            ServerConfiguration serverConfiguration = getCurrentConfiguration();
+            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             // Create Remote Connection to Server using the IntelliJ Run / Debug Connection
             //AS TODO: It is working but the configuration is listed and made persistent. That is not too bad because
             //AS TODO: after changes a reconnect will update the configuration.
@@ -1095,7 +1092,7 @@ public class SlingServerExplorer
 
         public void update(AnActionEvent event) {
             //AS TODO: Disabled this when a session is started and (re)enable it when it is stopped
-            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(getCurrentConfiguration()));
+            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(selectionHandler.getCurrentConfiguration()));
         }
     }
 
@@ -1120,7 +1117,7 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected() && isConfigurationInUse(getCurrentConfiguration()));
+            event.getPresentation().setEnabled(isConfigurationSelected() && isConfigurationInUse(selectionHandler.getCurrentConfiguration()));
         }
 
         private void stopProcess(@NotNull ProcessHandler processHandler) {
@@ -1203,59 +1200,14 @@ public class SlingServerExplorer
         @Override
         public void actionPerformed(AnActionEvent e) {
             // First Check if the Install Support Bundle is installed
-            ServerConfiguration serverConfiguration = getCurrentConfiguration();
+            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             OsgiClient osgiClient = obtainSGiClient(serverConfiguration);
             BundleStatus bundleStatus = checkAndUpdateSupportBundle(serverConfiguration, osgiClient, true);
             if(bundleStatus == BundleStatus.upToDate) {
-                TreePath selectionPath = myTree.getSelectionPath();
-                if(selectionPath != null) {
-                    final DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-                    final Object userObject = node.getUserObject();
-                    List<ServerConfiguration.Module> moduleList = new ArrayList<ServerConfiguration.Module>();
-                    if(userObject instanceof SlingServerModuleNodeDescriptor) {
-                        moduleList.add(((SlingServerModuleNodeDescriptor) userObject).getTarget());
-                    } else {
-                        moduleList.addAll(serverConfiguration.getModuleList());
-                    }
-                    // Deploy all selected Modules
-                    deployModules(osgiClient, moduleList);
-                }
+                List<ServerConfiguration.Module> moduleList = selectionHandler.getCurrentConfigurationModuleDescriptorList();
+                // Deploy all selected Modules
+                deployModules(osgiClient, moduleList);
             }
-//            final AntBuildFile buildFile = getCurrentBuildFile();
-//            if (buildFile == null || !buildFile.exists()) {
-//                return;
-//            }
-//
-//            TreePath selectionPath = myTree.getSelectionPath();
-//            if (selectionPath == null) return;
-//            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-//            final Object userObject = node.getUserObject();
-//            AntBuildTarget target = null;
-//            if (userObject instanceof AntTargetNodeDescriptor) {
-//                AntTargetNodeDescriptor targetNodeDescriptor = (AntTargetNodeDescriptor)userObject;
-//                target = targetNodeDescriptor.getTarget();
-//            }
-//            else if (userObject instanceof AntBuildFileNodeDescriptor){
-//                AntBuildModel model = ((AntBuildFileNodeDescriptor)userObject).getBuildFile().getModel();
-//                target = model.findTarget(model.getDefaultTargetName());
-//            }
-//            String name = target != null ? target.getDisplayName() : null;
-//            if (target == null || name == null) {
-//                return;
-//            }
-//
-//            RunManagerImpl runManager = (RunManagerImpl) RunManager.getInstance(e.getProject());
-//            RunnerAndConfigurationSettings settings =
-//                    runManager.createRunConfiguration(name, AntRunConfigurationType.getInstance().getFactory());
-//            AntRunConfiguration configuration  = (AntRunConfiguration)settings.getConfiguration();
-//            configuration.acceptSettings(target);
-//            if (RunDialog.editConfiguration(e.getProject(), settings, ExecutionBundle
-//                    .message("create.run.configuration.for.item.dialog.title", configuration.getName()))) {
-//                runManager.addConfiguration(settings,
-//                        runManager.isConfigurationShared(settings),
-//                        runManager.getBeforeRunTasks(settings.getConfiguration()), false);
-//                runManager.setSelectedConfiguration(settings);
-//            }
         }
 
         private void deployModules(OsgiClient osgiClient, List<ServerConfiguration.Module> moduleList) {

@@ -32,7 +32,12 @@
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ServerConfiguration">
-    <ssc-0 name="Test Configuration 2" host="localhost" description="Test AEM Connection to Author on Localhost" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="31" stopConnectionTimeout="14" publishType="getAutomaticallyOnBuild" installationType="installViaBundleUpload" />
-    <ssc-0 name="Test Me Now" host="test-server" description="Test Server Connection Configuration" connectionPort="14052" connectionDebugPort="130303" userName="myAdmin" password="myAdmin" contextPath="Test Server Connection Configuration" startConnectionTimeout="20" stopConnectionTimeout="10" publishType="getAutomaticallyOnBuild" installationType="installViaBundleUpload" />
+    <ssc-0 name="Default Configuration" host="localhost" description="No Description" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="30" stopConnectionTimeout="15" publishType="automaticallyOnChange" installationType="installViaBundleUpload">
+      <sscm-0 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.ui.content" partOfBuild="false" />
+      <sscm-1 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.ui.apps" partOfBuild="false" />
+      <sscm-2 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.it.tests" partOfBuild="false" />
+      <sscm-3 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.it.launcher" partOfBuild="false" />
+      <sscm-4 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.core" partOfBuild="false" />
+    </ssc-0>
   </component>
 </project>

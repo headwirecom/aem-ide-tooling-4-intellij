@@ -139,7 +139,7 @@ public class ServerConfigurationManager
         Element root = new Element("state");
         int i = 0;
         for(ServerConfiguration serverConfiguration: serverConfigurationList) {
-            Element childNode = new Element("ssc-" + i);
+            Element childNode = new Element("ssc-" + i++);
             childNode.setAttribute("name", serverConfiguration.getName());
             childNode.setAttribute("host", serverConfiguration.getHost());
             childNode.setAttribute("description", serverConfiguration.getDescription());
@@ -153,6 +153,13 @@ public class ServerConfigurationManager
             childNode.setAttribute("stopConnectionTimeout", serverConfiguration.getStopConnectionTimeoutInSeconds() + "");
             childNode.setAttribute("publishType", serverConfiguration.getPublishType() + "");
             childNode.setAttribute("installationType", serverConfiguration.getInstallationType() + "");
+            int j = 0;
+            for(ServerConfiguration.Module module: serverConfiguration.getModuleList()) {
+                Element moduleChildNode = new Element("sscm-" + j++);
+                moduleChildNode.setAttribute("symbolicName", module.getSymbolicName());
+                moduleChildNode.setAttribute("partOfBuild", module.isPartOfBuild() + "");
+                childNode.addContent(moduleChildNode);
+            }
             root.addContent(childNode);
         }
         LOGGER.debug("SCM.getState(), end -> returns: " + root);
@@ -178,6 +185,16 @@ public class ServerConfigurationManager
             serverConfiguration.setStopConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue("stopConnectionTimeout"), -1));
             serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue("publishType"), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
             serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue("installationType"), ServerConfiguration.DEFAULT_INSTALL_TYPE));
+            for(Element element: child.getChildren()) {
+                try {
+                    String symbolicName = element.getAttributeValue("symbolicName");
+                    boolean isPartOfBuild = new Boolean(element.getAttributeValue("partOfBuild"));
+                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, symbolicName, isPartOfBuild);
+                    serverConfiguration.addModule(module);
+                } catch(Exception e) {
+                    // Ignore any exceptions to avoid a stall configurations
+                }
+            }
             LOGGER.debug("SCM.loadState(), add Server Configuration: " + serverConfiguration);
             serverConfigurationList.add(serverConfiguration);
         }
