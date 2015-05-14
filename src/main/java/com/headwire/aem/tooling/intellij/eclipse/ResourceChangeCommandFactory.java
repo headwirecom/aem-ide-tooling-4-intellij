@@ -285,8 +285,9 @@ public class ResourceChangeCommandFactory {
 
         String resourceLocation = '/' + changedResource.getFullPath().makeRelativeTo(syncDirectory.getFullPath())
             .toPortableString();
-        IPath serializationFilePath = Path.fromOSString(serializationManager.getSerializationFilePath(
-            resourceLocation, serializationKind));
+        String serializationPath = serializationManager.getSerializationFilePath(
+            resourceLocation, serializationKind);
+        IPath serializationFilePath = Path.fromOSString(serializationPath);
         IResource serializationResource = syncDirectory.findMember(serializationFilePath);
 
         if (serializationResource == null && changedResource.getType() == IResource.FOLDER) {
