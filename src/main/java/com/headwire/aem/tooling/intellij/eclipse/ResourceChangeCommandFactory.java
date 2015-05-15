@@ -1,8 +1,21 @@
 package com.headwire.aem.tooling.intellij.eclipse;
 
+import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
+import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
+import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.intellij.openapi.project.ProjectManager;
 import org.apache.commons.io.IOUtils;
+import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.filter.FilterResult;
+import org.apache.sling.ide.log.Logger;
+import org.apache.sling.ide.serialization.SerializationDataBuilder;
 import org.apache.sling.ide.serialization.SerializationKind;
 import org.apache.sling.ide.serialization.SerializationKindManager;
 import org.apache.sling.ide.serialization.SerializationManager;
@@ -44,20 +57,16 @@ public class ResourceChangeCommandFactory {
         this.serializationManager = serializationManager;
     }
 
-//AS TODO: 1st Step: Make this work to synchronize a Content File with the Sling Server
     public Command<?> newCommandForAddedOrUpdated(Repository repository, IResource addedOrUpdated) throws CoreException {
         try {
             return addFileCommand(repository, addedOrUpdated);
         } catch (IOException e) {
             throw new CoreException(
-//                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed updating " + addedOrUpdated, e)
-                "Failed Updating: " + addedOrUpdated,
-                e
+                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed updating " + addedOrUpdated, e)
             );
         }
     }
 
-    //AS TODO: 1st Step: Make this work to synchronize a Content File with the Sling Server
     private Command<?> addFileCommand(Repository repository, IResource resource) throws CoreException, IOException {
 
         ResourceAndInfo rai = buildResourceAndInfo(resource, repository);
@@ -74,7 +83,6 @@ public class ResourceChangeCommandFactory {
         return repository.newAddOrUpdateNodeCommand(rai.getInfo(), rai.getResource());
     }
 
-    //AS TODO: 1st Step: Make this work to synchronize a Content File with the Sling Server
     /**
      * Convenience method which builds a <tt>ResourceAndInfo</tt> info for a specific <tt>IResource</tt>
      *
@@ -91,26 +99,23 @@ public class ResourceChangeCommandFactory {
         }
 
 //AS TODO: no timestamp on Resource
-//        Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
-//
-//        if (modificationTimestamp != null && modificationTimestamp >= resource.getModificationStamp()) {
-////AS TODO: Add logging
-////            Activator.getDefault().getPluginLogger()
-////                .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
-////                    resource, modificationTimestamp, resource.getModificationStamp());
-//            return null;
-//        }
+        Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
+
+        if (modificationTimestamp != null && modificationTimestamp >= resource.getModificationStamp()) {
+            Activator.getDefault().getPluginLogger()
+                .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
+                    resource, modificationTimestamp, resource.getModificationStamp());
+            return null;
+        }
 
 //AS TODO: Not sure what this means in IntelliJ
 //        if (resource.isTeamPrivateMember(IResource.CHECK_ANCESTORS)) {
-////AS TODO: Add logging
-////            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
+//            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
 //            return null;
 //        }
 
         FileInfo info = createFileInfo(resource);
-//AS TODO: Add logging
-//        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
+        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
 
         File syncDirectoryAsFile = ProjectUtil.getSyncDirectoryFullPath(resource.getProject()).toFile();
         IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
@@ -145,9 +150,8 @@ public class ResourceChangeCommandFactory {
                         syncDirectoryAsFile.getAbsolutePath().length());
                     info = new FileInfo(newLocation, newRelativeLocation, newName);
 
-//AS TODO: Add logging
-//                    Activator.getDefault().getPluginLogger()
-//                        .trace("Adjusted original location from {0} to {1}", resourceLocation, newLocation);
+                    Activator.getDefault().getPluginLogger()
+                        .trace("Adjusted original location from {0} to {1}", resourceLocation, newLocation);
 
                 }
 
@@ -211,8 +215,7 @@ public class ResourceChangeCommandFactory {
 
         FileInfo info = new FileInfo(resource.getLocation().toOSString(), relativePath.toOSString(), resource.getName());
 
-//AS TODO: Add logging
-//        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
+        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
 
         return info;
     }
@@ -245,8 +248,7 @@ public class ResourceChangeCommandFactory {
         FilterResult filterResult = filter.filter(ProjectUtil.getSyncDirectoryFile(resource.getProject()),
             repositoryPath);
 
-//AS TODO: Add logging
-//        Activator.getDefault().getPluginLogger().trace("Filter result for {0} for {1}", repositoryPath, filterResult);
+        Activator.getDefault().getPluginLogger().trace("Filter result for {0} for {1}", repositoryPath, filterResult);
 
         return filterResult;
     }
@@ -262,9 +264,8 @@ public class ResourceChangeCommandFactory {
         String repositoryPath = serializationManager.getRepositoryPath(osPath.makeRelativeTo(syncFolder.getLocation())
             .makeAbsolute().toPortableString());
 
-//AS TODO: Add logging
-//        Activator.getDefault().getPluginLogger()
-//            .trace("Repository path for deleted resource {0} is {1}", resource, repositoryPath);
+        Activator.getDefault().getPluginLogger()
+            .trace("Repository path for deleted resource {0} is {1}", resource, repositoryPath);
 
         return repositoryPath;
     }
@@ -321,17 +322,15 @@ public class ResourceChangeCommandFactory {
 
         // TODO - this too should be abstracted in the service layer, rather than in the Eclipse-specific code
 
-//AS TODO: Add logging
-//        Logger logger = Activator.getDefault().getPluginLogger();
-//        logger.trace("Found plain nt:folder candidate at {0}, trying to find a covering resource for it",
-//            changedResource.getProjectRelativePath());
+        Logger logger = Activator.getDefault().getPluginLogger();
+        logger.trace("Found plain nt:folder candidate at {0}, trying to find a covering resource for it",
+            changedResource.getProjectRelativePath());
         // don't use isRoot() to prevent infinite loop when the final path is '//'
         while (serializationFilePath.segmentCount() != 0) {
             serializationFilePath = serializationFilePath.removeLastSegments(1);
             IFolder folderWithPossibleSerializationFile = (IFolder) syncDirectory.findMember(serializationFilePath);
             if (folderWithPossibleSerializationFile == null) {
-//AS TODO: Add logging
-//                logger.trace("No folder found at {0}, moving up to the next level", serializationFilePath);
+                logger.trace("No folder found at {0}, moving up to the next level", serializationFilePath);
                 continue;
             }
 
@@ -341,8 +340,7 @@ public class ResourceChangeCommandFactory {
                 ((IFolder) folderWithPossibleSerializationFile).getLocation().toOSString(),
                 SerializationKind.METADATA_PARTIAL);
 
-//AS TODO: Add logging
-//            logger.trace("Looking for serialization data in {0}", possibleSerializationFilePath);
+            logger.trace("Looking for serialization data in {0}", possibleSerializationFilePath);
 
             if (serializationManager.isSerializationFile(possibleSerializationFilePath)) {
 
@@ -350,9 +348,8 @@ public class ResourceChangeCommandFactory {
                     syncDirectory.getLocation());
                 IFile possibleSerializationFile = syncDirectory.getFile(parentSerializationFilePath);
                 if (!possibleSerializationFile.exists()) {
-//AS TODO: Add logging
-//                    logger.trace("Potential serialization data file {0} does not exist, moving up to the next level",
-//                        possibleSerializationFile.getFullPath());
+                    logger.trace("Potential serialization data file {0} does not exist, moving up to the next level",
+                        possibleSerializationFile.getFullPath());
                     continue;
                 }
 
@@ -369,10 +366,9 @@ public class ResourceChangeCommandFactory {
                 String potentialPath = serializationData.getPath();
                 boolean covered = serializationData.covers(repositoryPath);
 
-//AS TODO: Add logging
-//                logger.trace(
-//                    "Found possible serialization data at {0}. Resource :{1} ; our resource: {2}. Covered: {3}",
-//                    parentSerializationFilePath, potentialPath, repositoryPath, covered);
+                logger.trace(
+                    "Found possible serialization data at {0}. Resource :{1} ; our resource: {2}. Covered: {3}",
+                    parentSerializationFilePath, potentialPath, repositoryPath, covered);
                 // note what we don't need to normalize the children here since this resource's data is covered by
                 // another resource
                 if (covered) {
@@ -435,10 +431,8 @@ public class ResourceChangeCommandFactory {
             }
         } catch (RepositoryException e) {
             throw new CoreException(
-//                new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed creating a "
-//                + SerializationDataBuilder.class.getName(), e)
-                "Failed Creating a Serialization Data Builder",
-                e
+                new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed creating a "
+                + SerializationDataBuilder.class.getName(), e)
             );
         }
 
@@ -472,10 +466,9 @@ public class ResourceChangeCommandFactory {
 //AS TODO: Not sure how to fix it but that cannot just be wrapped
 //            IResource childResource = ResourcesPlugin.getWorkspace().getRoot().findMember(childPath);
 //            if (childResource == null) {
-////AS TODO: Add logging
-////                Activator.getDefault().getPluginLogger()
-////                    .trace("For resource at with serialization data {0} the serialized child resource at {1} does not exist in the filesystem and will be ignored",
-////                        serializationFile, childPath);
+//                Activator.getDefault().getPluginLogger()
+//                    .trace("For resource at with serialization data {0} the serialized child resource at {1} does not exist in the filesystem and will be ignored",
+//                        serializationFile, childPath);
 //                childIterator.remove();
 //            }
         }
@@ -485,10 +478,9 @@ public class ResourceChangeCommandFactory {
                 .makeRelativeTo(syncDirectory.getFullPath()).makeAbsolute();
             resourceProxy.addChild(new ResourceProxy(serializationManager
                 .getRepositoryPath(extraChildResourcePath.toPortableString())));
-//AS TODO: Add logging
-//            Activator.getDefault().getPluginLogger()
-//                .trace("For resource at with serialization data {0} the found a child resource at {1} which is not listed in the serialized child resources and will be added",
-//                    serializationFile, extraChildResource);
+            Activator.getDefault().getPluginLogger()
+                .trace("For resource at with serialization data {0} the found a child resource at {1} which is not listed in the serialized child resources and will be added",
+                    serializationFile, extraChildResource);
         }
     }
 
@@ -513,9 +505,7 @@ public class ResourceChangeCommandFactory {
             return removeFileCommand(repository, removed);
         } catch (IOException e) {
             throw new CoreException(
-//                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed removing" + removed, e)
-                "Failed removing File: " + removed,
-                e
+                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed removing" + removed, e)
             );
         }
     }
@@ -523,8 +513,7 @@ public class ResourceChangeCommandFactory {
     private Command<?> removeFileCommand(Repository repository, IResource resource) throws CoreException, IOException {
 
         if (resource.isTeamPrivateMember(IResource.CHECK_ANCESTORS)) {
-//AS TODO: Add logging
-//            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
+            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
             return null;
         }
 
@@ -552,12 +541,11 @@ public class ResourceChangeCommandFactory {
         ResourceProxy coveringParentData = findSerializationDataFromCoveringParent(resource, syncDirectory,
             resourceLocation, serializationFilePath);
         if (coveringParentData != null) {
-            //AS TODO: Add logging
-//            Activator
-//                .getDefault()
-//                .getPluginLogger()
-//                .trace("Found covering resource data ( repository path = {0} ) for resource at {1},  skipping deletion and performing an update instead",
-//                    coveringParentData.getPath(), resource.getFullPath());
+            Activator
+                .getDefault()
+                .getPluginLogger()
+                .trace("Found covering resource data ( repository path = {0} ) for resource at {1},  skipping deletion and performing an update instead",
+                    coveringParentData.getPath(), resource.getFullPath());
             FileInfo info = createFileInfo(resource);
             return repository.newAddOrUpdateNodeCommand(info, coveringParentData);
         }

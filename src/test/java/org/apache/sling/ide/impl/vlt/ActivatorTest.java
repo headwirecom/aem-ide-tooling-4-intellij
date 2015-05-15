@@ -18,9 +18,9 @@ public class ActivatorTest {
     public void testActivator() throws Exception {
         Activator activator = new Activator();
 
-        // Check if that works with just a null bundle context
-        BundleContext bundleContext = new MyBundleContext();
-        activator.start(bundleContext);
+//        // Check if that works with just a null bundle context
+//        BundleContext bundleContext = new MyBundleContext();
+//        activator.start(bundleContext);
         // Obtain the Default instance
         Activator test = Activator.getDefault();
         // Obtain the Plugin Logger

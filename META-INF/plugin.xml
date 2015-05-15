@@ -1,58 +1,91 @@
 <idea-plugin version="2">
-  <id>com.headwire.aem.tooling.intellij</id>
-  <name>Headwire AEM Tooling Plugin</name>
-  <version>1.0</version>
-  <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
+    <id>com.headwire.aem.tooling.intellij</id>
+    <name>Headwire AEM Tooling Plugin</name>
+    <version>1.0</version>
+    <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
-  <description><![CDATA[
+    <description><![CDATA[
       This ItelliJ IDEA Plugin is to manage a project deployed on Adobe AEM through the IDE.
     ]]></description>
 
-  <change-notes><![CDATA[
+    <change-notes><![CDATA[
       Initial Version
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="131"/>
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
 
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+    <!-- This Dependency is necessary to be able to access the IntelliJ Maven Classes from within this plugin -->
+    <!-- For development make sure the plugin is added to the IntelliJ SDK and not as a library -->
     <depends>org.jetbrains.idea.maven</depends>
 
-  <extensions defaultExtensionNs="com.intellij">
-      <toolWindow id="AEM" anchor="right" icon="/images/aem.gif"
-                  factoryClass="com.headwire.aem.tooling.intellij.ServersToolWindowFactory"/>
-      <toolWindow id="AEM Console" anchor="bottom" secondary="true"
-                  icon="AllIcons.Ide.NoNotifications13"
-                  factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
-      <projectService serviceInterface="com.headwire.aem.tooling.intellij.BytecodeOutline"
-                      serviceImplementation="com.headwire.aem.tooling.intellij.BytecodeOutline"/>
-      <projectService serviceInterface="com.headwire.aem.tooling.intellij.console.SlingServerReportView"
-                      serviceImplementation="com.headwire.aem.tooling.intellij.console.SlingServerReportView"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="AEM" anchor="right" icon="/images/aem.gif"
+                    factoryClass="com.headwire.aem.tooling.intellij.ServersToolWindowFactory"/>
+        <toolWindow id="AEM Console" anchor="bottom" secondary="true"
+                    icon="AllIcons.Ide.NoNotifications13"
+                    factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
+        <projectService serviceInterface="com.headwire.aem.tooling.intellij.BytecodeOutline"
+                        serviceImplementation="com.headwire.aem.tooling.intellij.BytecodeOutline"/>
+        <projectService serviceInterface="com.headwire.aem.tooling.intellij.console.SlingServerReportView"
+                        serviceImplementation="com.headwire.aem.tooling.intellij.console.SlingServerReportView"/>
+    </extensions>
 
-  <application-components>
-    <!-- Add your application components here -->
-      <component>
-          <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog</implementation-class>
-      </component>
-  </application-components>
+    <application-components>
+        <!-- Add your application components here -->
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.osgi.service.event.EventAdmin</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.EventAdminWrapper</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.transport.RepositoryFactory</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltRepositoryFactoryWrapper</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.osgi.OsgiClientFactory</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.OsgiClientFactoryWrapper</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.serialization.SerializationManager</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.SerializationManagerWrapper</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.impl.vlt.VaultFsLocator</interface-class>
+            <implementation-class>org.apache.sling.ide.impl.vlt.VaultFsLocatorImpl</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.log.Logger</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.PluginLoggerWrapper</implementation-class>
+        </component>
+    </application-components>
 
-  <project-components>
-      <component>
-          <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager</implementation-class>
-      </component>
-      <component>
-          <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog$ProjectTracker</implementation-class>
-      </component>
-  </project-components>
+    <project-components>
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.communication.MessageManager</implementation-class>
+        </component>
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager</implementation-class>
+        </component>
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog$ProjectTracker</implementation-class>
+        </component>
+    </project-components>
 
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
 
 </idea-plugin>
