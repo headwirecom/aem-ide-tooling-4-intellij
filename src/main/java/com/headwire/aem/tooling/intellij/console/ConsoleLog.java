@@ -40,7 +40,7 @@ import com.intellij.util.text.CharArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  */
 public class ConsoleLog {
     public static final String LOG_REQUESTOR = "Internal log requestor";
-//    public static final String LOG_TOOL_WINDOW_ID = "Event Log";
+    //    public static final String LOG_TOOL_WINDOW_ID = "Event Log";
     public static final String HELP_ID = "reference.toolwindows.event.log";
     private static final String A_CLOSING = "</a>";
     private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]*>");
@@ -70,10 +70,10 @@ public class ConsoleLog {
             @Override
             public void notify(@NotNull Notification notification) {
                 final Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
-                if (openProjects.length == 0) {
+                if(openProjects.length == 0) {
                     myModel.addNotification(notification);
                 }
-                for (Project p : openProjects) {
+                for(Project p : openProjects) {
                     getProjectComponent(p).printNotification(notification);
                 }
             }
@@ -82,7 +82,7 @@ public class ConsoleLog {
 
     public static void expireNotification(@NotNull Notification notification) {
         getApplicationComponent().myModel.removeNotification(notification);
-        for (Project p : ProjectManager.getInstance().getOpenProjects()) {
+        for(Project p : ProjectManager.getInstance().getOpenProjects()) {
             getProjectComponent(p).myProjectModel.removeNotification(notification);
         }
     }
@@ -102,7 +102,7 @@ public class ConsoleLog {
     }
 
     public static LogEntry formatForLog(@NotNull final Notification notification, String indent) {
-        DocumentImpl logDoc = new DocumentImpl("",true);
+        DocumentImpl logDoc = new DocumentImpl("", true);
         AtomicBoolean showMore = new AtomicBoolean(false);
         Map<RangeMarker, HyperlinkInfo> links = new LinkedHashMap<RangeMarker, HyperlinkInfo>();
         List<RangeMarker> lineSeparators = new ArrayList<RangeMarker>();
@@ -112,8 +112,8 @@ public class ConsoleLog {
 
         RangeMarker afterTitle = null;
         boolean hasHtml = parseHtmlContent(title, notification, logDoc, showMore, links, lineSeparators);
-        if (StringUtil.isNotEmpty(title)) {
-            if (StringUtil.isNotEmpty(content)) {
+        if(StringUtil.isNotEmpty(title)) {
+            if(StringUtil.isNotEmpty(content)) {
                 appendText(logDoc, ": ");
                 afterTitle = logDoc.createRangeMarker(logDoc.getTextLength() - 2, logDoc.getTextLength());
             }
@@ -125,17 +125,17 @@ public class ConsoleLog {
         indentNewLines(logDoc, lineSeparators, afterTitle, hasHtml, indent);
 
         ArrayList<Pair<TextRange, HyperlinkInfo>> list = new ArrayList<Pair<TextRange, HyperlinkInfo>>();
-        for (RangeMarker marker : links.keySet()) {
-            if (!marker.isValid()) {
+        for(RangeMarker marker : links.keySet()) {
+            if(!marker.isValid()) {
                 showMore.set(true);
                 continue;
             }
             list.add(Pair.create(new TextRange(marker.getStartOffset(), marker.getEndOffset()), links.get(marker)));
         }
 
-        if (showMore.get()) {
+        if(showMore.get()) {
             String sb = "show balloon";
-            if (!logDoc.getText().endsWith(" ")) {
+            if(!logDoc.getText().endsWith(" ")) {
                 appendText(logDoc, " ");
             }
             appendText(logDoc, "(" + sb + ")");
@@ -148,7 +148,7 @@ public class ConsoleLog {
 
     @NotNull
     private static String truncateLongString(AtomicBoolean showMore, String title) {
-        if (title.length() > 1000) {
+        if(title.length() > 1000) {
             showMore.set(true);
             return title.substring(0, 1000) + "...";
         }
@@ -156,30 +156,30 @@ public class ConsoleLog {
     }
 
     private static void indentNewLines(DocumentImpl logDoc, List<RangeMarker> lineSeparators, RangeMarker afterTitle, boolean hasHtml, String indent) {
-        if (!hasHtml) {
+        if(!hasHtml) {
             int i = -1;
-            while (true) {
+            while(true) {
                 i = StringUtil.indexOf(logDoc.getText(), '\n', i + 1);
-                if (i < 0) {
+                if(i < 0) {
                     break;
                 }
                 lineSeparators.add(logDoc.createRangeMarker(i, i + 1));
             }
         }
-        if (!lineSeparators.isEmpty() && afterTitle != null && afterTitle.isValid()) {
+        if(!lineSeparators.isEmpty() && afterTitle != null && afterTitle.isValid()) {
             lineSeparators.add(afterTitle);
         }
         int nextLineStart = -1;
-        for (RangeMarker separator : lineSeparators) {
-            if (separator.isValid()) {
+        for(RangeMarker separator : lineSeparators) {
+            if(separator.isValid()) {
                 int start = separator.getStartOffset();
-                if (start == nextLineStart) {
+                if(start == nextLineStart) {
                     continue;
                 }
 
                 logDoc.replaceString(start, separator.getEndOffset(), "\n" + indent);
                 nextLineStart = start + 1 + indent.length();
-                while (nextLineStart < logDoc.getTextLength() && Character.isWhitespace(logDoc.getCharsSequence().charAt(nextLineStart))) {
+                while(nextLineStart < logDoc.getTextLength() && Character.isWhitespace(logDoc.getCharsSequence().charAt(nextLineStart))) {
                     logDoc.deleteString(nextLineStart, nextLineStart + 1);
                 }
             }
@@ -187,10 +187,10 @@ public class ConsoleLog {
     }
 
     private static String getStatusText(DocumentImpl logDoc, AtomicBoolean showMore, List<RangeMarker> lineSeparators, boolean hasHtml) {
-        DocumentImpl statusDoc = new DocumentImpl(logDoc.getImmutableCharSequence(),true);
+        DocumentImpl statusDoc = new DocumentImpl(logDoc.getImmutableCharSequence(), true);
         List<RangeMarker> statusSeparators = new ArrayList<RangeMarker>();
-        for (RangeMarker separator : lineSeparators) {
-            if (separator.isValid()) {
+        for(RangeMarker separator : lineSeparators) {
+            if(separator.isValid()) {
                 statusSeparators.add(statusDoc.createRangeMarker(separator.getStartOffset(), separator.getEndOffset()));
             }
         }
@@ -208,9 +208,9 @@ public class ConsoleLog {
 
         int initialLen = document.getTextLength();
         boolean hasHtml = false;
-        while (true) {
+        while(true) {
             Matcher tagMatcher = TAG_PATTERN.matcher(content);
-            if (!tagMatcher.find()) {
+            if(!tagMatcher.find()) {
                 appendText(document, content);
                 break;
             }
@@ -218,10 +218,10 @@ public class ConsoleLog {
             String tagStart = tagMatcher.group();
             appendText(document, content.substring(0, tagMatcher.start()));
             Matcher aMatcher = A_PATTERN.matcher(tagStart);
-            if (aMatcher.matches()) {
+            if(aMatcher.matches()) {
                 final String href = aMatcher.group(2);
                 int linkEnd = content.indexOf(A_CLOSING, tagMatcher.end());
-                if (linkEnd > 0) {
+                if(linkEnd > 0) {
                     String linkText = content.substring(tagMatcher.end(), linkEnd).replaceAll(TAG_PATTERN.pattern(), "");
                     int linkStart = document.getTextLength();
                     appendText(document, linkText);
@@ -233,19 +233,18 @@ public class ConsoleLog {
             }
 
             hasHtml = true;
-            if (NEW_LINES.contains(tagStart)) {
-                if (initialLen != document.getTextLength()) {
+            if(NEW_LINES.contains(tagStart)) {
+                if(initialLen != document.getTextLength()) {
                     lineSeparators.add(document.createRangeMarker(TextRange.from(document.getTextLength(), 0)));
                 }
-            }
-            else if (!"<html>".equals(tagStart) && !"</html>".equals(tagStart) && !"<body>".equals(tagStart) && !"</body>".equals(tagStart)) {
+            } else if(!"<html>".equals(tagStart) && !"</html>".equals(tagStart) && !"<body>".equals(tagStart) && !"</body>".equals(tagStart)) {
                 showMore.set(true);
             }
             content = content.substring(tagMatcher.end());
         }
-        for (Iterator<RangeMarker> iterator = lineSeparators.iterator(); iterator.hasNext(); ) {
+        for(Iterator<RangeMarker> iterator = lineSeparators.iterator(); iterator.hasNext(); ) {
             RangeMarker next = iterator.next();
-            if (next.getEndOffset() == document.getTextLength()) {
+            if(next.getEndOffset() == document.getTextLength()) {
                 iterator.remove();
             }
         }
@@ -253,29 +252,29 @@ public class ConsoleLog {
     }
 
     private static void insertNewLineSubstitutors(Document document, AtomicBoolean showMore, List<RangeMarker> lineSeparators) {
-        for (RangeMarker marker : lineSeparators) {
-            if (!marker.isValid()) {
+        for(RangeMarker marker : lineSeparators) {
+            if(!marker.isValid()) {
                 showMore.set(true);
                 continue;
             }
 
             int offset = marker.getStartOffset();
-            if (offset == 0 || offset == document.getTextLength()) {
+            if(offset == 0 || offset == document.getTextLength()) {
                 continue;
             }
             boolean spaceBefore = offset > 0 && Character.isWhitespace(document.getCharsSequence().charAt(offset - 1));
-            if (offset < document.getTextLength()) {
+            if(offset < document.getTextLength()) {
                 boolean spaceAfter = Character.isWhitespace(document.getCharsSequence().charAt(offset));
                 int next = CharArrayUtil.shiftForward(document.getCharsSequence(), offset, " \t");
-                if (next < document.getTextLength() && !Character.isLowerCase(document.getCharsSequence().charAt(next))) {
+                if(next < document.getTextLength() && !Character.isLowerCase(document.getCharsSequence().charAt(next))) {
                     document.insertString(offset, (spaceBefore ? "" : " ") + "//" + (spaceAfter ? "" : " "));
                     continue;
                 }
-                if (spaceAfter) {
+                if(spaceAfter) {
                     continue;
                 }
             }
-            if (spaceBefore) {
+            if(spaceBefore) {
                 continue;
             }
 
@@ -286,11 +285,13 @@ public class ConsoleLog {
     private static void removeJavaNewLines(Document document, List<RangeMarker> lineSeparators, boolean hasHtml) {
         CharSequence text = document.getCharsSequence();
         int i = 0;
-        while (true) {
+        while(true) {
             i = StringUtil.indexOf(text, '\n', i);
-            if (i < 0) break;
+            if(i < 0) {
+                break;
+            }
             document.deleteString(i, i + 1);
-            if (!hasHtml) {
+            if(!hasHtml) {
                 lineSeparators.add(document.createRangeMarker(TextRange.from(i, 0)));
             }
         }
@@ -323,21 +324,22 @@ public class ConsoleLog {
 
     public static void toggleLog(@Nullable final Project project, @Nullable final Notification notification) {
         final ToolWindow eventLog = getLogWindow(project);
-        if (eventLog != null) {
-            if (!eventLog.isVisible()) {
+        if(eventLog != null) {
+            if(!eventLog.isVisible()) {
                 eventLog.activate(new Runnable() {
                     @Override
                     public void run() {
-                        if (notification == null) return;
+                        if(notification == null) {
+                            return;
+                        }
                         String contentName = getContentName(notification);
                         Content content = eventLog.getContentManager().findContent(contentName);
-                        if (content != null) {
+                        if(content != null) {
                             eventLog.getContentManager().setSelectedContent(content);
                         }
                     }
                 }, true);
-            }
-            else {
+            } else {
                 eventLog.hide(null);
             }
         }
@@ -353,7 +355,7 @@ public class ConsoleLog {
 
             myProjectModel = new ConsoleLogModel(project, project);
 
-            for (Notification notification : getApplicationComponent().myModel.takeNotifications()) {
+            for(Notification notification : getApplicationComponent().myModel.takeNotifications()) {
                 printNotification(notification);
             }
 
@@ -368,7 +370,7 @@ public class ConsoleLog {
         public void initDefaultContent() {
             createNewContent(DEFAULT_CATEGORY);
 
-            for (Notification notification : myInitial) {
+            for(Notification notification : myInitial) {
                 doPrintNotification(notification, ObjectUtils.assertNotNull(getConsole(notification)));
             }
             myInitial.clear();
@@ -385,16 +387,15 @@ public class ConsoleLog {
         }
 
         private void printNotification(Notification notification) {
-            if (!NotificationsConfigurationImpl.getSettings(notification.getGroupId()).isShouldLog()) {
+            if(!NotificationsConfigurationImpl.getSettings(notification.getGroupId()).isShouldLog()) {
                 return;
             }
             myProjectModel.addNotification(notification);
 
             ConsoleLogConsole console = getConsole(notification);
-            if (console == null) {
+            if(console == null) {
                 myInitial.add(notification);
-            }
-            else {
+            } else {
                 doPrintNotification(notification, console);
             }
         }
@@ -403,7 +404,7 @@ public class ConsoleLog {
             StartupManager.getInstance(myProject).runWhenProjectIsInitialized(new DumbAwareRunnable() {
                 @Override
                 public void run() {
-                    if (!ShutDownTracker.isShutdownHookRunning() && !myProject.isDisposed()) {
+                    if(!ShutDownTracker.isShutdownHookRunning() && !myProject.isDisposed()) {
                         ApplicationManager.getApplication().runReadAction(new Runnable() {
                             public void run() {
                                 console.doPrintNotification(notification);
@@ -416,7 +417,9 @@ public class ConsoleLog {
 
         @Nullable
         private ConsoleLogConsole getConsole(Notification notification) {
-            if (myCategoryMap.get(DEFAULT_CATEGORY) == null) return null; // still not initialized
+            if(myCategoryMap.get(DEFAULT_CATEGORY) == null) {
+                return null; // still not initialized
+            }
 
             String name = getContentName(notification);
             ConsoleLogConsole console = myCategoryMap.get(name);
@@ -440,8 +443,8 @@ public class ConsoleLog {
 
     @NotNull
     private static String getContentName(Notification notification) {
-        for (EventLogCategory category : EventLogCategory.EP_NAME.getExtensions()) {
-            if (category.acceptsNotification(notification.getGroupId())) {
+        for(EventLogCategory category : EventLogCategory.EP_NAME.getExtensions()) {
+            if(category.acceptsNotification(notification.getGroupId())) {
                 return category.getDisplayName();
             }
         }
@@ -464,7 +467,7 @@ public class ConsoleLog {
         @Override
         public void navigate(Project project) {
             NotificationListener listener = myNotification.getListener();
-            if (listener != null) {
+            if(listener != null) {
                 ConsoleLogConsole console = ObjectUtils.assertNotNull(getProjectComponent(project).getConsole(myNotification));
                 JComponent component = console.getConsoleEditor().getContentComponent();
                 listener.hyperlinkUpdate(myNotification, IJSwingUtilities.createHyperlinkEvent(myHref, component));
@@ -488,16 +491,16 @@ public class ConsoleLog {
         public void navigate(Project project) {
             hideBalloon(myNotification);
 
-            for (Notification notification : getLogModel(project).getNotifications()) {
+            for(Notification notification : getLogModel(project).getNotifications()) {
                 hideBalloon(notification);
             }
 
             ConsoleLogConsole console = ObjectUtils.assertNotNull(getProjectComponent(project).getConsole(myNotification));
-            if (myRangeHighlighter == null || !myRangeHighlighter.isValid()) {
+            if(myRangeHighlighter == null || !myRangeHighlighter.isValid()) {
                 return;
             }
             RelativePoint target = console.getRangeHighlighterLocation(myRangeHighlighter);
-            if (target != null) {
+            if(target != null) {
                 IdeFrame frame = WindowManager.getInstance().getIdeFrame(project);
                 assert frame != null;
                 Balloon balloon = NotificationsManagerImpl.createBalloon(frame, myNotification, true, true);
@@ -508,7 +511,7 @@ public class ConsoleLog {
 
         private static void hideBalloon(Notification notification1) {
             Balloon balloon = notification1.getBalloon();
-            if (balloon != null) {
+            if(balloon != null) {
                 balloon.hide(true);
             }
         }

@@ -1,11 +1,17 @@
 package com.headwire.aem.tooling.intellij.util;
 
+import com.intellij.openapi.util.Key;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Date;
 
 /**
  * Created by schaefa on 4/30/15.
  */
 public class Util {
+
+    public static final Key<Long> MODIFICATION_DATE_KEY = new Key("modification date");
+
 
     public static int convertToInt(String value, int defaultValue) {
         int ret = defaultValue;

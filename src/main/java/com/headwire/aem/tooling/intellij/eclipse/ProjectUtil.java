@@ -1,5 +1,9 @@
 package com.headwire.aem.tooling.intellij.eclipse;
 
+import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import org.apache.sling.ide.filter.Filter;
 
 import java.io.File;
