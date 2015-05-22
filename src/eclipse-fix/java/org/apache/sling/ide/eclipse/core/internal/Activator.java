@@ -55,4 +55,7 @@ public class Activator {
         return ServiceManager.getService(EventAdmin.class);
     }
 
+    public void issueConsoleLog(String installBundle, String s, String s1) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

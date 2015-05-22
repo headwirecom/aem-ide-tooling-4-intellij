@@ -10,6 +10,8 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Modul
  */
 public class IFolder extends IResource {
 
+    public IFolder() {}
+
     public IFolder(@NotNull Module module, @NotNull VirtualFile file) {
         super(module, file);
     }

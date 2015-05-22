@@ -9,6 +9,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.headwire.aem.tooling.intellij.eclipse.wrapper.ResourcesPlugin;
 import com.intellij.openapi.project.ProjectManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
@@ -98,7 +99,6 @@ public class ResourceChangeCommandFactory {
             return null;
         }
 
-//AS TODO: no timestamp on Resource
         Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
 
         if (modificationTimestamp != null && modificationTimestamp >= resource.getModificationStamp()) {
@@ -186,7 +186,9 @@ public class ResourceChangeCommandFactory {
         switch (filterResult) {
 
             case ALLOW:
-                return new ResourceAndInfo(resourceProxy, info);
+//AS TODO: Mark is as only create if missing to handle /content/dam -> create an appropriate filter later
+                return new ResourceAndInfo(resourceProxy, info, true);
+//                return new ResourceAndInfo(resourceProxy, info);
             case PREREQUISITE:
                 // never try to 'create' the root node, we assume it exists
                 if (!resourceProxy.getPath().equals("/")) {
@@ -200,7 +202,6 @@ public class ResourceChangeCommandFactory {
         }
     }
 
-    //AS TODO: 1st Step: Make this work to synchronize a Content File with the Sling Server
     private FileInfo createFileInfo(IResource resource) throws CoreException {
 
         if (resource.getType() != IResource.FILE) {
@@ -463,24 +464,28 @@ public class ResourceChangeCommandFactory {
 
             IPath childPath = serializationDirectoryPath.append(osPath);
 
-//AS TODO: Not sure how to fix it but that cannot just be wrapped
-//            IResource childResource = ResourcesPlugin.getWorkspace().getRoot().findMember(childPath);
-//            if (childResource == null) {
-//                Activator.getDefault().getPluginLogger()
-//                    .trace("For resource at with serialization data {0} the serialized child resource at {1} does not exist in the filesystem and will be ignored",
-//                        serializationFile, childPath);
-//                childIterator.remove();
-//            }
+//AS TODO: The Wrapper's implementation needs to be finished as it only returns null now. Here we only check
+//AS TODO: if the returned resource is not null and does not use it otherwise
+            IResource childResource = ResourcesPlugin.getWorkspace().getRoot().findMember(childPath);
+            if (childResource == null) {
+                Activator.getDefault().getPluginLogger()
+                    .trace("For resource at with serialization data {0} the serialized child resource at {1} does not exist in the filesystem and will be ignored",
+                        serializationFile, childPath);
+                childIterator.remove();
+            }
         }
 
         for ( IResource extraChildResource : extraChildResources.values()) {
             IPath extraChildResourcePath = extraChildResource.getFullPath()
                 .makeRelativeTo(syncDirectory.getFullPath()).makeAbsolute();
-            resourceProxy.addChild(new ResourceProxy(serializationManager
-                .getRepositoryPath(extraChildResourcePath.toPortableString())));
-            Activator.getDefault().getPluginLogger()
-                .trace("For resource at with serialization data {0} the found a child resource at {1} which is not listed in the serialized child resources and will be added",
-                    serializationFile, extraChildResource);
+            String path = serializationManager.getRepositoryPath(extraChildResourcePath.toPortableString());
+            path = path.substring(syncDirectory.getFullPath().toFile().getPath().length());
+            if(!path.equals(resourceProxy.getPath())) {
+                resourceProxy.addChild(new ResourceProxy(path));
+                Activator.getDefault().getPluginLogger()
+                    .trace("For resource at with serialization data {0} the found a child resource at {1} which is not listed in the serialized child resources and will be added",
+                        serializationFile, extraChildResource);
+            }
         }
     }
 

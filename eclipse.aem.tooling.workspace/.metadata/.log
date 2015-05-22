@@ -1596,3 +1596,35 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-13 07:48:32.568
 !MESSAGE Authentication required to access repository descriptors
+!SESSION 2015-05-15 12:13:28.974 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-05-15 12:17:37.295
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-15 12:17:54.997
+!MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aem-tooling-test-project.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-15 12:18:03.512
+!MESSAGE Authentication required to access repository descriptors
+!SESSION 2015-05-15 12:18:46.286 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-05-15 12:18:55.365
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-15 12:19:11.483
+!MESSAGE Manifest com.headwire.aem.tooling:aem-tooling-test-project.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aem-tooling-test-project.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-05-15 12:19:51.419
+!MESSAGE Authentication required to access repository descriptors

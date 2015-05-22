@@ -10,6 +10,7 @@ import java.io.File;
 public class IPath {
 
     private IPath base;
+    private String relativePath;
     private File file;
 
     public IPath(@NotNull File file) {
@@ -17,11 +18,16 @@ public class IPath {
     }
 
     public IPath(@NotNull String filePath) {
-        this.file = new File(filePath);
+        if(filePath.startsWith("/")) {
+            this.file = new File(filePath);
+        } else {
+            this.relativePath = filePath;
+        }
     }
 
     public IPath(@NotNull IPath base, @NotNull String relativePath) {
-        this.file = new File(relativePath);
+//        this.file = new File(relativePath);
+        this.relativePath = relativePath;
         this.base = base;
     }
 
@@ -46,17 +52,19 @@ public class IPath {
     }
 
     public String toPortableString() {
-        return file.getPath();
+        return file != null ? file.getPath() : relativePath;
     }
 
     public String toOSString() {
-        return file.getPath();
+        return file != null ? file.getPath() : relativePath;
     }
 
     public IPath makeAbsolute() {
         IPath ret = this;
         if(base != null) {
-            ret = new IPath(new File(base.toFile(), file.getPath()));
+            ret = new IPath(new File(base.toFile(), relativePath));
+        } else if(file == null) {
+            ret = new IPath(new File(relativePath));
         }
         return ret;
     }
@@ -66,7 +74,20 @@ public class IPath {
     }
 
     public IPath removeLastSegments(int i) {
-        return null;
+        IPath ret;
+        if(file != null) {
+            ret = new IPath(file.getParentFile());
+        } else {
+            String cleanPath = relativePath.endsWith("/") ?
+                (relativePath.length() > 1 ? relativePath.substring(0, relativePath.length() - 1) : "") :
+                relativePath;
+            int index = cleanPath.lastIndexOf("/");
+            String newPath = index >= 0 ?
+                (index == 0 ? "" : cleanPath.substring(0, index)) :
+                "";
+            ret = new IPath(base, newPath);
+        }
+        return ret;
     }
 
     public IPath append(String osPath) {

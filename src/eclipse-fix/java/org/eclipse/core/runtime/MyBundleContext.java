@@ -21,6 +21,7 @@ import java.util.Map;
 /**
  * Created by schaefa on 4/28/15.
  */
+@Deprecated
 public class MyBundleContext
     implements BundleContext
 {

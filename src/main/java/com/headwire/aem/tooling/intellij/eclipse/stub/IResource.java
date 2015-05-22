@@ -5,6 +5,7 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,9 @@ public class IResource {
         this.file = file;
         project = new IProject(module);
         location = new IPath(file.getPath());
+    }
+
+    public IResource() {
     }
 
     public String getName() {
@@ -67,8 +71,11 @@ public class IResource {
     }
 
     public List<IResource> members() {
-        throw new UnsupportedOperationException("Not yet implemented");
-//        return null;
+        List<IResource> ret = new ArrayList<IResource>();
+        for(VirtualFile child: file.getChildren()) {
+            ret.add(new IResource(module, child));
+        }
+        return ret;
     }
 
     public IFile getFile(IPath parentSerializationFilePath) {
@@ -94,6 +101,7 @@ public class IResource {
     }
 
     public Long getModificationStamp() {
-        return file.getModificationStamp();
+        Long ret = file.getModificationStamp();
+        return ret;
     }
 }

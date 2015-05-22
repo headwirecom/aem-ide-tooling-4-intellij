@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.maven.model.MavenResource;
@@ -13,14 +14,17 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Modul
  * Created by schaefa on 5/13/15.
  */
 public class IProject {
+
+    private Project project;
     private Module module;
 
     public IProject(@NotNull Module module) {
+        this.project = module.getProject();
         this.module = module;
     }
 
     public IFolder getFolder(IPath path) {
-        VirtualFile file = module.getProject().getFile().getFileSystem().findFileByPath(path.toOSString());
+        VirtualFile file = module.getMavenProject().getFile().getFileSystem().findFileByPath(path.toOSString());
         return new IFolder(module, file);
     }
 
@@ -28,7 +32,7 @@ public class IProject {
 
     public List<String> getSourceFolderList() {
         List<String> ret = new ArrayList<String>();
-        for(MavenResource mavenResource: module.getProject().getResources()) {
+        for(MavenResource mavenResource: module.getMavenProject().getResources()) {
             ret.add(mavenResource.getDirectory());
         }
         return ret;
@@ -38,10 +42,32 @@ public class IProject {
         String filePath = path.toOSString();
         VirtualFile file;
         if(filePath.startsWith("/")) {
-            file = module.getProject().getFile().getFileSystem().findFileByPath(filePath);
+            file = module.getMavenProject().getFile().getFileSystem().findFileByPath(filePath);
         } else {
-            file = module.getProject().getFile().findFileByRelativePath(filePath);
+            file = module.getMavenProject().getFile().findFileByRelativePath(filePath);
         }
         return file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
+    }
+
+    public Workspace getWorkspace() {
+        return new Workspace();
+    }
+
+    public class Workspace {
+
+        public Root getRoot() {
+            return new Root();
+        }
+    }
+
+    public class Root {
+
+        public IResource findMember(IPath childPath) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+    }
+
+    public Module getModule() {
+        return module;
     }
 }

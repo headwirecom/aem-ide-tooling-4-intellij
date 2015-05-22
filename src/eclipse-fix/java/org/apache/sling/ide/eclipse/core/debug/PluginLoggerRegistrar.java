@@ -46,6 +46,7 @@ import org.osgi.framework.Version;
  * The <tt>PluginLoggerRegistrar</tt> registers {@link Logger} implementations for use for specific plugins
  *
  */
+@Deprecated
 public class PluginLoggerRegistrar {
 
     /**

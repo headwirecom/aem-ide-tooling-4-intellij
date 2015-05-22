@@ -1,12 +1,12 @@
 package com.headwire.aem.tooling.intellij.config;
 
 import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.project.MavenProject;
-import org.osgi.framework.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,21 +37,35 @@ public class ServerConfiguration
     public static final PublishType DEFAULT_PUBLISH_TYPE = PublishType.automaticallyOnChange;
     public static final InstallationType DEFAULT_INSTALL_TYPE = InstallationType.installViaBundleUpload;
     public static final ServerStatus DEFAULT_SERVER_STATUS = ServerStatus.notConnected;
+    public static final SynchronizationStatus DEFAULT_SERVER_SYNCHRONIZATION_STATUS = SynchronizationStatus.notChecked;
 
     protected static final String COMPONENT_NAME = "ServerConfiguration";
 
     public enum PublishType {never, automaticallyOnChange, getAutomaticallyOnBuild};
     public enum InstallationType {installViaBundleUpload, installFromFilesystem};
-    public enum BundleStatus {
-        notChecked("not checked"), failed, upToDate("synchronized"), outdated("out dated"), unsupported;
+    public enum SynchronizationStatus {
+        /** Module was not checked against Sling server **/
+        notChecked("not checked"),
+        /** Module Deployment or Synchronization failed **/
+        failed,
+        /** Bundle was successfully deployed **/
+        bundleDeployed("deployed"),
+        /** Content Module is synchronized with Sling server **/
+        upToDate("synchronized"),
+        /** Content Module is out of data (needs synchronization) **/
+        outdated("out of date"),
+        /** Module is not part of the build **/
+        excluded,
+        /** Module is not supported but is still part of the build **/
+        unsupported;
 
         private String name;
 
-        BundleStatus() {
+        SynchronizationStatus() {
             this.name = name();
         }
 
-        BundleStatus(String name) {
+        SynchronizationStatus(String name) {
             this.name = name;
         }
 
@@ -59,7 +73,8 @@ public class ServerConfiguration
     }
 
     public enum ServerStatus {
-        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed, upToDate("synchronized"), outdated("out dated");
+//        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed, upToDate("synchronized"), outdated("out dated");
+        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed;
 
         private String name;
 
@@ -90,6 +105,7 @@ public class ServerConfiguration
     // Don't store Server Status as it is reset when the Configuration is loaded again
     //AS TODO: Not sure about this -> Check if that works
     private transient ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
+    private transient SynchronizationStatus synchronizationStatus = DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
     // Modules must be stored because they carry the info if a project is part of the deployment build
     private List<Module> moduleList = new ArrayList<Module>();
 
@@ -244,6 +260,14 @@ public class ServerConfiguration
         this.serverStatus = serverStatus != null ? serverStatus : DEFAULT_SERVER_STATUS;
     }
 
+    public SynchronizationStatus getSynchronizationStatus() {
+        return synchronizationStatus;
+    }
+
+    public void setSynchronizationStatus(SynchronizationStatus synchronizationStatus) {
+        this.synchronizationStatus = synchronizationStatus != null ? synchronizationStatus : DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
+    }
+
     @Nullable
     @Override
     public ServerConfiguration getState() {
@@ -275,10 +299,10 @@ public class ServerConfiguration
         return ret;
     }
 
-    public Module addModule(MavenProject project) {
+    public Module addModule(Project project, MavenProject mavenProject) {
         Module ret = obtainModuleBySymbolicName(name);
         if(ret == null) {
-            ret = new Module(this, project);
+            ret = new Module(this, project, mavenProject);
             moduleList.add(ret);
         }
         return ret;
@@ -292,21 +316,21 @@ public class ServerConfiguration
     public static class Module {
         private ServerConfiguration parent;
         private String symbolicName;
-        private boolean partOfBuild = false;
-        private transient MavenProject project;
-        private transient BundleStatus status = BundleStatus.notChecked;
+        private boolean partOfBuild = true;
+        private transient Project project;
+        private transient MavenProject mavenProject;
+        private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
 
         public Module(@NotNull ServerConfiguration parent, @NotNull String symbolicName, boolean partOfBuild) {
             this.parent = parent;
             this.symbolicName = symbolicName;
-            this.partOfBuild = partOfBuild;
+            setPartOfBuild(partOfBuild);
         }
 
-        private Module(@NotNull ServerConfiguration parent, @NotNull MavenProject project) {
+        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull MavenProject mavenProject) {
             this.parent = parent;
-//            this.project = project;
-            this.symbolicName = getSymbolicName(project);
-            rebind(project);
+            this.symbolicName = getSymbolicName(mavenProject);
+            rebind(project, mavenProject);
         }
 
         public static String getSymbolicName(MavenProject project) {
@@ -319,6 +343,9 @@ public class ServerConfiguration
 
         public void setPartOfBuild(boolean partOfBuild) {
             this.partOfBuild = partOfBuild;
+            if(!partOfBuild) {
+                status = SynchronizationStatus.excluded;
+            }
         }
 
         public ServerConfiguration getParent() {
@@ -330,48 +357,57 @@ public class ServerConfiguration
         }
 
         public String getName() {
-            return project == null ? "No Project" : project.getName();
+            return project == null ? "No Project" : mavenProject.getName();
         }
 
         public String getArtifactId() {
-            return project == null ? "No Project" : project.getMavenId().getArtifactId();
+            return project == null ? "No Project" : mavenProject.getMavenId().getArtifactId();
         }
 
         public String getVersion() {
-            return project == null ? "No Project" : project.getMavenId().getVersion();
+            return project == null ? "No Project" : mavenProject.getMavenId().getVersion();
         }
 
-        public MavenProject getProject() {
+        public Project getProject() {
             return project;
         }
 
-        public BundleStatus getStatus() {
+        public MavenProject getMavenProject() {
+            return mavenProject;
+        }
+
+        public SynchronizationStatus getStatus() {
             return status;
         }
 
         public boolean isOSGiBundle() {
-            return project != null && project.getPackaging().equalsIgnoreCase("bundle");
+            return project != null && mavenProject.getPackaging().equalsIgnoreCase("bundle");
         }
 
         public boolean isSlingPackage() {
-            return project != null && project.getPackaging().equalsIgnoreCase("content-package");
+            return project != null && mavenProject.getPackaging().equalsIgnoreCase("content-package");
         }
 
-        public boolean rebind(@NotNull MavenProject project) {
+        public boolean rebind(@NotNull Project project, @NotNull MavenProject mavenProject) {
             boolean ret = false;
             // Check if the Symbolic Name match
-            String symbolicName = getSymbolicName(project);
+            String symbolicName = getSymbolicName(mavenProject);
             if(this.symbolicName.equals(symbolicName)) {
                 this.project = project;
+                this.mavenProject = mavenProject;
                 if(!isOSGiBundle() && !isSlingPackage()) {
-                    setStatus(BundleStatus.unsupported);
+                    setStatus(SynchronizationStatus.unsupported);
+                } else {
+                    setStatus(SynchronizationStatus.notChecked);
+//AS TODO: Where to set this and shouldn't it true by default?
+                    setPartOfBuild(true);
                 }
                 ret = true;
             }
             return ret;
         }
 
-        public void setStatus(BundleStatus status) {
+        public void setStatus(SynchronizationStatus status) {
             if(status != null) {
                 this.status = status;
             }

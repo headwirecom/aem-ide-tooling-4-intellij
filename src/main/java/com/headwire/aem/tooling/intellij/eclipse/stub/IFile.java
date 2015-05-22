@@ -12,11 +12,17 @@ import java.io.InputStream;
  */
 public class IFile extends IResource {
 
+    public IFile() {}
+
     public IFile(@NotNull ServerConfiguration.Module module, @NotNull VirtualFile file) {
         super(module, file);
     }
 
     public InputStream getContents() throws IOException {
         return file.getInputStream();
+    }
+
+    public Long getLocalTimeStamp() {
+        return file.getTimeStamp();
     }
 }

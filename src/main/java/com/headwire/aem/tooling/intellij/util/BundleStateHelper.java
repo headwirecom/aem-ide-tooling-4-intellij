@@ -1,6 +1,8 @@
 package com.headwire.aem.tooling.intellij.util;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -155,5 +157,9 @@ public class BundleStateHelper {
         client.getState().setCredentials(AuthScope.ANY, defaultcreds);
 
         return client;
+    }
+
+    public static void resetBundleState(IServer server, IProject project) {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 }
