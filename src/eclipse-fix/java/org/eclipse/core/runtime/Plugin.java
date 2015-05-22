@@ -5,6 +5,7 @@ import org.osgi.framework.BundleContext;
 /**
  * Created by schaefa on 4/28/15.
  */
+@Deprecated
 public class Plugin {
 
     BundleContext bundleContext;

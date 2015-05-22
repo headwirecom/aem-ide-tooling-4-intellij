@@ -126,33 +126,53 @@ public abstract class ServerUtil {
 //        return null;
     }
 
-    public static Repository getConnectedRepository(
-//        ServerConfiguration serverConfiguration
-        IServer server, IProgressMonitor monitor
-    ) throws ServerException {
-//        if (server==null) {
-//            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "No server available/selected."));
-//        }
-//        if (server.getServerState()!=IServer.STATE_STARTED) {
-//            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "Server not started, please start server first."));
-//        }
-//        RepositoryFactory repository = new RepositoryFactoryImpl();
-//        RepositoryFactory repository = OSGiFactory.getRepositoryFactory();
+    public static Repository getConnectedRepository(IServer server, IProgressMonitor monitor) throws CoreException {
+        if (server==null) {
+            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "No server available/selected."));
+        }
+        if (server.getServerState()!=IServer.STATE_STARTED) {
+            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "Server not started, please start server first."));
+        }
         RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
         try {
-            RepositoryInfo repositoryInfo = getRepositoryInfo(
-//                serverConfiguration
-                server, monitor
-            );
+            RepositoryInfo repositoryInfo = getRepositoryInfo(server, monitor);
             return repository.getRepository(repositoryInfo, false);
         } catch (URISyntaxException e) {
-            throw new ServerException("URI Exception: " + e.getMessage(), e);
+            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         } catch (RuntimeException e) {
-            throw new ServerException("Unexpected Exception", e);
+            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         } catch (RepositoryException e) {
-            throw new ServerException("Repository Exception", e);
+            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
     }
+
+//    public static Repository getConnectedRepository(
+////        ServerConfiguration serverConfiguration
+//        IServer server, IProgressMonitor monitor
+//    ) throws ServerException {
+////        if (server==null) {
+////            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "No server available/selected."));
+////        }
+////        if (server.getServerState()!=IServer.STATE_STARTED) {
+////            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "Server not started, please start server first."));
+////        }
+////        RepositoryFactory repository = new RepositoryFactoryImpl();
+////        RepositoryFactory repository = OSGiFactory.getRepositoryFactory();
+//        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+//        try {
+//            RepositoryInfo repositoryInfo = getRepositoryInfo(
+////                serverConfiguration
+//                server, monitor
+//            );
+//            return repository.getRepository(repositoryInfo, false);
+//        } catch (URISyntaxException e) {
+//            throw new ServerException("URI Exception: " + e.getMessage(), e);
+//        } catch (RuntimeException e) {
+//            throw new ServerException("Unexpected Exception", e);
+//        } catch (RepositoryException e) {
+//            throw new ServerException("Repository Exception", e);
+//        }
+//    }
 
 //    public static Repository connectRepository(ServerConfiguration serverConfiguration)
 //        throws ServerException

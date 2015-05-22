@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Plugin;
 /**
  * The <tt>Tracer</tt> is the default implementation of the <tt>Logger</tt>
  */
+@Deprecated
 public class Tracer
     implements /* DebugOptionsListener,*/ Logger {
 

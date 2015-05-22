@@ -7,6 +7,8 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
  */
 public class ISlingLaunchpadServer {
 
+    public static final String PROP_INSTALL_LOCALLY = "";
+
     private ServerConfiguration serverConfiguration;
     private ISlingLaunchpadConfiguration slingLaunchpadConfiguration;
 

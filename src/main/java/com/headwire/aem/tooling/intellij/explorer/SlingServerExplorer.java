@@ -1,6 +1,7 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
+import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
@@ -45,31 +46,25 @@ import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.CommonShortcuts;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.actionSystem.ToggleAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
-import com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindowId;
-//import org.apache.sling.ide.impl.vlt.Activator;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
-import org.eclipse.core.runtime.MyBundleContext;
 import org.jetbrains.idea.maven.model.MavenId;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
@@ -103,15 +98,20 @@ import org.apache.sling.ide.transport.Result;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.ToolTipManager;
+import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-//import java.awt.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -135,17 +135,19 @@ public class SlingServerExplorer
     public static final Topic<ExecutionListener> EXECUTION_TOPIC =
         Topic.create("AEM configuration executed", ExecutionListener.class, Topic.BroadcastDirection.TO_PARENT);
     public static final String TOOL_WINDOW_ID = "AEM";
-    private static List<ServerConfiguration.ServerStatus> CONFIGURATION_IN_USE = Arrays.asList(
-        ServerConfiguration.ServerStatus.connecting,
-        ServerConfiguration.ServerStatus.connected,
-        ServerConfiguration.ServerStatus.disconnecting
-    );
+//AS TODO: Moved to ServerConnectionManager -> remove
+//    private static List<ServerConfiguration.ServerStatus> CONFIGURATION_IN_USE = Arrays.asList(
+//        ServerConfiguration.ServerStatus.connecting,
+//        ServerConfiguration.ServerStatus.connected,
+//        ServerConfiguration.ServerStatus.disconnecting
+//    );
 
     public static final String ROOT_FOLDER = "/jcr_root/";
 
     private Project myProject;
     private ServerExplorerTreeBuilder myBuilder;
     private Tree myTree;
+    private ServerConnectionManager serverConnectionManager;
     private ServerTreeSelectionHandler selectionHandler;
     private KeyMapListener myKeyMapListener;
     private ServerConfigurationManager myConfig;
@@ -183,6 +185,7 @@ public class SlingServerExplorer
         myTree.setShowsRootHandles(true);
         myTree.setCellRenderer(new NodeRenderer());
         selectionHandler = new ServerTreeSelectionHandler(myTree);
+        serverConnectionManager = new ServerConnectionManager(project, selectionHandler);
         myBuilder = new ServerExplorerTreeBuilder(project, myTree, model);
         TreeUtil.installActions(myTree);
         new TreeSpeedSearch(myTree);
@@ -218,7 +221,7 @@ public class SlingServerExplorer
         setContent(ScrollPaneFactory.createScrollPane(myTree));
         ToolTipManager.sharedInstance().registerComponent(myTree);
         myKeyMapListener = new KeyMapListener();
-        new ContentResourceChangeListener(myProject, selectionHandler);
+        new ContentResourceChangeListener(myProject, serverConnectionManager);
 
         DomManager.getDomManager(project).addDomEventListener(new DomEventListener() {
             public void eventOccured(DomEvent event) {
@@ -235,65 +238,6 @@ public class SlingServerExplorer
         );
 
         messageManager = MessageManager.getInstance(myProject);
-
-//        // Create FileVault Repository Access
-//        LOGGER.debug("Before Create Repository Info");
-//        RepositoryInfo repositoryInfo = new RepositoryInfo("admin", "admin", "http://localhost:4502/");
-//        LOGGER.debug("After Create Repository Info: " + repositoryInfo);
-//        RepositoryFactory factory = new VltRepositoryFactory();
-//        LOGGER.debug("After Creating Repository Factory: " + factory);
-//        try {
-//            repository = factory.connectRepository(repositoryInfo);
-//            LOGGER.debug("After Creating Repository: " + repository);
-//        } catch (RepositoryException e) {
-//            LOGGER.error("Failed to connect to VLT Repository", e);
-//        }
-//
-//        VirtualFileManager.getInstance().addVirtualFileListener(new VirtualFileAdapter() {
-//            @Override
-//            public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
-//                LOGGER.debug("VFS Property Changed Event: " + event.getFileName());
-//            }
-//            @Override
-//            public void contentsChanged(@NotNull VirtualFileEvent event) {
-//                String fileName = event.getFileName();
-//                LOGGER.debug("VFS Content Changed Event: " + fileName);
-//                String filePath = event.getFile().getPath();
-//                int index = filePath.indexOf(ROOT_FOLDER);
-//                if(index > 0) {
-//                    String jcrPath = filePath.substring(index + ROOT_FOLDER.length() - 1);
-//                    LOGGER.debug("Supported JCR Path: " + jcrPath);
-//                    if(repository != null) {
-//                        ResourceProxy resource = new ResourceProxy(jcrPath);
-//                        resource.addProperty("jcr:primaryType", "nt:unstructured");
-//                        FileInfo info = new FileInfo(
-//                            filePath, jcrPath, fileName
-//                        );
-//                        LOGGER.debug("Before Create Command");
-//                        Command<Void> cmd = repository.newAddOrUpdateNodeCommand(info, resource);
-//                        LOGGER.debug("Before Execute Create Command: " + cmd);
-//                        cmd.execute();
-//                        LOGGER.debug("After Execute Create Command: " + cmd);
-//                    }
-//                }
-//            }
-//            @Override
-//            public void fileCreated(@NotNull VirtualFileEvent event) {
-//                LOGGER.debug("VFS File Created Event: " + event.getFileName());
-//            }
-//            @Override
-//            public void fileDeleted(@NotNull VirtualFileEvent event) {
-//                LOGGER.debug("VFS File Deleted Event: " + event.getFileName());
-//            }
-//            @Override
-//            public void fileMoved(@NotNull VirtualFileMoveEvent event) {
-//                LOGGER.debug("VFS File Moved Event: " + event.getFileName());
-//            }
-//            @Override
-//            public void fileCopied(@NotNull VirtualFileCopyEvent event) {
-//                LOGGER.debug("VFS File Copied Event: " + event.getFileName());
-//            }
-//        }, project);
 
         final MessageBus bus = myProject.getMessageBus();
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
@@ -321,32 +265,6 @@ public class SlingServerExplorer
                 }
             }
         );
-
-
-//        ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
-//        ToolWindow toolWindow = toolWindowManager.getToolWindow(SlingServerReportView.TOOL_WINDOW_ID);
-//        if(toolWindow == null) {
-//            toolWindow = toolWindowManager.registerToolWindow(SlingServerReportView.TOOL_WINDOW_ID, true, ToolWindowAnchor.BOTTOM, myProject, true);
-//AS TODO: Provide Tool Window Icon
-//            toolWindow.setIcon(descriptor.getFramework().getToolWindowIcon());
-//AS TODO: Not sure if that is needed as we use the initToolWindow() method below
-//            descriptor.createToolWindowContent(myProject, toolWindow);
-//            ServiceManager.getService(project, SlingServerReportView.class).initToolWindow(toolWindow, myProject);
-//            ConsoleLog.getProjectComponent(myProject).initDefaultContent();
-//            ConsoleLog.ProjectTracker projectTracker = new ConsoleLog.ProjectTracker(myProject);
-//        }
-
-////        //AS TODO: This is to stub the Activator to make it work without Eclipse and OSGi
-//        org.apache.sling.ide.impl.vlt.Activator activator = new org.apache.sling.ide.impl.vlt.Activator();
-//
-//        // Check if that works with just a null bundle context
-//        BundleContext bundleContext = new MyBundleContext();
-//        try {
-//            activator.start(bundleContext);
-//        } catch(Exception e) {
-//            //AS TODO: Create a proper message
-//            messageManager.sendUnexpectedException(e);
-//        }
     }
 
     public void dispose() {
@@ -431,108 +349,10 @@ public class SlingServerExplorer
         }
     }
 
-    private void markConfigurationAsSynchronized(String configurationName) {
-        ServerConfiguration configuration = myConfig.findServerConfigurationByName(configurationName);
-        if(configuration != null) {
-            configuration.setServerStatus(ServerConfiguration.ServerStatus.upToDate);
-            myConfig.updateServerConfiguration(configuration);
-            //AS TODO: Update Bundle Status
-            // Mark any Bundles inside the Tree as disconnected
-        }
-    }
-
-    private void markConfigurationAsOutDated(String configurationName) {
-        ServerConfiguration configuration = myConfig.findServerConfigurationByName(configurationName);
-        if(configuration != null) {
-            configuration.setServerStatus(ServerConfiguration.ServerStatus.outdated);
-            myConfig.updateServerConfiguration(configuration);
-            //AS TODO: Update Bundle Status
-            // Mark any Bundles inside the Tree as disconnected
-        }
-    }
-
-//    private void addServerConfiguration() {
-//
-////        final FileChooserDescriptor descriptor = createXmlDescriptor();
-//////        descriptor.setTitle(AntBundle.message("select.ant.build.file.dialog.title"));
-//////        descriptor.setDescription(AntBundle.message("select.ant.build.file.dialog.description"));
-////        final VirtualFile[] files = FileChooser.chooseFiles(descriptor, myProject, null);
-////        addBuildFile(files);
-//    }
-
-//    private void addBuildFile(final VirtualFile[] files) {
-//        if (files.length == 0) {
-//            return;
-//        }
-//        ApplicationManager.getApplication().invokeLater(new Runnable() {
-//            public void run() {
-////                final AntConfiguration antConfiguration = myConfig;
-////                if (antConfiguration == null) {
-////                    return;
-////                }
-////                final java.util.List<VirtualFile> ignoredFiles = new ArrayList<VirtualFile>();
-////                for (VirtualFile file : files) {
-////                    try {
-////                        antConfiguration.addBuildFile(file);
-////                    }
-////                    catch (AntNoFileException e) {
-////                        ignoredFiles.add(e.getFile());
-////                    }
-////                }
-////                if (ignoredFiles.size() != 0) {
-////                    String messageText;
-////                    final StringBuilder message = StringBuilderSpinAllocator.alloc();
-////                    try {
-////                        String separator = "";
-////                        for (final VirtualFile virtualFile : ignoredFiles) {
-////                            message.append(separator);
-////                            message.append(virtualFile.getPresentableUrl());
-////                            separator = "\n";
-////                        }
-////                        messageText = message.toString();
-////                    }
-////                    finally {
-////                        StringBuilderSpinAllocator.dispose(message);
-////                    }
-////                    Messages.showWarningDialog(myProject, messageText, AntBundle.message("cannot.add.ant.files.dialog.title"));
-////                }
-//            }
-//        });
-//    }
-
-//    public void removeBuildFile() {
-////        final AntBuildFile buildFile = getCurrentBuildFile();
-////        if (buildFile == null) {
-////            return;
-////        }
-////        final String fileName = buildFile.getPresentableUrl();
-////        final int result = Messages.showYesNoDialog(myProject, AntBundle.message("remove.the.reference.to.file.confirmation.text", fileName),
-////                AntBundle.message("confirm.remove.dialog.title"), Messages.getQuestionIcon());
-////        if (result != Messages.YES) {
-////            return;
-////        }
-////        myConfig.removeBuildFile(buildFile);
-//    }
-
-//    public void setBuildFileProperties() {
-////        final AntBuildFileBase buildFile = getCurrentBuildFile();
-////        if (buildFile != null && BuildFilePropertiesPanel.editBuildFile(buildFile, myProject)) {
-////            myConfig.updateBuildFile(buildFile);
-////            myBuilder.queueUpdate();
-////            myTree.repaint();
-////        }
-//    }
-
     private void runSelection(final DataContext dataContext) {
         if(!canRunSelection()) {
             return;
         }
-//        final AntBuildFileBase buildFile = getCurrentBuildFile();
-//        if (buildFile != null) {
-//            final TreePath[] paths = myTree.getSelectionPaths();
-//            final String[] targets = getTargetNamesFromPaths(paths);
-//            ExecutionHandler.runBuild(buildFile, targets, null, dataContext, Collections.<BuildFileProperty>emptyList(), AntBuildListener.NULL);
-//        }
     }
 
     private boolean canRunSelection() {
@@ -543,27 +363,6 @@ public class SlingServerExplorer
         if(paths == null) {
             return false;
         }
-//        final AntBuildFile buildFile = getCurrentBuildFile();
-//        if (buildFile == null || !buildFile.exists()) {
-//            return false;
-//        }
-//        for (final TreePath path : paths) {
-//            final DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-//            final Object userObject = node.getUserObject();
-//            final AntBuildFileNodeDescriptor buildFileNodeDescriptor;
-//            if (userObject instanceof AntTargetNodeDescriptor) {
-//                buildFileNodeDescriptor = (AntBuildFileNodeDescriptor)((DefaultMutableTreeNode)node.getParent()).getUserObject();
-//            }
-//            else if (userObject instanceof AntBuildFileNodeDescriptor){
-//                buildFileNodeDescriptor = (AntBuildFileNodeDescriptor)userObject;
-//            }
-//            else {
-//                buildFileNodeDescriptor = null;
-//            }
-//            if (buildFileNodeDescriptor == null || buildFileNodeDescriptor.getBuildFile() != buildFile) {
-//                return false;
-//            }
-//        }
         return true;
     }
 
@@ -585,68 +384,13 @@ public class SlingServerExplorer
         return ArrayUtil.toStringArray(targets);
     }
 
-//    private static AntBuildTarget[] getTargetObjectsFromPaths(TreePath[] paths) {
-//        final java.util.List<AntBuildTargetBase> targets = new ArrayList<AntBuildTargetBase>();
-//        for (final TreePath path : paths) {
-//            final Object userObject = ((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject();
-//            if (!(userObject instanceof AntTargetNodeDescriptor)) {
-//                continue;
-//            }
-//            final AntBuildTargetBase target = ((AntTargetNodeDescriptor)userObject).getTarget();
-//            targets.add(target);
-//
-//        }
-//        return targets.toArray(new AntBuildTargetBase[targets.size()]);
-//    }
-
-    public boolean isConfigurationSelected() {
-        boolean ret = false;
-        if(myProject != null) {
-            ret = selectionHandler.getCurrentConfiguration() != null;
-        }
-        return ret;
-    }
-
-//    public boolean isConnectionEstablished() {
+//AS TODO: Moved to ServerConnectionManager -> remove
+//    public boolean isConfigurationSelected() {
 //        boolean ret = false;
 //        if(myProject != null) {
-////AS TODO: Add the check if there is a Connection Established
-////            ret = getCurrentConfiguration() != null;
+//            ret = selectionHandler.getCurrentConfiguration() != null;
 //        }
 //        return ret;
-//    }
-
-//    public boolean isBuildFileSelected() {
-////        if( myProject == null) return false;
-////        final AntBuildFileBase file = getCurrentBuildFile();
-////        return file != null && file.exists();
-//        return false;
-//    }
-
-//    @Nullable
-//    private AntBuildFileBase getCurrentBuildFile() {
-//        final AntBuildFileNodeDescriptor descriptor = getCurrentBuildFileNodeDescriptor();
-//        return (AntBuildFileBase)((descriptor == null) ? null : descriptor.getBuildFile());
-//    }
-
-//    @Nullable
-//    private AntBuildFileNodeDescriptor getCurrentBuildFileNodeDescriptor() {
-//        if (myTree == null) {
-//            return null;
-//        }
-//        final TreePath path = myTree.getSelectionPath();
-//        if (path == null) {
-//            return null;
-//        }
-//        DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-//        while (node != null) {
-//            final Object userObject = node.getUserObject();
-//            if (userObject instanceof AntBuildFileNodeDescriptor) {
-//                return (AntBuildFileNodeDescriptor)userObject;
-//            }
-//            node = (DefaultMutableTreeNode)node.getParent();
-//        }
-//        return null;
 //    }
 
     private void popupInvoked(final Component comp, final int x, final int y) {
@@ -746,37 +490,6 @@ public class SlingServerExplorer
         return super.getData(dataId);
     }
 
-//    private <T> java.util.List<T> collectAntFiles(final Function<AntBuildFile, T> function) {
-//        final TreePath[] paths = myTree.getSelectionPaths();
-//        if (paths == null) {
-//            return null;
-//        }
-//        Set<AntBuildFile> antFiles = new LinkedHashSet<AntBuildFile>();
-//        for (final TreePath path : paths) {
-//            for (DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-//                 node != null;
-//                 node = (DefaultMutableTreeNode)node.getParent()) {
-//                final Object userObject = node.getUserObject();
-//                if (!(userObject instanceof AntBuildFileNodeDescriptor)) {
-//                    continue;
-//                }
-//                final AntBuildFile buildFile = ((AntBuildFileNodeDescriptor)userObject).getBuildFile();
-//                if (buildFile != null) {
-//                    antFiles.add(buildFile);
-//                }
-//                break;
-//            }
-//        }
-//        final java.util.List<T> result = new ArrayList<T>();
-//        ContainerUtil.addAllNotNull(result, ContainerUtil.map(antFiles, new Function<AntBuildFile, T>() {
-//            @Override
-//            public T fun(AntBuildFile buildFile) {
-//                return function.fun(buildFile);
-//            }
-//        }));
-//        return result.isEmpty() ? null : result;
-//    }
-
     public static FileChooserDescriptor createXmlDescriptor() {
         return new FileChooserDescriptor(true, false, false, false, false, true) {
             public boolean isFileVisible(VirtualFile file, boolean showHiddenFiles) {
@@ -839,7 +552,7 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(selectionHandler.getCurrentConfiguration()));
+            event.getPresentation().setEnabled(serverConnectionManager.isConnectionNotInUse());
         }
     }
 
@@ -858,7 +571,7 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(selectionHandler.getCurrentConfiguration()));
+            event.getPresentation().setEnabled(serverConnectionManager.isConnectionNotInUse());
         }
     }
 
@@ -903,9 +616,9 @@ public class SlingServerExplorer
         } while(!isOk);
     }
 
-    private boolean isConfigurationInUse(ServerConfiguration serverConfiguration) {
-        return serverConfiguration != null && CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus());
-    }
+//    private boolean isConfigurationInUse(ServerConfiguration serverConfiguration) {
+//        return serverConfiguration != null && CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus());
+//    }
 
     private final class CheckAction extends AnAction {
         public CheckAction() {
@@ -920,147 +633,18 @@ public class SlingServerExplorer
             // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
             // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            OsgiClient osgiClient = obtainSGiClient(serverConfiguration);
+            OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
             if(osgiClient != null) {
-                BundleStatus status = checkAndUpdateSupportBundle(serverConfiguration, osgiClient, false);
-                if(status != BundleStatus.failed) {
-                    checkModules(serverConfiguration, osgiClient);
+                ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
+                if(status != ServerConnectionManager.BundleStatus.failed) {
+                    serverConnectionManager.checkModules(osgiClient);
                 }
             }
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected());
+            event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
         }
-    }
-
-    private void checkModules(ServerConfiguration serverConfiguration, OsgiClient osgiClient) {
-        // We only support Maven Modules as of now
-        //AS TODO: are we support Facets as well -> check later
-        MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(myProject);
-        messageManager.sendDebugNotification("Maven Projects Manager: '" + mavenProjectsManager);
-        boolean allSynchronized = true;
-        List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
-        for(MavenProject mavenProject: mavenProjects) {
-            MavenId mavenId = mavenProject.getMavenId();
-            String moduleName = mavenProject.getName();
-            String artifactId = mavenId.getArtifactId();
-            String version = mavenId.getVersion();
-            // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
-            messageManager.sendDebugNotification("Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
-            // Ignore the Unnamed Projects
-            if(moduleName == null) { continue; }
-            // Change any dashes to dots
-            version = version.replaceAll("-", ".");
-            Version localVersion = new Version(version);
-            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(mavenProject));
-            if(module == null) {
-                module = serverConfiguration.addModule(mavenProject);
-            } else {
-                // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-                module.rebind(mavenProject);
-            }
-            try {
-                if(module.isOSGiBundle()) {
-                    Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
-                    messageManager.sendDebugNotification("Check OSGi Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
-                    boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
-                    Object state = BundleStateHelper.getBundleState(module);
-                    messageManager.sendDebugNotification("Bundle State of Module: '" + module.getName() + "', state: '" + state + "'");
-                    if(moduleUpToDate) {
-                        // Mark as synchronized
-                        module.setStatus(ServerConfiguration.BundleStatus.upToDate);
-                    } else {
-                        // Mark as out of date
-                        module.setStatus(ServerConfiguration.BundleStatus.outdated);
-                        allSynchronized = false;
-                    }
-                } else if(module.isSlingPackage()) {
-                    //AS TODO: Handle Sling Package
-                }
-            } catch(OsgiClientException e1) {
-                // Mark connection as failed
-                module.setStatus(ServerConfiguration.BundleStatus.failed);
-                allSynchronized = false;
-            }
-        }
-        if(allSynchronized) {
-            markConfigurationAsSynchronized(serverConfiguration.getName());
-        } else {
-            markConfigurationAsOutDated(serverConfiguration.getName());
-        }
-    }
-
-    public enum BundleStatus { upToDate, outDated, failed };
-    private BundleStatus checkAndUpdateSupportBundle(ServerConfiguration serverConfiguration, OsgiClient osgiClient, boolean onlyCheck) {
-        BundleStatus ret = BundleStatus.failed;
-        try {
-            EmbeddedArtifactLocator artifactLocator = OSGiFactory.getArtifactLocator();
-            Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
-
-            messageManager.sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
-
-            final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
-            final Version embeddedVersion = new Version(supportBundle.getVersion());
-
-            if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
-                ret = BundleStatus.outDated;
-                if(!onlyCheck) {
-                    InputStream contents = null;
-                    try {
-                        messageManager.sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
-                        contents = supportBundle.openInputStream();
-                        osgiClient.installBundle(contents, supportBundle.getName());
-                        ret = BundleStatus.upToDate;
-                    } finally {
-                        IOUtils.closeQuietly(contents);
-                    }
-                    remoteVersion = embeddedVersion;
-                }
-            } else {
-                ret = BundleStatus.upToDate;
-            }
-            messageManager.sendInfoNotification("aem.explorer.finished.connection.to.remote");
-        } catch(IOException e) {
-            messageManager.sendErrorNotification("aem.explorer.cannot.read.installation.support.bundle", serverConfiguration.getName(), e);
-        } catch(OsgiClientException e) {
-            messageManager.sendErrorNotification("aem.explorer.osgi.client.problem", serverConfiguration.getName(), e);
-        }
-        return ret;
-    }
-
-    private OsgiClient obtainSGiClient(ServerConfiguration serverConfiguration) {
-        OsgiClient ret = null;
-
-        try {
-            boolean success = false;
-            Result<ResourceProxy> result = null;
-            messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
-            Repository repository = ServerUtil.connectRepository(
-                new IServer(serverConfiguration), new NullProgressMonitor()
-            );
-            Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
-            result = command.execute();
-            success = result.isSuccess();
-
-            messageManager.sendInfoNotification("aem.explorer.connected.sling.repository", success);
-            if(success) {
-                RepositoryInfo repositoryInfo = ServerUtil.getRepositoryInfo(
-                    new IServer(serverConfiguration), new NullProgressMonitor()
-                );
-                //AS TODO: Activator is an Eclipse OSGi component and so we need to find a way to extract this and code it so that it works for Eclipse and IntelliJ
-                ret = Activator.getDefault().getOsgiClientFactory().createOsgiClient(repositoryInfo);
-//                ret = OSGiFactory.getOSGiClientFactory().createOsgiClient(repositoryInfo);
-            }
-        } catch(URISyntaxException e) {
-            messageManager.sendErrorNotification("aem.explorer.server.uri.bad", serverConfiguration.getName(), e);
-//        } catch(ServerException e) {
-//            messageManager.sendErrorNotification("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
-        } catch(CoreException e) {
-            messageManager.sendErrorNotification("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
-        }
-
-        return ret;
     }
 
     private final class DebugAction extends AnAction {
@@ -1073,43 +657,12 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            // Create Remote Connection to Server using the IntelliJ Run / Debug Connection
-            //AS TODO: It is working but the configuration is listed and made persistent. That is not too bad because
-            //AS TODO: after changes a reconnect will update the configuration.
-            RemoteConfigurationType remoteConfigurationType = new RemoteConfigurationType();
-            RunConfiguration runConfiguration = remoteConfigurationType.getFactory().createTemplateConfiguration(myProject);
-            RemoteConfiguration remoteConfiguration = (RemoteConfiguration) runConfiguration;
-            // Server means if you are listening. If not you are attaching.
-            remoteConfiguration.SERVER_MODE = false;
-            remoteConfiguration.USE_SOCKET_TRANSPORT = true;
-            remoteConfiguration.HOST = serverConfiguration.getHost();
-            remoteConfiguration.PORT = serverConfiguration.getConnectionDebugPort() + "";
-            // Set a Name of the Configuration so that it is properly listed.
-            remoteConfiguration.setName(serverConfiguration.getName());
-            RunnerAndConfigurationSettings configuration = new RunnerAndConfigurationSettingsImpl(
-                (RunManagerImpl) myRunManager,
-                runConfiguration,
-                false
-            );
-            myRunManager.setTemporaryConfiguration(configuration);
-//            myRunManager.setSelectedConfiguration(configuration);
-            //AS TODO: Make sure that this is the proper way to obtain the DEBUG Executor
-            Executor executor = ExecutorRegistry.getInstance().getExecutorById(ToolWindowId.DEBUG);
-            ExecutionUtil.runConfiguration(configuration, executor);
-            // Update the Modules with the Remote Sling Server
-            OsgiClient osgiClient = obtainSGiClient(serverConfiguration);
-            if(osgiClient != null) {
-                BundleStatus status = checkAndUpdateSupportBundle(serverConfiguration, osgiClient, false);
-                if(status != BundleStatus.failed) {
-                    checkModules(serverConfiguration, osgiClient);
-                }
-            }
+            serverConnectionManager.connectInDebugMode(myRunManager);
         }
 
         public void update(AnActionEvent event) {
             //AS TODO: Disabled this when a session is started and (re)enable it when it is stopped
-            event.getPresentation().setEnabled(isConfigurationSelected() && !isConfigurationInUse(selectionHandler.getCurrentConfiguration()));
+            event.getPresentation().setEnabled(serverConnectionManager.isConnectionNotInUse());
         }
     }
 
@@ -1126,49 +679,11 @@ public class SlingServerExplorer
             // This code was taken from the 'com.intellij.execution.actions.StopAction' which is the Stop Action of
             // Debug Stop Button but it was simplified because we have a connection or not and no UI.
             final DataContext dataContext = e.getDataContext();
-            ProcessHandler activeProcessHandler = getHandler(dataContext);
-
-            if(canBeStopped(activeProcessHandler)) {
-                stopProcess(activeProcessHandler);
-            }
+            serverConnectionManager.stopDebugConnection(dataContext);
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(isConfigurationSelected() && isConfigurationInUse(selectionHandler.getCurrentConfiguration()));
-        }
-
-        private void stopProcess(@NotNull ProcessHandler processHandler) {
-            if(processHandler instanceof KillableProcess && processHandler.isProcessTerminating()) {
-                ((KillableProcess) processHandler).killProcess();
-                return;
-            }
-
-            if(processHandler.detachIsDefault()) {
-                processHandler.detachProcess();
-            } else {
-                processHandler.destroyProcess();
-            }
-        }
-
-        @Nullable
-        private ProcessHandler getHandler(@NotNull DataContext dataContext) {
-            final RunContentDescriptor contentDescriptor = LangDataKeys.RUN_CONTENT_DESCRIPTOR.getData(dataContext);
-            if(contentDescriptor != null) {
-                // toolwindow case
-                return contentDescriptor.getProcessHandler();
-            } else {
-                // main menu toolbar
-                final Project project = CommonDataKeys.PROJECT.getData(dataContext);
-                final RunContentDescriptor selectedContent =
-                    project == null ? null : ExecutionManager.getInstance(project).getContentManager().getSelectedContent();
-                return selectedContent == null ? null : selectedContent.getProcessHandler();
-            }
-        }
-
-        private boolean canBeStopped(@Nullable ProcessHandler processHandler) {
-            return processHandler != null && !processHandler.isProcessTerminated()
-                && (!processHandler.isProcessTerminating()
-                || processHandler instanceof KillableProcess && ((KillableProcess) processHandler).canKillProcess());
+            event.getPresentation().setEnabled(serverConnectionManager.isConnectionInUse());
         }
     }
 
@@ -1184,282 +699,24 @@ public class SlingServerExplorer
         @Override
         public void update(AnActionEvent event) {
 //            event.getPresentation().setEnabled(isConfigurationSelected() && isConfigurationInUse(getCurrentConfiguration()));
-            event.getPresentation().setEnabled(true);
+            event.getPresentation().setEnabled(serverConnectionManager.isConnectionInUse());
         }
 
         @Override
         public void actionPerformed(AnActionEvent e) {
             // First Check if the Install Support Bundle is installed
-            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            OsgiClient osgiClient = obtainSGiClient(serverConfiguration);
-            BundleStatus bundleStatus = checkAndUpdateSupportBundle(serverConfiguration, osgiClient, true);
-            if(bundleStatus == BundleStatus.upToDate) {
-                List<ServerConfiguration.Module> moduleList = selectionHandler.getCurrentConfigurationModuleDescriptorList();
+            ServerConnectionManager.BundleStatus bundleStatus = serverConnectionManager.checkAndUpdateSupportBundle(true);
+//            if(bundleStatus == ServerConnectionManager.BundleStatus.upToDate) {
                 // Deploy all selected Modules
-                deployModules(osgiClient, moduleList);
-            }
-        }
-
-        private void deployModules(OsgiClient osgiClient, List<ServerConfiguration.Module> moduleList) {
-            for(ServerConfiguration.Module module: moduleList) {
-                InputStream contents = null;
-                // Check if this is a OSGi Bundle
-                if(module.getProject().getPackaging().equalsIgnoreCase("bundle")) {
-                    try {
-//                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
-                        File buildDirectory = new File(module.getProject().getBuildDirectory());
-                        if(buildDirectory.exists() && buildDirectory.isDirectory()) {
-                            File buildFile = new File(buildDirectory, module.getProject().getFinalName() + ".jar");
-                            messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
-                            if(buildFile.exists()) {
-                                EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
-                                contents = bundle.openInputStream();
-                                osgiClient.installBundle(contents, bundle.getName());
-                                module.setStatus(ServerConfiguration.BundleStatus.upToDate);
-                                //                            ret = BundleStatus.upToDate;
-                            }
-                        }
-                    } catch(MalformedURLException e) {
-                        module.setStatus(ServerConfiguration.BundleStatus.failed);
-                        messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.bad.url", e);
-                    } catch(OsgiClientException e) {
-                        module.setStatus(ServerConfiguration.BundleStatus.failed);
-                        messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", e);
-                    } catch(IOException e) {
-                        module.setStatus(ServerConfiguration.BundleStatus.failed);
-                        messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.io", e);
-                    } finally {
-                        IOUtils.closeQuietly(contents);
-                    }
-                } else {
-                    module.setStatus(ServerConfiguration.BundleStatus.unsupported);
-                    messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not an OSGi Bundle");
-                }
-            }
-        }
-    }
-
-
-    private final class ShowAllTargetsAction extends ToggleAction {
-        public ShowAllTargetsAction() {
-//            super(AntBundle.message("filter.ant.targets.action.name"), AntBundle.message("filter.ant.targets.action.description"),
-//                    AllIcons.General.Filter);
-            super("Show All Target Action", "Description", null);
-        }
-
-        public boolean isSelected(AnActionEvent event) {
-//            final Project project = myProject;
-//            return project != null? AntConfigurationBase.getInstance(project).isFilterTargets() : false;
-            return false;
-        }
-
-        public void setSelected(AnActionEvent event, boolean flag) {
-            setTargetsFiltered(flag);
-        }
-    }
-
-    private void setTargetsFiltered(boolean value) {
-        myBuilder.setTargetsFiltered(value);
-//        AntConfigurationBase.getInstance(myProject).setFilterTargets(value);
-    }
-
-//    private final class ExecuteOnEventAction extends ToggleAction {
-//        private final AntBuildTargetBase myTarget;
-//        private final ExecutionEvent myExecutionEvent;
-//
-//        public ExecuteOnEventAction(final AntBuildTargetBase target, final ExecutionEvent executionEvent) {
-//            super(executionEvent.getPresentableName());
-//            myTarget = target;
-//            myExecutionEvent = executionEvent;
-//        }
-//
-//        public boolean isSelected(AnActionEvent e) {
-//            return myTarget.equals(AntConfigurationBase.getInstance(myProject).getTargetForEvent(myExecutionEvent));
-//        }
-//
-//        public void setSelected(AnActionEvent event, boolean state) {
-//            final AntConfigurationBase antConfiguration = AntConfigurationBase.getInstance(myProject);
-//            if (state) {
-//                final AntBuildFileBase buildFile =
-//                        (AntBuildFileBase)((myTarget instanceof MetaTarget) ? ((MetaTarget)myTarget).getBuildFile() : myTarget.getModel().getBuildFile());
-//                antConfiguration.setTargetForEvent(buildFile, myTarget.getName(), myExecutionEvent);
+                serverConnectionManager.deployModules();
 //            }
-//            else {
-//                antConfiguration.clearTargetForEvent(myExecutionEvent);
-//            }
-//            myBuilder.queueUpdate();
-//        }
-//
-//        public void update(AnActionEvent e) {
-//            super.update(e);
-//            final AntBuildFile buildFile = myTarget.getModel().getBuildFile();
-//            e.getPresentation().setEnabled(buildFile != null && buildFile.exists());
-//        }
+        }
+    }
+
+//    private void setTargetsFiltered(boolean value) {
+//        myBuilder.setTargetsFiltered(value);
+////        AntConfigurationBase.getInstance(myProject).setFilterTargets(value);
 //    }
-
-//    private final class ExecuteBeforeRunAction extends AnAction {
-//        private final AntBuildTarget myTarget;
-//
-//        public ExecuteBeforeRunAction(final AntBuildTarget target) {
-//            super(AntBundle.message("executes.before.run.debug.acton.name"));
-//            myTarget = target;
-//        }
-//
-//        public void actionPerformed(AnActionEvent e) {
-//            final AntExecuteBeforeRunDialog dialog = new AntExecuteBeforeRunDialog(myProject, myTarget);
-//            dialog.show();
-//        }
-//
-//        public void update(AnActionEvent e) {
-//            e.getPresentation().setEnabled(myTarget.getModel().getBuildFile().exists());
-//        }
-//    }
-
-    private final class CreateMetaTargetAction extends AnAction {
-
-        public CreateMetaTargetAction() {
-//            super(AntBundle.message("ant.create.meta.target.action.name"), AntBundle.message("ant.create.meta.target.action.description"), null
-            super("Create Meta Action", "Description", null);
-/*IconLoader.getIcon("/actions/execute.png")*/
-        }
-
-        public void actionPerformed(AnActionEvent e) {
-//            final AntBuildFile buildFile = getCurrentBuildFile();
-//            final String[] targets = getTargetNamesFromPaths(myTree.getSelectionPaths());
-//            final ExecuteCompositeTargetEvent event = new ExecuteCompositeTargetEvent(targets);
-//            final SaveMetaTargetDialog dialog = new SaveMetaTargetDialog(myTree, event, AntConfigurationBase.getInstance(myProject), buildFile);
-//            dialog.setTitle(e.getPresentation().getText());
-//            if (dialog.showAndGet()) {
-//                myBuilder.queueUpdate();
-//                myTree.repaint();
-//            }
-        }
-
-        public void update(AnActionEvent e) {
-            final TreePath[] paths = myTree.getSelectionPaths();
-            e.getPresentation().setEnabled(paths != null && paths.length > 1 && canRunSelection());
-        }
-    }
-
-    private final class RemoveMetaTargetsOrBuildFileAction extends AnAction {
-
-        public RemoveMetaTargetsOrBuildFileAction() {
-//            super(AntBundle.message("remove.meta.targets.action.name"), AntBundle.message("remove.meta.targets.action.description"), null);
-            super("Remove Meta Action", "Description", null);
-            registerCustomShortcutSet(CommonShortcuts.getDelete(), myTree);
-            Disposer.register(SlingServerExplorer.this, new Disposable() {
-                public void dispose() {
-                    RemoveMetaTargetsOrBuildFileAction.this.unregisterCustomShortcutSet(myTree);
-                }
-            });
-            myTree.registerKeyboardAction(new AbstractAction() {
-                public void actionPerformed(ActionEvent e) {
-                    doAction();
-                }
-            }, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        }
-
-        public void actionPerformed(AnActionEvent e) {
-            doAction();
-        }
-
-        private void doAction() {
-            final TreePath[] paths = myTree.getSelectionPaths();
-            if(paths == null) {
-                return;
-            }
-            try {
-                // try to remove build file
-                if(paths.length == 1) {
-                    final DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0].getLastPathComponent();
-//                    if (node.getUserObject() instanceof AntBuildFileNodeDescriptor) {
-//                        final AntBuildFileNodeDescriptor descriptor = (AntBuildFileNodeDescriptor)node.getUserObject();
-//                        if (descriptor.getBuildFile().equals(getCurrentBuildFile())) {
-//                            removeBuildFile();
-//                            return;
-//                        }
-//                    }
-                }
-                // try to remove meta targets
-//                final AntBuildTarget[] targets = getTargetObjectsFromPaths(paths);
-//                final AntConfigurationBase antConfiguration = AntConfigurationBase.getInstance(myProject);
-//                for (final AntBuildTarget buildTarget : targets) {
-//                    if (buildTarget instanceof MetaTarget) {
-//                        for (final ExecutionEvent event : antConfiguration.getEventsForTarget(buildTarget)) {
-//                            if (event instanceof ExecuteCompositeTargetEvent) {
-//                                antConfiguration.clearTargetForEvent(event);
-//                            }
-//                        }
-//                    }
-//                }
-            } finally {
-                myBuilder.queueUpdate();
-                myTree.repaint();
-            }
-        }
-
-        public void update(AnActionEvent e) {
-            final Presentation presentation = e.getPresentation();
-            final TreePath[] paths = myTree.getSelectionPaths();
-            if(paths == null) {
-                presentation.setEnabled(false);
-                return;
-            }
-
-            if(paths.length == 1) {
-//                String text = AntBundle.message("remove.meta.target.action.name");
-//                boolean enabled = false;
-//                final DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
-//                if (node.getUserObject() instanceof AntBuildFileNodeDescriptor) {
-//                    final AntBuildFileNodeDescriptor descriptor = (AntBuildFileNodeDescriptor)node.getUserObject();
-//                    if (descriptor.getBuildFile().equals(getCurrentBuildFile())) {
-//                        text = AntBundle.message("remove.selected.build.file.action.name");
-//                        enabled = true;
-//                    }
-//                }
-//                else {
-//                    if (node.getUserObject() instanceof AntTargetNodeDescriptor) {
-//                        final AntTargetNodeDescriptor descr = (AntTargetNodeDescriptor)node.getUserObject();
-//                        final AntBuildTargetBase target = descr.getTarget();
-//                        if (target instanceof MetaTarget) {
-//                            enabled = true;
-//                        }
-//                    }
-//                }
-//                presentation.setText(text);
-//                presentation.setEnabled(enabled);
-            } else {
-//                presentation.setText(AntBundle.message("remove.selected.meta.targets.action.name"));
-//                final AntBuildTarget[] targets = getTargetObjectsFromPaths(paths);
-//                boolean enabled = targets.length > 0;
-//                for (final AntBuildTarget buildTarget : targets) {
-//                    if (!(buildTarget instanceof MetaTarget)) {
-//                        enabled = false;
-//                        break;
-//                    }
-//                }
-//                presentation.setEnabled(enabled);
-            }
-        }
-    }
-
-    private final class AssignShortcutAction extends AnAction {
-        private final String myActionId;
-
-        public AssignShortcutAction(String actionId) {
-//            super(AntBundle.message("ant.explorer.assign.shortcut.action.name"));
-            super("Assign Shortcut Action", "Description", null);
-            myActionId = actionId;
-        }
-
-        public void actionPerformed(AnActionEvent e) {
-            new EditKeymapsDialog(myProject, myActionId).show();
-        }
-
-        public void update(AnActionEvent e) {
-            e.getPresentation().setEnabled(myActionId != null && ActionManager.getInstance().getAction(myActionId) != null);
-        }
-    }
 
     private class KeyMapListener implements KeymapManagerListener, Keymap.Listener {
         private Keymap myCurrentKeyMap = null;
