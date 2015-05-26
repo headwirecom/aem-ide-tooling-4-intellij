@@ -58,9 +58,9 @@ public class ResourceChangeCommandFactory {
         this.serializationManager = serializationManager;
     }
 
-    public Command<?> newCommandForAddedOrUpdated(Repository repository, IResource addedOrUpdated) throws CoreException {
+    public Command<?> newCommandForAddedOrUpdated(Repository repository, IResource addedOrUpdated, boolean forceDeploy) throws CoreException {
         try {
-            return addFileCommand(repository, addedOrUpdated);
+            return addFileCommand(repository, addedOrUpdated, forceDeploy);
         } catch (IOException e) {
             throw new CoreException(
                 new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed updating " + addedOrUpdated, e)
@@ -68,9 +68,9 @@ public class ResourceChangeCommandFactory {
         }
     }
 
-    private Command<?> addFileCommand(Repository repository, IResource resource) throws CoreException, IOException {
+    private Command<?> addFileCommand(Repository repository, IResource resource, boolean forceDeploy) throws CoreException, IOException {
 
-        ResourceAndInfo rai = buildResourceAndInfo(resource, repository);
+        ResourceAndInfo rai = buildResourceAndInfo(resource, repository, forceDeploy);
 
         if (rai == null) {
             return null;
@@ -95,18 +95,34 @@ public class ResourceChangeCommandFactory {
      */
     public ResourceAndInfo buildResourceAndInfo(IResource resource, Repository repository) throws CoreException,
         IOException {
+        return buildResourceAndInfo(resource, repository, false);
+    }
+
+    /**
+     * Convenience method which builds a <tt>ResourceAndInfo</tt> info for a specific <tt>IResource</tt>
+     *
+     * @param resource the resource to process
+     * @param repository the repository, used to extract serialization information for different resource types
+     * @return the build object, or null if one could not be built
+     * @throws CoreException
+     * @throws java.io.IOException
+     */
+    public ResourceAndInfo buildResourceAndInfo(IResource resource, Repository repository, boolean forceDeploy) throws CoreException,
+        IOException {
         if (ignoredFileNames.contains(resource.getName())) {
             return null;
         }
 
-        Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
-        Long resourceModificationTimeStamp = resource.getModificationStamp();
+        if(!forceDeploy) {
+            Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
+            Long resourceModificationTimeStamp = resource.getModificationStamp();
 
-        if (modificationTimestamp != null && modificationTimestamp >= resource.getModificationStamp()) {
-            Activator.getDefault().getPluginLogger()
-                .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
-                    resource, modificationTimestamp, resource.getModificationStamp());
-            return null;
+            if(modificationTimestamp != null && modificationTimestamp >= resource.getModificationStamp()) {
+                Activator.getDefault().getPluginLogger()
+                    .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
+                        resource, modificationTimestamp, resource.getModificationStamp());
+                return null;
+            }
         }
 
 //AS TODO: Not sure what this means in IntelliJ

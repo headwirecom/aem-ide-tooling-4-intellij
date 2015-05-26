@@ -2,130 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e8001779-2c80-4417-9343-f2a698fc0cd2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_10.cfs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_a.cfs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_a.cfs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_b.cfs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_b.cfs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_y.cfs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_z.cfs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/segments_c" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/segments_c" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/segments_z" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/org.eclipse.jdt.core/state.dat" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/org.eclipse.jdt.core/state.dat" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/org.eclipse.jdt.core/state.dat" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/org.eclipse.jdt.core/state.dat" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/org.eclipse.jdt.core/state.dat" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/d4/4013575fb90000151c8d9bd6303a3595" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/5e/a0424ff8b60000151d2bdef70931ca97" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/12/b06da2f1b60000151d2bdef70931ca97" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/24/d0a1ce1bb70000151f2ac4985f2ce103" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/93/e00e0a2cb70000151f2ac4985f2ce103" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/14/209491a7f1f800141b43d7b643853fc6" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/16/70d87df87ef900141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/1d/80587ec0ccf800141b43d7b643853fc6" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/2e/5095f6aeccf800141b43d7b643853fc6" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/5e/601bf9267ff900141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/5f/d0965cf17ef900141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/62/b05e7ee849fa00141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/79/f0d0ca984afa00141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/ae/f06d9ab64cfa00141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/b7/9092ab76ccf800141b43d7b643853fc6" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/d2/f0b5efc7ccf800141b43d7b643853fc6" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/dc/b02154094afa00141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/e3/a0011be84cfa00141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.history/e5/80c479fc4afa00141805f02a1b01e4c5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/.syncinfo.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/Servers/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/Servers/.syncinfo.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/.syncinfo.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/.syncinfo.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.tests/.syncinfo.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.syncinfo.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.content/.syncinfo.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project/.syncinfo.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.root/.markers.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/7.snap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_0.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_1.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_2.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_3.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_4.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_5.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_5_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_6.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_6_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_7.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/segments_9" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_0.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_0_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_1.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_1_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_2.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_2_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_3.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_3_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_4.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_4_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_5.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_5_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_6.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_6_1.del" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_7.cfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/segments_9" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/segments_w" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.team.cvs.core/.running" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IContainer.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IJavaProject.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IMemento.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IModuleFile.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IModuleFolder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/ProjectHelper.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/ServerCore.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/ServerPlugin.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/SlingPublisher.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/SlingPublisherBase.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.root/7.tree" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.root/10.tree" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_0_1.del" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_a_1.del" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_1_1.del" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/_a_1.del" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_2_1.del" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_x_1.del" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_3_1.del" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_y_1.del" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/_4_1.del" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/_z_1.del" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/.markers" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.core/.markers" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/.markers" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.it.launcher/.markers" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.markers" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.markers" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.indexes/e4/b9/79/8/72/46/21/history.index" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.projects/aem-tooling-test-project.ui.apps/.indexes/e4/b9/79/8/72/46/21/history.index" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.server.core/publish/publish0.dat" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.server.core/publish/publish0.dat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/segments.gen" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/26522e0d83a422eed93329ece7565cfc/segments.gen" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/segments.gen" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/40370d79a909709d9fe4992044e4d3ff/segments.gen" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/segments.gen" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/segments.gen" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.log" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/eclipse-fix/java/org/apache/sling/ide/eclipse/core/internal/Activator.java" afterPath="$PROJECT_DIR$/src/eclipse-fix/java/org/apache/sling/ide/eclipse/core/internal/Activator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IResource.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IResource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ProjectUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ProjectUtil.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceChangeCommandFactory.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceChangeCommandFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/wrapper/ResourcesPlugin.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/wrapper/ResourcesPlugin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ServerUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ServerUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Util.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Util.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.cache/clean-cache.properties" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.pde.core/.cache/clean-cache.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/tests/js.txt" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/ui.apps/src/main/content/jcr_root/apps/aemtoolingtestproject/tests/js.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.server.core/servers.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.wst.server.core/servers.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/version.ini" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/version.ini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/misc.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/workspace.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aem-tooling-test-project/.idea/workspace.xml" />
     </list>
@@ -165,11 +46,38 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ServerConnectionManager.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SlingServerExplorer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="6840" max-vertical-offset="9660">
+              <caret line="639" column="50" selection-start-line="639" selection-start-column="50" selection-end-line="639" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerConfiguration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="4459" max-vertical-offset="5565">
+              <caret line="372" column="0" selection-start-line="372" selection-start-column="0" selection-end-line="372" selection-end-column="0" />
+              <folding>
+                <element signature="e#12482#12483#0" expanded="true" />
+                <element signature="e#12524#12525#0" expanded="true" />
+                <element signature="e#12789#12790#0" expanded="true" />
+                <element signature="e#12826#12827#0" expanded="true" />
+                <element signature="e#13087#13088#0" expanded="true" />
+                <element signature="e#13143#13144#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerConnectionManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3534" max-vertical-offset="11205">
-              <caret line="259" column="68" selection-start-line="259" selection-start-column="51" selection-end-line="259" selection-end-column="68" />
+            <state vertical-scroll-proportion="0.24887387" vertical-offset="7414" max-vertical-offset="12645">
+              <caret line="511" column="0" selection-start-line="511" selection-start-column="0" selection-end-line="511" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -177,23 +85,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerUtil.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ServerUtil.java">
+      <file leaf-file-name="IResource.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.666666" vertical-offset="0" max-vertical-offset="4575">
-              <caret line="30" column="55" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1425">
+              <caret line="95" column="31" selection-start-line="95" selection-start-column="18" selection-end-line="95" selection-end-column="36" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Trace.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/Trace.java">
+      <file leaf-file-name="ServerConfigurationManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4560811" vertical-offset="0" max-vertical-offset="1320">
-              <caret line="27" column="10" selection-start-line="26" selection-start-column="69" selection-end-line="27" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1845" max-vertical-offset="3405">
+              <caret line="193" column="82" selection-start-line="193" selection-start-column="82" selection-end-line="193" selection-end-column="82" />
               <folding />
             </state>
           </provider>
@@ -202,41 +108,26 @@
       <file leaf-file-name="ResourceChangeCommandFactory.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceChangeCommandFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="664" max-vertical-offset="8220">
-              <caret line="114" column="26" selection-start-line="114" selection-start-column="26" selection-end-line="114" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="8460">
+              <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
               <folding>
-                <element signature="e#21017#21036#0" expanded="true" />
+                <element signature="e#21800#21819#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
+      <file leaf-file-name="Element.class" pinned="false" current-in-tab="false">
+        <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/lib/jdom.jar!/org/jdom/Element.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="535" max-vertical-offset="1500">
-              <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IModuleResourceDelta.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IModuleResourceDelta.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="915">
-              <caret line="11" column="14" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IServer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="639" max-vertical-offset="3585">
-              <caret line="77" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="-12.44" vertical-offset="5389" max-vertical-offset="9285">
+              <caret line="452" column="21" selection-start-line="452" selection-start-column="21" selection-end-line="452" selection-end-column="21" />
+              <folding>
+                <element signature="e#10145#10146#0" expanded="true" />
+                <element signature="e#10209#10210#0" expanded="true" />
+                <element signature="e#10412#10413#0" expanded="true" />
+                <element signature="e#10462#10463#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -245,7 +136,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Util.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="137" max-vertical-offset="1590">
-              <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+              <caret line="66" column="31" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -259,7 +150,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/wrapper/SerializationManagerWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/ResourceUtil.java" />
         <option value="$PROJECT_DIR$/src/eclipse-fix/java/org/apache/sling/ide/impl/vlt/Activator.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/apache/sling/ide/impl/vlt/ActivatorTest.java" />
@@ -291,7 +181,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/Trace.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/ServerPublishInfo.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IPath.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IFolder.java" />
@@ -303,13 +192,15 @@
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/VFSListenerFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IResource.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Util.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceChangeCommandFactory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/SlingPublisher.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/ProjectHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ServerUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceChangeCommandFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
       </list>
     </option>
   </component>
@@ -1021,6 +912,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="jdom.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jdom" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IDEA IC-141.713.2 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jdom.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IDEA IC-141.713.2 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="idea.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -1600,40 +1531,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="eclipse" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="eclipse" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wrapper" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2390,12 +2287,12 @@
       <workItem from="1431448219716" duration="53335000" />
       <workItem from="1431638453815" duration="27878000" />
       <workItem from="1431974472124" duration="40933000" />
-      <workItem from="1432318714666" duration="19848000" />
+      <workItem from="1432318714666" duration="27837000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="433249000" />
+    <option name="totallyTimeSpent" value="441238000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -2506,21 +2403,27 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java</url>
-          <line>542</line>
+          <line>637</line>
           <properties />
           <option name="timeStamp" value="203" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java</url>
-          <line>712</line>
+          <line>500</line>
           <properties />
-          <option name="timeStamp" value="207" />
+          <option name="timeStamp" value="210" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java</url>
+          <line>185</line>
+          <properties />
+          <option name="timeStamp" value="211" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="208" />
+      <option name="time" value="212" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2578,25 +2481,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4350">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="3375">
-          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22843823" vertical-offset="3862" max-vertical-offset="5355">
-          <caret line="315" column="24" selection-start-line="315" selection-start-column="24" selection-end-line="315" selection-end-column="24" />
-          <folding>
-            <element signature="e#13293#13294#0" expanded="false" />
-            <element signature="e#13336#13337#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2745,14 +2629,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="9660">
-          <caret line="710" column="56" selection-start-line="710" selection-start-column="56" selection-end-line="710" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.impl-vlt-1.0.7-SNAPSHOT.jar!/org/apache/sling/ide/impl/vlt/filter/VltFilterLocator.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.29548088" vertical-offset="0" max-vertical-offset="863">
@@ -2869,14 +2745,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="460" max-vertical-offset="1425">
-          <caret line="105" column="32" selection-start-line="105" selection-start-column="32" selection-end-line="105" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.api-1.0.7-SNAPSHOT.jar!/org/apache/sling/ide/transport/Repository.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-23.6" vertical-offset="355" max-vertical-offset="1320">
@@ -2885,53 +2753,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Util.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="137" max-vertical-offset="1590">
-          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceChangeCommandFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="664" max-vertical-offset="8220">
-          <caret line="114" column="26" selection-start-line="114" selection-start-column="26" selection-end-line="114" selection-end-column="26" />
-          <folding>
-            <element signature="e#21017#21036#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="535" max-vertical-offset="1500">
+        <state vertical-scroll-proportion="0.731982" vertical-offset="535" max-vertical-offset="1500">
           <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3534" max-vertical-offset="11205">
-          <caret line="259" column="68" selection-start-line="259" selection-start-column="51" selection-end-line="259" selection-end-column="68" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="639" max-vertical-offset="3585">
-          <caret line="77" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IModuleResourceDelta.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="915">
+        <state vertical-scroll-proportion="0.1858108" vertical-offset="0" max-vertical-offset="915">
           <caret line="11" column="14" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
           <folding />
         </state>
@@ -2939,7 +2771,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ServerUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.666666" vertical-offset="0" max-vertical-offset="4575">
+        <state vertical-scroll-proportion="0.5226481" vertical-offset="0" max-vertical-offset="4575">
           <caret line="30" column="55" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -2949,9 +2781,97 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/Trace.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4560811" vertical-offset="0" max-vertical-offset="1320">
-          <caret line="27" column="10" selection-start-line="26" selection-start-column="69" selection-end-line="27" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.3885135" vertical-offset="0" max-vertical-offset="1320">
+          <caret line="23" column="71" selection-start-line="23" selection-start-column="71" selection-end-line="23" selection-end-column="71" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44594595" vertical-offset="639" max-vertical-offset="3585">
+          <caret line="77" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/lib/jdom.jar!/org/jdom/Element.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.44" vertical-offset="5389" max-vertical-offset="9285">
+          <caret line="452" column="21" selection-start-line="452" selection-start-column="21" selection-end-line="452" selection-end-column="21" />
+          <folding>
+            <element signature="e#10145#10146#0" expanded="true" />
+            <element signature="e#10209#10210#0" expanded="true" />
+            <element signature="e#10412#10413#0" expanded="true" />
+            <element signature="e#10462#10463#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1845" max-vertical-offset="3405">
+          <caret line="193" column="82" selection-start-line="193" selection-start-column="82" selection-end-line="193" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Util.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="137" max-vertical-offset="1590">
+          <caret line="66" column="31" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IResource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1425">
+          <caret line="95" column="31" selection-start-line="95" selection-start-column="18" selection-end-line="95" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceChangeCommandFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="8460">
+          <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
+          <folding>
+            <element signature="e#21800#21819#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4459" max-vertical-offset="5565">
+          <caret line="372" column="0" selection-start-line="372" selection-start-column="0" selection-end-line="372" selection-end-column="0" />
+          <folding>
+            <element signature="e#12482#12483#0" expanded="true" />
+            <element signature="e#12524#12525#0" expanded="true" />
+            <element signature="e#12789#12790#0" expanded="true" />
+            <element signature="e#12826#12827#0" expanded="true" />
+            <element signature="e#13087#13088#0" expanded="true" />
+            <element signature="e#13143#13144#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="6840" max-vertical-offset="9660">
+          <caret line="639" column="50" selection-start-line="639" selection-start-column="50" selection-end-line="639" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24887387" vertical-offset="7414" max-vertical-offset="12645">
+          <caret line="511" column="0" selection-start-line="511" selection-start-column="0" selection-end-line="511" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
