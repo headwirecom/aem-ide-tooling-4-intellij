@@ -382,10 +382,12 @@ public class ServerConnectionManager {
         if(serverConfiguration != null) {
             serverConfiguration.setServerStatus(ServerConfiguration.ServerStatus.disconnecting);
         }
-        if(processHandler.detachIsDefault()) {
-            processHandler.detachProcess();
-        } else {
-            processHandler.destroyProcess();
+        if(processHandler != null) {
+            if(processHandler.detachIsDefault()) {
+                processHandler.detachProcess();
+            } else {
+                processHandler.destroyProcess();
+            }
         }
         if(serverConfiguration != null) {
             serverConfiguration.setServerStatus(ServerConfiguration.ServerStatus.disconnected);
@@ -463,10 +465,14 @@ public class ServerConnectionManager {
                     if(command != null) {
                         ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
                         allResourcesUpdatedList.add(changedResource.getPath());
+
+                        messageManager.sendDebugNotification("Publish file: " + changedResource);
+                        messageManager.sendDebugNotification("Publish for module: " + module.getName());
+                        execute(command);
+
+                        // save the modification timestamp to avoid a redeploy if nothing has changed
+                        Util.setModificationStamp(changedResource);
                     }
-                    messageManager.sendDebugNotification("Publish file: " + changedResource);
-                    messageManager.sendDebugNotification("Publish for module: " + module.getName());
-                    execute(command);
                 }
             }
             // reorder the child nodes at the end, when all create/update/deletes have been processed
@@ -526,20 +532,18 @@ public class ServerConnectionManager {
 //                    IModuleResource[] allResources = getResources(module);
                     Set<String> handledPaths = new HashSet<String>();
                     ensureParentIsPublished(
-//                        resourceDelta.getModuleResource(),
                         currentModule,
                         basePath,
-//                        relativePath,
                         file,
                         repository,
-//                        allResources,
                         handledPaths
                     );
 //                    addedOrUpdatedResources.add(resourceDelta.getModuleResource());
 
                     execute(command);
                     // Add a property that can be used later to avoid a re-sync if not needed
-                    file.putUserData(Util.MODIFICATION_DATE_KEY, file.getModificationStamp());
+                    Util.setModificationStamp(file);
+//                    file.putUserData(Util.MODIFICATION_DATE_KEY, file.getModificationStamp());
                     messageManager.sendDebugNotification("Successfully Updated File: " + file.getPath());
                 } else {
                     messageManager.sendDebugNotification("Failed to obtain File Command for Module: " + currentModule + " and file: " + file);
@@ -612,6 +616,10 @@ public class ServerConnectionManager {
         ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths);
         // create this resource
         execute(addFileCommand(repository, module, parentFile));
+
+        // save the modification timestamp to avoid a redeploy if nothing has changed
+        Util.setModificationStamp(file);
+
         handledPaths.add(parentFile.getPath());
         logger.trace("Ensured that resource at path {0} is published", parentFile.getPath());
         return;

@@ -35,8 +35,7 @@ public class Activator {
     }
 
     public FilterLocator getFilterLocator() {
-        //AS TODO: Implement this
-        throw new UnsupportedOperationException("Not implemented yet");
+        return ServiceManager.getService(FilterLocator.class);
     }
 
     public OsgiClientFactory getOsgiClientFactory() {
