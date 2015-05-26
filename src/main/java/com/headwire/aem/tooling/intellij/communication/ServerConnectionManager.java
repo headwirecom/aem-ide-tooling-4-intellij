@@ -183,8 +183,13 @@ public class ServerConnectionManager {
                             allSynchronized = false;
                         }
                     } else if(module.isSlingPackage()) {
-                        //AS TODO: Handle Sling Package
-                        //AS TODO: We need to go through that module and check if they are synchronized
+                        long lastModificationTimestamp = getLastModificationTimestamp(module);
+                        module.setStatus(
+                            // The newest file is newer than the values saved on the module
+                            lastModificationTimestamp > module.getLastModificationTimestamp() ?
+                                ServerConfiguration.SynchronizationStatus.outdated :
+                                ServerConfiguration.SynchronizationStatus.upToDate
+                        );
                     }
                 } catch(OsgiClientException e1) {
                     // Mark connection as failed
@@ -443,6 +448,7 @@ public class ServerConnectionManager {
     public void publishModule(Module module) {
         Repository repository = null;
 //            List<IModuleResource> addedOrUpdatedResources = new ArrayList<IModuleResource>();
+        long lastModificationTimestamp = -1;
         try {
             repository = ServerUtil.getConnectedRepository(
 //                    currentModule.getParent()
@@ -461,9 +467,10 @@ public class ServerConnectionManager {
                 getChangedResourceList(resourceFile, changedResources);
                 //AS TODO: Create a List of Changed Resources
                 for(VirtualFile changedResource : changedResources) {
-                    Command<?> command = addFileCommand(repository, module, changedResource);
+                    Command<?> command = addFileCommand(repository, module, changedResource, false);
                     if(command != null) {
-                        ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
+                        long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
+                        lastModificationTimestamp = Math.max(parentLastModificationTimestamp, lastModificationTimestamp);
                         allResourcesUpdatedList.add(changedResource.getPath());
 
                         messageManager.sendDebugNotification("Publish file: " + changedResource);
@@ -472,6 +479,18 @@ public class ServerConnectionManager {
 
                         // save the modification timestamp to avoid a redeploy if nothing has changed
                         Util.setModificationStamp(changedResource);
+                        lastModificationTimestamp = Math.max(changedResource.getTimeStamp(), lastModificationTimestamp);
+                    } else {
+                        // We do not update the file but we need to find the last mdoification timestamp
+                        // We need to obtain the command to see if it is deployed
+                        command = addFileCommand(repository, module, changedResource, true);
+                        if(command != null) {
+                            long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
+                            lastModificationTimestamp = Math.max(lastModificationTimestamp, parentLastModificationTimestamp);
+                            allResourcesUpdatedList.add(changedResource.getPath());
+                            long timestamp = changedResource.getTimeStamp();
+                            lastModificationTimestamp = Math.max(lastModificationTimestamp, timestamp);
+                        }
                     }
                 }
             }
@@ -479,6 +498,7 @@ public class ServerConnectionManager {
 //            for (IModuleResource resource : addedOrUpdatedResources) {
 //                execute(reorderChildNodesCommand(repository, resource));
 //            }
+            module.setLastModificationTimestamp(lastModificationTimestamp);
         } catch(CoreException e) {
             e.printStackTrace();
         } catch(SerializationException e) {
@@ -486,6 +506,81 @@ public class ServerConnectionManager {
         } catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public long getLastModificationTimestamp(Module module) {
+        long ret = -1;
+        Repository repository = null;
+        try {
+            repository = ServerUtil.getConnectedRepository(
+                new IServer(module.getParent()), new NullProgressMonitor()
+            );
+            messageManager.sendDebugNotification("Got Repository: " + repository);
+            List<MavenResource> resourceList = findMavenSources(module);
+            Set<String> allResourcesUpdatedList = new HashSet<String>();
+            MavenProject mavenProject = module.getMavenProject();
+            VirtualFile baseFile = mavenProject.getDirectoryFile();
+            for(MavenResource resource: resourceList) {
+                String resourceDirectoryPath = resource.getDirectory();
+                VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resourceDirectoryPath);
+                messageManager.sendDebugNotification("Resource File to deploy: " + resourceFile);
+                List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
+                getChangedResourceList(resourceFile, changedResources);
+                //AS TODO: Create a List of Changed Resources
+                for(VirtualFile changedResource : changedResources) {
+                    // We need to obtain the command to see if it is deployed
+                    Command<?> command = addFileCommand(repository, module, changedResource, true);
+                    if(command != null) {
+                        long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
+                        ret = Math.max(ret, parentLastModificationTimestamp);
+                        allResourcesUpdatedList.add(changedResource.getPath());
+                        long timestamp = changedResource.getTimeStamp();
+                        ret = Math.max(ret, timestamp);
+                    }
+                }
+            }
+        } catch(CoreException e) {
+            e.printStackTrace();
+        } catch(SerializationException e) {
+            e.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    private long getParentLastModificationTimestamp(
+        Module module,
+        String basePath,
+        VirtualFile file,
+        Repository repository,
+        Set<String> handledPaths
+    )
+        throws CoreException, SerializationException, IOException {
+
+        long ret = -1;
+        Logger logger = Activator.getDefault().getPluginLogger();
+
+        VirtualFile parentFile = file.getParent();
+        messageManager.sendDebugNotification("Check Parent File: " + parentFile);
+        String parentFilePath = parentFile.getPath();
+        if(parentFile.getPath().equals(basePath)) {
+            logger.trace("Path {0} can not have a parent, skipping", parentFile.getPath());
+            return ret;
+        }
+
+        // already published by us, a parent of another resource that was published in this execution
+        if (handledPaths.contains(parentFile.getPath())) {
+            logger.trace("Parent path {0} was already handled, skipping", parentFile.getPath());
+            return ret;
+        }
+
+        long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, basePath, parentFile, repository, handledPaths);
+        long timestamp = file.getTimeStamp();
+        ret = Math.max(parentLastModificationTimestamp, timestamp);
+
+        return ret;
     }
 
     private void getChangedResourceList(VirtualFile resourceFile, List<VirtualFile> changedResources) {
@@ -525,7 +620,7 @@ public class ServerConnectionManager {
                     new IServer(currentModule.getParent()), new NullProgressMonitor()
                 );
                 messageManager.sendDebugNotification("Got Repository: " + repository);
-                Command<?> command = addFileCommand(repository, currentModule, file);
+                Command<?> command = addFileCommand(repository, currentModule, file, false);
                 messageManager.sendDebugNotification("Got Command: " + command);
                 if (command != null) {
 //AS TODO: Adjust and Re-enable later
@@ -576,7 +671,7 @@ public class ServerConnectionManager {
      * @throws SerializationException
      * @throws CoreException
      */
-    private void ensureParentIsPublished(
+    private long ensureParentIsPublished(
 //        IModuleResource moduleResource,
         Module module,
         String basePath,
@@ -587,6 +682,7 @@ public class ServerConnectionManager {
     )
         throws CoreException, SerializationException, IOException {
 
+        long ret = -1;
         Logger logger = Activator.getDefault().getPluginLogger();
 
 //        IPath currentPath = moduleResource.getModuleRelativePath();
@@ -598,7 +694,7 @@ public class ServerConnectionManager {
         String parentFilePath = parentFile.getPath();
         if(parentFile.getPath().equals(basePath)) {
             logger.trace("Path {0} can not have a parent, skipping", parentFile.getPath());
-            return;
+            return ret;
         }
 
 //        IPath parentPath = currentPath.removeLastSegments(1);
@@ -607,22 +703,22 @@ public class ServerConnectionManager {
         // already published by us, a parent of another resource that was published in this execution
         if (handledPaths.contains(parentFile.getPath())) {
             logger.trace("Parent path {0} was already handled, skipping", parentFile.getPath());
-            return;
+            return ret;
         }
 
 //        for (IModuleResource maybeParent : allResources) {
 //            if (maybeParent.getModuleRelativePath().equals(parentPath)) {
         // handle the parent's parent first, if needed
-        ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths);
+        long lastParentModificationTimestamp = ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths);
         // create this resource
-        execute(addFileCommand(repository, module, parentFile));
+        execute(addFileCommand(repository, module, parentFile, false));
 
         // save the modification timestamp to avoid a redeploy if nothing has changed
         Util.setModificationStamp(file);
 
         handledPaths.add(parentFile.getPath());
         logger.trace("Ensured that resource at path {0} is published", parentFile.getPath());
-        return;
+        return Math.max(lastParentModificationTimestamp, parentFile.getTimeStamp());
 //            }
 //        }
 //
@@ -632,7 +728,7 @@ public class ServerConnectionManager {
     }
 
     private Command<?> addFileCommand(
-        Repository repository, Module module, VirtualFile file
+        Repository repository, Module module, VirtualFile file, boolean forceDeploy
     ) throws
         CoreException,
         SerializationException, IOException {
@@ -645,7 +741,7 @@ public class ServerConnectionManager {
 
 //        return commandFactory.newCommandForAddedOrUpdated(repository, res);
         IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
-        return commandFactory.newCommandForAddedOrUpdated(repository, resource);
+        return commandFactory.newCommandForAddedOrUpdated(repository, resource, forceDeploy);
     }
 
     private Command<?> addFileCommand(Repository repository, IModuleResource resource) throws CoreException,
@@ -657,7 +753,7 @@ public class ServerConnectionManager {
             return null;
         }
 
-        return commandFactory.newCommandForAddedOrUpdated(repository, res);
+        return commandFactory.newCommandForAddedOrUpdated(repository, res, false);
     }
 
     private Command<?> reorderChildNodesCommand(Repository repository, IModuleResource resource) throws CoreException,

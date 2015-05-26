@@ -158,6 +158,7 @@ public class ServerConfigurationManager
                 Element moduleChildNode = new Element("sscm-" + j++);
                 moduleChildNode.setAttribute("symbolicName", module.getSymbolicName());
                 moduleChildNode.setAttribute("partOfBuild", module.isPartOfBuild() + "");
+                moduleChildNode.setAttribute("lastModificationTimestamp", module.getLastModificationTimestamp() + "");
                 childNode.addContent(moduleChildNode);
             }
             root.addContent(childNode);
@@ -188,8 +189,9 @@ public class ServerConfigurationManager
             for(Element element: child.getChildren()) {
                 try {
                     String symbolicName = element.getAttributeValue("symbolicName");
-                    boolean isPartOfBuild = new Boolean(element.getAttributeValue("partOfBuild"));
-                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, symbolicName, isPartOfBuild);
+                    boolean isPartOfBuild = new Boolean(element.getAttributeValue("partOfBuild", "true"));
+                    long lastModificationTimestamp = new Long(element.getAttributeValue("lastModificationTimestamp", "-1"));
+                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, symbolicName, isPartOfBuild, lastModificationTimestamp);
                     serverConfiguration.addModule(module);
                 } catch(Exception e) {
                     // Ignore any exceptions to avoid a stall configurations
