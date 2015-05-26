@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -95,13 +96,22 @@ public class IResource {
     public Object getSessionProperty(Object qnImportModificationTimestamp) {
         Object ret = null;
         if(qnImportModificationTimestamp == ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP) {
-            ret = file.getUserData(Util.MODIFICATION_DATE_KEY);
+            ret = Util.getModificationStamp(file);
+//            ret = file.getUserData(Util.MODIFICATION_DATE_KEY);
         }
         return ret;
     }
 
     public Long getModificationStamp() {
-        Long ret = file.getModificationStamp();
+        Long ret = file.getTimeStamp();
         return ret;
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public VirtualFile getFile() {
+        return file;
     }
 }

@@ -51,89 +51,89 @@ public class IServer {
         return serverType;
     }
 
-    /*
-     * Publish to the server using the progress monitor. The result of the
-     * publish operation is returned as an IStatus.
-     */
-    public IStatus publish(int kind, IProgressMonitor monitor) {
-//AS TODO: Find a solution for this
-//        if (getServerType() == null)
-//            return new Status(IStatus.ERROR, ServerPlugin.PLUGIN_ID, 0, Messages.errorMissingAdapter, null);
+//    /*
+//     * Publish to the server using the progress monitor. The result of the
+//     * publish operation is returned as an IStatus.
+//     */
+//    public IStatus publish(int kind, IProgressMonitor monitor) {
+////AS TODO: Find a solution for this
+////        if (getServerType() == null)
+////            return new Status(IStatus.ERROR, ServerPlugin.PLUGIN_ID, 0, Messages.errorMissingAdapter, null);
+////
+////        // check what is out of sync and publish
+////        if (getServerType().hasServerConfiguration() && configuration == null)
+////            return new Status(IStatus.ERROR, ServerPlugin.PLUGIN_ID, 0, Messages.errorNoConfiguration, null);
+////
+////        // make sure that the delegate is loaded and the server state is correct
+////        loadAdapter(ServerBehaviourDelegate.class, monitor);
+////
+////        if (((ServerType)getServerType()).startBeforePublish() && (getServerState() == IServer.STATE_STOPPED)) {
+////            IStatus status = startImpl(ILaunchManager.RUN_MODE, monitor);
+////            if (status != null && status.getSeverity() == IStatus.ERROR)
+////                return status;
+////        }
 //
-//        // check what is out of sync and publish
-//        if (getServerType().hasServerConfiguration() && configuration == null)
-//            return new Status(IStatus.ERROR, ServerPlugin.PLUGIN_ID, 0, Messages.errorNoConfiguration, null);
+//        return publishImpl(kind, null, null, monitor);
+//    }
+
+//    protected IStatus publishImpl(int kind, List<IModule[]> modules4, IAdaptable info, IProgressMonitor monitor) {
+////        if (Trace.FINEST) {
+////            Trace.trace(Trace.STRING_FINEST, "-->-- Publishing to server: " + Server.this.toString() + " -->--");
+////        }
+////        if (Trace.FINEST) {
+////            Trace.trace(Trace.STRING_FINEST, "Server.publishImpl(): kind=<" + getPublishKindString(kind) + "> modules="
+////                + modules4);
+////        }
 //
-//        // make sure that the delegate is loaded and the server state is correct
-//        loadAdapter(ServerBehaviourDelegate.class, monitor);
+//        stopAutoPublish();
 //
-//        if (((ServerType)getServerType()).startBeforePublish() && (getServerState() == IServer.STATE_STOPPED)) {
-//            IStatus status = startImpl(ILaunchManager.RUN_MODE, monitor);
-//            if (status != null && status.getSeverity() == IStatus.ERROR)
-//                return status;
-//        }
-
-        return publishImpl(kind, null, null, monitor);
-    }
-
-    protected IStatus publishImpl(int kind, List<IModule[]> modules4, IAdaptable info, IProgressMonitor monitor) {
-//        if (Trace.FINEST) {
-//            Trace.trace(Trace.STRING_FINEST, "-->-- Publishing to server: " + Server.this.toString() + " -->--");
-//        }
-//        if (Trace.FINEST) {
-//            Trace.trace(Trace.STRING_FINEST, "Server.publishImpl(): kind=<" + getPublishKindString(kind) + "> modules="
-//                + modules4);
-//        }
-
-        stopAutoPublish();
-
-        try {
-            long time = System.currentTimeMillis();
-            firePublishStarted();
-
-//AS TODO: Find a solution for handling Server Publish Info
-//            getServerPublishInfo().startCaching();
-            IStatus status = Status.OK_STATUS;
-            try {
-//                getBehaviourDelegate(monitor).publish(kind, modules4, monitor, info);
-                new SlingPublisher().publishModule(kind, -2, modules4.toArray(new IModule[] {}), monitor);
-            } catch (CoreException ce) {
-                if (Trace.WARNING) {
-                    Trace.trace(Trace.STRING_WARNING, "Error during publishing", ce);
-                }
-//                status = ce.getStatus();
-            }
-
-//AS TODO: Find a solution for handling Server Publish Info
-//            final List<IModule[]> modules2 = new ArrayList<IModule[]>();
-//            visit(new IModuleVisitor() {
-//                public boolean visit(IModule[] module) {
-//                    if (getModulePublishState(module) == IServer.PUBLISH_STATE_NONE)
-//                        getServerPublishInfo().fill(module);
+//        try {
+//            long time = System.currentTimeMillis();
+//            firePublishStarted();
 //
-//                    modules2.add(module);
-//                    return true;
+////AS TODO: Find a solution for handling Server Publish Info
+////            getServerPublishInfo().startCaching();
+//            IStatus status = Status.OK_STATUS;
+//            try {
+////                getBehaviourDelegate(monitor).publish(kind, modules4, monitor, info);
+//                new SlingPublisher().publishModule(kind, -2, modules4.toArray(new IModule[] {}), monitor);
+//            } catch (CoreException ce) {
+//                if (Trace.WARNING) {
+//                    Trace.trace(Trace.STRING_WARNING, "Error during publishing", ce);
 //                }
-//            }, monitor);
-
-//AS TODO: Find a solution for handling Server Publish Info
-//            getServerPublishInfo().removeDeletedModulePublishInfo(this, modules2);
-//            getServerPublishInfo().clearCache();
-//            getServerPublishInfo().save();
-
-            firePublishFinished(Status.OK_STATUS);
-            if (Trace.PERFORMANCE) {
-//                Trace.trace(Trace.STRING_PERFORMANCE, "Server.publishImpl(): <" + (System.currentTimeMillis() - time)
-//                    + "> " + getServerType().getId());
-            }
-            return status;
-        } catch (Exception e) {
-            if (Trace.SEVERE) {
-//                Trace.trace(Trace.STRING_SEVERE, "Error calling delegate publish() " + Server.this.toString(), e);
-            }
-            return new Status(IStatus.ERROR, ServerPlugin.PLUGIN_ID, 0, Messages.errorPublishing, e);
-        }
-    }
+////                status = ce.getStatus();
+//            }
+//
+////AS TODO: Find a solution for handling Server Publish Info
+////            final List<IModule[]> modules2 = new ArrayList<IModule[]>();
+////            visit(new IModuleVisitor() {
+////                public boolean visit(IModule[] module) {
+////                    if (getModulePublishState(module) == IServer.PUBLISH_STATE_NONE)
+////                        getServerPublishInfo().fill(module);
+////
+////                    modules2.add(module);
+////                    return true;
+////                }
+////            }, monitor);
+//
+////AS TODO: Find a solution for handling Server Publish Info
+////            getServerPublishInfo().removeDeletedModulePublishInfo(this, modules2);
+////            getServerPublishInfo().clearCache();
+////            getServerPublishInfo().save();
+//
+//            firePublishFinished(Status.OK_STATUS);
+//            if (Trace.PERFORMANCE) {
+////                Trace.trace(Trace.STRING_PERFORMANCE, "Server.publishImpl(): <" + (System.currentTimeMillis() - time)
+////                    + "> " + getServerType().getId());
+//            }
+//            return status;
+//        } catch (Exception e) {
+//            if (Trace.SEVERE) {
+////                Trace.trace(Trace.STRING_SEVERE, "Error calling delegate publish() " + Server.this.toString(), e);
+//            }
+//            return new Status(IStatus.ERROR, ServerPlugin.PLUGIN_ID, 0, Messages.errorPublishing, e);
+//        }
+//    }
 
 //    public ServerPublishInfo getServerPublishInfo() {
 //        if (publishInfo == null) {

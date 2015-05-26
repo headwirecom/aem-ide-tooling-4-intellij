@@ -44,5 +44,9 @@ public class ResourcesPlugin {
             return file == null ? null :
                 (file.isDirectory() ? new IFolder() : new IFile());
         }
+
+        public IFile getFileForLocation(IPath filterPath) {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
     }
 }

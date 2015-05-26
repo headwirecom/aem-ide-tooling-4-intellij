@@ -63,6 +63,10 @@
             <implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>
         </component>
         <component>
+            <interface-class>org.apache.sling.ide.filter.FilterLocator</interface-class>
+            <implementation-class>org.apache.sling.ide.impl.vlt.filter.VltFilterLocator</implementation-class>
+        </component>
+        <component>
             <interface-class>org.apache.sling.ide.impl.vlt.VaultFsLocator</interface-class>
             <implementation-class>org.apache.sling.ide.impl.vlt.VaultFsLocatorImpl</implementation-class>
         </component>

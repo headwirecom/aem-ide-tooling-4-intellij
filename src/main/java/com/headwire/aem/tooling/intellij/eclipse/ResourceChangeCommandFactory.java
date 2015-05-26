@@ -100,6 +100,7 @@ public class ResourceChangeCommandFactory {
         }
 
         Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
+        Long resourceModificationTimeStamp = resource.getModificationStamp();
 
         if (modificationTimestamp != null && modificationTimestamp >= resource.getModificationStamp()) {
             Activator.getDefault().getPluginLogger()
@@ -120,7 +121,7 @@ public class ResourceChangeCommandFactory {
         File syncDirectoryAsFile = ProjectUtil.getSyncDirectoryFullPath(resource.getProject()).toFile();
         IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
 
-        Filter filter = ProjectUtil.loadFilter(resource.getProject());
+        Filter filter = ProjectUtil.loadFilter(resource.getModule());
 
         ResourceProxy resourceProxy = null;
 
@@ -186,9 +187,7 @@ public class ResourceChangeCommandFactory {
         switch (filterResult) {
 
             case ALLOW:
-//AS TODO: Mark is as only create if missing to handle /content/dam -> create an appropriate filter later
-                return new ResourceAndInfo(resourceProxy, info, true);
-//                return new ResourceAndInfo(resourceProxy, info);
+                return new ResourceAndInfo(resourceProxy, info);
             case PREREQUISITE:
                 // never try to 'create' the root node, we assume it exists
                 if (!resourceProxy.getPath().equals("/")) {
