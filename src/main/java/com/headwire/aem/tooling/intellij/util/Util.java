@@ -76,6 +76,9 @@ public class Util {
                             if(is.available() > 0) {
                                 String value = IOUtil.readString(is);
                                 ret = convertToLong(value, ret);
+                                if(ret > 0) {
+                                    file.putUserData(Util.MODIFICATION_DATE_KEY, ret);
+                                }
                             }
                         } finally {
                             is.close();

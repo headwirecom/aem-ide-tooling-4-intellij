@@ -11,6 +11,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
 import com.headwire.aem.tooling.intellij.eclipse.wrapper.ResourcesPlugin;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
@@ -481,8 +482,11 @@ public class ResourceChangeCommandFactory {
 
 //AS TODO: The Wrapper's implementation needs to be finished as it only returns null now. Here we only check
 //AS TODO: if the returned resource is not null and does not use it otherwise
-            IResource childResource = ResourcesPlugin.getWorkspace().getRoot().findMember(childPath);
-            if (childResource == null) {
+//AS TODO: The wrapper had issues with obtaining the Project / File -> use the Virtual File System instead
+            VirtualFile myFile = serializationFile.getFile().getFileSystem().findFileByPath(childPath.toOSString());
+//            IResource childResource = ResourcesPlugin.getWorkspace().getRoot().findMember(childPath);
+//            if (childResource == null) {
+            if (myFile == null) {
                 Activator.getDefault().getPluginLogger()
                     .trace("For resource at with serialization data {0} the serialized child resource at {1} does not exist in the filesystem and will be ignored",
                         serializationFile, childPath);

@@ -1,0 +1,248 @@
+package com.headwire.aem.tooling.intellij.ui;
+
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.ui.ColoredListCellRenderer;
+import com.intellij.ui.SimpleTextAttributes;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.AbstractListModel;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
+
+public class BuildSelectionDialog extends DialogWrapper {
+    private JPanel contentPane;
+    private JButton Add;
+    private JButton Remove;
+    private JList excludeList;
+    private JList includedList;
+
+    private ModuleListModel excludedModuleListModel;
+    private ModuleListModel includeModuleListModel;
+
+    public BuildSelectionDialog(@NotNull Project project, @NotNull ServerConfiguration serverConfiguration) {
+        super(project);
+
+        setTitle(AEMBundle.message("build.configuration.dialog.title"));
+        setModal(true);
+        setUpDialog(serverConfiguration);
+        init();
+    }
+
+    private void setUpDialog(ServerConfiguration serverConfiguration) {
+        Add.setEnabled(false);
+        Remove.setEnabled(false);
+        includedList.setCellRenderer(new ModuleListCellRenderer());
+        excludeList.setCellRenderer(new ModuleListCellRenderer());
+        includedList.addListSelectionListener(
+            new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                    if(!listSelectionEvent.getValueIsAdjusting()) {
+                        int firstIndex = listSelectionEvent.getFirstIndex();
+                        // No Selection -> disable remove button otherwise enable it
+                        Remove.setEnabled(includeModuleListModel.getSize() > 0);
+                    }
+                }
+            }
+        );
+
+        excludeList.addListSelectionListener(
+            new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                    if(!listSelectionEvent.getValueIsAdjusting()) {
+                        int firstIndex = listSelectionEvent.getFirstIndex();
+                        // No Selection -> disable add button otherwise enable it
+                        Add.setEnabled(excludedModuleListModel.getSize() > 0);
+                    }
+                }
+            }
+        );
+
+        Add.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    // Move all selected entries in the Excluded Module to the Included List
+                    List<Object> selection = Arrays.asList(excludeList.getSelectedValues());
+                    for(Object item: selection) {
+                        if(item instanceof Module) {
+                            Module module = (Module) item;
+                            includeModuleListModel.addModule(module);
+                            excludedModuleListModel.removeModule(module);
+                            excludeList.setSelectedIndex(0);
+                            if(includedList.getSelectedIndices().length == 0) { includedList.setSelectedIndex(0); }
+                        }
+                    }
+                }
+            }
+        );
+
+        Remove.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    // Move all selected entries in the Excluded Module to the Included List
+                    List<Object> selection = Arrays.asList(includedList.getSelectedValues());
+                    for(Object item: selection) {
+                        if(item instanceof Module) {
+                            Module module = (Module) item;
+                            excludedModuleListModel.addModule(module);
+                            includeModuleListModel.removeModule(module);
+                            includedList.setSelectedIndex(0);
+                            if(excludeList.getSelectedIndices().length == 0) { excludeList.setSelectedIndex(0); }
+                        }
+                    }
+                }
+            }
+        );
+
+        fillIn(serverConfiguration);
+    }
+
+    @Nullable
+    @Override
+    protected JComponent createCenterPanel() {
+        return contentPane;
+    }
+
+    private void fillIn(ServerConfiguration serverConfiguration) {
+        clearList(includedList);
+        clearList(excludeList);
+        List<Module> included = new ArrayList<Module>();
+        List<Module> excluded = new ArrayList<Module>();
+        for(Module module: serverConfiguration.getModuleList()) {
+            if(module.isPartOfBuild()) {
+                included.add(module);
+            } else {
+                excluded.add(module);
+            }
+        }
+        includeModuleListModel = new ModuleListModel(included);
+        includedList.setModel(includeModuleListModel);
+        excludedModuleListModel = new ModuleListModel(excluded);
+        excludeList.setModel(excludedModuleListModel);
+        // Try to select the first entry
+        includedList.setSelectedIndex(0);
+        excludeList.setSelectedIndex(0);
+    }
+
+    private void clearList(JList list) {
+        if(includeModuleListModel != null) { includeModuleListModel.clear(); }
+        if(excludedModuleListModel != null) { excludedModuleListModel.clear(); }
+    }
+
+    protected void doOKAction() {
+// add your code here
+        // Apply the Part of Build Flag accordingly
+        for(Module module: includeModuleListModel.getData()) {
+            module.setPartOfBuild(true);
+        }
+        for(Module module: excludedModuleListModel.getData()) {
+            module.setPartOfBuild(false);
+        }
+        super.doOKAction();
+    }
+
+//    private void onCancel() {
+//// add your code here if necessary
+//        dispose();
+//    }
+
+//    public static void main(String[] args) {
+//        BuildSelectionDialog dialog = new BuildSelectionDialog();
+//        dialog.pack();
+//        dialog.setVisible(true);
+//        System.exit(0);
+//    }
+
+    public static class ModuleLabel extends JLabel {
+        private Module module;
+
+        public ModuleLabel(@NotNull Module module) {
+            super(module.getName());
+            this.module = module;
+        }
+
+        public Module getModule() {
+            return module;
+        }
+    }
+
+    public static class ModuleListModel extends AbstractListModel {
+        private List<Module> data;
+
+        public ModuleListModel(List<Module> modules) {
+            this.data = modules;
+        }
+
+        @Override
+        public int getSize() {
+            return data.size();
+        }
+
+        @Override
+        public Object getElementAt(int i) {
+            return data.get(i);
+        }
+
+        public List<Module> getData() {
+            return data;
+        }
+
+        public boolean addModule(Module module) {
+            boolean ret = false;
+            int index = data.indexOf(module);
+            if(index < 0) {
+                data.add(module);
+                index = data.indexOf(module);
+                fireIntervalAdded(module, index, index);
+                ret = true;
+            }
+            return ret;
+        }
+
+        public boolean removeModule(Module module) {
+            boolean ret = false;
+            int index = data.indexOf(module);
+            if(index >= 0) {
+                data.remove(index);
+                fireIntervalRemoved(module, index, index);
+                ret = true;
+            }
+            return ret;
+        }
+
+        public void clear() {
+            data.clear();
+        }
+    }
+
+    public static class ModuleListCellRenderer extends ColoredListCellRenderer {
+        protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
+            Module module = (Module) value;
+            append(module.getSymbolicName(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
+//            final String text = group.getTemplatePresentation().getText();
+//            if (text != null) {
+//                append(" (" + text + ")", SimpleTextAttributes.REGULAR_ATTRIBUTES);
+//            }
+        }
+    }
+}

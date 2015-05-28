@@ -33,7 +33,7 @@
   </component>
   <component name="ServerConfiguration">
     <ssc-0 name="Default Configuration" host="localhost" description="No Description" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="30" stopConnectionTimeout="15" publishType="automaticallyOnChange" installationType="installViaBundleUpload">
-      <sscm-0 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.ui.content" partOfBuild="true" lastModificationTimestamp="-1" />
+      <sscm-0 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.ui.content" partOfBuild="false" lastModificationTimestamp="1430165120000" />
       <sscm-1 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.ui.apps" partOfBuild="true" lastModificationTimestamp="1432653268000" />
       <sscm-2 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.it.tests" partOfBuild="true" lastModificationTimestamp="-1" />
       <sscm-3 symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.it.launcher" partOfBuild="false" lastModificationTimestamp="-1" />

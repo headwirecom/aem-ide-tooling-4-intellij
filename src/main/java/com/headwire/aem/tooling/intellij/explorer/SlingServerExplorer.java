@@ -2,14 +2,9 @@ package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
-import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
-import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener;
-import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
-import com.headwire.aem.tooling.intellij.util.OSGiFactory;
-import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
+import com.headwire.aem.tooling.intellij.ui.BuildSelectionDialog;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
@@ -17,22 +12,11 @@ import com.headwire.aem.tooling.intellij.ui.ServerConfigurationDialog;
 import com.intellij.execution.ExecutionAdapter;
 import com.intellij.execution.ExecutionListener;
 import com.intellij.execution.ExecutionManager;
-import com.intellij.execution.Executor;
-import com.intellij.execution.ExecutorRegistry;
-import com.intellij.execution.KillableProcess;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
-import com.intellij.execution.RunnerAndConfigurationSettings;
-import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunProfile;
-import com.intellij.execution.impl.RunManagerImpl;
-import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl;
 import com.intellij.execution.process.ProcessHandler;
-import com.intellij.execution.remote.RemoteConfiguration;
-import com.intellij.execution.remote.RemoteConfigurationType;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.runners.ExecutionUtil;
-import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.DataManager;
@@ -52,22 +36,22 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.wm.ToolWindowId;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
-import org.jetbrains.idea.maven.model.MavenId;
-import org.jetbrains.idea.maven.project.MavenProject;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.DoubleClickListener;
 import com.intellij.ui.PopupHandler;
@@ -85,20 +69,10 @@ import com.intellij.util.ui.tree.TreeUtil;
 import com.intellij.util.xml.DomEventListener;
 import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.events.DomEvent;
-import org.apache.commons.io.IOUtils;
-import org.apache.sling.ide.artifacts.EmbeddedArtifact;
-import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
 import org.apache.sling.ide.osgi.OsgiClient;
-import org.apache.sling.ide.osgi.OsgiClientException;
-import org.apache.sling.ide.transport.Command;
-import org.apache.sling.ide.transport.Repository;
-import org.apache.sling.ide.transport.RepositoryInfo;
-import org.apache.sling.ide.transport.ResourceProxy;
-import org.apache.sling.ide.transport.Result;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.osgi.framework.Version;
 
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
@@ -116,13 +90,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by schaefa on 3/19/15.
@@ -306,6 +274,7 @@ public class SlingServerExplorer
         group.add(new DebugAction());
         group.add(new StopAction());
         group.add(new DeployAction());
+        group.add(new BuildConfigureAction());
         AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
         action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
         group.add(action);
@@ -393,6 +362,7 @@ public class SlingServerExplorer
 //        return ret;
 //    }
 
+//AS TODO: Adjust the Content Menu Popover
     private void popupInvoked(final Component comp, final int x, final int y) {
         Object userObject = null;
         final TreePath path = myTree.getSelectionPath();
@@ -406,6 +376,7 @@ public class SlingServerExplorer
         group.add(new CheckAction());
         group.add(new DebugAction());
         group.add(new DeployAction());
+        group.add(new BuildConfigureAction());
         group.add(ActionManager.getInstance().getAction(IdeActions.ACTION_EDIT_SOURCE));
 //        if (userObject instanceof AntBuildFileNodeDescriptor) {
 //            group.add(new RemoveBuildFileAction(this));
@@ -630,20 +601,116 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
-            // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
-            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
-            if(osgiClient != null) {
-                ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
-                if(status != ServerConnectionManager.BundleStatus.failed) {
-                    serverConnectionManager.checkModules(osgiClient);
+            final String title = "Check Server Configurations";
+
+            ProgressManager.getInstance().run(new Task.Modal(myProject, title, false) {
+                @Nullable
+                public NotificationInfo getNotificationInfo() {
+                    return new NotificationInfo("Sling", "Sling Deployment Checks", "");
                 }
-            }
+
+                public void run(@NotNull final ProgressIndicator indicator) {
+                    indicator.setIndeterminate(true);
+                    indicator.pushState();
+                    try {
+                        indicator.setText(title);
+//                        incModificationCount();
+                        ApplicationManager.getApplication().runReadAction(new Runnable() {
+                            public void run() {
+//                                try {
+                                    // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
+                                    // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
+                                    ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                                //AS TODO: this is not showing if the check is short but if it takes longer it will update
+                                    serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.connecting);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch(InterruptedException e1) {
+                                    e1.printStackTrace();
+                                }
+                                    OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
+                                    if(osgiClient != null) {
+                                        ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
+                                        if(status != ServerConnectionManager.BundleStatus.failed) {
+                                            serverConnectionManager.checkModules(osgiClient);
+                                        }
+                                    }
+//                                }
+//                                catch (AntNoFileException e) {
+//                                    ex[0] = e;
+//                                }
+                            }
+                        });
+//                        if (result[0] != null) {
+//                            ApplicationManager.getApplication().invokeLater(new Runnable() {
+//                                public void run() {
+//                                    myEventDispatcher.getMulticaster().buildFileAdded(result[0]);
+//                                }
+//                            });
+//                        }
+                    }
+                    finally {
+                        indicator.popState();
+                    }
+                }
+            });
+
+
+//            queueLater(
+//                new Task.Backgroundable(myProject, title, false) {
+//                    public void run(@NotNull final ProgressIndicator indicator) {
+//                        if(getProject().isDisposed()) {
+//                            return;
+//                        }
+//                        indicator.setIndeterminate(true);
+//                        indicator.pushState();
+//                        try {
+//                            indicator.setText(title);
+//                            ApplicationManager.getApplication().runReadAction(
+//                                new Runnable() {
+//                                    public void run() {
+//                                        // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
+//                                        // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
+//                                        ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+//                                        try {
+//                                            Thread.sleep(10000);
+//                                        } catch(InterruptedException e1) {
+//                                            e1.printStackTrace();
+//                                        }
+//                                        serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.connecting);
+//                                        OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
+//                                        if(osgiClient != null) {
+//                                            ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
+//                                            if(status != ServerConnectionManager.BundleStatus.failed) {
+//                                                serverConnectionManager.checkModules(osgiClient);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            );
+//                        } finally {
+//
+//                        }
+//                    }
+//                }
+//            );
         }
 
         public void update(AnActionEvent event) {
             event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
+        }
+    }
+
+    private static void queueLater(final Task task) {
+        final Application app = ApplicationManager.getApplication();
+        if (app.isDispatchThread()) {
+            task.queue();
+        } else {
+            app.invokeLater(new Runnable() {
+                public void run() {
+                    task.queue();
+                }
+            });
         }
     }
 
@@ -704,19 +771,65 @@ public class SlingServerExplorer
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            // First Check if the Install Support Bundle is installed
-            ServerConnectionManager.BundleStatus bundleStatus = serverConnectionManager.checkAndUpdateSupportBundle(true);
-//            if(bundleStatus == ServerConnectionManager.BundleStatus.upToDate) {
-                // Deploy all selected Modules
-                serverConnectionManager.deployModules();
-//            }
+            final String title = "Check Server Configurations";
+
+            ProgressManager.getInstance().run(new Task.Modal(myProject, title, false) {
+                @Nullable
+                public NotificationInfo getNotificationInfo() {
+                    return new NotificationInfo("Sling", "Sling Deployment Checks", "");
+                }
+
+                public void run(@NotNull final ProgressIndicator indicator) {
+                    indicator.setIndeterminate(true);
+                    indicator.pushState();
+                    try {
+                        indicator.setText(title);
+                        ApplicationManager.getApplication().runReadAction(new Runnable() {
+                            public void run() {
+                                // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
+                                // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
+                                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                                //AS TODO: this is not showing if the check is short but if it takes longer it will update
+                                serverConnectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch(InterruptedException e1) {
+                                    e1.printStackTrace();
+                                }
+                                // First Check if the Install Support Bundle is installed
+                                ServerConnectionManager.BundleStatus bundleStatus = serverConnectionManager.checkAndUpdateSupportBundle(true);
+                                // Deploy all selected Modules
+                                serverConnectionManager.deployModules();
+                            }
+                        });
+                    }
+                    finally {
+                        indicator.popState();
+                    }
+                }
+            });
         }
     }
 
-//    private void setTargetsFiltered(boolean value) {
-//        myBuilder.setTargetsFiltered(value);
-////        AntConfigurationBase.getInstance(myProject).setFilterTargets(value);
-//    }
+    private final class BuildConfigureAction extends AnAction {
+        public BuildConfigureAction() {
+            super(
+                AEMBundle.message("build.configuration.action.name"),
+                AEMBundle.message("build.configuration.action.description"),
+                AllIcons.Actions.Module
+            );
+        }
+
+        public void actionPerformed(AnActionEvent e) {
+            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+            BuildSelectionDialog dialog = new BuildSelectionDialog(myProject, serverConfiguration);
+            dialog.showAndGet();
+        }
+
+        public void update(AnActionEvent event) {
+            event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
+        }
+    }
 
     private class KeyMapListener implements KeymapManagerListener, Keymap.Listener {
         private Keymap myCurrentKeyMap = null;

@@ -54,10 +54,17 @@ public class ServerConfiguration
         upToDate("synchronized"),
         /** Content Module is out of data (needs synchronization) **/
         outdated("out of date"),
+        /** Bundle isn't deployed yet **/
+        notDeployed("not deployed"),
         /** Module is not part of the build **/
         excluded,
         /** Module is not supported but is still part of the build **/
-        unsupported;
+        unsupported,
+        /** **/
+        checking,
+        /** **/
+        updating("synchronizing")
+        ;
 
         private String name;
 

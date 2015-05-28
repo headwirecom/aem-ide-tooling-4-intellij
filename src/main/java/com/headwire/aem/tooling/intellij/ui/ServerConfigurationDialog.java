@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class ServerConfigurationDialog
-        extends DialogWrapper
+    extends DialogWrapper
 {
     private JPanel contentPane;
     private JTextField host;
