@@ -37,6 +37,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.wm.ToolWindowId;
+import com.sun.corba.se.spi.activation.RepositoryPackage.ServerDef;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
@@ -140,6 +141,7 @@ public class ServerConnectionManager {
     public void checkModules(OsgiClient osgiClient) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
+            updateStatus(serverConfiguration.getName(), ServerConfiguration.SynchronizationStatus.checking);
             // We only support Maven Modules as of now
             //AS TODO: are we support Facets as well -> check later
             MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(project);
@@ -168,39 +170,50 @@ public class ServerConnectionManager {
                     module.rebind(project, mavenProject);
                 }
                 try {
-                    if(module.isOSGiBundle()) {
-                        Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
-                        messageManager.sendDebugNotification("Check OSGi Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
-                        boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
-                        Object state = BundleStateHelper.getBundleState(module);
-                        messageManager.sendDebugNotification("Bundle State of Module: '" + module.getName() + "', state: '" + state + "'");
-                        if(moduleUpToDate) {
-                            // Mark as synchronized
-                            module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
+                    if(module.isPartOfBuild()) {
+                        updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
+                        if(module.isOSGiBundle()) {
+                            Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
+                            messageManager.sendDebugNotification("Check OSGi Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
+                            boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
+                            Object state = BundleStateHelper.getBundleState(module);
+                            messageManager.sendDebugNotification("Bundle State of Module: '" + module.getName() + "', state: '" + state + "'");
+                            if(remoteVersion == null) {
+                                // Mark as not deployed yet
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.notDeployed);
+                                allSynchronized = false;
+                            } else if(moduleUpToDate) {
+                                // Mark as synchronized
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
+                            } else {
+                                // Mark as out of date
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.outdated);
+                                allSynchronized = false;
+                            }
+                        } else if(module.isSlingPackage()) {
+                            long lastModificationTimestamp = getLastModificationTimestamp(module);
+                            long moduleModificationTimestamp = module.getLastModificationTimestamp();
+                            if(lastModificationTimestamp > moduleModificationTimestamp) {
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.outdated);
+                            } else {
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
+                            }
                         } else {
-                            // Mark as out of date
-                            module.setStatus(ServerConfiguration.SynchronizationStatus.outdated);
-                            allSynchronized = false;
+                            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.unsupported);
                         }
-                    } else if(module.isSlingPackage()) {
-                        long lastModificationTimestamp = getLastModificationTimestamp(module);
-                        module.setStatus(
-                            // The newest file is newer than the values saved on the module
-                            lastModificationTimestamp > module.getLastModificationTimestamp() ?
-                                ServerConfiguration.SynchronizationStatus.outdated :
-                                ServerConfiguration.SynchronizationStatus.upToDate
-                        );
+                    } else {
+                        updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.excluded);
                     }
                 } catch(OsgiClientException e1) {
                     // Mark connection as failed
-                    module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
+                    updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
                     allSynchronized = false;
                 }
             }
             if(allSynchronized) {
-                markConfigurationAsSynchronized(serverConfiguration.getName());
+                updateStatus(serverConfiguration.getName(), ServerConfiguration.SynchronizationStatus.upToDate);
             } else {
-                markConfigurationAsOutDated(serverConfiguration.getName());
+                updateStatus(serverConfiguration.getName(), ServerConfiguration.SynchronizationStatus.outdated);
             }
         } else {
             messageManager.sendDebugNotification("Cannot check modules if no Server Configuration is selected");
@@ -299,6 +312,7 @@ public class ServerConnectionManager {
                         // Check if this is a OSGi Bundle
                         if(module.getMavenProject().getPackaging().equalsIgnoreCase("bundle")) {
                             try {
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
                                 //                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
                                 File buildDirectory = new File(module.getMavenProject().getBuildDirectory());
                                 if(buildDirectory.exists() && buildDirectory.isDirectory()) {
@@ -311,15 +325,19 @@ public class ServerConnectionManager {
                                         module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
                                     }
                                 }
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
                             } catch(MalformedURLException e) {
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
                                 messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.bad.url", e);
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
                             } catch(OsgiClientException e) {
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
                                 messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", e);
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
                             } catch(IOException e) {
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
                                 messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.io", e);
+                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
                             } finally {
                                 IOUtils.closeQuietly(contents);
                             }
@@ -328,12 +346,12 @@ public class ServerConnectionManager {
                         //AS TODO: Add the synchronization of the entire module
                         publishModule(module);
                     } else {
-                        module.setStatus(ServerConfiguration.SynchronizationStatus.unsupported);
                         messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not a supported package");
+                        updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.unsupported);
                     }
                 } else {
-                    module.setStatus(ServerConfiguration.SynchronizationStatus.unsupported);
                     messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not Part of the Build");
+                    updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.excluded);
                 }
             }
         } else {
@@ -425,8 +443,6 @@ public class ServerConnectionManager {
         if(configuration != null) {
             configuration.setSynchronizationStatus(ServerConfiguration.SynchronizationStatus.upToDate);
             serverConfigurationManager.updateServerConfiguration(configuration);
-            //AS TODO: Update Bundle Status
-            // Mark any Bundles inside the Tree as disconnected
         }
     }
 
@@ -435,8 +451,43 @@ public class ServerConnectionManager {
         if(configuration != null) {
             configuration.setSynchronizationStatus(ServerConfiguration.SynchronizationStatus.outdated);
             serverConfigurationManager.updateServerConfiguration(configuration);
-            //AS TODO: Update Bundle Status
-            // Mark any Bundles inside the Tree as disconnected
+        }
+    }
+
+    private void updateStatus(String configurationName, ServerConfiguration.SynchronizationStatus synchronizationStatus) {
+        ServerConfiguration configuration = serverConfigurationManager.findServerConfigurationByName(configurationName);
+        if(configuration != null) {
+            configuration.setSynchronizationStatus(synchronizationStatus);
+            serverConfigurationManager.updateServerConfiguration(configuration);
+        }
+    }
+
+    public void updateServerStatus(String configurationName, ServerConfiguration.ServerStatus serverStatus) {
+        ServerConfiguration configuration = serverConfigurationManager.findServerConfigurationByName(configurationName);
+        if(configuration != null) {
+            configuration.setServerStatus(serverStatus);
+            serverConfigurationManager.updateServerConfiguration(configuration);
+        }
+    }
+
+    public void updateServerStatus(ServerConfiguration configuration, ServerConfiguration.ServerStatus serverStatus) {
+        if(configuration != null) {
+            configuration.setServerStatus(serverStatus);
+            serverConfigurationManager.updateServerConfiguration(configuration);
+        }
+    }
+
+    public void updateStatus(ServerConfiguration configuration, ServerConfiguration.SynchronizationStatus synchronizationStatus) {
+        if(configuration != null) {
+            configuration.setSynchronizationStatus(synchronizationStatus);
+            serverConfigurationManager.updateServerConfiguration(configuration);
+        }
+    }
+
+    private void updateModuleStatus(Module module, ServerConfiguration.SynchronizationStatus synchronizationStatus) {
+        if(module != null) {
+            module.setStatus(synchronizationStatus);
+            serverConfigurationManager.updateServerConfiguration(module.getParent());
         }
     }
 
@@ -455,6 +506,7 @@ public class ServerConnectionManager {
                 new IServer(module.getParent()), new NullProgressMonitor()
             );
             messageManager.sendDebugNotification("Got Repository: " + repository);
+            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
             List<MavenResource> resourceList = findMavenSources(module);
             Set<String> allResourcesUpdatedList = new HashSet<String>();
             MavenProject mavenProject = module.getMavenProject();
@@ -467,30 +519,35 @@ public class ServerConnectionManager {
                 getChangedResourceList(resourceFile, changedResources);
                 //AS TODO: Create a List of Changed Resources
                 for(VirtualFile changedResource : changedResources) {
-                    Command<?> command = addFileCommand(repository, module, changedResource, false);
-                    if(command != null) {
-                        long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
-                        lastModificationTimestamp = Math.max(parentLastModificationTimestamp, lastModificationTimestamp);
-                        allResourcesUpdatedList.add(changedResource.getPath());
-
-                        messageManager.sendDebugNotification("Publish file: " + changedResource);
-                        messageManager.sendDebugNotification("Publish for module: " + module.getName());
-                        execute(command);
-
-                        // save the modification timestamp to avoid a redeploy if nothing has changed
-                        Util.setModificationStamp(changedResource);
-                        lastModificationTimestamp = Math.max(changedResource.getTimeStamp(), lastModificationTimestamp);
-                    } else {
-                        // We do not update the file but we need to find the last mdoification timestamp
-                        // We need to obtain the command to see if it is deployed
-                        command = addFileCommand(repository, module, changedResource, true);
+                    try {
+                        Command<?> command = addFileCommand(repository, module, changedResource, false);
                         if(command != null) {
-                            long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
-                            lastModificationTimestamp = Math.max(lastModificationTimestamp, parentLastModificationTimestamp);
+                            long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
+                            lastModificationTimestamp = Math.max(parentLastModificationTimestamp, lastModificationTimestamp);
                             allResourcesUpdatedList.add(changedResource.getPath());
-                            long timestamp = changedResource.getTimeStamp();
-                            lastModificationTimestamp = Math.max(lastModificationTimestamp, timestamp);
+
+                            messageManager.sendDebugNotification("Publish file: " + changedResource);
+                            messageManager.sendDebugNotification("Publish for module: " + module.getName());
+                            execute(command);
+
+                            // save the modification timestamp to avoid a redeploy if nothing has changed
+                            Util.setModificationStamp(changedResource);
+                            lastModificationTimestamp = Math.max(changedResource.getTimeStamp(), lastModificationTimestamp);
+                        } else {
+                            // We do not update the file but we need to find the last mdoification timestamp
+                            // We need to obtain the command to see if it is deployed
+                            command = addFileCommand(repository, module, changedResource, true);
+                            if(command != null) {
+                                long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, allResourcesUpdatedList);
+                                lastModificationTimestamp = Math.max(lastModificationTimestamp, parentLastModificationTimestamp);
+                                allResourcesUpdatedList.add(changedResource.getPath());
+                                long timestamp = changedResource.getTimeStamp();
+                                lastModificationTimestamp = Math.max(lastModificationTimestamp, timestamp);
+                            }
                         }
+                    } catch(CoreException e) {
+                        messageManager.sendDebugNotification("Failed to deploy: '" + changedResource + " due to exception : " + e);
+                        throw e;
                     }
                 }
             }
@@ -499,52 +556,41 @@ public class ServerConnectionManager {
 //                execute(reorderChildNodesCommand(repository, resource));
 //            }
             module.setLastModificationTimestamp(lastModificationTimestamp);
+            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
         } catch(CoreException e) {
             e.printStackTrace();
+            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         } catch(SerializationException e) {
             e.printStackTrace();
+            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         } catch(IOException e) {
             e.printStackTrace();
+            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         }
     }
 
     public long getLastModificationTimestamp(Module module) {
         long ret = -1;
-        Repository repository = null;
-        try {
-            repository = ServerUtil.getConnectedRepository(
-                new IServer(module.getParent()), new NullProgressMonitor()
-            );
-            messageManager.sendDebugNotification("Got Repository: " + repository);
-            List<MavenResource> resourceList = findMavenSources(module);
-            Set<String> allResourcesUpdatedList = new HashSet<String>();
-            MavenProject mavenProject = module.getMavenProject();
-            VirtualFile baseFile = mavenProject.getDirectoryFile();
-            for(MavenResource resource: resourceList) {
-                String resourceDirectoryPath = resource.getDirectory();
-                VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resourceDirectoryPath);
-                messageManager.sendDebugNotification("Resource File to deploy: " + resourceFile);
-                List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
-                getChangedResourceList(resourceFile, changedResources);
-                //AS TODO: Create a List of Changed Resources
-                for(VirtualFile changedResource : changedResources) {
-                    // We need to obtain the command to see if it is deployed
-                    Command<?> command = addFileCommand(repository, module, changedResource, true);
-                    if(command != null) {
-                        long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
-                        ret = Math.max(ret, parentLastModificationTimestamp);
-                        allResourcesUpdatedList.add(changedResource.getPath());
-                        long timestamp = changedResource.getTimeStamp();
-                        ret = Math.max(ret, timestamp);
-                    }
+
+        List<MavenResource> resourceList = findMavenSources(module);
+        Set<String> allResourcesUpdatedList = new HashSet<String>();
+        MavenProject mavenProject = module.getMavenProject();
+        VirtualFile baseFile = mavenProject.getDirectoryFile();
+        for(MavenResource resource: resourceList) {
+            String resourceDirectoryPath = resource.getDirectory();
+            VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resourceDirectoryPath);
+            messageManager.sendDebugNotification("LMT Resource File to check: " + resourceFile);
+            List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
+            getChangedResourceList(resourceFile, changedResources);
+            //AS TODO: Create a List of Changed Resources
+            for(VirtualFile changedResource : changedResources) {
+                long fileTimestamp = Util.getModificationStamp(changedResource);
+                if(fileTimestamp > 0) {
+                    ret = Math.max(ret, fileTimestamp);
+                    long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, allResourcesUpdatedList);
+                    ret = Math.max(ret, parentLastModificationTimestamp);
                 }
             }
-        } catch(CoreException e) {
-            e.printStackTrace();
-        } catch(SerializationException e) {
-            e.printStackTrace();
-        } catch(IOException e) {
-            e.printStackTrace();
         }
 
         return ret;
@@ -554,32 +600,25 @@ public class ServerConnectionManager {
         Module module,
         String basePath,
         VirtualFile file,
-        Repository repository,
         Set<String> handledPaths
-    )
-        throws CoreException, SerializationException, IOException {
-
+    ) {
         long ret = -1;
-        Logger logger = Activator.getDefault().getPluginLogger();
-
         VirtualFile parentFile = file.getParent();
-        messageManager.sendDebugNotification("Check Parent File: " + parentFile);
-        String parentFilePath = parentFile.getPath();
+        messageManager.sendDebugNotification("PLMT Check Parent File: " + parentFile);
         if(parentFile.getPath().equals(basePath)) {
-            logger.trace("Path {0} can not have a parent, skipping", parentFile.getPath());
             return ret;
         }
-
         // already published by us, a parent of another resource that was published in this execution
         if (handledPaths.contains(parentFile.getPath())) {
-            logger.trace("Parent path {0} was already handled, skipping", parentFile.getPath());
             return ret;
         }
-
-        long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, basePath, parentFile, repository, handledPaths);
+        long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, basePath, parentFile, handledPaths);
+        ret = Math.max(parentLastModificationTimestamp, ret);
         long timestamp = file.getTimeStamp();
-        ret = Math.max(parentLastModificationTimestamp, timestamp);
-
+        long fileTimestamp = Util.getModificationStamp(file);
+        if(fileTimestamp > 0) {
+            ret = Math.max(timestamp, ret);
+        }
         return ret;
     }
 

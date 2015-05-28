@@ -12,6 +12,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
+import com.intellij.util.EventDispatcher;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +37,8 @@ public class ServerConfigurationManager
         return ServiceManager.getService(project, ServerConfigurationManager.class);
     }
 
-    private ConfigurationListener configurationListener;
+    private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
+//    private ConfigurationListener configurationListener;
     private List<ServerConfiguration> serverConfigurationList = new ArrayList<ServerConfiguration>();
     private Project project;
 
@@ -69,7 +71,7 @@ public class ServerConfigurationManager
             throw new IllegalArgumentException("Duplicate Name: " + name);
         }
         serverConfigurationList.add(serverConfiguration);
-        configurationListener.configurationLoaded();
+        myEventDispatcher.getMulticaster().configurationLoaded();
     }
 
     public void removeServerConfiguration(ServerConfiguration serverConfiguration) {
@@ -77,16 +79,21 @@ public class ServerConfigurationManager
         if(configuration != null) {
             serverConfigurationList.remove(configuration);
         }
-        configurationListener.configurationLoaded();
+        myEventDispatcher.getMulticaster().configurationLoaded();
     }
 
     /** @param serverConfiguration Update Server Configuration. Attention: the name cannot have changed here **/
     public void updateServerConfiguration(ServerConfiguration serverConfiguration) {
         ServerConfiguration configuration = findServerConfigurationByName(serverConfiguration.getName());
-        if(configuration != null) {
+        if(configuration != null && configuration != serverConfiguration) {
             configuration.copy(serverConfiguration);
         }
-        configurationListener.configurationLoaded();
+//        myEventDispatcher.getMulticaster().configurationLoaded();
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            public void run() {
+                myEventDispatcher.getMulticaster().configurationLoaded();
+            }
+        });
     }
 
     /**
@@ -98,7 +105,7 @@ public class ServerConfigurationManager
         if(configuration != null) {
             configuration.copy(current);
         }
-        configurationListener.configurationLoaded();
+        myEventDispatcher.getMulticaster().configurationLoaded();
     }
 
     private volatile Boolean myIsInitialized = null;
@@ -215,8 +222,8 @@ public class ServerConfigurationManager
                         ApplicationManager.getApplication().runReadAction(
                             new Runnable() {
                                 public void run() {
-                                    if(configurationListener != null) {
-                                        configurationListener.configurationLoaded();
+                                    if(myEventDispatcher.getMulticaster() != null) {
+                                        myEventDispatcher.getMulticaster().configurationLoaded();
                                     }
                                 }
                             }
@@ -230,7 +237,7 @@ public class ServerConfigurationManager
     }
 
     public void addConfigurationListener(ConfigurationListener myConfigurationListener) {
-        configurationListener = myConfigurationListener;
+        myEventDispatcher.addListener(myConfigurationListener);
     }
 
     private static void queueLater(final Task task) {

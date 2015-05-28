@@ -6,6 +6,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -36,11 +37,17 @@ public class ResourcesPlugin {
 
         public IResource findMember(IPath childPath) {
             // I guess we need to figure out if that file is part of the project and if so return an IResource
-            Project project = CommonDataKeys.PROJECT.getData(DataManager.getInstance().getDataContextFromFocus().getResult());
-            String aPath = childPath.toOSString();
-            VirtualFileSystem vfs = project.getProjectFile().getFileSystem();
-            VirtualFile file = vfs.findFileByPath(aPath);
-            //AS TODO: If this i sonly used as a marker then we are fine but otherwise we need to obtain the current module
+            DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
+            VirtualFile file = null;
+            if(dataContext != null) {
+                Project project = CommonDataKeys.PROJECT.getData(dataContext);
+                String aPath = childPath.toOSString();
+                VirtualFileSystem vfs = project.getProjectFile().getFileSystem();
+                file = vfs.findFileByPath(aPath);
+            } else {
+                String message = "could not obtain data context";
+            }
+            //AS TODO: If this is only used as a marker then we are fine but otherwise we need to obtain the current module
             return file == null ? null :
                 (file.isDirectory() ? new IFolder() : new IFile());
         }
