@@ -320,6 +320,14 @@ public class ServerConfiguration
         XmlSerializerUtil.copyBean(serverConfiguration, this);
     }
 
+    public boolean isBound() {
+        boolean ret = true;
+        for(Module module: moduleList) {
+            ret = ret && module.isBound();
+        }
+        return ret;
+    }
+
     public static class Module {
         private ServerConfiguration parent;
         private String artifactId;
@@ -354,9 +362,16 @@ public class ServerConfiguration
         }
 
         public void setPartOfBuild(boolean partOfBuild) {
-            this.partOfBuild = partOfBuild;
-            if(!partOfBuild) {
-                status = SynchronizationStatus.excluded;
+            if(this.partOfBuild) {
+                if(!partOfBuild) {
+                    this.partOfBuild = false;
+                    status = SynchronizationStatus.excluded;
+                }
+            } else {
+                if(partOfBuild) {
+                    this.partOfBuild = true;
+                    status = SynchronizationStatus.notChecked;
+                }
             }
         }
 
@@ -410,6 +425,10 @@ public class ServerConfiguration
             return project != null && mavenProject.getPackaging().equalsIgnoreCase("content-package");
         }
 
+        public boolean isBound() {
+            return mavenProject != null;
+        }
+
         public boolean rebind(@NotNull Project project, @NotNull MavenProject mavenProject) {
             boolean ret = false;
             // Check if the Symbolic Name match
@@ -417,12 +436,11 @@ public class ServerConfiguration
             if(this.symbolicName.equals(symbolicName)) {
                 this.project = project;
                 this.mavenProject = mavenProject;
+                this.artifactId = mavenProject.getMavenId().getArtifactId();
                 if(!isOSGiBundle() && !isSlingPackage()) {
                     setStatus(SynchronizationStatus.unsupported);
                 } else {
                     setStatus(SynchronizationStatus.notChecked);
-//AS TODO: Where to set this and shouldn't it true by default?
-                    setPartOfBuild(true);
                 }
                 ret = true;
             }

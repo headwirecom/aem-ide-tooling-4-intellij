@@ -23,21 +23,27 @@ public class ServerTreeSelectionHandler {
 
     @Nullable
     public ServerConfiguration getCurrentConfiguration() {
-        final SlingServerNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
-        return descriptor == null ? null : descriptor.getTarget();
+        final ServerNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
+        return descriptor == null ? null : descriptor.getServerConfiguration();
     }
 
     @Nullable
-    public SlingServerNodeDescriptor getCurrentConfigurationDescriptor() {
-        SlingServerNodeDescriptor ret = null;
+    public ServerConfiguration.Module getCurrentModuleConfiguration() {
+        final ServerNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
+        return descriptor == null ? null : descriptor.getModuleConfiguration();
+    }
+
+    @Nullable
+    public ServerNodeDescriptor getCurrentConfigurationDescriptor() {
+        ServerNodeDescriptor ret = null;
         if(tree != null) {
             final TreePath path = tree.getSelectionPath();
             if(path != null) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
                 while(node != null) {
                     final Object userObject = node.getUserObject();
-                    if(userObject instanceof SlingServerNodeDescriptor) {
-                        ret = (SlingServerNodeDescriptor) userObject;
+                    if(userObject instanceof ServerNodeDescriptor) {
+                        ret = (ServerNodeDescriptor) userObject;
                         break;
                     }
                     node = (DefaultMutableTreeNode) node.getParent();
@@ -61,17 +67,19 @@ public class ServerTreeSelectionHandler {
     private List<ServerConfiguration.Module> getCurrentConfigurationModuleDescriptorList(boolean all) {
         List<ServerConfiguration.Module> moduleList = new ArrayList<ServerConfiguration.Module>();
         ServerConfiguration serverConfiguration = getCurrentConfiguration();
-        if(all) {
-            moduleList.addAll(serverConfiguration.getModuleList());
-        } else {
-            TreePath selectionPath = tree.getSelectionPath();
-            if(selectionPath != null) {
-                final DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-                final Object userObject = node.getUserObject();
-                if(userObject instanceof SlingServerModuleNodeDescriptor) {
-                    moduleList.add(((SlingServerModuleNodeDescriptor) userObject).getTarget());
-                } else {
-                    moduleList.addAll(serverConfiguration.getModuleList());
+        if(serverConfiguration != null) {
+            if(all) {
+                moduleList.addAll(serverConfiguration.getModuleList());
+            } else {
+                TreePath selectionPath = tree.getSelectionPath();
+                if(selectionPath != null) {
+                    final DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
+                    final Object userObject = node.getUserObject();
+                    if(userObject instanceof SlingServerModuleNodeDescriptor) {
+                        moduleList.add(((SlingServerModuleNodeDescriptor) userObject).getTarget());
+                    } else {
+                        moduleList.addAll(serverConfiguration.getModuleList());
+                    }
                 }
             }
         }

@@ -163,6 +163,7 @@ public class ServerConfigurationManager
             int j = 0;
             for(ServerConfiguration.Module module: serverConfiguration.getModuleList()) {
                 Element moduleChildNode = new Element("sscm-" + j++);
+                moduleChildNode.setAttribute("artifactId", module.getArtifactId());
                 moduleChildNode.setAttribute("symbolicName", module.getSymbolicName());
                 moduleChildNode.setAttribute("partOfBuild", module.isPartOfBuild() + "");
                 moduleChildNode.setAttribute("lastModificationTimestamp", module.getLastModificationTimestamp() + "");
@@ -195,8 +196,8 @@ public class ServerConfigurationManager
             serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue("installationType"), ServerConfiguration.DEFAULT_INSTALL_TYPE));
             for(Element element: child.getChildren()) {
                 try {
-                    String artifactId = element.getAttributeValue("artifactId");
-                    String symbolicName = element.getAttributeValue("symbolicName");
+                    String artifactId = element.getAttributeValue("artifactId", "No Artifact Id");
+                    String symbolicName = element.getAttributeValue("symbolicName", "");
                     boolean isPartOfBuild = new Boolean(element.getAttributeValue("partOfBuild", "true"));
                     long lastModificationTimestamp = new Long(element.getAttributeValue("lastModificationTimestamp", "-1"));
                     ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, artifactId, symbolicName, isPartOfBuild, lastModificationTimestamp);

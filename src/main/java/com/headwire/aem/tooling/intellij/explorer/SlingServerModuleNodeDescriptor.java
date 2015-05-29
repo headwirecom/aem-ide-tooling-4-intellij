@@ -58,7 +58,7 @@ final class SlingServerModuleNodeDescriptor
 //    TextAttributes nameAttributes = new TextAttributes(color, null, null, EffectType.BOXED, myTarget.isDefault() ? Font.BOLD : Font.PLAIN);
         TextAttributes nameAttributes = new TextAttributes(color, null, null, EffectType.BOXED, Font.PLAIN);
 
-        myHighlightedText.getEnding().addText(myTarget.getName() + ", version: " + myTarget.getVersion(), nameAttributes);
+        myHighlightedText.getEnding().addText(myTarget.getArtifactId() + ", version: " + myTarget.getVersion(), nameAttributes);
 
 //    AntConfigurationBase antConfiguration = AntConfigurationBase.getInstance(myProject);
 //    final ArrayList<String> addedNames = new ArrayList<String>(4);
@@ -128,7 +128,8 @@ final class SlingServerModuleNodeDescriptor
     public void customize(@NotNull SimpleColoredComponent component) {
         getHighlightedText().customize(component);
         component.setIcon(getIcon());
-        String toolTipText = getTarget().getName() + " : " + getTarget().getArtifactId() + " : " + getTarget().getVersion();
+//        String toolTipText = getTarget().getName() + " : " + getTarget().getArtifactId() + " : " + getTarget().getVersion();
+        String toolTipText = getTarget().getName() + ":" + getTarget().getVersion();
         component.setToolTipText(toolTipText);
     }
 
@@ -136,7 +137,18 @@ final class SlingServerModuleNodeDescriptor
     public void customize(@NotNull final HtmlListCellRenderer renderer) {
         getHighlightedText().customize(renderer);
         renderer.setIcon(getIcon());
-        String toolTipText = getTarget().getName() + " : " + getTarget().getArtifactId() + " : " + getTarget().getVersion();
+//        String toolTipText = getTarget().getName() + " : " + getTarget().getArtifactId() + " : " + getTarget().getVersion();
+        String toolTipText = getTarget().getName() + " : " + getTarget().getVersion();
         renderer.setToolTipText(toolTipText);
+    }
+
+    @Override
+    public ServerConfiguration getServerConfiguration() {
+        return myTarget.getParent();
+    }
+
+    @Override
+    public ServerConfiguration.Module getModuleConfiguration() {
+        return myTarget;
     }
 }

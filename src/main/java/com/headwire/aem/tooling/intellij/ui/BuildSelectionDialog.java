@@ -81,7 +81,8 @@ public class BuildSelectionDialog extends DialogWrapper {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     // Move all selected entries in the Excluded Module to the Included List
-                    List selection = excludeList.getSelectedValuesList();
+                    //AS TODO: This is deprecated in 1.8 but not in 1.6
+                    List<Object> selection = Arrays.asList(excludeList.getSelectedValues());
                     for(Object item: selection) {
                         if(item instanceof Module) {
                             Module module = (Module) item;
@@ -100,7 +101,8 @@ public class BuildSelectionDialog extends DialogWrapper {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     // Move all selected entries in the Excluded Module to the Included List
-                    List selection = includedList.getSelectedValuesList();
+                    //AS TODO: This is deprecated in 1.8 but not in 1.6
+                    List<Object> selection = Arrays.asList(includedList.getSelectedValues());
                     for(Object item: selection) {
                         if(item instanceof Module) {
                             Module module = (Module) item;
