@@ -37,6 +37,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.wm.ToolWindowId;
+import com.intellij.remoteServer.runtime.ServerConnection;
 import com.sun.corba.se.spi.activation.RepositoryPackage.ServerDef;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
@@ -141,36 +142,39 @@ public class ServerConnectionManager {
     public void checkModules(OsgiClient osgiClient) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
-            updateStatus(serverConfiguration.getName(), ServerConfiguration.SynchronizationStatus.checking);
-            // We only support Maven Modules as of now
-            //AS TODO: are we support Facets as well -> check later
-            MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(project);
-            messageManager.sendDebugNotification("Maven Projects Manager: '" + mavenProjectsManager);
+            ServerConfiguration.SynchronizationStatus status = ServerConfiguration.SynchronizationStatus.upToDate;
             boolean allSynchronized = true;
-            List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
-            for(MavenProject mavenProject : mavenProjects) {
-                MavenId mavenId = mavenProject.getMavenId();
-                String moduleName = mavenProject.getName();
-                String artifactId = mavenId.getArtifactId();
-                String version = mavenId.getVersion();
-                // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
-                messageManager.sendDebugNotification("Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
-                // Ignore the Unnamed Projects
-                if(moduleName == null) {
-                    continue;
+            if(checkBinding(serverConfiguration)) {
+                for(Module module : serverConfiguration.getModuleList()) {
+                    boolean sync = checkModule(osgiClient, module);
+                    // Any out of sync marks the project out of sync
+                    if(!sync) {
+                        status = ServerConfiguration.SynchronizationStatus.outdated;
+                    }
                 }
-                // Change any dashes to dots
-                version = version.replaceAll("-", ".");
-                Version localVersion = new Version(version);
-                ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(mavenProject));
-                if(module == null) {
-                    module = serverConfiguration.addModule(project, mavenProject);
-                } else {
-                    // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-                    module.rebind(project, mavenProject);
-                }
-                try {
-                    if(module.isPartOfBuild()) {
+            } else {
+                status = ServerConfiguration.SynchronizationStatus.failed;
+            }
+            updateStatus(serverConfiguration.getName(), status);
+        } else {
+            messageManager.sendDebugNotification("Cannot check modules if no Server Configuration is selected");
+        }
+    }
+
+    public boolean checkModule(@NotNull OsgiClient osgiClient, @NotNull Module module) {
+        boolean ret = true;
+        try {
+            if(module.isPartOfBuild()) {
+                // Check Binding
+                if(checkBinding(module.getParent())) {
+                    MavenProject mavenProject = module.getMavenProject();
+                    if(mavenProject != null) {
+                        MavenId mavenId = mavenProject.getMavenId();
+                        String moduleName = mavenProject.getName();
+                        String artifactId = mavenId.getArtifactId();
+                        String version = mavenId.getVersion();
+                        version = version.replaceAll("-", ".");
+                        Version localVersion = new Version(version);
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
                         if(module.isOSGiBundle()) {
                             Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
@@ -181,14 +185,14 @@ public class ServerConnectionManager {
                             if(remoteVersion == null) {
                                 // Mark as not deployed yet
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.notDeployed);
-                                allSynchronized = false;
+                                ret = false;
                             } else if(moduleUpToDate) {
                                 // Mark as synchronized
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
                             } else {
                                 // Mark as out of date
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.outdated);
-                                allSynchronized = false;
+                                ret = false;
                             }
                         } else if(module.isSlingPackage()) {
                             long lastModificationTimestamp = getLastModificationTimestamp(module);
@@ -202,22 +206,54 @@ public class ServerConnectionManager {
                             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.unsupported);
                         }
                     } else {
-                        updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.excluded);
+                        updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
+                        ret = false;
                     }
-                } catch(OsgiClientException e1) {
-                    // Mark connection as failed
+                } else {
                     updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
-                    allSynchronized = false;
+                    ret = false;
+                }
+            } else {
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.excluded);
+            }
+        } catch(OsgiClientException e1) {
+            // Mark connection as failed
+            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
+            ret = false;
+        }
+        return ret;
+    }
+
+    private boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
+        if(!serverConfiguration.isBound()) {
+            MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(project);
+            List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
+            List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
+            for(MavenProject mavenProject : mavenProjects) {
+                MavenId mavenId = mavenProject.getMavenId();
+                String moduleName = mavenProject.getName();
+                String artifactId = mavenId.getArtifactId();
+                String version = mavenId.getVersion();
+                // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
+                messageManager.sendDebugNotification("Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
+                // Ignore the Unnamed Projects
+                if(moduleName == null) {
+                    continue;
+                }
+                ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(mavenProject));
+                if(module == null) {
+                    module = serverConfiguration.addModule(project, mavenProject);
+                } else if(!module.isBound()) {
+                    // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
+                    module.rebind(project, mavenProject);
+                    moduleList.remove(module);
+                } else {
+                    moduleList.remove(module);
                 }
             }
-            if(allSynchronized) {
-                updateStatus(serverConfiguration.getName(), ServerConfiguration.SynchronizationStatus.upToDate);
-            } else {
-                updateStatus(serverConfiguration.getName(), ServerConfiguration.SynchronizationStatus.outdated);
-            }
-        } else {
-            messageManager.sendDebugNotification("Cannot check modules if no Server Configuration is selected");
+            return moduleList.isEmpty();
         }
+        return true;
     }
 
     public enum BundleStatus { upToDate, outDated, failed };

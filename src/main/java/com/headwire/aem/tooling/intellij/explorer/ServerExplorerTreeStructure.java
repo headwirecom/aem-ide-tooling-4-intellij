@@ -177,6 +177,16 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
         }
 
         @Override
+        public ServerConfiguration getServerConfiguration() {
+            return null;
+        }
+
+        @Override
+        public ServerConfiguration.Module getModuleConfiguration() {
+            return null;
+        }
+
+        @Override
         public Object getElement() {
             return myRoot;
         }
@@ -208,6 +218,16 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
         @Override
         public boolean isAutoExpand() {
             return true;
+        }
+
+        @Override
+        public ServerConfiguration getServerConfiguration() {
+            return null;
+        }
+
+        @Override
+        public ServerConfiguration.Module getModuleConfiguration() {
+            return null;
         }
     }
 }

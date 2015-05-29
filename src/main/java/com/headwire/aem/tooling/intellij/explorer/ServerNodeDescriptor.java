@@ -15,6 +15,7 @@
  */
 package com.headwire.aem.tooling.intellij.explorer;
 
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.intellij.ide.util.treeView.NodeDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ui.CellAppearanceEx;
@@ -47,4 +48,9 @@ abstract class ServerNodeDescriptor
   public String getText() {
     return toString();
   }
+
+    public abstract ServerConfiguration getServerConfiguration();
+
+    public abstract ServerConfiguration.Module getModuleConfiguration();
+
 }

@@ -155,4 +155,14 @@ final class SlingServerNodeDescriptor
     String toolTipText = getTarget().getDescription();
     renderer.setToolTipText(toolTipText);
   }
+
+    @Override
+    public ServerConfiguration getServerConfiguration() {
+        return myTarget;
+    }
+
+    @Override
+    public ServerConfiguration.Module getModuleConfiguration() {
+        return null;
+    }
 }

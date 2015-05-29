@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.util.ArrayList;
@@ -127,11 +128,33 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
     final List<Object> pathsToExpand = new ArrayList<Object>();
     final List<Object> selectionPaths = new ArrayList<Object>();
     TreeBuilderUtil.storePaths(this, getRootNode(), pathsToExpand, selectionPaths, true);
-    TreeUtil.collapseAll(getTree(), 1);
-    getTree().setSelectionPaths(EMPTY_TREE_PATH);
-    pathsToExpand.clear();
-    TreeBuilderUtil.restorePaths(this, pathsToExpand, selectionPaths, true);
+//AS TODO: TreeUtil.collapseAll() does expand all entries at the end. Copied over and took out what did not work
+//    TreeUtil.collapseAll(getTree(), 1);
+    collapseAll(getTree(), 1);
+//    getTree().setSelectionPaths(EMPTY_TREE_PATH);
+//    pathsToExpand.clear();
+//    TreeBuilderUtil.restorePaths(this, pathsToExpand, selectionPaths, true);
   }
+
+    public static void collapseAll(@NotNull final JTree tree, final int keepSelectionLevel) {
+        final TreePath leadSelectionPath = tree.getLeadSelectionPath();
+        // Collapse all
+        int row = tree.getRowCount() - 1;
+        while (row >= 0) {
+            tree.collapseRow(row);
+            row--;
+        }
+//        tree.expandRow(0);
+//        final DefaultMutableTreeNode root = (DefaultMutableTreeNode)tree.getModel().getRoot();
+//        tree.expandPath(new TreePath(root));
+//        if (leadSelectionPath != null) {
+//            final Object[] path = leadSelectionPath.getPath();
+//            final Object[] pathToSelect = new Object[path.length > keepSelectionLevel && keepSelectionLevel >= 0 ? keepSelectionLevel : path.length];
+//            System.arraycopy(path, 0, pathToSelect, 0, pathToSelect.length);
+//            if (pathToSelect.length == 0) return;
+//            selectPath(tree, new TreePath(pathToSelect));
+//        }
+    }
 
   private class ExpandedStateUpdater implements TreeExpansionListener {
     public void treeExpanded(TreeExpansionEvent event) {
