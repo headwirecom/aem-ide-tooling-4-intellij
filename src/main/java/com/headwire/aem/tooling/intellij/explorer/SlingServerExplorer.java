@@ -823,7 +823,10 @@ public class SlingServerExplorer
         public void actionPerformed(AnActionEvent e) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             BuildSelectionDialog dialog = new BuildSelectionDialog(myProject, serverConfiguration);
-            dialog.showAndGet();
+            if(dialog.showAndGet()) {
+                // Modules might have changed and so update the tree
+                myConfig.updateServerConfiguration(serverConfiguration);
+            }
         }
 
         public void update(AnActionEvent event) {

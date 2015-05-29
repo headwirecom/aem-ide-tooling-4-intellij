@@ -81,7 +81,7 @@ public class BuildSelectionDialog extends DialogWrapper {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     // Move all selected entries in the Excluded Module to the Included List
-                    List<Object> selection = Arrays.asList(excludeList.getSelectedValues());
+                    List selection = excludeList.getSelectedValuesList();
                     for(Object item: selection) {
                         if(item instanceof Module) {
                             Module module = (Module) item;
@@ -100,7 +100,7 @@ public class BuildSelectionDialog extends DialogWrapper {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     // Move all selected entries in the Excluded Module to the Included List
-                    List<Object> selection = Arrays.asList(includedList.getSelectedValues());
+                    List selection = includedList.getSelectedValuesList();
                     for(Object item: selection) {
                         if(item instanceof Module) {
                             Module module = (Module) item;
@@ -150,7 +150,6 @@ public class BuildSelectionDialog extends DialogWrapper {
     }
 
     protected void doOKAction() {
-// add your code here
         // Apply the Part of Build Flag accordingly
         for(Module module: includeModuleListModel.getData()) {
             module.setPartOfBuild(true);
@@ -159,31 +158,6 @@ public class BuildSelectionDialog extends DialogWrapper {
             module.setPartOfBuild(false);
         }
         super.doOKAction();
-    }
-
-//    private void onCancel() {
-//// add your code here if necessary
-//        dispose();
-//    }
-
-//    public static void main(String[] args) {
-//        BuildSelectionDialog dialog = new BuildSelectionDialog();
-//        dialog.pack();
-//        dialog.setVisible(true);
-//        System.exit(0);
-//    }
-
-    public static class ModuleLabel extends JLabel {
-        private Module module;
-
-        public ModuleLabel(@NotNull Module module) {
-            super(module.getName());
-            this.module = module;
-        }
-
-        public Module getModule() {
-            return module;
-        }
     }
 
     public static class ModuleListModel extends AbstractListModel {

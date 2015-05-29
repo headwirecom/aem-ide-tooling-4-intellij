@@ -322,6 +322,7 @@ public class ServerConfiguration
 
     public static class Module {
         private ServerConfiguration parent;
+        private String artifactId;
         private String symbolicName;
         private boolean partOfBuild = true;
         private long lastModificationTimestamp;
@@ -329,8 +330,9 @@ public class ServerConfiguration
         private transient MavenProject mavenProject;
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
 
-        public Module(@NotNull ServerConfiguration parent, @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
+        public Module(@NotNull ServerConfiguration parent, @NotNull String artifactId, @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
             this.parent = parent;
+            this.artifactId = artifactId;
             this.symbolicName = symbolicName;
             setPartOfBuild(partOfBuild);
             this.lastModificationTimestamp = lastModificationTimestamp;
@@ -338,6 +340,7 @@ public class ServerConfiguration
 
         private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull MavenProject mavenProject) {
             this.parent = parent;
+            this.artifactId = mavenProject.getMavenId().getArtifactId();
             this.symbolicName = getSymbolicName(mavenProject);
             rebind(project, mavenProject);
         }
@@ -380,7 +383,7 @@ public class ServerConfiguration
         }
 
         public String getArtifactId() {
-            return project == null ? "No Project" : mavenProject.getMavenId().getArtifactId();
+            return artifactId;
         }
 
         public String getVersion() {

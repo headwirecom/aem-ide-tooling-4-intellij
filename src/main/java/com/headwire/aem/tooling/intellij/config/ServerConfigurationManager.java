@@ -195,10 +195,11 @@ public class ServerConfigurationManager
             serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue("installationType"), ServerConfiguration.DEFAULT_INSTALL_TYPE));
             for(Element element: child.getChildren()) {
                 try {
+                    String artifactId = element.getAttributeValue("artifactId");
                     String symbolicName = element.getAttributeValue("symbolicName");
                     boolean isPartOfBuild = new Boolean(element.getAttributeValue("partOfBuild", "true"));
                     long lastModificationTimestamp = new Long(element.getAttributeValue("lastModificationTimestamp", "-1"));
-                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, symbolicName, isPartOfBuild, lastModificationTimestamp);
+                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, artifactId, symbolicName, isPartOfBuild, lastModificationTimestamp);
                     serverConfiguration.addModule(module);
                 } catch(Exception e) {
                     // Ignore any exceptions to avoid a stall configurations
