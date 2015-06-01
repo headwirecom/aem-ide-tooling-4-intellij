@@ -9,6 +9,8 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
+import org.apache.sling.ide.eclipse.core.internal.Activator;
+import org.apache.sling.ide.log.Logger;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -18,6 +20,8 @@ public class MessageManager
     implements ProjectComponent
 {
     private static final NotificationGroup NOTIFICATION_GROUP = NotificationGroup.toolWindowGroup(ConsoleLogCategory.CONSOLE_LOG_CATEGORY, ConsoleLogToolWindowFactory.TOOL_WINDOW_ID);
+
+    private Logger logger = Activator.getDefault().getPluginLogger();
 
     public static MessageManager getInstance(final Project project) {
         return ServiceManager.getService(project, MessageManager.class);
@@ -30,8 +34,9 @@ public class MessageManager
     }
 
     public void sendDebugNotification(String message) {
-        //AS TODO: Find a way to switch it off when released -> Constant
-        sendNotification("Debug Message", message, NotificationType.INFORMATION);
+//AS TODO: Find a way to switch it off when released -> Constant
+//        sendNotification("Debug Message", message, NotificationType.INFORMATION);
+        logger.trace(message);
     }
 
 //    public void sendNotification(String message, NotificationType type) {

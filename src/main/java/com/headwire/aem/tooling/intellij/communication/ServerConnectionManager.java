@@ -29,16 +29,14 @@ import com.intellij.execution.remote.RemoteConfiguration;
 import com.intellij.execution.remote.RemoteConfigurationType;
 import com.intellij.execution.runners.ExecutionUtil;
 import com.intellij.execution.ui.RunContentDescriptor;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.wm.ToolWindowId;
-import com.intellij.remoteServer.runtime.ServerConnection;
-import com.sun.corba.se.spi.activation.RepositoryPackage.ServerDef;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
@@ -157,7 +155,7 @@ public class ServerConnectionManager {
             }
             updateStatus(serverConfiguration.getName(), status);
         } else {
-            messageManager.sendDebugNotification("Cannot check modules if no Server Configuration is selected");
+            messageManager.sendNotification("aem.explorer.check.modules.no.configuration.selected", NotificationType.WARNING);
         }
     }
 
@@ -235,7 +233,7 @@ public class ServerConnectionManager {
                 String artifactId = mavenId.getArtifactId();
                 String version = mavenId.getVersion();
                 // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
-                messageManager.sendDebugNotification("Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
+                messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
                 // Ignore the Unnamed Projects
                 if(moduleName == null) {
                     continue;
@@ -296,7 +294,8 @@ public class ServerConnectionManager {
                 messageManager.sendErrorNotification("aem.explorer.osgi.client.problem", serverConfiguration.getName(), e);
             }
         } else {
-            messageManager.sendDebugNotification("Cannot check support bundle if no Server Configuration is selected");
+            messageManager.sendNotification("\n" +
+                "aem.explorer.check.support.bundle.no.configuration.selected", NotificationType.WARNING);
         }
         return ret;
     }
@@ -332,7 +331,7 @@ public class ServerConnectionManager {
                 messageManager.sendErrorNotification("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
             }
         } else {
-            messageManager.sendDebugNotification("Cannot check support bundle if no Server Configuration is selected");
+            messageManager.sendErrorNotification("aem.explorer.cannot.connect.repository.missing.configuration", serverConfiguration.getName());
         }
         return ret;
     }
@@ -391,7 +390,7 @@ public class ServerConnectionManager {
                 }
             }
         } else {
-            messageManager.sendDebugNotification("Cannot check support bundle if no Server Configuration is selected");
+            messageManager.sendNotification("aem.explorer.deploy.modules.no.configuration.selected", NotificationType.WARNING);
         }
     }
 
@@ -534,11 +533,10 @@ public class ServerConnectionManager {
 
     public void publishModule(Module module) {
         Repository repository = null;
-//            List<IModuleResource> addedOrUpdatedResources = new ArrayList<IModuleResource>();
         long lastModificationTimestamp = -1;
+        messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
         try {
             repository = ServerUtil.getConnectedRepository(
-//                    currentModule.getParent()
                 new IServer(module.getParent()), new NullProgressMonitor()
             );
             messageManager.sendDebugNotification("Got Repository: " + repository);
@@ -588,19 +586,21 @@ public class ServerConnectionManager {
                 }
             }
             // reorder the child nodes at the end, when all create/update/deletes have been processed
+//AS TODO: This needs to be resolved
 //            for (IModuleResource resource : addedOrUpdatedResources) {
 //                execute(reorderChildNodesCommand(repository, resource));
 //            }
             module.setLastModificationTimestamp(lastModificationTimestamp);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
+            messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
         } catch(CoreException e) {
-            e.printStackTrace();
+            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         } catch(SerializationException e) {
-            e.printStackTrace();
+            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         } catch(IOException e) {
-            e.printStackTrace();
+            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         }
     }
@@ -669,7 +669,9 @@ public class ServerConnectionManager {
     }
 
     public void handleFileChange(VirtualFile file, FileChangeType type) {
-        String path = file.getPath();
+        //AS TODO: Right now only updates are supported -> Ensure that all File Change Types are supported
+        final String path = file.getPath();
+        messageManager.sendInfoNotification("server.update.file.change.prepare", path, type);
         Module currentModule = null;
         String basePath = null;
         // Check if that relates to any Content Packages and if so then publish it
@@ -681,25 +683,21 @@ public class ServerConnectionManager {
                     // This file belongs to this module so we are good to publish it
                     currentModule = module;
                     basePath = mavenResource.getDirectory();
-                    messageManager.sendDebugNotification("Found File: '" + file.getPath() + "' in module: '" + currentModule.getName() + "");
+                    messageManager.sendDebugNotification("Found File: '" + path + "' in module: '" + currentModule.getName() + "");
                     break;
                 }
             }
         }
         if(currentModule != null) {
             Repository repository = null;
-//            List<IModuleResource> addedOrUpdatedResources = new ArrayList<IModuleResource>();
             try {
                 repository = ServerUtil.getConnectedRepository(
-//                    currentModule.getParent()
                     new IServer(currentModule.getParent()), new NullProgressMonitor()
                 );
                 messageManager.sendDebugNotification("Got Repository: " + repository);
                 Command<?> command = addFileCommand(repository, currentModule, file, false);
                 messageManager.sendDebugNotification("Got Command: " + command);
                 if (command != null) {
-//AS TODO: Adjust and Re-enable later
-//                    IModuleResource[] allResources = getResources(module);
                     Set<String> handledPaths = new HashSet<String>();
                     ensureParentIsPublished(
                         currentModule,
@@ -708,15 +706,12 @@ public class ServerConnectionManager {
                         repository,
                         handledPaths
                     );
-//                    addedOrUpdatedResources.add(resourceDelta.getModuleResource());
-
                     execute(command);
                     // Add a property that can be used later to avoid a re-sync if not needed
                     Util.setModificationStamp(file);
-//                    file.putUserData(Util.MODIFICATION_DATE_KEY, file.getModificationStamp());
-                    messageManager.sendDebugNotification("Successfully Updated File: " + file.getPath());
+                    messageManager.sendInfoNotification("server.update.file.change.success", path);
                 } else {
-                    messageManager.sendDebugNotification("Failed to obtain File Command for Module: " + currentModule + " and file: " + file);
+                    messageManager.sendInfoNotification("server.update.file.change.failed", path, currentModule);
                 }
             } catch(CoreException e) {
                 e.printStackTrace();
