@@ -31,10 +31,6 @@
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="AllIcons.Ide.NoNotifications13"
                     factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
-        <!--<projectService serviceInterface="com.headwire.aem.tooling.intellij.BytecodeOutline"-->
-                        <!--serviceImplementation="com.headwire.aem.tooling.intellij.BytecodeOutline"/>-->
-        <!--<projectService serviceInterface="com.headwire.aem.tooling.intellij.console.SlingServerReportView"-->
-                        <!--serviceImplementation="com.headwire.aem.tooling.intellij.console.SlingServerReportView"/>-->
     </extensions>
 
     <application-components>

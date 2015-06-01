@@ -42,7 +42,21 @@ public class ContentResourceChangeListener {
 
                 @Override
                 public void fileMoved(@NotNull VirtualFileMoveEvent event) {
-                    handleFileChange(event, FileChangeType.MOVED);
+                    // Move is not handled but rather split into a delete and a add
+                    VirtualFile oldFile = event.getOldParent().findChild(event.getFileName());
+                    VirtualFile newFile = event.getNewParent().findChild(event.getFileName());
+                    if(oldFile != null && newFile != null) {
+                        VirtualFileEvent event2 = new VirtualFileEvent(
+                            event.getRequestor(), oldFile, oldFile.getName(), event.getOldParent()
+                        );
+                        handleFileChange(event2, FileChangeType.DELETED);
+                        VirtualFileEvent event3 = new VirtualFileEvent(
+                            event.getRequestor(), oldFile, newFile.getName(), event.getNewParent()
+                        );
+                        handleFileChange(event2, FileChangeType.CREATED);
+                    } else {
+                        //AS TODO: Report Failure to find Old or New File
+                    }
                 }
 
                 @Override

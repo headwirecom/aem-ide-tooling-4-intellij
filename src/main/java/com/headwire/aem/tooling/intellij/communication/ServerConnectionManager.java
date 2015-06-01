@@ -294,8 +294,7 @@ public class ServerConnectionManager {
                 messageManager.sendErrorNotification("aem.explorer.osgi.client.problem", serverConfiguration.getName(), e);
             }
         } else {
-            messageManager.sendNotification("\n" +
-                "aem.explorer.check.support.bundle.no.configuration.selected", NotificationType.WARNING);
+            messageManager.sendNotification("\n" + "aem.explorer.check.support.bundle.no.configuration.selected", NotificationType.WARNING);
         }
         return ret;
     }
@@ -695,7 +694,22 @@ public class ServerConnectionManager {
                     new IServer(currentModule.getParent()), new NullProgressMonitor()
                 );
                 messageManager.sendDebugNotification("Got Repository: " + repository);
-                Command<?> command = addFileCommand(repository, currentModule, file, false);
+                Command<?> command = null;
+                switch(type) {
+                    case CHANGED:
+                        command = addFileCommand(repository, currentModule, file, false);
+                        break;
+                    case DELETED:
+                        command = removeFileCommand(repository, currentModule, file);
+                        break;
+                    case MOVED:
+                        command = removeFileCommand(repository, currentModule, file);
+                        break;
+                }
+                if(type == FileChangeType.DELETED) {
+                } else {
+                    command = addFileCommand(repository, currentModule, file, false);
+                }
                 messageManager.sendDebugNotification("Got Command: " + command);
                 if (command != null) {
                     Set<String> handledPaths = new HashSet<String>();
@@ -856,16 +870,20 @@ public class ServerConnectionManager {
         return file;
     }
 
-    private Command<?> removeFileCommand(Repository repository, IModuleResource resource)
+    private Command<?> removeFileCommand(
+//        Repository repository, IModuleResource resource
+        Repository repository, Module module, VirtualFile file
+    )
         throws SerializationException, IOException, CoreException {
 
-        IResource deletedResource = getResource(resource);
+//        IResource deletedResource = getResource(resource);
+//
+//        if (deletedResource == null) {
+//            return null;
+//        }
 
-        if (deletedResource == null) {
-            return null;
-        }
-
-        return commandFactory.newCommandForRemovedResources(repository, deletedResource);
+        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
+        return commandFactory.newCommandForRemovedResources(repository, resource);
     }
 
     private void execute(Command<?> command) throws CoreException {
