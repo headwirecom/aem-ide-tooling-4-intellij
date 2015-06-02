@@ -697,18 +697,12 @@ public class ServerConnectionManager {
                 Command<?> command = null;
                 switch(type) {
                     case CHANGED:
+                    case CREATED:
                         command = addFileCommand(repository, currentModule, file, false);
                         break;
                     case DELETED:
                         command = removeFileCommand(repository, currentModule, file);
                         break;
-                    case MOVED:
-                        command = removeFileCommand(repository, currentModule, file);
-                        break;
-                }
-                if(type == FileChangeType.DELETED) {
-                } else {
-                    command = addFileCommand(repository, currentModule, file, false);
                 }
                 messageManager.sendDebugNotification("Got Command: " + command);
                 if (command != null) {
@@ -756,12 +750,10 @@ public class ServerConnectionManager {
      * @throws CoreException
      */
     private long ensureParentIsPublished(
-//        IModuleResource moduleResource,
         Module module,
         String basePath,
         VirtualFile file,
         Repository repository,
-//        IModuleResource[] allResources,
         Set<String> handledPaths
     )
         throws CoreException, SerializationException, IOException {
