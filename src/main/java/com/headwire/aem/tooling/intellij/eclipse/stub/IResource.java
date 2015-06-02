@@ -85,8 +85,9 @@ public class IResource {
     }
 
     public boolean isTeamPrivateMember(int checkAncestors) {
-        throw new UnsupportedOperationException("Not yet implemented");
-//        return false;
+//AS TODO: Is Ream Private supported in IntelliJ? -> Check later
+//        throw new UnsupportedOperationException("Not yet implemented");
+        return false;
     }
 
     public String getProjectRelativePath() {

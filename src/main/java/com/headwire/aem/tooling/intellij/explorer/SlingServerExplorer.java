@@ -587,12 +587,13 @@ public class SlingServerExplorer
             super(
                 AEMBundle.message("check.configuration.action.name"),
                 AEMBundle.message("check.configuration.action.description"),
-                AllIcons.Actions.Execute
+                AllIcons.CodeStyle.Gear
             );
         }
 
         public void actionPerformed(AnActionEvent e) {
             final String title = AEMBundle.message("check.configuration.action.name");
+            final String description = AEMBundle.message("check.configuration.action.description");
 
             ProgressManager.getInstance().run(
                 new Task.Modal(myProject, title, false) {
@@ -602,26 +603,35 @@ public class SlingServerExplorer
                     }
 
                     public void run(@NotNull final ProgressIndicator indicator) {
-                        indicator.setIndeterminate(true);
+                        indicator.setIndeterminate(false);
                         indicator.pushState();
                         try {
-                            indicator.setText(title);
+                            indicator.setText(description);
+                            indicator.setFraction(0.0);
                             ApplicationManager.getApplication().runReadAction(new Runnable() {
                                 public void run() {
                                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                                 //AS TODO: this is not showing if the check is short but if it takes longer it will update
-                                serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.connecting);
+                                indicator.setFraction(0.1);
+                                serverConnectionManager.updateServerStatus(
+                                    serverConfiguration.getName(), ServerConfiguration.ServerStatus.connecting
+                                );
+                                indicator.setFraction(0.2);
                                 try {
                                     Thread.sleep(1000);
                                 } catch(InterruptedException e1) {
                                     e1.printStackTrace();
                                 }
+                                indicator.setFraction(0.3);
                                 OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
                                 if(osgiClient != null) {
+                                    indicator.setFraction(0.4);
                                     ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
                                     if(status != ServerConnectionManager.BundleStatus.failed) {
                                         // If a Module is selected then check only this one
+                                        indicator.setFraction(0.6);
                                         ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
+                                        indicator.setFraction(0.7);
                                         if(module != null) {
                                             // Handle Module only
                                             serverConnectionManager.checkModule(osgiClient, module);
@@ -629,6 +639,7 @@ public class SlingServerExplorer
                                             // Handle entire Project
                                             serverConnectionManager.checkModules(osgiClient);
                                         }
+                                        indicator.setFraction(1.0);
                                     }
                                 }
                                 }
@@ -704,7 +715,8 @@ public class SlingServerExplorer
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            final String title = "Check Server Configurations";
+            final String title = AEMBundle.message("deploy.configuration.action.name");
+            final String description = AEMBundle.message("deploy.configuration.action.description");
 
             ProgressManager.getInstance().run(new Task.Modal(myProject, title, false) {
                 @Nullable
@@ -713,26 +725,32 @@ public class SlingServerExplorer
                 }
 
                 public void run(@NotNull final ProgressIndicator indicator) {
-                    indicator.setIndeterminate(true);
+                    indicator.setIndeterminate(false);
                     indicator.pushState();
                     try {
-                        indicator.setText(title);
+                        indicator.setText(description);
+                        indicator.setFraction(0.0);
                         ApplicationManager.getApplication().runReadAction(new Runnable() {
                             public void run() {
                                 // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
                                 // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
                                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                                indicator.setFraction(0.1);
                                 //AS TODO: this is not showing if the check is short but if it takes longer it will update
                                 serverConnectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
+                                indicator.setFraction(0.2);
                                 try {
                                     Thread.sleep(1000);
                                 } catch(InterruptedException e1) {
                                     e1.printStackTrace();
                                 }
+                                indicator.setFraction(0.3);
                                 // First Check if the Install Support Bundle is installed
                                 ServerConnectionManager.BundleStatus bundleStatus = serverConnectionManager.checkAndUpdateSupportBundle(true);
+                                indicator.setFraction(0.5);
                                 // Deploy all selected Modules
                                 serverConnectionManager.deployModules();
+                                indicator.setFraction(1.0);
                             }
                         });
                     }

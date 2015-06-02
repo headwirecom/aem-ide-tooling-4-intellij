@@ -9,8 +9,8 @@
     <file url="file://$PROJECT_DIR$/aem-tooling/impl-vlt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/aem-tooling/impl-vlt-test" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogCategory.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intelliJ/EventLogConsole.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intelliJ/EventLogToolWindowFactory.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intellij/EventLogConsole.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intellij/EventLogToolWindowFactory.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceAndInfo.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeStructure.java" charset="UTF-8" />

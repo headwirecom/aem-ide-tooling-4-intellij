@@ -274,12 +274,14 @@ public class ResourceChangeCommandFactory {
         IFolder syncFolder = ProjectUtil.getSyncDirectory(resource.getProject());
         IPath relativePath = resource.getFullPath().makeRelativeTo(syncFolder.getFullPath());
 
-        String absFilePath = new File(contentSyncRoot, relativePath.toOSString()).getAbsolutePath();
-        String filePath = serializationManager.getBaseResourcePath(absFilePath);
+//        String absFilePath = new File(contentSyncRoot, relativePath.toOSString()).getAbsolutePath();
+//        String filePath = serializationManager.getBaseResourcePath(absFilePath);
+//
+//        IPath osPath = Path.fromOSString(filePath);
+//        String repositoryPath = serializationManager.getRepositoryPath(osPath.makeRelativeTo(syncFolder.getLocation())
+//            .makeAbsolute().toPortableString());
 
-        IPath osPath = Path.fromOSString(filePath);
-        String repositoryPath = serializationManager.getRepositoryPath(osPath.makeRelativeTo(syncFolder.getLocation())
-            .makeAbsolute().toPortableString());
+        String repositoryPath = relativePath.toOSString();
 
         Activator.getDefault().getPluginLogger()
             .trace("Repository path for deleted resource {0} is {1}", resource, repositoryPath);
@@ -547,7 +549,8 @@ public class ResourceChangeCommandFactory {
 
         IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
 
-        Filter filter = ProjectUtil.loadFilter(syncDirectory.getProject());
+//        Filter filter = ProjectUtil.loadFilter(syncDirectory.getProject());
+        Filter filter = ProjectUtil.loadFilter(resource.getModule());
 
         FilterResult filterResult = getFilterResult(resource, null, filter);
         if (filterResult == FilterResult.DENY || filterResult == FilterResult.PREREQUISITE) {
