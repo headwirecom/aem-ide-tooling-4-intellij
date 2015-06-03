@@ -3,7 +3,6 @@ package org.apache.sling.ide.impl.vlt;
 import org.apache.sling.ide.log.Logger;
 import org.eclipse.core.runtime.MyBundleContext;
 import org.junit.Test;
-import org.osgi.framework.BundleContext;
 
 import static org.junit.Assert.assertNotNull;
 

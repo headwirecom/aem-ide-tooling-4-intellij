@@ -13,7 +13,6 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
-import com.headwire.aem.tooling.intellij.util.OSGiFactory;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
@@ -69,7 +68,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -268,7 +266,8 @@ public class ServerConnectionManager {
         if(serverConfiguration != null) {
             try {
                 OsgiClient osgiClient = obtainSGiClient();
-                EmbeddedArtifactLocator artifactLocator = OSGiFactory.getArtifactLocator();
+//                EmbeddedArtifactLocator artifactLocator = OSGiFactory.getArtifactLocator();
+                EmbeddedArtifactLocator artifactLocator = ServiceManager.getService(EmbeddedArtifactLocator.class);
                 Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 
                 messageManager.sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
