@@ -34,6 +34,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindowId;
@@ -48,6 +49,7 @@ import org.apache.sling.ide.serialization.SerializationException;
 import org.apache.sling.ide.serialization.SerializationManager;
 import org.apache.sling.ide.transport.Command;
 import org.apache.sling.ide.transport.Repository;
+import org.apache.sling.ide.transport.RepositoryException;
 import org.apache.sling.ide.transport.RepositoryInfo;
 import org.apache.sling.ide.transport.ResourceProxy;
 import org.apache.sling.ide.transport.Result;
@@ -59,6 +61,7 @@ import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.osgi.framework.Version;
 
+import javax.jcr.nodetype.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -143,6 +146,8 @@ public class ServerConnectionManager {
             ServerConfiguration.SynchronizationStatus status = ServerConfiguration.SynchronizationStatus.upToDate;
             boolean allSynchronized = true;
             if(checkBinding(serverConfiguration)) {
+                int moduleCount = serverConfiguration.getModuleList().size();
+                float steps = (float) (0.9 / moduleCount);
                 for(Module module : serverConfiguration.getModuleList()) {
                     boolean sync = checkModule(osgiClient, module);
                     // Any out of sync marks the project out of sync
@@ -197,6 +202,7 @@ public class ServerConnectionManager {
                             long moduleModificationTimestamp = module.getLastModificationTimestamp();
                             if(lastModificationTimestamp > moduleModificationTimestamp) {
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.outdated);
+                                ret = false;
                             } else {
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
                             }
@@ -335,9 +341,10 @@ public class ServerConnectionManager {
         return ret;
     }
 
-    public void deployModules() {
+    public void deployModules(boolean force) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
+            checkBinding(serverConfiguration);
             List<Module> moduleList = serverConfiguration.getModuleList();
             for(ServerConfiguration.Module module: moduleList) {
                 if(module.isPartOfBuild()) {
@@ -378,7 +385,7 @@ public class ServerConnectionManager {
                         }
                     } else if(module.isSlingPackage()) {
                         //AS TODO: Add the synchronization of the entire module
-                        publishModule(module);
+                        publishModule(module, force);
                     } else {
                         messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not a supported package");
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.unsupported);
@@ -530,10 +537,14 @@ public class ServerConnectionManager {
 
     public enum FileChangeType {CHANGED, CREATED, DELETED, MOVED, COPIED};
 
-    public void publishModule(Module module) {
+    public void publishModule(Module module, boolean force) {
         Repository repository = null;
         long lastModificationTimestamp = -1;
-        messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
+        if(force) {
+            messageManager.sendInfoNotification("aem.explorer.deploy.module.by.force.prepare", module);
+        } else {
+            messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
+        }
         try {
             repository = ServerUtil.getConnectedRepository(
                 new IServer(module.getParent()), new NullProgressMonitor()
@@ -553,7 +564,7 @@ public class ServerConnectionManager {
                 //AS TODO: Create a List of Changed Resources
                 for(VirtualFile changedResource : changedResources) {
                     try {
-                        Command<?> command = addFileCommand(repository, module, changedResource, false);
+                        Command<?> command = addFileCommand(repository, module, changedResource, force);
                         if(command != null) {
                             long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
                             lastModificationTimestamp = Math.max(parentLastModificationTimestamp, lastModificationTimestamp);
@@ -579,19 +590,34 @@ public class ServerConnectionManager {
                             }
                         }
                     } catch(CoreException e) {
-                        messageManager.sendDebugNotification("Failed to deploy: '" + changedResource + " due to exception : " + e);
-                        throw e;
+                        Throwable cause = e.getCause();
+                        if(cause instanceof ConstraintViolationException) {
+                            // Ignore Constraint Violation and keep on looping through
+                            messageManager.sendErrorNotification("aem.explorer.deploy.resource.failed.due.to.constraints", changedResource, e);
+                        } else {
+                            messageManager.sendDebugNotification("Failed to deploy: '" + changedResource + " due to exception : " + e);
+                            throw e;
+                        }
                     }
                 }
             }
             // reorder the child nodes at the end, when all create/update/deletes have been processed
 //AS TODO: This needs to be resolved
-//            for (IModuleResource resource : addedOrUpdatedResources) {
-//                execute(reorderChildNodesCommand(repository, resource));
-//            }
+            for (String resourcePath : allResourcesUpdatedList) {
+                VirtualFile file = baseFile.getFileSystem().findFileByPath(resourcePath);
+                if(file != null) {
+                    execute(reorderChildNodesCommand(repository, module, file));
+                } else {
+                    messageManager.sendErrorNotification("aem.explorer.deploy.failed.to.reorder.missing.resource", resourcePath);
+                }
+            }
             module.setLastModificationTimestamp(lastModificationTimestamp);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
-            messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
+            if(force) {
+                messageManager.sendInfoNotification("aem.explorer.deploy.module.by.force.success", module);
+            } else {
+                messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
+            }
         } catch(CoreException e) {
             messageManager.sendErrorNotification("aem.explorer.deploy.module.failed", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
@@ -786,6 +812,7 @@ public class ServerConnectionManager {
 //            if (maybeParent.getModuleRelativePath().equals(parentPath)) {
         // handle the parent's parent first, if needed
         long lastParentModificationTimestamp = ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths);
+
         // create this resource
         execute(addFileCommand(repository, module, parentFile, false));
 
@@ -830,6 +857,19 @@ public class ServerConnectionManager {
         }
 
         return commandFactory.newCommandForAddedOrUpdated(repository, res, false);
+    }
+
+    private Command<?> reorderChildNodesCommand(Repository repository, Module module, VirtualFile file) throws CoreException,
+        SerializationException, IOException {
+
+//        IResource res = getResource(resource);
+//
+//        if (res == null) {
+//            return null;
+//        }
+
+        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
+        return commandFactory.newReorderChildNodesCommand(repository, resource);
     }
 
     private Command<?> reorderChildNodesCommand(Repository repository, IModuleResource resource) throws CoreException,
@@ -885,11 +925,24 @@ public class ServerConnectionManager {
         Result<?> result = command.execute();
 
         if (!result.isSuccess()) {
+            try {
+                result.get();
+            } catch(RepositoryException e) {
+                // Got the Repository Exception form the call
+                Throwable cause = e.getCause();
+                if(cause != null) {
+                    throw new CoreException(
+                        "Failed to publish path: " + command.getPath() + ", due to Exception result: " + result.toString(),
+                        cause
+                    );
+                }
+            }
             // TODO - proper error logging
             throw new CoreException(
 //                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed publishing path="
 //                + command.getPath() + ", result=" + result.toString())
                 "Failed to publish path: " + command.getPath() + ", result: " + result.toString()
+
             );
         }
 
