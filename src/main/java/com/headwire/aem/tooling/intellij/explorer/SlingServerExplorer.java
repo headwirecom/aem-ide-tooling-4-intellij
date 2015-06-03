@@ -752,6 +752,9 @@ public class SlingServerExplorer
                 }
 
                 public void run(@NotNull final ProgressIndicator indicator) {
+                    //AS TODO: Check if there is a new version of IntelliJ CE that would allow to use
+                    //AS TODO: the ProgressAdapter.
+                    //AS TODO: Or create another Interface / Wrapper to make it IDE independent
                     indicator.setIndeterminate(false);
                     indicator.pushState();
                     try {
