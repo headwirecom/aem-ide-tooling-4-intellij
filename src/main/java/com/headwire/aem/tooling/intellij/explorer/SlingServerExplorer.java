@@ -47,6 +47,7 @@ import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.progress.util.SmoothProgressAdapter;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
@@ -274,6 +275,7 @@ public class SlingServerExplorer
         group.add(new DebugAction());
         group.add(new StopAction());
         group.add(new DeployAction());
+        group.add(new ForceDeployAction());
         group.add(new BuildConfigureAction());
         AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
         action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
@@ -382,6 +384,7 @@ public class SlingServerExplorer
             group.add(new DebugAction());
             group.add(new StopAction());
             group.add(new DeployAction());
+            group.add(new ForceDeployAction());
             group.add(new BuildConfigureAction());
         } else {
             group.add(new AddAction());
@@ -709,16 +712,40 @@ public class SlingServerExplorer
 
         @Override
         public void update(AnActionEvent event) {
-//            event.getPresentation().setEnabled(isConfigurationSelected() && isConfigurationInUse(getCurrentConfiguration()));
             event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
         }
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            final String title = AEMBundle.message("deploy.configuration.action.name");
-            final String description = AEMBundle.message("deploy.configuration.action.description");
+            doDeploy(false);
+        }
+    }
 
-            ProgressManager.getInstance().run(new Task.Modal(myProject, title, false) {
+    private final class ForceDeployAction extends AnAction {
+        public ForceDeployAction() {
+            super(
+                AEMBundle.message("force.deploy.configuration.action.name"),
+                AEMBundle.message("force.deploy.configuration.action.description"),
+                AllIcons.Actions.ForceRefresh
+            );
+        }
+
+        @Override
+        public void update(AnActionEvent event) {
+            event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
+        }
+
+        @Override
+        public void actionPerformed(AnActionEvent e) {
+            doDeploy(true);
+        }
+    }
+
+    private void doDeploy(final boolean forceDeploy) {
+        final String title = AEMBundle.message("deploy.configuration.action.name");
+
+        ProgressManager.getInstance().run(
+            new Task.Modal(myProject, title, false) {
                 @Nullable
                 public NotificationInfo getNotificationInfo() {
                     return new NotificationInfo("Sling", "Sling Deployment Checks", "");
@@ -728,38 +755,42 @@ public class SlingServerExplorer
                     indicator.setIndeterminate(false);
                     indicator.pushState();
                     try {
-                        indicator.setText(description);
-                        indicator.setFraction(0.0);
-                        ApplicationManager.getApplication().runReadAction(new Runnable() {
-                            public void run() {
-                                // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
-                                // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
-                                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-                                indicator.setFraction(0.1);
-                                //AS TODO: this is not showing if the check is short but if it takes longer it will update
-                                serverConnectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
-                                indicator.setFraction(0.2);
-                                try {
-                                    Thread.sleep(1000);
-                                } catch(InterruptedException e1) {
-                                    e1.printStackTrace();
+                        ApplicationManager.getApplication().runReadAction(
+                            new Runnable() {
+                                public void run() {
+                                    final String description = AEMBundle.message("deploy.configuration.action.description");
+
+                                    indicator.setText(description);
+                                    indicator.setFraction(0.0);
+
+                                    // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
+                                    // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
+                                    ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                                    indicator.setFraction(0.1);
+                                    //AS TODO: this is not showing if the check is short but if it takes longer it will update
+                                    serverConnectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
+                                    indicator.setFraction(0.2);
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch(InterruptedException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                    indicator.setFraction(0.3);
+                                    // First Check if the Install Support Bundle is installed
+                                    ServerConnectionManager.BundleStatus bundleStatus = serverConnectionManager.checkAndUpdateSupportBundle(true);
+                                    indicator.setFraction(0.5);
+                                    // Deploy all selected Modules
+                                    serverConnectionManager.deployModules(forceDeploy);
+                                    indicator.setFraction(1.0);
                                 }
-                                indicator.setFraction(0.3);
-                                // First Check if the Install Support Bundle is installed
-                                ServerConnectionManager.BundleStatus bundleStatus = serverConnectionManager.checkAndUpdateSupportBundle(true);
-                                indicator.setFraction(0.5);
-                                // Deploy all selected Modules
-                                serverConnectionManager.deployModules();
-                                indicator.setFraction(1.0);
                             }
-                        });
-                    }
-                    finally {
+                        );
+                    } finally {
                         indicator.popState();
                     }
                 }
-            });
-        }
+            }
+        );
     }
 
     private final class BuildConfigureAction extends AnAction {

@@ -113,6 +113,7 @@ public class ServerConfiguration
     //AS TODO: Not sure about this -> Check if that works
     private transient ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
     private transient SynchronizationStatus synchronizationStatus = DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
+    private transient boolean bound = false;
     // Modules must be stored because they carry the info if a project is part of the deployment build
     private List<Module> moduleList = new ArrayList<Module>();
 
@@ -321,7 +322,7 @@ public class ServerConfiguration
     }
 
     public boolean isBound() {
-        boolean ret = true;
+        boolean ret = bound;
         for(Module module: moduleList) {
             ret = ret && module.isBound();
         }
@@ -431,6 +432,7 @@ public class ServerConfiguration
 
         public boolean rebind(@NotNull Project project, @NotNull MavenProject mavenProject) {
             boolean ret = false;
+            parent.bound = true;
             // Check if the Symbolic Name match
             String symbolicName = getSymbolicName(mavenProject);
             if(this.symbolicName.equals(symbolicName)) {
@@ -451,6 +453,15 @@ public class ServerConfiguration
             if(status != null) {
                 this.status = status;
             }
+        }
+
+        @Override
+        public String toString() {
+            return "Module: " +
+                "artifactId = '" + artifactId + '\'' +
+                ", last modification timestamp = " + lastModificationTimestamp +
+                ", part of build = " + partOfBuild +
+                "";
         }
     }
 }
