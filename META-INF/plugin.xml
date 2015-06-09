@@ -36,6 +36,9 @@
     <application-components>
         <!-- Add your application components here -->
         <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration</implementation-class>
+        </component>
+        <component>
             <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog</implementation-class>
         </component>
         <component>

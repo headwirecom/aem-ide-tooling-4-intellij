@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.config;
 
+import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
@@ -37,6 +38,7 @@ public class ServerConfigurationManager
         return ServiceManager.getService(project, ServerConfigurationManager.class);
     }
 
+    private MessageManager messageManager;
     private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
 //    private ConfigurationListener configurationListener;
     private List<ServerConfiguration> serverConfigurationList = new ArrayList<ServerConfiguration>();
@@ -44,6 +46,7 @@ public class ServerConfigurationManager
 
     public ServerConfigurationManager(final Project project) {
         this.project = project;
+        messageManager = MessageManager.getInstance(project);
     }
 
     public ServerConfiguration[] getServerConfigurations() {
@@ -52,6 +55,20 @@ public class ServerConfigurationManager
 
     public int serverConfigurationSize() {
         return serverConfigurationList.size();
+    }
+
+    public ServerConfiguration findConnectedServerConfiguration() {
+        ServerConfiguration ret = null;
+        for(ServerConfiguration serverConfiguration: serverConfigurationList) {
+            if(
+                serverConfiguration.getServerStatus() == ServerConfiguration.ServerStatus.connected ||
+                serverConfiguration.getServerStatus() == ServerConfiguration.ServerStatus.checked
+            ) {
+                ret = serverConfiguration;
+                break;
+            }
+        }
+        return ret;
     }
 
     public ServerConfiguration findServerConfigurationByName(String configurationName) {
@@ -160,6 +177,7 @@ public class ServerConfigurationManager
             childNode.setAttribute("stopConnectionTimeout", serverConfiguration.getStopConnectionTimeoutInSeconds() + "");
             childNode.setAttribute("publishType", serverConfiguration.getPublishType() + "");
             childNode.setAttribute("installationType", serverConfiguration.getInstallationType() + "");
+            childNode.setAttribute("default", serverConfiguration.isDefault() + "");
             int j = 0;
             for(ServerConfiguration.Module module: serverConfiguration.getModuleList()) {
                 Element moduleChildNode = new Element("sscm-" + j++);
@@ -194,6 +212,18 @@ public class ServerConfigurationManager
             serverConfiguration.setStopConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue("stopConnectionTimeout"), -1));
             serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue("publishType"), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
             serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue("installationType"), ServerConfiguration.DEFAULT_INSTALL_TYPE));
+            boolean defaultConfiguration = new Boolean(child.getAttributeValue("default", "false"));
+            if(defaultConfiguration) {
+                // Check if no other configuration is already the default
+                for(ServerConfiguration serverConfiguration1 : serverConfigurationList) {
+                    if(serverConfiguration1.isDefault()) {
+                        messageManager.sendErrorNotification("server.configuration.multiple.default", serverConfiguration.getName(), serverConfiguration1.getName());
+                        defaultConfiguration = false;
+                        break;
+                    }
+                }
+            }
+            serverConfiguration.setDefault(defaultConfiguration);
             for(Element element: child.getChildren()) {
                 try {
                     String artifactId = element.getAttributeValue("artifactId", "No Artifact Id");
@@ -239,7 +269,12 @@ public class ServerConfigurationManager
     }
 
     public void addConfigurationListener(ConfigurationListener myConfigurationListener) {
+        //AS TODO: This class is loaded way ahead and so we fire a configuration listener is none are there
+        boolean first = myEventDispatcher.getListeners().isEmpty();
         myEventDispatcher.addListener(myConfigurationListener);
+        if(first) {
+            myEventDispatcher.getMulticaster().configurationLoaded();
+        }
     }
 
     private static void queueLater(final Task task) {

@@ -6,9 +6,11 @@ import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.log.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -88,6 +90,20 @@ public class MessageManager
 
     public void sendErrorNotification(String bundleMessageId, Object ... parameters) {
         sendNotification(bundleMessageId, NotificationType.ERROR, parameters);
+    }
+
+    public void showAlert(@NotNull final String messageId) {
+        showAlert(getTitle(messageId), getMessage(messageId));
+    }
+
+    public void showAlert(@NotNull final String title, @NotNull final String message) {
+        ApplicationManager.getApplication().invokeLater(
+            new Runnable() {
+                public void run() {
+                    Messages.showWarningDialog(project, message, title);
+                }
+            }
+        );
     }
 
     @Override

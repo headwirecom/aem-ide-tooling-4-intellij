@@ -230,6 +230,7 @@ public class IServer {
     public int getServerState() {
         switch(serverConfiguration.getServerStatus()) {
             case connected:
+            case checked:
 //            case upToDate:
                 return STATE_STARTED;
             default:

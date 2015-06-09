@@ -30,6 +30,7 @@ public class ServerConfigurationDialog
     private JButton installButton;
     private JTextField name;
     private JTextField description;
+    private JCheckBox defaultConfiguration;
 
     private ServerConfiguration serverConfiguration;
 
@@ -58,6 +59,7 @@ public class ServerConfigurationDialog
         ret.setName(name.getText());
         ret.setHost(host.getText());
         ret.setDescription(description.getText());
+        ret.setDefault(defaultConfiguration.isSelected());
         ret.setConnectionPort(obtainInteger(connectionPort, 0));
         ret.setConnectionDebugPort(obtainInteger(connectionDebugPort, 0));
         ret.setUserName(connectionUserName.getText());
@@ -94,6 +96,7 @@ public class ServerConfigurationDialog
             name.setText(serverConfiguration.getName());
             host.setText(serverConfiguration.getHost());
             description.setText(serverConfiguration.getDescription());
+            defaultConfiguration.setSelected(serverConfiguration.isDefault());
             connectionPort.setText(serverConfiguration.getConnectionPort() + "");
             connectionDebugPort.setText(serverConfiguration.getConnectionDebugPort() + "");
             connectionUserName.setText(serverConfiguration.getUserName());
