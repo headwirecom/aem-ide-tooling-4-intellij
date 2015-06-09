@@ -49,7 +49,9 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.progress.util.SmoothProgressAdapter;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -83,11 +85,14 @@ import javax.swing.ToolTipManager;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -155,7 +160,7 @@ public class SlingServerExplorer
         myTree.setCellRenderer(new NodeRenderer());
         selectionHandler = new ServerTreeSelectionHandler(myTree);
         serverConnectionManager = new ServerConnectionManager(project, selectionHandler);
-        myBuilder = new ServerExplorerTreeBuilder(project, myTree, model);
+        myBuilder = new ServerExplorerTreeBuilder(project, myTree, model, this);
         TreeUtil.installActions(myTree);
         new TreeSpeedSearch(myTree);
         myTree.addMouseListener(new PopupHandler() {
@@ -234,6 +239,36 @@ public class SlingServerExplorer
                 }
             }
         );
+        myTree.addContainerListener(new ContainerListener() {
+            @Override
+            public void componentAdded(ContainerEvent containerEvent) {
+                messageManager.sendDebugNotification("Container Event: " + containerEvent);
+            }
+
+            @Override
+            public void componentRemoved(ContainerEvent containerEvent) {
+                messageManager.sendDebugNotification("Container Event: " + containerEvent);
+            }
+        });
+        // Check the Server Configurations if there is one that is marked default and if it will be selected and checked now
+//        for(ServerConfiguration serverConfiguration: myConfig.getServerConfigurations()) {
+//            if(serverConfiguration.isDefault()) {
+                int i =1;
+                Object rootObject = model.getRoot();
+
+                String message = rootObject.toString();
+//                model.getChild()
+//                while(true) {
+//                    TreePath path = myTree.getPathForRow(i);
+//                    if(path != null) {
+//                        path.
+//                    }
+//                }
+//                TreePath treePath = myTree.getPathForRow(0);
+//                treePath.
+//                myTree.setSelectionRow();
+//            }
+//        }
     }
 
     public void dispose() {
@@ -517,7 +552,7 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(serverConnectionManager.isConnectionNotInUse());
+            event.getPresentation().setEnabled(serverConnectionManager.isConfigurationEditable());
         }
     }
 
@@ -536,7 +571,7 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(serverConnectionManager.isConnectionNotInUse());
+            event.getPresentation().setEnabled(serverConnectionManager.isConfigurationEditable());
         }
     }
 
@@ -595,39 +630,64 @@ public class SlingServerExplorer
         }
 
         public void actionPerformed(AnActionEvent e) {
-            final String title = AEMBundle.message("check.configuration.action.name");
-            final String description = AEMBundle.message("check.configuration.action.description");
+            doCheck();
+        }
 
-            ProgressManager.getInstance().run(
-                new Task.Modal(myProject, title, false) {
-                    @Nullable
-                    public NotificationInfo getNotificationInfo() {
-                        return new NotificationInfo("Sling", "Sling Deployment Checks", "");
-                    }
+        public void update(AnActionEvent event) {
+            event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
+        }
+    }
 
-                    public void run(@NotNull final ProgressIndicator indicator) {
-                        indicator.setIndeterminate(false);
-                        indicator.pushState();
-                        try {
-                            indicator.setText(description);
-                            indicator.setFraction(0.0);
-                            ApplicationManager.getApplication().runReadAction(new Runnable() {
-                                public void run() {
+    public void doCheck() {
+        final String title = AEMBundle.message("check.configuration.action.name");
+        final String description = AEMBundle.message("check.configuration.action.description");
+
+        ProgressManager.getInstance().run(
+            new Task.Modal(myProject, title, false) {
+                @Nullable
+                public NotificationInfo getNotificationInfo() {
+                    return new NotificationInfo("Sling", "Sling Deployment Checks", "");
+                }
+
+                public void run(@NotNull final ProgressIndicator indicator) {
+                    indicator.setIndeterminate(false);
+                    indicator.pushState();
+                    try {
+                        indicator.setText(description);
+                        indicator.setFraction(0.0);
+                        ApplicationManager.getApplication().runReadAction(new Runnable() {
+                            public void run() {
                                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                                ServerConfiguration connectedServerConfiguration = myConfig.findConnectedServerConfiguration();
+                                if(connectedServerConfiguration != null && serverConfiguration != connectedServerConfiguration) {
+                                    messageManager.showAlert("aem.explorer.check.connection.out.of.sync");
+                                    return;
+                                }
                                 //AS TODO: this is not showing if the check is short but if it takes longer it will update
                                 indicator.setFraction(0.1);
                                 serverConnectionManager.updateServerStatus(
-                                    serverConfiguration.getName(), ServerConfiguration.ServerStatus.connecting
+                                    serverConfiguration.getName(),ServerConfiguration.ServerStatus.checking
                                 );
                                 indicator.setFraction(0.2);
-                                try {
+                                try
+
+                                {
                                     Thread.sleep(1000);
-                                } catch(InterruptedException e1) {
+                                }
+
+                                catch(
+                                InterruptedException e1
+                                )
+
+                                {
                                     e1.printStackTrace();
                                 }
+
                                 indicator.setFraction(0.3);
                                 OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
-                                if(osgiClient != null) {
+                                if(osgiClient!=null)
+
+                                {
                                     indicator.setFraction(0.4);
                                     ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
                                     if(status != ServerConnectionManager.BundleStatus.failed) {
@@ -643,22 +703,20 @@ public class SlingServerExplorer
                                             serverConnectionManager.checkModules(osgiClient);
                                         }
                                         indicator.setFraction(1.0);
+                                        serverConnectionManager.updateServerStatus(
+                                            serverConfiguration.getName(), ServerConfiguration.ServerStatus.checked
+                                        );
                                     }
                                 }
-                                }
-                            });
-                        }
-                        finally {
-                            indicator.popState();
-                        }
+                            }
+                        });
+                    }
+                    finally {
+                        indicator.popState();
                     }
                 }
-            );
-        }
-
-        public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
-        }
+            }
+        );
     }
 
     private final class DebugAction extends AnAction {
@@ -697,7 +755,7 @@ public class SlingServerExplorer
         }
 
         public void update(AnActionEvent event) {
-            event.getPresentation().setEnabled(serverConnectionManager.isConnectionInUse());
+            event.getPresentation().setEnabled(serverConnectionManager.isConnectionIsStoppable());
         }
     }
 
@@ -717,7 +775,8 @@ public class SlingServerExplorer
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            doDeploy(false);
+            final DataContext dataContext = e.getDataContext();
+            doDeploy(dataContext, false);
         }
     }
 
@@ -737,11 +796,12 @@ public class SlingServerExplorer
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            doDeploy(true);
+            final DataContext dataContext = e.getDataContext();
+            doDeploy(dataContext, true);
         }
     }
 
-    private void doDeploy(final boolean forceDeploy) {
+    private void doDeploy(final DataContext dataContext, final boolean forceDeploy) {
         final String title = AEMBundle.message("deploy.configuration.action.name");
 
         ProgressManager.getInstance().run(
@@ -757,10 +817,10 @@ public class SlingServerExplorer
                     //AS TODO: Or create another Interface / Wrapper to make it IDE independent
                     indicator.setIndeterminate(false);
                     indicator.pushState();
-                    try {
-                        ApplicationManager.getApplication().runReadAction(
-                            new Runnable() {
-                                public void run() {
+                    ApplicationManager.getApplication().runReadAction(
+                        new Runnable() {
+                            public void run() {
+                                try {
                                     final String description = AEMBundle.message("deploy.configuration.action.description");
 
                                     indicator.setText(description);
@@ -783,14 +843,14 @@ public class SlingServerExplorer
                                     ServerConnectionManager.BundleStatus bundleStatus = serverConnectionManager.checkAndUpdateSupportBundle(true);
                                     indicator.setFraction(0.5);
                                     // Deploy all selected Modules
-                                    serverConnectionManager.deployModules(forceDeploy);
+                                    serverConnectionManager.deployModules(dataContext, forceDeploy);
                                     indicator.setFraction(1.0);
+                                } finally {
+                                    indicator.popState();
                                 }
                             }
-                        );
-                    } finally {
-                        indicator.popState();
-                    }
+                        }
+                    );
                 }
             }
         );

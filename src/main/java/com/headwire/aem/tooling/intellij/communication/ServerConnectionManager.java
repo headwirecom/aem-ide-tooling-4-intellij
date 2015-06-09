@@ -32,6 +32,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
@@ -54,10 +55,16 @@ import org.apache.sling.ide.transport.ResourceProxy;
 import org.apache.sling.ide.transport.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
+import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
+import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
 import org.jetbrains.idea.maven.model.MavenId;
 import org.jetbrains.idea.maven.model.MavenResource;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
+import org.jetbrains.idea.maven.utils.MavenDataKeys;
+import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
+import org.jetbrains.jps.maven.compiler.MavenBuilderService;
 import org.osgi.framework.Version;
 
 import javax.jcr.nodetype.ConstraintViolationException;
@@ -100,6 +107,11 @@ public class ServerConnectionManager {
 //    }
 //
 
+    private static List<ServerConfiguration.ServerStatus> CONFIGURATION_CHECKED = Arrays.asList(
+        ServerConfiguration.ServerStatus.checking,
+        ServerConfiguration.ServerStatus.checked
+    );
+
     private static List<ServerConfiguration.ServerStatus> CONFIGURATION_IN_USE = Arrays.asList(
         ServerConfiguration.ServerStatus.connecting,
         ServerConfiguration.ServerStatus.connected,
@@ -124,9 +136,30 @@ public class ServerConnectionManager {
 
     // ----- Server State Flags
 
+    public boolean isConfigurationEditable() {
+        ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+        return serverConfiguration != null &&
+            ( CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus()) ||
+              !CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus()) )
+            ;
+    }
+
+    public boolean isConfigurationChecked() {
+        ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+        return serverConfiguration != null && CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus());
+    }
+
     public boolean isConnectionInUse() {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         return serverConfiguration != null && CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus());
+    }
+
+    public boolean isConnectionIsStoppable() {
+        ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+        return serverConfiguration != null &&
+            ( CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus()) ||
+              CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus()) )
+            ;
     }
 
     public boolean isConnectionNotInUse() {
@@ -340,7 +373,7 @@ public class ServerConnectionManager {
         return ret;
     }
 
-    public void deployModules(boolean force) {
+    public void deployModules(final DataContext dataContext, boolean force) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
             checkBinding(serverConfiguration);
@@ -350,7 +383,8 @@ public class ServerConnectionManager {
                     if(module.isOSGiBundle()) {
                         InputStream contents = null;
                         // Check if this is a OSGi Bundle
-                        if(module.getMavenProject().getPackaging().equalsIgnoreCase("bundle")) {
+                        final MavenProject mavenProject = module.getMavenProject();
+                        if(mavenProject.getPackaging().equalsIgnoreCase("bundle")) {
                             try {
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
                                 //                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
@@ -359,6 +393,40 @@ public class ServerConnectionManager {
                                     File buildFile = new File(buildDirectory, module.getMavenProject().getFinalName() + ".jar");
                                     messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
                                     if(buildFile.exists()) {
+                                        // This is not working as of now. The test project is not able to resolve aem-api and I cannot built it with
+                                        // the Maven Plugin as well.
+                                        //AS TODO: For now the User has to built it manually -> add a check and alert the user if a file has changed since the last buil
+//                                        // Check and build the module first if necessary
+//                                        ApplicationManager.getApplication().invokeAndWait(
+//                                            new Runnable() {
+//                                                @Override
+//                                                public void run() {
+//                                                    List<String> goals = MavenDataKeys.MAVEN_GOALS.getData(dataContext);
+//                                                    if(goals == null) {
+//                                                        goals = new ArrayList<String>();
+//                                                    }
+//                                                    if(goals.isEmpty()) {
+//                                                        goals.add("package");
+//                                                    }
+//                                                    final MavenProjectsManager projectsManager = MavenActionUtil.getProjectsManager(dataContext);
+//                                                    if(projectsManager == null) {
+//                                                        messageManager.showAlert("Maven Failure", "Could not find Maven Project Manager, need to build manually");
+//                                                    } else {
+//                                                        String workingDirectory = mavenProject.getDirectory();
+//                                                        MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
+//                                                        final MavenRunnerParameters params = new MavenRunnerParameters(
+//                                                            true,
+//                                                            workingDirectory,
+//                                                            goals,
+//                                                            explicitProfiles.getEnabledProfiles(),
+//                                                            explicitProfiles.getDisabledProfiles());
+//                                                        MavenRunConfigurationType.runConfiguration(project, params, null);
+//                                                    }
+//                                                }
+//                                            },
+//                                            ApplicationManager.getApplication().getCurrentModalityState()
+//                                        );
+
                                         EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
                                         contents = bundle.openInputStream();
                                         obtainSGiClient().installBundle(contents, bundle.getName());

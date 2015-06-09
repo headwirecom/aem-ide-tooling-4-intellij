@@ -1,7 +1,6 @@
 package org.apache.sling.ide.impl.vlt;
 
 import org.apache.sling.ide.log.Logger;
-import org.eclipse.core.runtime.MyBundleContext;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;

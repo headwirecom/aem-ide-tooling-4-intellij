@@ -72,14 +72,6 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
             return new SlingServerModuleNodeDescriptor(myProject, parentDescriptor, (ServerConfiguration.Module) element);
         }
 
-//    if (element instanceof AntBuildFileBase) {
-//      return new AntBuildFileNodeDescriptor(myProject, parentDescriptor, (AntBuildFileBase)element);
-//    }
-//
-//    if (element instanceof AntBuildTargetBase) {
-//      return new AntTargetNodeDescriptor(myProject, parentDescriptor, (AntBuildTargetBase)element);
-//    }
-
         LOG.error("Unknown element for this tree structure " + element);
         return null;
     }
@@ -98,19 +90,6 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
         if (element instanceof ServerConfiguration) {
             return ((ServerConfiguration) element).getModuleList().toArray();
         }
-//      final AntBuildFile buildFile = (AntBuildFile)element;
-//      final AntBuildModel model = buildFile.getModel();
-//
-//      final List<AntBuildTarget> targets =
-//        new ArrayList<AntBuildTarget>(Arrays.asList(myFilteredTargets ? model.getFilteredTargets() : model.getTargets()));
-//      Collections.sort(targets, ourTargetComparator);
-//
-//      final List<AntBuildTarget> metaTargets = Arrays.asList(configuration.getMetaTargets(buildFile));
-//      Collections.sort(metaTargets, ourTargetComparator);
-//      targets.addAll(metaTargets);
-//
-//      return targets.toArray(new AntBuildTarget[targets.size()]);
-//    }
 
         return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
@@ -125,18 +104,6 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
         if(element instanceof ServerConfiguration.Module) {
             return ((ServerConfiguration.Module) element).getParent();
         }
-
-//    if (element instanceof AntBuildTarget) {
-//      if (element instanceof MetaTarget) {
-//        return ((MetaTarget)element).getBuildFile();
-//      }
-//      return ((AntBuildTarget)element).getModel().getBuildFile();
-//    }
-//
-//    if (element instanceof AntBuildFile) {
-//      return myRoot;
-//    }
-
         return null;
     }
 

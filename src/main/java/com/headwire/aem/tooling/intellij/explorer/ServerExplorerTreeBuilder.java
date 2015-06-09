@@ -29,74 +29,122 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
 
-  private static final TreePath[] EMPTY_TREE_PATH = new TreePath[0];
-  private final ConfigurationListener myConfigurationListener;
-  private final Project myProject;
-  private ServerConfigurationManager myConfig;
-  private ExpandedStateUpdater myExpansionListener;
+    private static final TreePath[] EMPTY_TREE_PATH = new TreePath[0];
+    private final ConfigurationListener myConfigurationListener;
+    private final Project myProject;
+    private ServerConfigurationManager myConfig;
+    private ExpandedStateUpdater myExpansionListener;
+    private SlingServerExplorer explorer;
 
-  public ServerExplorerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel) {
-    super(tree, treeModel, new ServerExplorerTreeStructure(project), IndexComparator.INSTANCE);
-    myProject = project;
-    myConfigurationListener = new ConfigurationListenerImpl();
-    myConfig = ServerConfigurationManager.getInstance(myProject);
-    myConfig.addConfigurationListener(myConfigurationListener);
-    myExpansionListener = new ExpandedStateUpdater();
-    tree.addTreeExpansionListener(myExpansionListener);
-    initRootNode();
-  }
+    public ServerExplorerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel, SlingServerExplorer explorer) {
+        super(tree, treeModel, new ServerExplorerTreeStructure(project), IndexComparator.INSTANCE);
+        this.explorer = explorer;
+        myProject = project;
+        myConfigurationListener = new ConfigurationListenerImpl();
+        myConfig = ServerConfigurationManager.getInstance(myProject);
+        myExpansionListener = new ExpandedStateUpdater();
+        tree.addTreeExpansionListener(myExpansionListener);
+        initRootNode();
+        myConfig.addConfigurationListener(myConfigurationListener);
+        getTree().getModel().addTreeModelListener(new ChangeListener());
+    }
 
 
-  public void dispose() {
+    public void dispose() {
 //    final AntConfiguration config = myConfig;
 //    if (config != null) {
 //      config.removeAntConfigurationListener(myAntBuildListener);
 //      myConfig = null;
 //    }
-    
-    final ExpandedStateUpdater expansionListener = myExpansionListener;
-    final JTree tree = getTree();
-    if (expansionListener != null && tree != null) {
-      tree.removeTreeExpansionListener(expansionListener);
-      myExpansionListener = null;
+
+        final ExpandedStateUpdater expansionListener = myExpansionListener;
+        final JTree tree = getTree();
+        if(expansionListener != null && tree != null) {
+            tree.removeTreeExpansionListener(expansionListener);
+            myExpansionListener = null;
+        }
+
+        super.dispose();
     }
-    
-    super.dispose();
-  }
 
-  protected boolean isAlwaysShowPlus(NodeDescriptor nodeDescriptor) {
-    return false;
-  }
+    protected boolean isAlwaysShowPlus(NodeDescriptor nodeDescriptor) {
+        return false;
+    }
 
-  protected boolean isAutoExpandNode(NodeDescriptor nodeDescriptor) {
-      // This is what expands the tree automatically when it opens
-        return ((ServerNodeDescriptor)nodeDescriptor).isAutoExpand();
-  }
+    protected boolean isAutoExpandNode(NodeDescriptor nodeDescriptor) {
+        // This is what expands the tree automatically when it opens
+        return ((ServerNodeDescriptor) nodeDescriptor).isAutoExpand();
+    }
 
-  public void setTargetsFiltered(boolean value) {
+    public void setTargetsFiltered(boolean value) {
 //    ((AntExplorerTreeStructure)getTreeStructure()).setFilteredTargets(value);
-    queueUpdate();
-  }
-
-  @NotNull
-  protected ProgressIndicator createProgressIndicator() {
-    return ProgressIndicatorUtils.forceWriteActionPriority(new ProgressIndicatorBase(true), this);
-  }
-
-  private final class ConfigurationListenerImpl
-      implements ConfigurationListener
-  {
-    public void configurationLoaded() {
-      queueUpdate();
+        queueUpdate();
     }
+
+    @NotNull
+    protected ProgressIndicator createProgressIndicator() {
+        return ProgressIndicatorUtils.forceWriteActionPriority(new ProgressIndicatorBase(true), this);
+    }
+
+    private final class ConfigurationListenerImpl
+        implements ConfigurationListener {
+
+        private boolean first = true;
+
+        public void configurationLoaded() {
+            queueUpdate();
+            if(first) {
+                Object modelRoot = getTreeModel().getRoot();
+                if(modelRoot instanceof DefaultMutableTreeNode) {
+                    DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) modelRoot;
+                    Enumeration e = rootNode.children();
+//                    Enumeration<TreeNode> e = rootNode.pathFromAncestorEnumeration(rootNode);
+                    while(e.hasMoreElements()) {
+                        TreeNode child = (TreeNode) e.nextElement();
+                        if(child instanceof DefaultMutableTreeNode) {
+                            DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
+                            Object target = childNode.getUserObject();
+                            if(target instanceof SlingServerNodeDescriptor) {
+                                SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
+                                if(descriptor.getTarget().isDefault()) {
+                                    getTree().setSelectionPath(new TreePath(childNode.getPath()));
+                                    // Not call the check module method
+                                    first = false;
+                                    explorer.doCheck();
+//AS TODO: When we expand here a phantom line remains (not sure how to clean that up -> find a good solution to clean it up or to call this when the tree is fully built
+//                                    expandAll();
+
+                                }
+                            }
+                        }
+                    }
+                }
+//                Object root = getTreeStructure().getRootElement();
+//                Object[] children = getTreeStructure().getChildElements(root);
+//                for(Object child : children) {
+//                    // Now find its children to make find the Server Configurations
+//                    if(child instanceof SlingServerNodeDescriptor) {
+//                        ServerConfiguration serverConfiguration = ((SlingServerNodeDescriptor) child).getServerConfiguration();
+//                        if(serverConfiguration.isDefault()) {
+//                            // Now how to select that entry
+////                            getTree().
+//                        }
+//                    }
+//                }
+            }
+        }
 
 //    public void buildFileAdded(AntBuildFile buildFile) {
 //      queueUpdate();
@@ -109,38 +157,38 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
 //    public void buildFileRemoved(AntBuildFile buildFile) {
 //      queueUpdate();
 //    }
-  }
-
-  public void expandAll() {
-    final List<Object> pathsToExpand = new ArrayList<Object>();
-    final List<Object> selectionPaths = new ArrayList<Object>();
-    TreeBuilderUtil.storePaths(this, getRootNode(), pathsToExpand, selectionPaths, true);
-    int row = 0;
-    while (row < getTree().getRowCount()) {
-      getTree().expandRow(row);
-      row++;
     }
-    getTree().setSelectionPaths(EMPTY_TREE_PATH);
-    TreeBuilderUtil.restorePaths(this, pathsToExpand, selectionPaths, true);
-  }
 
-  void collapseAll() {
-    final List<Object> pathsToExpand = new ArrayList<Object>();
-    final List<Object> selectionPaths = new ArrayList<Object>();
-    TreeBuilderUtil.storePaths(this, getRootNode(), pathsToExpand, selectionPaths, true);
+    public void expandAll() {
+        final List<Object> pathsToExpand = new ArrayList<Object>();
+        final List<Object> selectionPaths = new ArrayList<Object>();
+        TreeBuilderUtil.storePaths(this, getRootNode(), pathsToExpand, selectionPaths, true);
+        int row = 0;
+        while(row < getTree().getRowCount()) {
+            getTree().expandRow(row);
+            row++;
+        }
+        getTree().setSelectionPaths(EMPTY_TREE_PATH);
+        TreeBuilderUtil.restorePaths(this, pathsToExpand, selectionPaths, true);
+    }
+
+    void collapseAll() {
+        final List<Object> pathsToExpand = new ArrayList<Object>();
+        final List<Object> selectionPaths = new ArrayList<Object>();
+        TreeBuilderUtil.storePaths(this, getRootNode(), pathsToExpand, selectionPaths, true);
 //AS TODO: TreeUtil.collapseAll() does expand all entries at the end. Copied over and took out what did not work
 //    TreeUtil.collapseAll(getTree(), 1);
-    collapseAll(getTree(), 1);
+        collapseAll(getTree(), 1);
 //    getTree().setSelectionPaths(EMPTY_TREE_PATH);
 //    pathsToExpand.clear();
 //    TreeBuilderUtil.restorePaths(this, pathsToExpand, selectionPaths, true);
-  }
+    }
 
     public static void collapseAll(@NotNull final JTree tree, final int keepSelectionLevel) {
         final TreePath leadSelectionPath = tree.getLeadSelectionPath();
         // Collapse all
         int row = tree.getRowCount() - 1;
-        while (row >= 0) {
+        while(row >= 0) {
             tree.collapseRow(row);
             row--;
         }
@@ -156,25 +204,46 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
 //        }
     }
 
-  private class ExpandedStateUpdater implements TreeExpansionListener {
-    public void treeExpanded(TreeExpansionEvent event) {
-      setExpandedState(event, true);
-    }
-
-    public void treeCollapsed(TreeExpansionEvent event) {
-      setExpandedState(event, false);
-    }
-
-    private void setExpandedState(TreeExpansionEvent event, boolean shouldExpand) {
-      final TreePath path = event.getPath();
-      final AbstractTreeUi ui = getUi();
-      final Object lastPathComponent = path.getLastPathComponent();
-      if (lastPathComponent != null) {
-        final Object element = ui.getElementFor(lastPathComponent);
-        if (element instanceof ServerNodeDescriptor) {
-//          ((ServerNodeDescriptor)element).setShouldExpand(shouldExpand);
+    private class ExpandedStateUpdater implements TreeExpansionListener {
+        public void treeExpanded(TreeExpansionEvent event) {
+            setExpandedState(event, true);
         }
-      }
+
+        public void treeCollapsed(TreeExpansionEvent event) {
+            setExpandedState(event, false);
+        }
+
+        private void setExpandedState(TreeExpansionEvent event, boolean shouldExpand) {
+            final TreePath path = event.getPath();
+            final AbstractTreeUi ui = getUi();
+            final Object lastPathComponent = path.getLastPathComponent();
+            if(lastPathComponent != null) {
+                final Object element = ui.getElementFor(lastPathComponent);
+                if(element instanceof ServerNodeDescriptor) {
+//          ((ServerNodeDescriptor)element).setShouldExpand(shouldExpand);
+                }
+            }
+        }
     }
-  }
+
+    private class ChangeListener implements TreeModelListener {
+
+        @Override
+        public void treeNodesChanged(TreeModelEvent treeModelEvent) {
+        }
+
+        @Override
+        public void treeNodesInserted(TreeModelEvent treeModelEvent) {
+            myConfigurationListener.configurationLoaded();
+        }
+
+        @Override
+        public void treeNodesRemoved(TreeModelEvent treeModelEvent) {
+        }
+
+        @Override
+        public void treeStructureChanged(TreeModelEvent treeModelEvent) {
+//            myConfigurationListener.configurationLoaded();
+        }
+    }
 }

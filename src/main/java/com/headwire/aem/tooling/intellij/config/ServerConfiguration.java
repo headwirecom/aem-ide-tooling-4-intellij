@@ -81,7 +81,7 @@ public class ServerConfiguration
 
     public enum ServerStatus {
 //        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed, upToDate("synchronized"), outdated("out dated");
-        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed;
+        notConnected("not connected"), connecting, connected, disconnecting, disconnected, checking, checked, failed;
 
         private String name;
 
@@ -108,12 +108,14 @@ public class ServerConfiguration
     private int stopConnectionTimeout = DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS;
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
     private InstallationType installationType = DEFAULT_INSTALL_TYPE;
+    private boolean defaultConfiguration = false;
 
     // Don't store Server Status as it is reset when the Configuration is loaded again
     //AS TODO: Not sure about this -> Check if that works
     private transient ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
     private transient SynchronizationStatus synchronizationStatus = DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
     private transient boolean bound = false;
+    private transient boolean booted = false;
     // Modules must be stored because they carry the info if a project is part of the deployment build
     private List<Module> moduleList = new ArrayList<Module>();
 
@@ -129,6 +131,7 @@ public class ServerConfiguration
         name = source.name;
         host = source.host;
         description = source.description;
+        defaultConfiguration = source.defaultConfiguration;
         connectionPort = source.connectionPort;
         connectionDebugPort = source.connectionDebugPort;
         userName = source.userName;
@@ -274,6 +277,22 @@ public class ServerConfiguration
 
     public void setSynchronizationStatus(SynchronizationStatus synchronizationStatus) {
         this.synchronizationStatus = synchronizationStatus != null ? synchronizationStatus : DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
+    }
+
+    public boolean isDefault() {
+        return defaultConfiguration;
+    }
+
+    public void setDefault(boolean defaultConfiguration) {
+        this.defaultConfiguration = defaultConfiguration;
+    }
+
+    public boolean isBooted() {
+        return booted;
+    }
+
+    public void setBooted(boolean booted) {
+        this.booted = booted;
     }
 
     @Nullable

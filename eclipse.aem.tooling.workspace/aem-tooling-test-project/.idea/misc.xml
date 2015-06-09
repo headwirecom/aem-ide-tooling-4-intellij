@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AEMPluginConfiguration">
+    <aemConfiguration incrementalBuilds="true" />
+  </component>
   <component name="AEMToolingPluginConfiguration">
     <asm skipDebug="false" skipFrames="false" skipCode="false" expandFrames="false" />
     <groovy />
   </component>
   <component name="ASMPluginConfiguration">
-    <asm skipDebug="false" skipFrames="false" skipCode="false" expandFrames="false" />
-    <groovy codeStyle="LEGACY" />
+    <aemConfiguration incrementalBuilds="false" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
@@ -32,12 +34,13 @@
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ServerConfiguration">
-    <ssc-0 name="Default Configuration" host="localhost" description="No Description" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="30" stopConnectionTimeout="15" publishType="automaticallyOnChange" installationType="installViaBundleUpload">
+    <ssc-0 name="Default Configuration" host="localhost" description="No Description" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="30" stopConnectionTimeout="15" publishType="automaticallyOnChange" installationType="installViaBundleUpload" default="false">
       <sscm-0 artifactId="aem-tooling-test-project.it.tests" symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.it.tests" partOfBuild="true" lastModificationTimestamp="0" />
       <sscm-1 artifactId="aem-tooling-test-project.it.launcher" symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.it.launcher" partOfBuild="true" lastModificationTimestamp="0" />
       <sscm-2 artifactId="aem-tooling-test-project.core" symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.core" partOfBuild="true" lastModificationTimestamp="0" />
-      <sscm-3 artifactId="aem-tooling-test-project.ui.apps" symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.ui.apps" partOfBuild="true" lastModificationTimestamp="1432653268000" />
+      <sscm-3 artifactId="aem-tooling-test-project.ui.apps" symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.ui.apps" partOfBuild="true" lastModificationTimestamp="1433452755000" />
       <sscm-4 artifactId="aem-tooling-test-project.ui.content" symbolicName="com.headwire.aem.tooling.aem-tooling-test-project.ui.content" partOfBuild="true" lastModificationTimestamp="1433274694000" />
     </ssc-0>
+    <ssc-1 name="Test.com Server" host="test.com" description="No Description" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="30" stopConnectionTimeout="15" publishType="automaticallyOnChange" installationType="installViaBundleUpload" default="false" />
   </component>
 </project>
