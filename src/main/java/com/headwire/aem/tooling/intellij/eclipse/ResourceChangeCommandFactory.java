@@ -183,6 +183,18 @@ public class ResourceChangeCommandFactory {
                 IOUtils.closeQuietly(contents);
             }
         } else {
+            //AS TODO: Start the handling of .content.xml sub folder content. This can happen when there are images etc
+            //AS TODO: that belong to a jcr:content node and therefore do not fit into the .content.xml file
+            //AS TODO: Not sure how this is done in Eclipse of if Eclipse just ignores it
+
+            // If the path of a resource contains or ends with _jcr_content then we do not handle it as it should
+            // be done by the corresponding .content.xml file
+            String filePath = resource.getFile().getPath();
+            if(filePath.indexOf("/_jcr_content/") > 0 || filePath.endsWith("/_jcr_content")) {
+                return null;
+            }
+
+            //AS TODO: Done with the special _jcr_content folder handling
 
             // TODO - move logic to serializationManager
             // possible .dir serialization holder

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/aemtoolingtest.iml" filepath="$PROJECT_DIR$/aemtoolingtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/aemtoolingtest.core.iml" filepath="$PROJECT_DIR$/core/aemtoolingtest.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/it.launcher/aemtoolingtest.it.launcher.iml" filepath="$PROJECT_DIR$/it.launcher/aemtoolingtest.it.launcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/it.tests/aemtoolingtest.it.tests.iml" filepath="$PROJECT_DIR$/it.tests/aemtoolingtest.it.tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui.apps/aemtoolingtest.ui.apps.iml" filepath="$PROJECT_DIR$/ui.apps/aemtoolingtest.ui.apps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui.content/aemtoolingtest.ui.content.iml" filepath="$PROJECT_DIR$/ui.content/aemtoolingtest.ui.content.iml" />
+    </modules>
+  </component>
+</project>

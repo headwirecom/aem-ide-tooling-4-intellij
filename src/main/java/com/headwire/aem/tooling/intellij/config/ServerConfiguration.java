@@ -41,7 +41,7 @@ public class ServerConfiguration
 
     protected static final String COMPONENT_NAME = "ServerConfiguration";
 
-    public enum PublishType {never, automaticallyOnChange, getAutomaticallyOnBuild};
+    public enum PublishType {never, automaticallyOnChange, automaticallyOnBuild};
     public enum InstallationType {installViaBundleUpload, installFromFilesystem};
     public enum SynchronizationStatus {
         /** Module was not checked against Sling server **/

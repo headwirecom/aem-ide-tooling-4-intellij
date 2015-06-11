@@ -70,13 +70,19 @@ A Server Configuration is created by clicking on the plus (+) icon. After the cr
 
 4) Edit the timeouts (not supported yet)  
 
+**Attention**: as of now the OSGi Client does not support configurable timeouts and the Debug Connection does not need one.
+
 ![Enter the Timeouts](./img/2.3.2.Plugin.Edit.Server.Configuration.Timeouts.png)
 
-5) Edit the Publishing (not supported yet)  
+5) Edit the Publishing
+
+**Attention**: the automatic deployment of changed resources can be disabled but for now the automatic deployment on Maven build is not supported.  
 
 ![Edit the Publishing Settings](./img/2.3.3.Plugin.Edit.Server.Configuration.Publishing.png)
 
-6) Edit the Installation (not supported yet)  
+6) Edit the Installation
+
+**Attention**: because IntelliJ IDEA does not support incremental build in a Maven project the installation directly from the File System is disabled.
 
 ![Edit the Installation Settings](./img/2.3.4.Plugin.Edit.Server.Configuration.Install.png)
 

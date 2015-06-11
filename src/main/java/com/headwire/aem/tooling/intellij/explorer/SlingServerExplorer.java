@@ -195,7 +195,9 @@ public class SlingServerExplorer
         setContent(ScrollPaneFactory.createScrollPane(myTree));
         ToolTipManager.sharedInstance().registerComponent(myTree);
         myKeyMapListener = new KeyMapListener();
-        new ContentResourceChangeListener(myProject, serverConnectionManager);
+        final MessageBus bus = myProject.getMessageBus();
+        myConn = bus.connect();
+        new ContentResourceChangeListener(myProject, serverConnectionManager, myConn);
 
         DomManager.getDomManager(project).addDomEventListener(new DomEventListener() {
             public void eventOccured(DomEvent event) {
@@ -213,10 +215,8 @@ public class SlingServerExplorer
 
         messageManager = MessageManager.getInstance(myProject);
 
-        final MessageBus bus = myProject.getMessageBus();
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
         // and when it is taken down even when not started or stopped through the Plugin
-        myConn = bus.connect();
         myConn.subscribe(
             ExecutionManager.EXECUTION_TOPIC,
             new ExecutionAdapter() {
@@ -250,25 +250,14 @@ public class SlingServerExplorer
                 messageManager.sendDebugNotification("Container Event: " + containerEvent);
             }
         });
-        // Check the Server Configurations if there is one that is marked default and if it will be selected and checked now
-//        for(ServerConfiguration serverConfiguration: myConfig.getServerConfigurations()) {
-//            if(serverConfiguration.isDefault()) {
-                int i =1;
-                Object rootObject = model.getRoot();
+    }
 
-                String message = rootObject.toString();
-//                model.getChild()
-//                while(true) {
-//                    TreePath path = myTree.getPathForRow(i);
-//                    if(path != null) {
-//                        path.
-//                    }
-//                }
-//                TreePath treePath = myTree.getPathForRow(0);
-//                treePath.
-//                myTree.setSelectionRow();
-//            }
-//        }
+    public ServerConnectionManager getServerConnectionManager() {
+        return serverConnectionManager;
+    }
+
+    public ServerTreeSelectionHandler getSelectionHandler() {
+        return selectionHandler;
     }
 
     public void dispose() {
@@ -319,9 +308,10 @@ public class SlingServerExplorer
         action.getTemplatePresentation().setDescription(AEMBundle.message("aem.explorer.collapse.all.nodes.action.description"));
         group.add(action);
 
-        final ActionToolbar actionToolBar = ActionManager.getInstance().createActionToolbar(ActionPlaces.ANT_EXPLORER_TOOLBAR, group, true);
+        final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.ANT_EXPLORER_TOOLBAR, group, true);
+
         final JPanel buttonsPanel = new JPanel(new BorderLayout());
-        buttonsPanel.add(actionToolBar.getComponent(), BorderLayout.CENTER);
+        buttonsPanel.add(actionToolbar.getComponent(), BorderLayout.CENTER);
         return buttonsPanel;
     }
 

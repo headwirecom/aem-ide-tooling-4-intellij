@@ -1,3 +1,0 @@
-// Test as12345as-try-again
-// Another Line for me
-SampleTests.js
