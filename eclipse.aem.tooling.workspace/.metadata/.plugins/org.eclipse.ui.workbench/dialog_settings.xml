@@ -12,10 +12,4 @@
 		<list key="textArray">
 		</list>
 	</section>
-	<section name="NewWizardAction">
-		<item value="org.apache.sling.ide.eclipse.ui.wizards.NewGraniteProjectWizard" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
-		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
-			<item value="com.adobe.granite.ide.eclipse.ui"/>
-		</list>
-	</section>
 </section>

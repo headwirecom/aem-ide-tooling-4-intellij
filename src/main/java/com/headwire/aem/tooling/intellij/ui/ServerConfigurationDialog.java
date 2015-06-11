@@ -6,7 +6,6 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class ServerConfigurationDialog
@@ -78,7 +77,7 @@ public class ServerConfigurationDialog
         ServerConfiguration.PublishType publishType =
             neverAutomaticallyPublishContentRadioButton.isSelected() ? ServerConfiguration.PublishType.never :
                 automaticallyPublishOnChangeRadioButton.isSelected() ? ServerConfiguration.PublishType.automaticallyOnChange :
-                    automaticallyPublishOnBuildRadioButton.isSelected() ? ServerConfiguration.PublishType.getAutomaticallyOnBuild :
+                    automaticallyPublishOnBuildRadioButton.isSelected() ? ServerConfiguration.PublishType.automaticallyOnBuild :
                         null;
         ret.setPublishType(publishType);
         ServerConfiguration.InstallationType installationType =
@@ -110,7 +109,7 @@ public class ServerConfigurationDialog
                 case automaticallyOnChange:
                     automaticallyPublishOnChangeRadioButton.setSelected(true);
                     break;
-                case getAutomaticallyOnBuild:
+                case automaticallyOnBuild:
                     automaticallyPublishOnBuildRadioButton.setSelected(true);
                     break;
                 default:

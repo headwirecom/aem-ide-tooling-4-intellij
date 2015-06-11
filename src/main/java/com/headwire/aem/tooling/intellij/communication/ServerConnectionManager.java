@@ -395,7 +395,7 @@ public class ServerConnectionManager {
                                     if(buildFile.exists()) {
                                         // This is not working as of now. The test project is not able to resolve aem-api and I cannot built it with
                                         // the Maven Plugin as well.
-                                        //AS TODO: For now the User has to built it manually -> add a check and alert the user if a file has changed since the last buil
+                                        //AS TODO: For now the User has to built it manually -> add a check and alert the user if a file has changed since the last build
 //                                        // Check and build the module first if necessary
 //                                        ApplicationManager.getApplication().invokeAndWait(
 //                                            new Runnable() {
@@ -686,13 +686,13 @@ public class ServerConnectionManager {
                 messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
             }
         } catch(CoreException e) {
-            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed", module, e);
+            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         } catch(SerializationException e) {
-            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed", module, e);
+            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         } catch(IOException e) {
-            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed", module, e);
+            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.io", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
         }
     }
@@ -1038,4 +1038,25 @@ public class ServerConnectionManager {
         return ret;
     }
 
+    /**
+     * Checks if the current selected and connected Server Connection are the same (to avoid accidental deployments)
+     * and also checks if automatic builds are supported
+     * @param showAlert Displays an alert if the current selected and connected server connection are different
+     * @param automaticBuild If true it will check if the publish type is set to automatically on change
+     * @return True if the connection are in sync and if automatic build are support (if it is set to be checked)
+     */
+    public boolean checkSelectedServerConfiguration(boolean showAlert, boolean automaticBuild) {
+        ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+        ServerConfiguration connectedServerConfiguration = serverConfigurationManager.findConnectedServerConfiguration();
+        if(connectedServerConfiguration != null && serverConfiguration != connectedServerConfiguration) {
+            if(showAlert) {
+                messageManager.showAlert("aem.explorer.check.connection.out.of.sync");
+            }
+            return false;
+        } else if(automaticBuild && serverConfiguration.getPublishType() != ServerConfiguration.PublishType.automaticallyOnChange) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
