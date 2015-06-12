@@ -190,7 +190,7 @@ public class ResourceChangeCommandFactory {
             // If the path of a resource contains or ends with _jcr_content then we do not handle it as it should
             // be done by the corresponding .content.xml file
             String filePath = resource.getFile().getPath();
-            if(filePath.indexOf("/_jcr_content/") > 0 || filePath.endsWith("/_jcr_content")) {
+            if((filePath.indexOf("/_jcr_content/") > 0 || filePath.endsWith("/_jcr_content")) && !(filePath.contains(("/_jcr_content/renditions")))) {
                 return null;
             }
 
@@ -511,9 +511,13 @@ public class ResourceChangeCommandFactory {
         for ( IResource extraChildResource : extraChildResources.values()) {
             IPath extraChildResourcePath = extraChildResource.getFullPath()
                 .makeRelativeTo(syncDirectory.getFullPath()).makeAbsolute();
-            String path = serializationManager.getRepositoryPath(extraChildResourcePath.toPortableString());
-            path = path.substring(syncDirectory.getFullPath().toFile().getPath().length());
-            if(!path.equals(resourceProxy.getPath())) {
+//            String path = serializationManager.getRepositoryPath(extraChildResourcePath.toPortableString());
+//            path = path.substring(syncDirectory.getFullPath().toFile().getPath().length());
+            String path2 = serializationManager.getRepositoryPath(extraChildResourcePath.toPortableString());
+            int length = syncDirectory.getFullPath().toFile().getPath().length();
+            String path = path2.substring(length);
+            //AS TODO: Not sure why now we suddenly have empty paths but lets fix it here dirty
+            if(!path.equals("") && !path.equals(resourceProxy.getPath())) {
                 resourceProxy.addChild(new ResourceProxy(path));
                 Activator.getDefault().getPluginLogger()
                     .trace("For resource at with serialization data {0} the found a child resource at {1} which is not listed in the serialized child resources and will be added",

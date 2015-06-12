@@ -647,12 +647,10 @@ public class SlingServerExplorer
                         indicator.setFraction(0.0);
                         ApplicationManager.getApplication().runReadAction(new Runnable() {
                             public void run() {
-                                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-                                ServerConfiguration connectedServerConfiguration = myConfig.findConnectedServerConfiguration();
-                                if(connectedServerConfiguration != null && serverConfiguration != connectedServerConfiguration) {
-                                    messageManager.showAlert("aem.explorer.check.connection.out.of.sync");
+                                if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
                                     return;
                                 }
+                                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                                 //AS TODO: this is not showing if the check is short but if it takes longer it will update
                                 indicator.setFraction(0.1);
                                 serverConnectionManager.updateServerStatus(
@@ -832,8 +830,14 @@ public class SlingServerExplorer
                                     // First Check if the Install Support Bundle is installed
                                     ServerConnectionManager.BundleStatus bundleStatus = serverConnectionManager.checkAndUpdateSupportBundle(true);
                                     indicator.setFraction(0.5);
-                                    // Deploy all selected Modules
-                                    serverConnectionManager.deployModules(dataContext, forceDeploy);
+                                    ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
+                                    if(module != null) {
+                                        // Deploy only the selected Module
+                                        serverConnectionManager.deployModule(module, forceDeploy);
+                                    } else {
+                                        // Deploy all Modules of the Project
+                                        serverConnectionManager.deployModules(dataContext, forceDeploy);
+                                    }
                                     indicator.setFraction(1.0);
                                 } finally {
                                     indicator.popState();

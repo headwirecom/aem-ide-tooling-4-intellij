@@ -21,7 +21,7 @@
     <output url="file://$PROJECT_DIR$/classes" />
   </component>
   <component name="ServerConfiguration">
-    <ssc-0 name="Default Configuration" host="localhost" description="My Default Dev Server" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="30" stopConnectionTimeout="15" publishType="automaticallyOnChange" installationType="installViaBundleUpload" default="false">
+    <ssc-0 name="Default Configuration" host="localhost" description="My Default Dev Server" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="30" stopConnectionTimeout="15" publishType="never" installationType="installViaBundleUpload" default="false">
       <sscm-0 artifactId="aemtoolingtest.it.tests" symbolicName="com.headwire.plugin.aemtoolingtest.it.tests" partOfBuild="true" lastModificationTimestamp="0" />
       <sscm-1 artifactId="aemtoolingtest.it.launcher" symbolicName="com.headwire.plugin.aemtoolingtest.it.launcher" partOfBuild="true" lastModificationTimestamp="0" />
       <sscm-2 artifactId="aemtoolingtest.core" symbolicName="com.headwire.plugin.aemtoolingtest.core" partOfBuild="true" lastModificationTimestamp="0" />

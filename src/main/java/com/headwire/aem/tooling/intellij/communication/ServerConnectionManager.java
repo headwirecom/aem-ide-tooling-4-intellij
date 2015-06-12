@@ -207,11 +207,12 @@ public class ServerConnectionManager {
                         String moduleName = mavenProject.getName();
                         String artifactId = mavenId.getArtifactId();
                         String version = mavenId.getVersion();
-                        version = version.replaceAll("-", ".");
-                        Version localVersion = new Version(version);
+                        version = checkBundleVersion(version);
+//                        Version localVersion = new Version(version);
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
                         if(module.isOSGiBundle()) {
                             Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
+                            Version localVersion = new Version(version);
                             messageManager.sendDebugNotification("Check OSGi Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
                             boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
                             Object state = BundleStateHelper.getBundleState(module);
@@ -256,6 +257,37 @@ public class ServerConnectionManager {
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             ret = false;
         }
+        return ret;
+    }
+
+    private String checkBundleVersion(String version) {
+        String ret = "";
+        // Versions need to be in this format n.n.n(-|_)aaaaa where n is a number and a are alphanumeric characters
+        // If a version number is missing we need to add and superfluous numbers need to be removed
+        int separator = version.indexOf('-');
+        if(separator < 0) {
+            separator = version.indexOf("-");
+        }
+        String qualifier = "";
+        if(separator >= 0) {
+            qualifier = "." + (separator < version.length() - 1 ? version.substring(separator + 1) : "");
+            version = version.substring(0, separator);
+        }
+        String[] tokens = version.split("\\.");
+        ArrayList<String> tokenList = new ArrayList<String>(Arrays.asList(tokens));
+        while(tokenList.size() < 3) {
+            tokenList.add("0");
+        }
+        while(tokenList.size() > 3) {
+            tokenList.remove(tokenList.size() - 1);
+        }
+        // Build version
+        for(String token: tokenList) {
+            ret += token + ".";
+        }
+        ret = ret.substring(0, ret.length() - 1);
+        ret += qualifier;
+
         return ret;
     }
 
@@ -379,91 +411,29 @@ public class ServerConnectionManager {
             checkBinding(serverConfiguration);
             List<Module> moduleList = serverConfiguration.getModuleList();
             for(ServerConfiguration.Module module: moduleList) {
-                if(module.isPartOfBuild()) {
-                    if(module.isOSGiBundle()) {
-                        InputStream contents = null;
-                        // Check if this is a OSGi Bundle
-                        final MavenProject mavenProject = module.getMavenProject();
-                        if(mavenProject.getPackaging().equalsIgnoreCase("bundle")) {
-                            try {
-                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
-                                //                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
-                                File buildDirectory = new File(module.getMavenProject().getBuildDirectory());
-                                if(buildDirectory.exists() && buildDirectory.isDirectory()) {
-                                    File buildFile = new File(buildDirectory, module.getMavenProject().getFinalName() + ".jar");
-                                    messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
-                                    if(buildFile.exists()) {
-                                        // This is not working as of now. The test project is not able to resolve aem-api and I cannot built it with
-                                        // the Maven Plugin as well.
-                                        //AS TODO: For now the User has to built it manually -> add a check and alert the user if a file has changed since the last build
-//                                        // Check and build the module first if necessary
-//                                        ApplicationManager.getApplication().invokeAndWait(
-//                                            new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    List<String> goals = MavenDataKeys.MAVEN_GOALS.getData(dataContext);
-//                                                    if(goals == null) {
-//                                                        goals = new ArrayList<String>();
-//                                                    }
-//                                                    if(goals.isEmpty()) {
-//                                                        goals.add("package");
-//                                                    }
-//                                                    final MavenProjectsManager projectsManager = MavenActionUtil.getProjectsManager(dataContext);
-//                                                    if(projectsManager == null) {
-//                                                        messageManager.showAlert("Maven Failure", "Could not find Maven Project Manager, need to build manually");
-//                                                    } else {
-//                                                        String workingDirectory = mavenProject.getDirectory();
-//                                                        MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
-//                                                        final MavenRunnerParameters params = new MavenRunnerParameters(
-//                                                            true,
-//                                                            workingDirectory,
-//                                                            goals,
-//                                                            explicitProfiles.getEnabledProfiles(),
-//                                                            explicitProfiles.getDisabledProfiles());
-//                                                        MavenRunConfigurationType.runConfiguration(project, params, null);
-//                                                    }
-//                                                }
-//                                            },
-//                                            ApplicationManager.getApplication().getCurrentModalityState()
-//                                        );
-
-                                        EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
-                                        contents = bundle.openInputStream();
-                                        obtainSGiClient().installBundle(contents, bundle.getName());
-                                        module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
-                                    }
-                                }
-                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
-                            } catch(MalformedURLException e) {
-                                module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
-                                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.bad.url", e);
-                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
-                            } catch(OsgiClientException e) {
-                                module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
-                                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", e);
-                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
-                            } catch(IOException e) {
-                                module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
-                                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.io", e);
-                                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
-                            } finally {
-                                IOUtils.closeQuietly(contents);
-                            }
-                        }
-                    } else if(module.isSlingPackage()) {
-                        //AS TODO: Add the synchronization of the entire module
-                        publishModule(module, force);
-                    } else {
-                        messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not a supported package");
-                        updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.unsupported);
-                    }
-                } else {
-                    messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not Part of the Build");
-                    updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.excluded);
-                }
+                deployModule(module, force);
             }
         } else {
             messageManager.sendNotification("aem.explorer.deploy.modules.no.configuration.selected", NotificationType.WARNING);
+        }
+    }
+
+    public void deployModule(@NotNull ServerConfiguration.Module module, boolean force) {
+        messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+        checkBinding(module.getParent());
+        if(module.isPartOfBuild()) {
+            if(module.isOSGiBundle()) {
+                publishBundle(module);
+            } else if(module.isSlingPackage()) {
+                //AS TODO: Add the synchronization of the entire module
+                publishModule(module, force);
+            } else {
+                messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not a supported package");
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.unsupported);
+            }
+        } else {
+            messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not Part of the Build");
+            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.excluded);
         }
     }
 
@@ -601,6 +571,81 @@ public class ServerConnectionManager {
 
     // Publishing Stuff --------------------------
 
+    public void publishBundle(@NotNull Module module) {
+        messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
+        InputStream contents = null;
+        // Check if this is a OSGi Bundle
+        final MavenProject mavenProject = module.getMavenProject();
+        if(mavenProject.getPackaging().equalsIgnoreCase("bundle")) {
+            try {
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
+                //                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
+                File buildDirectory = new File(module.getMavenProject().getBuildDirectory());
+                if(buildDirectory.exists() && buildDirectory.isDirectory()) {
+                    File buildFile = new File(buildDirectory, module.getMavenProject().getFinalName() + ".jar");
+                    messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
+                    if(buildFile.exists()) {
+                        // This is not working as of now. The test project is not able to resolve aem-api and I cannot built it with
+                        // the Maven Plugin as well.
+                        //AS TODO: For now the User has to built it manually -> add a check and alert the user if a file has changed since the last build
+//                                        // Check and build the module first if necessary
+//                                        ApplicationManager.getApplication().invokeAndWait(
+//                                            new Runnable() {
+//                                                @Override
+//                                                public void run() {
+//                                                    List<String> goals = MavenDataKeys.MAVEN_GOALS.getData(dataContext);
+//                                                    if(goals == null) {
+//                                                        goals = new ArrayList<String>();
+//                                                    }
+//                                                    if(goals.isEmpty()) {
+//                                                        goals.add("package");
+//                                                    }
+//                                                    final MavenProjectsManager projectsManager = MavenActionUtil.getProjectsManager(dataContext);
+//                                                    if(projectsManager == null) {
+//                                                        messageManager.showAlert("Maven Failure", "Could not find Maven Project Manager, need to build manually");
+//                                                    } else {
+//                                                        String workingDirectory = mavenProject.getDirectory();
+//                                                        MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
+//                                                        final MavenRunnerParameters params = new MavenRunnerParameters(
+//                                                            true,
+//                                                            workingDirectory,
+//                                                            goals,
+//                                                            explicitProfiles.getEnabledProfiles(),
+//                                                            explicitProfiles.getDisabledProfiles());
+//                                                        MavenRunConfigurationType.runConfiguration(project, params, null);
+//                                                    }
+//                                                }
+//                                            },
+//                                            ApplicationManager.getApplication().getCurrentModalityState()
+//                                        );
+
+                        EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
+                        contents = bundle.openInputStream();
+                        obtainSGiClient().installBundle(contents, bundle.getName());
+                        module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
+                    }
+                }
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
+                messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
+            } catch(MalformedURLException e) {
+                module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
+                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.bad.url", e);
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
+            } catch(OsgiClientException e) {
+                module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
+                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", e);
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
+            } catch(IOException e) {
+                module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
+                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.io", e);
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
+            } finally {
+                IOUtils.closeQuietly(contents);
+            }
+        } else {
+            messageManager.sendNotification("aem.explorer.deploy.module.unsupported.maven.packaging", NotificationType.WARNING);
+        }
+    }
 
     public enum FileChangeType {CHANGED, CREATED, DELETED, MOVED, COPIED};
 
