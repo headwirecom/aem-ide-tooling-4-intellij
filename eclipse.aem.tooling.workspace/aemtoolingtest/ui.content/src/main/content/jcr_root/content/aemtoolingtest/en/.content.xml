@@ -10,7 +10,7 @@
         jcr:lastModified="{Date}2014-05-27T10:22:52.400+02:00"
         jcr:lastModifiedBy="admin"
         jcr:primaryType="nt:unstructured"
-        jcr:title="English 5"
+        jcr:title="English 7"
         sling:resourceType="aemtoolingtest/components/page/page-home">
         <par
             jcr:primaryType="nt:unstructured"
