@@ -51,13 +51,12 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
     private ServerConfigurationManager myConfig;
     private ExpandedStateUpdater myExpansionListener;
     private CheckServerConnectionAction checkAction;
-//    private SlingServerExplorer explorer;
 
     public ServerExplorerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel) {
         super(tree, treeModel, new ServerExplorerTreeStructure(project), IndexComparator.INSTANCE);
         myProject = project;
         myConfigurationListener = new ConfigurationListenerImpl();
-        myConfig = ServiceManager.getService(myProject, ServerConfigurationManager.class);
+        myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
         myExpansionListener = new ExpandedStateUpdater();
         tree.addTreeExpansionListener(myExpansionListener);
         initRootNode();
@@ -70,12 +69,6 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
 
 
     public void dispose() {
-//    final AntConfiguration config = myConfig;
-//    if (config != null) {
-//      config.removeAntConfigurationListener(myAntBuildListener);
-//      myConfig = null;
-//    }
-
         final ExpandedStateUpdater expansionListener = myExpansionListener;
         final JTree tree = getTree();
         if(expansionListener != null && tree != null) {
@@ -96,7 +89,6 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
     }
 
     public void setTargetsFiltered(boolean value) {
-//    ((AntExplorerTreeStructure)getTreeStructure()).setFilteredTargets(value);
         queueUpdate();
     }
 

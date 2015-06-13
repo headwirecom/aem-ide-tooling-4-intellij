@@ -25,29 +25,30 @@ import com.intellij.ui.SimpleTextAttributes;
 import org.jetbrains.annotations.NotNull;
 
 abstract class ServerNodeDescriptor
-        extends NodeDescriptor
-        implements CellAppearanceEx
+    extends NodeDescriptor
+    implements CellAppearanceEx
 {
 
-  public ServerNodeDescriptor(Project project, NodeDescriptor parentDescriptor) {
-    super(project, parentDescriptor);
-  }
+    public ServerNodeDescriptor(Project project, NodeDescriptor parentDescriptor) {
+        super(project, parentDescriptor);
+    }
 
-  public abstract boolean isAutoExpand();
+    public abstract boolean isAutoExpand();
 
-  public void customize(@NotNull SimpleColoredComponent component) {
-    component.append(toString(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
-  }
+    @Override
+    public void customize(@NotNull SimpleColoredComponent component) {
+        component.append(toString(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
+    }
 
-  @Override
-  public void customize(@NotNull final HtmlListCellRenderer renderer) {
-    renderer.append(toString(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
-  }
+    @Override
+    public void customize(@NotNull final HtmlListCellRenderer renderer) {
+        renderer.append(toString(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
+    }
 
-  @NotNull
-  public String getText() {
-    return toString();
-  }
+    @NotNull
+    public String getText() {
+        return toString();
+    }
 
     public abstract ServerConfiguration getServerConfiguration();
 

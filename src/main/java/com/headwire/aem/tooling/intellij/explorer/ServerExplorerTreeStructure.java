@@ -56,7 +56,7 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
 
     @Override
     @NotNull
-    public ServerNodeDescriptor createDescriptor(Object element, NodeDescriptor parentDescriptor) {
+    public NodeDescriptor createDescriptor(Object element, NodeDescriptor parentDescriptor) {
         if(element == myRoot) {
             return new RootNodeDescriptor(myProject, parentDescriptor);
         }
