@@ -33,11 +33,10 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileTypes.StdFileTypes;
@@ -47,11 +46,8 @@ import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.progress.util.SmoothProgressAdapter;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -85,7 +81,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -119,101 +114,76 @@ public class SlingServerExplorer
     public static final String ROOT_FOLDER = "/jcr_root/";
 
     private Project myProject;
-    private ServerExplorerTreeBuilder myBuilder;
+//    private ServerExplorerTreeBuilder myBuilder;
     private Tree myTree;
     private ServerConnectionManager serverConnectionManager;
     private ServerTreeSelectionHandler selectionHandler;
-    private KeyMapListener myKeyMapListener;
     private ServerConfigurationManager myConfig;
     private RunManagerEx myRunManager;
     private MessageBusConnection myConn = null;
     private MessageManager messageManager;
 
-    private final TreeExpander myTreeExpander = new TreeExpander() {
-        public void expandAll() {
-            myBuilder.expandAll();
-        }
-
-        public boolean canExpand() {
-            final ServerConfigurationManager config = myConfig;
-            return config != null && config.serverConfigurationSize() > 0;
-        }
-
-        public void collapseAll() {
-            myBuilder.collapseAll();
-        }
-
-        public boolean canCollapse() {
-            return canExpand();
-        }
-    };
-
     public SlingServerExplorer(final Project project) {
         super(true, true);
         setTransferHandler(new MyTransferHandler());
         myProject = project;
-        myConfig = ServerConfigurationManager.getInstance(project);
-        final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
-        myTree = new Tree(model);
-        myTree.setRootVisible(true);
-        myTree.setShowsRootHandles(true);
-        myTree.setCellRenderer(new NodeRenderer());
-        selectionHandler = new ServerTreeSelectionHandler(myTree);
-        serverConnectionManager = new ServerConnectionManager(project, selectionHandler);
-        myBuilder = new ServerExplorerTreeBuilder(project, myTree, model, this);
-        TreeUtil.installActions(myTree);
-        new TreeSpeedSearch(myTree);
-        myTree.addMouseListener(new PopupHandler() {
-            public void invokePopup(final Component comp, final int x, final int y) {
-                popupInvoked(comp, x, y);
-            }
-        });
-        new DoubleClickListener() {
-            @Override
-            protected boolean onDoubleClick(MouseEvent e) {
-                final int eventY = e.getY();
-                final int row = myTree.getClosestRowForLocation(e.getX(), eventY);
-                if(row >= 0) {
-                    final Rectangle bounds = myTree.getRowBounds(row);
-                    if(bounds != null && eventY > bounds.getY() && eventY < bounds.getY() + bounds.getHeight()) {
-                        runSelection(DataManager.getInstance().getDataContext(myTree));
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }.installOn(myTree);
+//        myConfig = ServerConfigurationManager.getInstance(project);
+        myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
 
-        myTree.registerKeyboardAction(new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-                runSelection(DataManager.getInstance().getDataContext(myTree));
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), WHEN_FOCUSED);
-        myTree.setLineStyleAngled();
-//        myAntBuildFilePropertiesAction = new AntBuildFilePropertiesAction(this);
+        ServerTreeManager serverTreeManager = ServiceManager.getService(project, ServerTreeManager.class);
+        if(serverTreeManager == null) {
+            messageManager.showAlert("Failure", "Failure to find Server Tree Manager");
+        }
+        myTree = serverTreeManager.getTree();
+//        final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
+//        myTree = new Tree(model);
+//        myTree.setRootVisible(true);
+//        myTree.setShowsRootHandles(true);
+//        myTree.setCellRenderer(new NodeRenderer());
+//        selectionHandler = new ServerTreeSelectionHandler(myTree);
+//        serverConnectionManager = new ServerConnectionManager(project, selectionHandler);
+//        myBuilder = new ServerExplorerTreeBuilder(project, myTree, model, this);
+//        TreeUtil.installActions(myTree);
+//        new TreeSpeedSearch(myTree);
+//        myTree.addMouseListener(new PopupHandler() {
+//            public void invokePopup(final Component comp, final int x, final int y) {
+//                popupInvoked(comp, x, y);
+//            }
+//        });
+//        new DoubleClickListener() {
+//            @Override
+//            protected boolean onDoubleClick(MouseEvent e) {
+//                final int eventY = e.getY();
+//                final int row = myTree.getClosestRowForLocation(e.getX(), eventY);
+//                if(row >= 0) {
+//                    final Rectangle bounds = myTree.getRowBounds(row);
+//                    if(bounds != null && eventY > bounds.getY() && eventY < bounds.getY() + bounds.getHeight()) {
+//                        runSelection(DataManager.getInstance().getDataContext(myTree));
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            }
+//        }.installOn(myTree);
+//
+//        myTree.registerKeyboardAction(new AbstractAction() {
+//            public void actionPerformed(ActionEvent e) {
+//                runSelection(DataManager.getInstance().getDataContext(myTree));
+//            }
+//        }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), WHEN_FOCUSED);
+//        myTree.setLineStyleAngled();
+////        myAntBuildFilePropertiesAction = new AntBuildFilePropertiesAction(this);
         setToolbar(createToolbarPanel());
         setContent(ScrollPaneFactory.createScrollPane(myTree));
         ToolTipManager.sharedInstance().registerComponent(myTree);
-        myKeyMapListener = new KeyMapListener();
         final MessageBus bus = myProject.getMessageBus();
         myConn = bus.connect();
+        serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
         new ContentResourceChangeListener(myProject, serverConnectionManager, myConn);
 
-        DomManager.getDomManager(project).addDomEventListener(new DomEventListener() {
-            public void eventOccured(DomEvent event) {
-                myBuilder.queueUpdate();
-            }
-        }, this);
         myRunManager = RunManagerEx.getInstanceEx(myProject);
-        myRunManager.addRunManagerListener(
-            new RunManagerAdapter() {
-                public void beforeRunTasksChanged() {
-                    myBuilder.queueUpdate();
-                }
-            }
-        );
-
-        messageManager = MessageManager.getInstance(myProject);
+        messageManager = ServiceManager.getService(myProject, MessageManager.class);
 
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
         // and when it is taken down even when not started or stopped through the Plugin
@@ -252,36 +222,15 @@ public class SlingServerExplorer
         });
     }
 
-    public ServerConnectionManager getServerConnectionManager() {
-        return serverConnectionManager;
-    }
-
-    public ServerTreeSelectionHandler getSelectionHandler() {
-        return selectionHandler;
-    }
+//    public ServerConnectionManager getServerConnectionManager() {
+//        return serverConnectionManager;
+//    }
+//
+//    public ServerTreeSelectionHandler getSelectionHandler() {
+//        return selectionHandler;
+//    }
 
     public void dispose() {
-        final KeyMapListener listener = myKeyMapListener;
-        if(listener != null) {
-            myKeyMapListener = null;
-            listener.stopListen();
-        }
-
-        final ServerExplorerTreeBuilder builder = myBuilder;
-        if(builder != null) {
-            Disposer.dispose(builder);
-            myBuilder = null;
-        }
-
-        final Tree tree = myTree;
-        if(tree != null) {
-            ToolTipManager.sharedInstance().unregisterComponent(tree);
-            for(KeyStroke keyStroke : tree.getRegisteredKeyStrokes()) {
-                tree.unregisterKeyboardAction(keyStroke);
-            }
-            myTree = null;
-        }
-
         if(myConn != null) {
             Disposer.dispose(myConn);
         }
@@ -291,22 +240,26 @@ public class SlingServerExplorer
     }
 
     private JPanel createToolbarPanel() {
-        final DefaultActionGroup group = new DefaultActionGroup();
-        group.add(new AddAction());
-        group.add(new RemoveAction());
-        group.add(new EditAction());
-        group.add(new CheckAction());
-        group.add(new DebugAction());
-        group.add(new StopAction());
-        group.add(new DeployAction());
-        group.add(new ForceDeployAction());
-        group.add(new BuildConfigureAction());
-        AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
-        action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
-        group.add(action);
-        action = CommonActionsManager.getInstance().createCollapseAllAction(myTreeExpander, this);
-        action.getTemplatePresentation().setDescription(AEMBundle.message("aem.explorer.collapse.all.nodes.action.description"));
-        group.add(action);
+//        final DefaultActionGroup group = new DefaultActionGroup();
+//        group.add(new AddAction());
+//        group.add(new RemoveAction());
+//        group.add(new EditAction());
+//        group.add(new CheckAction());
+//        group.add(new DebugAction());
+//        group.add(new StopAction());
+//        group.add(new DeployAction());
+//        group.add(new ForceDeployAction());
+//        group.add(new BuildConfigureAction());
+//        AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, this);
+//        action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
+//        group.add(action);
+//        action = CommonActionsManager.getInstance().createCollapseAllAction(myTreeExpander, this);
+//        action.getTemplatePresentation().setDescription(AEMBundle.message("aem.explorer.collapse.all.nodes.action.description"));
+//        group.add(action);
+
+        ActionManager actionManager = ActionManager.getInstance();
+        DefaultActionGroup group = new DefaultActionGroup();
+        group.add(actionManager.getAction("AEM.Toolbar"));
 
         final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.ANT_EXPLORER_TOOLBAR, group, true);
 
@@ -389,34 +342,34 @@ public class SlingServerExplorer
 //        return ret;
 //    }
 
-    private void popupInvoked(final Component comp, final int x, final int y) {
-        Object userObject = null;
-        final TreePath path = myTree.getSelectionPath();
-        if(path != null) {
-            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            if(node != null) {
-                userObject = node.getUserObject();
-            }
-        }
-        final DefaultActionGroup group = new DefaultActionGroup();
-        if(
-            userObject instanceof SlingServerNodeDescriptor ||
-            userObject instanceof SlingServerModuleNodeDescriptor
-        ) {
-            group.add(new RemoveAction());
-            group.add(new EditAction());
-            group.add(new CheckAction());
-            group.add(new DebugAction());
-            group.add(new StopAction());
-            group.add(new DeployAction());
-            group.add(new ForceDeployAction());
-            group.add(new BuildConfigureAction());
-        } else {
-            group.add(new AddAction());
-        }
-        final ActionPopupMenu popupMenu = ActionManager.getInstance().createActionPopupMenu(ActionPlaces.ANT_EXPLORER_POPUP, group);
-        popupMenu.getComponent().show(comp, x, y);
-    }
+//    private void popupInvoked(final Component comp, final int x, final int y) {
+//        Object userObject = null;
+//        final TreePath path = myTree.getSelectionPath();
+//        if(path != null) {
+//            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+//            if(node != null) {
+//                userObject = node.getUserObject();
+//            }
+//        }
+//        final DefaultActionGroup group = new DefaultActionGroup();
+//        if(
+//            userObject instanceof SlingServerNodeDescriptor ||
+//            userObject instanceof SlingServerModuleNodeDescriptor
+//        ) {
+//            group.add(new RemoveAction());
+//            group.add(new EditAction());
+//            group.add(new CheckAction());
+//            group.add(new DebugAction());
+//            group.add(new StopAction());
+//            group.add(new DeployAction());
+//            group.add(new ForceDeployAction());
+//            group.add(new BuildConfigureAction());
+//        } else {
+//            group.add(new AddAction());
+//        }
+//        final ActionPopupMenu popupMenu = ActionManager.getInstance().createActionPopupMenu(ActionPlaces.ANT_EXPLORER_POPUP, group);
+//        popupMenu.getComponent().show(comp, x, y);
+//    }
 
     @Nullable
     public Object getData(@NonNls String dataId) {
@@ -455,7 +408,8 @@ public class SlingServerExplorer
 //            return HelpID.ANT;
             return null;
         } else if(PlatformDataKeys.TREE_EXPANDER.is(dataId)) {
-            return myProject != null ? myTreeExpander : null;
+            String test = "";
+//            return myProject != null ? myTreeExpander : null;
         } else if(CommonDataKeys.VIRTUAL_FILE_ARRAY.is(dataId)) {
 //            final java.util.List<VirtualFile> virtualFiles = collectAntFiles(new Function<AntBuildFile, VirtualFile>() {
 //                @Override
@@ -870,45 +824,6 @@ public class SlingServerExplorer
 
         public void update(AnActionEvent event) {
             event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
-        }
-    }
-
-    private class KeyMapListener implements KeymapManagerListener, Keymap.Listener {
-        private Keymap myCurrentKeyMap = null;
-
-        public KeyMapListener() {
-            final KeymapManagerEx keyMapManager = KeymapManagerEx.getInstanceEx();
-            final Keymap activeKeymap = keyMapManager.getActiveKeymap();
-            listenTo(activeKeymap);
-            keyMapManager.addKeymapManagerListener(this);
-        }
-
-        public void activeKeymapChanged(Keymap keyMap) {
-            listenTo(keyMap);
-            updateTree();
-        }
-
-        private void listenTo(Keymap keyMap) {
-            if(myCurrentKeyMap != null) {
-                myCurrentKeyMap.removeShortcutChangeListener(this);
-            }
-            myCurrentKeyMap = keyMap;
-            if(myCurrentKeyMap != null) {
-                myCurrentKeyMap.addShortcutChangeListener(this);
-            }
-        }
-
-        private void updateTree() {
-            myBuilder.updateFromRoot();
-        }
-
-        public void onShortcutChanged(String actionId) {
-            updateTree();
-        }
-
-        public void stopListen() {
-            listenTo(null);
-            KeymapManagerEx.getInstanceEx().removeKeymapManagerListener(this);
         }
     }
 

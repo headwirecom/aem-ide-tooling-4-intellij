@@ -1,8 +1,10 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.Tree;
 import org.apache.sling.ide.osgi.OsgiClient;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -17,6 +19,14 @@ public class ServerTreeSelectionHandler {
 
     private Tree tree;
 
+    public ServerTreeSelectionHandler(@NotNull Project project) {
+    }
+
+    public void init(@NotNull Tree tree) {
+        this.tree = tree;
+    }
+
+    @Deprecated
     public ServerTreeSelectionHandler(Tree tree) {
         this.tree = tree;
     }

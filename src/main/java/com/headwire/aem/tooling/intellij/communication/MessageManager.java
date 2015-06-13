@@ -25,10 +25,6 @@ public class MessageManager
 
     private Logger logger = Activator.getDefault().getPluginLogger();
 
-    public static MessageManager getInstance(final Project project) {
-        return ServiceManager.getService(project, MessageManager.class);
-    }
-
     private Project project;
 
     public MessageManager(@NotNull Project project) {

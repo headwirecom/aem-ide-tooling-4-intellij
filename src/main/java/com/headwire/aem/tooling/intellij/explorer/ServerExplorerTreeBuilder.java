@@ -15,10 +15,14 @@
  */
 package com.headwire.aem.tooling.intellij.explorer;
 
+import com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction;
 import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.intellij.ide.util.treeView.*;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.util.ProgressIndicatorBase;
 import com.intellij.openapi.progress.util.ProgressIndicatorUtils;
@@ -46,19 +50,22 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
     private final Project myProject;
     private ServerConfigurationManager myConfig;
     private ExpandedStateUpdater myExpansionListener;
-    private SlingServerExplorer explorer;
+    private CheckServerConnectionAction checkAction;
+//    private SlingServerExplorer explorer;
 
-    public ServerExplorerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel, SlingServerExplorer explorer) {
+    public ServerExplorerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel) {
         super(tree, treeModel, new ServerExplorerTreeStructure(project), IndexComparator.INSTANCE);
-        this.explorer = explorer;
         myProject = project;
         myConfigurationListener = new ConfigurationListenerImpl();
-        myConfig = ServerConfigurationManager.getInstance(myProject);
+        myConfig = ServiceManager.getService(myProject, ServerConfigurationManager.class);
         myExpansionListener = new ExpandedStateUpdater();
         tree.addTreeExpansionListener(myExpansionListener);
         initRootNode();
         myConfig.addConfigurationListener(myConfigurationListener);
         getTree().getModel().addTreeModelListener(new ChangeListener());
+
+        ActionManager actionManager = ActionManager.getInstance();
+        checkAction = (CheckServerConnectionAction) actionManager.getAction("AEM.Check.Action");
     }
 
 
@@ -122,7 +129,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
                                     getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                     // Not call the check module method
                                     first = false;
-                                    explorer.doCheck();
+                                    checkAction.doCheck(myProject);
 //AS TODO: When we expand here a phantom line remains (not sure how to clean that up -> find a good solution to clean it up or to call this when the tree is fully built
 //                                    expandAll();
 
