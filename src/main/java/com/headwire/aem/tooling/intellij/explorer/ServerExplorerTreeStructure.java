@@ -19,6 +19,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.intellij.ide.util.treeView.AbstractTreeStructure;
 import com.intellij.ide.util.treeView.NodeDescriptor;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.ActionCallback;
@@ -78,7 +79,7 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
 
     @Override
     public Object[] getChildElements(Object element) {
-        final ServerConfigurationManager configuration = ServerConfigurationManager.getInstance(myProject);
+        final ServerConfigurationManager configuration = ServiceManager.getService(myProject, ServerConfigurationManager.class);
         if(element == myRoot) {
             if(!configuration.isInitialized()) {
                 return new Object[]{"Loading Server Configurations"};

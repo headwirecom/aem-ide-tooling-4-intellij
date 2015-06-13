@@ -511,8 +511,6 @@ public class ResourceChangeCommandFactory {
         for ( IResource extraChildResource : extraChildResources.values()) {
             IPath extraChildResourcePath = extraChildResource.getFullPath()
                 .makeRelativeTo(syncDirectory.getFullPath()).makeAbsolute();
-//            String path = serializationManager.getRepositoryPath(extraChildResourcePath.toPortableString());
-//            path = path.substring(syncDirectory.getFullPath().toFile().getPath().length());
             String path2 = serializationManager.getRepositoryPath(extraChildResourcePath.toPortableString());
             int length = syncDirectory.getFullPath().toFile().getPath().length();
             String path = path2.substring(length);

@@ -34,10 +34,6 @@ public class ServerConfigurationManager
 
     private static final Logger LOGGER = Logger.getInstance(ServerConfigurationManager.class);
 
-    public static ServerConfigurationManager getInstance(final Project project) {
-        return ServiceManager.getService(project, ServerConfigurationManager.class);
-    }
-
     private MessageManager messageManager;
     private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
 //    private ConfigurationListener configurationListener;
@@ -46,7 +42,7 @@ public class ServerConfigurationManager
 
     public ServerConfigurationManager(final Project project) {
         this.project = project;
-        messageManager = MessageManager.getInstance(project);
+        messageManager = ServiceManager.getService(project, MessageManager.class);
     }
 
     public ServerConfiguration[] getServerConfigurations() {

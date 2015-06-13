@@ -80,7 +80,16 @@
             <implementation-class>com.headwire.aem.tooling.intellij.communication.MessageManager</implementation-class>
         </component>
         <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler</implementation-class>
+        </component>
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.ServerTreeManager</implementation-class>
+        </component>
+        <component>
             <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager</implementation-class>
+        </component>
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.communication.ServerConnectionManager</implementation-class>
         </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog$ProjectTracker</implementation-class>
@@ -89,6 +98,54 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action id="AEM.Add.Action"
+                class="com.headwire.aem.tooling.intellij.action.AddServerConfigurationAction"
+                text="Add a New Configuration"
+                description="Create a New Server Configuration"
+                icon="AllIcons.General.Add"
+                />
+        <action id="AEM.Edit.Action"
+                class="com.headwire.aem.tooling.intellij.action.EditServerConfigurationAction"
+                text="Edit Current Configuration"
+                description="Edit the Currently Selected Server Configuration"
+                icon="AllIcons.Actions.EditSource"/>
+        <action id="AEM.Check.Action"
+                class="com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction"
+                text="Check Current Connection"
+                description="Check the Currently Selected Server Configuration"
+                icon="AllIcons.CodeStyle.Gear"
+                />
+
+        <group id="AEM.Toolbar">
+            <reference id="AEM.Add.Action"/>
+            <reference id="AEM.Edit.Action"/>
+            <reference id="AEM.Check.Action"/>
+            <!--<reference id="Maven.UpdateFolders"/>-->
+
+            <!--<group id="Maven.DownloadAllGroupPopup" popup="true" class="org.jetbrains.idea.maven.project.actions.DownloadActionGroup"-->
+                   <!--icon="AllIcons.Actions.Download">-->
+                <!--<reference id="Maven.DownloadAllGroup"/>-->
+            <!--</group>-->
+            <!--<separator/>-->
+            <!--<reference id="Maven.AddManagedFiles"/>-->
+            <!--<separator/>-->
+            <!--<reference id="Maven.RunBuild"/>-->
+            <!--<reference id="Maven.ExecuteGoal"/>-->
+            <!--<reference id="Maven.ToggleOffline"/>-->
+            <!--<reference id="Maven.ToggleSkipTests"/>-->
+            <!--<reference id="Maven.CollapseAll"/>-->
+            <!--<separator/>-->
+            <!--<reference id="Maven.ShowSettings"/>-->
+        </group>
+        <group id="AEM.Connection.Popup">
+            <reference id="AEM.Add.Action"/>
+            <reference id="AEM.Edit.Action"/>
+            <separator/>
+            <reference id="AEM.Check.Action"/>
+        </group>
+        <group id="AEM.Root.Popup">
+            <reference id="AEM.Add.Action"/>
+        </group>
     </actions>
 
 </idea-plugin>

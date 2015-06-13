@@ -32,9 +32,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindowId;
@@ -55,16 +53,10 @@ import org.apache.sling.ide.transport.ResourceProxy;
 import org.apache.sling.ide.transport.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
-import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
-import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
 import org.jetbrains.idea.maven.model.MavenId;
 import org.jetbrains.idea.maven.model.MavenResource;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
-import org.jetbrains.idea.maven.utils.MavenDataKeys;
-import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
-import org.jetbrains.jps.maven.compiler.MavenBuilderService;
 import org.osgi.framework.Version;
 
 import javax.jcr.nodetype.ConstraintViolationException;
@@ -126,12 +118,15 @@ public class ServerConnectionManager {
     private ServerConfigurationManager serverConfigurationManager;
     private ResourceChangeCommandFactory commandFactory;
 
-    public ServerConnectionManager(@NotNull Project project, @NotNull ServerTreeSelectionHandler serverTreeSelectionHandler) {
+    public ServerConnectionManager(@NotNull Project project) {
         this.project = project;
-        selectionHandler = serverTreeSelectionHandler;
-        messageManager = MessageManager.getInstance(project);
-        serverConfigurationManager = ServerConfigurationManager.getInstance(project);
+        messageManager = ServiceManager.getService(project, MessageManager.class);
+        serverConfigurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
         commandFactory = new ResourceChangeCommandFactory(ServiceManager.getService(SerializationManager.class));
+    }
+
+    public void init(@NotNull ServerTreeSelectionHandler serverTreeSelectionHandler) {
+        selectionHandler = serverTreeSelectionHandler;
     }
 
     // ----- Server State Flags
@@ -1098,7 +1093,7 @@ public class ServerConnectionManager {
                 messageManager.showAlert("aem.explorer.check.connection.out.of.sync");
             }
             return false;
-        } else if(automaticBuild && serverConfiguration.getPublishType() != ServerConfiguration.PublishType.automaticallyOnChange) {
+        } else if(serverConfiguration != null && automaticBuild && serverConfiguration.getPublishType() != ServerConfiguration.PublishType.automaticallyOnChange) {
             return false;
         } else {
             return true;
