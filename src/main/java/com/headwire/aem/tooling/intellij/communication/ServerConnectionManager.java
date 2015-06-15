@@ -63,6 +63,7 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -374,9 +375,19 @@ public class ServerConnectionManager {
                 boolean success = false;
                 Result<ResourceProxy> result = null;
                 messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
-                Repository repository = ServerUtil.connectRepository(
-                    new IServer(serverConfiguration), new NullProgressMonitor()
-                );
+                Repository repository = null;
+                try {
+                    repository = ServerUtil.connectRepository(new IServer(serverConfiguration), new NullProgressMonitor());
+                } catch(CoreException e) {
+                    // Show Alert and exit
+                    //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
+                    if(e.getCause().getClass() == IllegalArgumentException.class) {
+                        messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository.refused", serverConfiguration.getName());
+                    } else {
+                        messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
+                    }
+                    return null;
+                }
                 Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
                 result = command.execute();
                 success = result.isSuccess();
@@ -391,8 +402,6 @@ public class ServerConnectionManager {
                 }
             } catch(URISyntaxException e) {
                 messageManager.sendErrorNotification("aem.explorer.server.uri.bad", serverConfiguration.getName(), e);
-            } catch(CoreException e) {
-                messageManager.sendErrorNotification("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
             }
         } else {
             messageManager.sendErrorNotification("aem.explorer.cannot.connect.repository.missing.configuration", serverConfiguration.getName());

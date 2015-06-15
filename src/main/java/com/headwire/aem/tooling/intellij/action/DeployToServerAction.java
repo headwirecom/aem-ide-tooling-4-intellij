@@ -24,10 +24,8 @@ public class DeployToServerAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, DataContext dataContext) {
-        if(dataContext != null && project != null) {
-            doDeploy(dataContext, project, isForced());
-        }
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
+        doDeploy(dataContext, project, isForced());
     }
 
     @Override

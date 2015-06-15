@@ -92,6 +92,10 @@ public class MessageManager
         showAlert(getTitle(messageId), getMessage(messageId));
     }
 
+    public void showAlertWithArguments(@NotNull final String messageId, Object...arguments) {
+        showAlert(getTitle(messageId), getMessage(messageId, arguments));
+    }
+
     public void showAlert(@NotNull final String title, @NotNull final String message) {
         ApplicationManager.getApplication().invokeLater(
             new Runnable() {

@@ -2,6 +2,7 @@ package com.headwire.aem.tooling.intellij.action;
 
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -11,7 +12,7 @@ public class AddServerConfigurationAction
     extends AbstractEditServerConfigurationAction
 {
     @Override
-    protected void execute(Project project, DataContext dataContext) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         editServerConfiguration(project, null);
     }
 
