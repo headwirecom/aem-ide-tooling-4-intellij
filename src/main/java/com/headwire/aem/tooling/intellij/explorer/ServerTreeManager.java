@@ -3,13 +3,16 @@ package com.headwire.aem.tooling.intellij.explorer;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
+import com.intellij.ide.CommonActionsManager;
 import com.intellij.ide.TreeExpander;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionPopupMenu;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
@@ -233,6 +236,15 @@ public class ServerTreeManager
     @Override
     public String getComponentName() {
         return "Sling Server Tree Manager";
+    }
+
+    public void adjustToolbar(DefaultActionGroup group) {
+        AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, tree);
+        action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
+        group.add(action);
+        action = CommonActionsManager.getInstance().createCollapseAllAction(myTreeExpander, tree);
+        action.getTemplatePresentation().setDescription(AEMBundle.message("aem.explorer.collapse.all.nodes.action.description"));
+        group.add(action);
     }
 
     private class KeyMapListener implements KeymapManagerListener, Keymap.Listener {
