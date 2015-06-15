@@ -448,25 +448,6 @@ public class SlingServerExplorer
         };
     }
 
-    private static final class NodeRenderer extends ColoredTreeCellRenderer {
-        public void customizeCellRenderer(JTree tree,
-                                          Object value,
-                                          boolean selected,
-                                          boolean expanded,
-                                          boolean leaf,
-                                          int row,
-                                          boolean hasFocus) {
-            final Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-            LOGGER.debug("Node Renderer: user object: " + userObject);
-            if(userObject instanceof ServerNodeDescriptor) {
-                final ServerNodeDescriptor descriptor = (ServerNodeDescriptor) userObject;
-                descriptor.customize(this);
-            } else {
-                append(tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus), SimpleTextAttributes.REGULAR_ATTRIBUTES);
-            }
-        }
-    }
-
     private final class AddAction extends AnAction {
         public AddAction() {
             super(

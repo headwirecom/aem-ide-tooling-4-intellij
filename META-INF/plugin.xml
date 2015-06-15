@@ -109,17 +109,48 @@
                 text="Edit Current Configuration"
                 description="Edit the Currently Selected Server Configuration"
                 icon="AllIcons.Actions.EditSource"/>
+        <action id="AEM.Remove.Action"
+                class="com.headwire.aem.tooling.intellij.action.RemoveServerConfigurationAction"
+                text="Remove Selected Configuration"
+                description="Remove Selected Server Connection Configuration"
+                icon="AllIcons.General.Remove"/>
         <action id="AEM.Check.Action"
                 class="com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction"
                 text="Check Current Connection"
                 description="Check the Currently Selected Server Configuration"
                 icon="AllIcons.CodeStyle.Gear"
                 />
+        <action id="AEM.Start.Debug.Action"
+                class="com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction"
+                text="Connect with Selected Server In Debug Mode"
+                description="Create a Connection with the Selected Server in Debug Mode"
+                icon="AllIcons.General.Debug"/>
+        <action id="AEM.Stop.Connection.Action"
+                class="com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction"
+                text="End the Currently Established Connection"
+                description="End the Currently Established Connection with the Server"
+                icon="AllIcons.Process.Stop"/>
+        <action id="AEM.Deploy.Action"
+                class="com.headwire.aem.tooling.intellij.action.DeployToServerAction"
+                text="Deploy to the Current Server Connection"
+                description="Deploy to the Current Connection with the"
+                icon="AllIcons.Actions.Export"/>
+        <action id="AEM.Force.Deploy.Action"
+                class="com.headwire.aem.tooling.intellij.action.ForceDeployToServerAction"
+                text="Forced Deploy to the Current Server Connection"
+                description="Forced Deployment to the Current Server Connection"
+                icon="AllIcons.Actions.ForceRefresh"/>
 
         <group id="AEM.Toolbar">
             <reference id="AEM.Add.Action"/>
             <reference id="AEM.Edit.Action"/>
+            <reference id="AEM.Remove.Action"/>
+            <separator/>
             <reference id="AEM.Check.Action"/>
+            <reference id="AEM.Start.Debug.Action"/>
+            <reference id="AEM.Stop.Connection.Action"/>
+            <reference id="AEM.Deploy.Action"/>
+            <reference id="AEM.Force.Deploy.Action"/>
             <!--<reference id="Maven.UpdateFolders"/>-->
 
             <!--<group id="Maven.DownloadAllGroupPopup" popup="true" class="org.jetbrains.idea.maven.project.actions.DownloadActionGroup"-->
@@ -140,8 +171,14 @@
         <group id="AEM.Connection.Popup">
             <reference id="AEM.Add.Action"/>
             <reference id="AEM.Edit.Action"/>
+            <reference id="AEM.Remove.Action"/>
             <separator/>
             <reference id="AEM.Check.Action"/>
+            <reference id="AEM.Start.Debug.Action"/>
+            <reference id="AEM.Stop.Connection.Action"/>
+            <separator/>
+            <reference id="AEM.Deploy.Action"/>
+            <reference id="AEM.Force.Deploy.Action"/>
         </group>
         <group id="AEM.Root.Popup">
             <reference id="AEM.Add.Action"/>

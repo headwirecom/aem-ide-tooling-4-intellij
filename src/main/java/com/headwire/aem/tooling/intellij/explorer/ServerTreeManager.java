@@ -6,7 +6,6 @@ import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.ide.TreeExpander;
-import com.intellij.ide.util.treeView.NodeRenderer;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -19,7 +18,9 @@ import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
+import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.PopupHandler;
+import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.ui.TreeSpeedSearch;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.ui.tree.TreeUtil;
@@ -28,6 +29,7 @@ import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.events.DomEvent;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -269,6 +271,25 @@ public class ServerTreeManager
         public void stopListen() {
             listenTo(null);
             KeymapManagerEx.getInstanceEx().removeKeymapManagerListener(this);
+        }
+    }
+
+    private static final class NodeRenderer extends ColoredTreeCellRenderer {
+        public void customizeCellRenderer(JTree tree,
+                                          Object value,
+                                          boolean selected,
+                                          boolean expanded,
+                                          boolean leaf,
+                                          int row,
+                                          boolean hasFocus) {
+            final Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+//            LOGGER.debug("Node Renderer: user object: " + userObject);
+            if(userObject instanceof ServerNodeDescriptor) {
+                final ServerNodeDescriptor descriptor = (ServerNodeDescriptor) userObject;
+                descriptor.customize(this);
+            } else {
+                append(tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus), SimpleTextAttributes.REGULAR_ATTRIBUTES);
+            }
         }
     }
 }
