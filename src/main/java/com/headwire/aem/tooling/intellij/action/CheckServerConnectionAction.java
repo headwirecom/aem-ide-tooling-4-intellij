@@ -4,15 +4,12 @@ import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.jetbrains.annotations.NotNull;
@@ -22,27 +19,20 @@ import org.jetbrains.annotations.Nullable;
  * Created by schaefa on 6/12/15.
  */
 public class CheckServerConnectionAction
-    extends AnAction
-    implements DumbAware
+    extends AbstractProjectAction
 {
-
-    public CheckServerConnectionAction() {
-//        super(
-//            AEMBundle.message("check.configuration.action.name"),
-//            AEMBundle.message("check.configuration.action.description"),
-//            AllIcons.CodeStyle.Gear
-//        );
+    @Override
+    protected void execute(@NotNull Project project, DataContext dataContext) {
+        doCheck(project);
     }
 
-    public void actionPerformed(AnActionEvent e) {
-        doCheck(e.getProject());
-    }
-
-    public void update(AnActionEvent event) {
-        Project project = event.getProject();
+    @Override
+    protected boolean isEnabled(@Nullable Project project) {
         if(project != null) {
             ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-            event.getPresentation().setEnabled(serverConnectionManager.isConfigurationSelected());
+            return serverConnectionManager == null ? false : serverConnectionManager.isConfigurationSelected();
+        } else {
+            return false;
         }
     }
 

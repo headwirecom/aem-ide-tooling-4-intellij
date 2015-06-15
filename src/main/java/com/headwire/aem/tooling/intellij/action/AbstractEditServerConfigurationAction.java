@@ -19,20 +19,8 @@ import javax.swing.Icon;
  * Created by schaefa on 6/12/15.
  */
 public abstract class AbstractEditServerConfigurationAction
-    extends AnAction
-    implements DumbAware
+    extends AbstractProjectAction
 {
-
-    private MessageManager messageManager;
-
-    public AbstractEditServerConfigurationAction() {
-        messageManager = ServiceManager.getService(MessageManager.class);
-    }
-
-//    public AbstractEditServerConfigurationAction(@Nullable String text, @Nullable String description, @Nullable Icon icon) {
-//        super(text, description, icon);
-//        messageManager = ServiceManager.getService(MessageManager.class);
-//    }
 
     /**
      * Adds or Edits a Server Configuration and makes sure the configuration is valid
