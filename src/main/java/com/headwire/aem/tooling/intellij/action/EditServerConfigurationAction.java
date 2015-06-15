@@ -5,6 +5,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,7 +15,7 @@ public class EditServerConfigurationAction
     extends AbstractEditServerConfigurationAction
 {
     @Override
-    protected void execute(Project project, DataContext dataContext) {
+    protected void execute(Project project, @NotNull DataContext dataContext) {
         ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         if(selectionHandler != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();

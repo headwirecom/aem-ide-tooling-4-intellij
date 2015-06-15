@@ -41,19 +41,19 @@ public abstract class AbstractProjectAction
         }
     }
 
-    protected abstract void execute(@NotNull Project project, @Nullable DataContext dataContext);
+    protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext);
 
     protected abstract boolean isEnabled(@Nullable Project project);
 
-    protected ServerTreeSelectionHandler getSelectionHandler(@NotNull Project project) {
+    protected ServerTreeSelectionHandler getSelectionHandler(@Nullable Project project) {
         return project == null ? null : ServiceManager.getService(project, ServerTreeSelectionHandler.class);
     }
 
-    protected ServerConnectionManager getConnectionManager(@NotNull Project project) {
+    protected ServerConnectionManager getConnectionManager(@Nullable Project project) {
         return project == null ? null : ServiceManager.getService(project, ServerConnectionManager.class);
     }
 
-    protected ServerConfigurationManager getConfigurationManager(@NotNull Project project) {
+    protected ServerConfigurationManager getConfigurationManager(@Nullable Project project) {
         return project == null ? null : ServiceManager.getService(project, ServerConfigurationManager.class);
     }
 }

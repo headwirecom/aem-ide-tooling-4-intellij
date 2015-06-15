@@ -15,7 +15,7 @@ public class RemoveServerConfigurationAction
     extends AbstractProjectAction
 {
     @Override
-    protected void execute(@NotNull Project project, DataContext dataContext) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConfigurationManager configurationManager = getConfigurationManager(project);
         ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         if(configurationManager != null && selectionHandler != null) {

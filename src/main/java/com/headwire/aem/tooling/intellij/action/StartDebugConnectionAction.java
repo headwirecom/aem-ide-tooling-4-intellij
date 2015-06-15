@@ -14,7 +14,7 @@ public class StartDebugConnectionAction
     extends AbstractProjectAction
 {
     @Override
-    protected void execute(@NotNull Project project, DataContext dataContext) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager connectionManager = getConnectionManager(project);
         if(connectionManager != null) {
             RunManagerEx runManager = RunManagerEx.getInstanceEx(project);

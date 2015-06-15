@@ -2,6 +2,7 @@ package com.headwire.aem.tooling.intellij.action;
 
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration.ServerStatus;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -18,11 +19,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by schaefa on 6/12/15.
  */
-public class CheckServerConnectionAction
-    extends AbstractProjectAction
-{
+public class CheckServerConnectionAction extends AbstractProjectAction {
     @Override
-    protected void execute(@NotNull Project project, DataContext dataContext) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         doCheck(project);
     }
 
@@ -42,8 +41,7 @@ public class CheckServerConnectionAction
         final String title = AEMBundle.message("check.configuration.action.name");
         final String description = AEMBundle.message("check.configuration.action.description");
 
-        ProgressManager.getInstance().run(
-            new Task.Modal(project, title, false) {
+        ProgressManager.getInstance().run(new Task.Modal(project, title, false) {
                 @Nullable
                 public NotificationInfo getNotificationInfo() {
                     return new NotificationInfo("Sling", "Sling Deployment Checks", "");
@@ -63,29 +61,17 @@ public class CheckServerConnectionAction
                                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                                 //AS TODO: this is not showing if the check is short but if it takes longer it will update
                                 indicator.setFraction(0.1);
-                                serverConnectionManager.updateServerStatus(
-                                    serverConfiguration.getName(),ServerConfiguration.ServerStatus.checking
-                                );
+                                serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.checking);
                                 indicator.setFraction(0.2);
-                                try
-
-                                {
+                                try {
                                     Thread.sleep(1000);
-                                }
-
-                                catch(
-                                    InterruptedException e1
-                                    )
-
-                                {
+                                } catch(InterruptedException e1) {
                                     e1.printStackTrace();
                                 }
 
                                 indicator.setFraction(0.3);
                                 OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
-                                if(osgiClient!=null)
-
-                                {
+                                if(osgiClient != null) {
                                     indicator.setFraction(0.4);
                                     ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
                                     if(status != ServerConnectionManager.BundleStatus.failed) {
@@ -101,19 +87,17 @@ public class CheckServerConnectionAction
                                             serverConnectionManager.checkModules(osgiClient);
                                         }
                                         indicator.setFraction(1.0);
-                                        serverConnectionManager.updateServerStatus(
-                                            serverConfiguration.getName(), ServerConfiguration.ServerStatus.checked
-                                        );
+                                        serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.checked);
                                     }
+                                } else {
+                                    serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerStatus.failed);
                                 }
                             }
                         });
-                    }
-                    finally {
+                    } finally {
                         indicator.popState();
                     }
                 }
-            }
-        );
+            });
     }
 }
