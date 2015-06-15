@@ -143,8 +143,8 @@
 
         <group id="AEM.Toolbar">
             <reference id="AEM.Add.Action"/>
-            <reference id="AEM.Edit.Action"/>
             <reference id="AEM.Remove.Action"/>
+            <reference id="AEM.Edit.Action"/>
             <separator/>
             <reference id="AEM.Check.Action"/>
             <reference id="AEM.Start.Debug.Action"/>
@@ -170,8 +170,8 @@
         </group>
         <group id="AEM.Connection.Popup">
             <reference id="AEM.Add.Action"/>
-            <reference id="AEM.Edit.Action"/>
             <reference id="AEM.Remove.Action"/>
+            <reference id="AEM.Edit.Action"/>
             <separator/>
             <reference id="AEM.Check.Action"/>
             <reference id="AEM.Start.Debug.Action"/>

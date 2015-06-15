@@ -15,7 +15,7 @@ public class EditServerConfigurationAction
     extends AbstractEditServerConfigurationAction
 {
     @Override
-    protected void execute(Project project, @NotNull DataContext dataContext) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         if(selectionHandler != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
