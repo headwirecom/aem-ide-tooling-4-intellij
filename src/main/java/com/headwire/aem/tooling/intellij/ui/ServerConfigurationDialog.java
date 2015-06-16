@@ -54,7 +54,7 @@ public class ServerConfigurationDialog
 
     public ServerConfiguration getConfiguration() {
         // Use the Copy Constructor to return a Copy to be able to undo changes even after the configuration has changed
-        ServerConfiguration ret = serverConfiguration != null ? new ServerConfiguration(serverConfiguration) : new ServerConfiguration();
+        ServerConfiguration ret = serverConfiguration != null ? new ServerConfiguration(serverConfiguration) : new ServerConfiguration(null);
         ret.setName(name.getText());
         ret.setHost(host.getText());
         ret.setDescription(description.getText());

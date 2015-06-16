@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
@@ -826,6 +827,23 @@ public class ServerConnectionManager {
                     basePath = mavenResource.getDirectory();
                     messageManager.sendDebugNotification("Found File: '" + path + "' in module: '" + currentModule.getName() + "");
                     break;
+                }
+            } else if(module.isOSGiBundle()) {
+                // Here we are not interested in a source file but rather in the Artifact. If it is the artifact then
+                // we mark the module as outdated
+                MavenProject mavenProject = module.getMavenProject();
+                String buildDirectory = mavenProject.getBuildDirectory();
+                VirtualFile directoryFile = mavenProject.getDirectoryFile();
+                if(path.startsWith(mavenProject.getBuildDirectory())) {
+                    // Check if it is the build file
+                    String fileName = file.getName();
+                    MavenId mavenId = mavenProject.getMavenId();
+                    String artifactId = mavenId.getArtifactId();
+                    String version = mavenId.getVersion();
+                    if(fileName.equals(artifactId + "-" + version + ".jar")) {
+                        module.setStatus(ServerConfiguration.SynchronizationStatus.outdated);
+
+                    }
                 }
             }
         }
