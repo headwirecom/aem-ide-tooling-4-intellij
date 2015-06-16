@@ -26,7 +26,20 @@ import com.intellij.openapi.vfs.VirtualFileMoveEvent;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.maven.importing.MavenImporter;
+import org.jetbrains.idea.maven.importing.MavenModifiableModelsProvider;
+import org.jetbrains.idea.maven.importing.MavenRootModelAdapter;
+import org.jetbrains.idea.maven.project.MavenConsole;
+import org.jetbrains.idea.maven.project.MavenEmbeddersManager;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.jetbrains.idea.maven.project.MavenProjectChanges;
+import org.jetbrains.idea.maven.project.MavenProjectsProcessorTask;
+import org.jetbrains.idea.maven.project.MavenProjectsTree;
+import org.jetbrains.idea.maven.utils.MavenProcessCanceledException;
+import org.jetbrains.idea.maven.utils.MavenProgressIndicator;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.headwire.aem.tooling.intellij.communication.ServerConnectionManager.FileChangeType;

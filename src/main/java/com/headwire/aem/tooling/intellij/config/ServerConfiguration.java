@@ -119,8 +119,9 @@ public class ServerConfiguration
     // Modules must be stored because they carry the info if a project is part of the deployment build
     private List<Module> moduleList = new ArrayList<Module>();
 
-    public ServerConfiguration() {
-    }
+    private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
+
+    public ServerConfiguration() {}
 
     /** Copy Constructor **/
     public ServerConfiguration(ServerConfiguration source) {
@@ -142,6 +143,9 @@ public class ServerConfiguration
         publishType = source.publishType;
         installationType = source.installationType;
         serverStatus = source.serverStatus;
+        if(source.configurationChangeListener != null) {
+            configurationChangeListener = source.configurationChangeListener;
+        }
     }
 
     public String verify() {
@@ -163,6 +167,10 @@ public class ServerConfiguration
             ret = "server.configuration.invalid.context.path";
         }
         return ret;
+    }
+
+    public void setConfigurationChangeListener(ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener) {
+        this.configurationChangeListener = configurationChangeListener;
     }
 
     public String getName() {
@@ -269,6 +277,7 @@ public class ServerConfiguration
 
     public void setServerStatus(ServerStatus serverStatus) {
         this.serverStatus = serverStatus != null ? serverStatus : DEFAULT_SERVER_STATUS;
+        if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
     }
 
     public SynchronizationStatus getSynchronizationStatus() {
@@ -277,6 +286,7 @@ public class ServerConfiguration
 
     public void setSynchronizationStatus(SynchronizationStatus synchronizationStatus) {
         this.synchronizationStatus = synchronizationStatus != null ? synchronizationStatus : DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
+        if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
     }
 
     public boolean isDefault() {
@@ -357,6 +367,7 @@ public class ServerConfiguration
         private transient Project project;
         private transient MavenProject mavenProject;
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
+        private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
 
         public Module(@NotNull ServerConfiguration parent, @NotNull String artifactId, @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
             this.parent = parent;
@@ -364,12 +375,14 @@ public class ServerConfiguration
             this.symbolicName = symbolicName;
             setPartOfBuild(partOfBuild);
             this.lastModificationTimestamp = lastModificationTimestamp;
+            this.configurationChangeListener = parent.configurationChangeListener;
         }
 
         private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull MavenProject mavenProject) {
             this.parent = parent;
             this.artifactId = mavenProject.getMavenId().getArtifactId();
             this.symbolicName = getSymbolicName(mavenProject);
+            this.configurationChangeListener = parent.configurationChangeListener;
             rebind(project, mavenProject);
         }
 
@@ -463,6 +476,7 @@ public class ServerConfiguration
                 } else {
                     setStatus(SynchronizationStatus.notChecked);
                 }
+                if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
                 ret = true;
             }
             return ret;
@@ -471,6 +485,7 @@ public class ServerConfiguration
         public void setStatus(SynchronizationStatus status) {
             if(status != null) {
                 this.status = status;
+                if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
             }
         }
 

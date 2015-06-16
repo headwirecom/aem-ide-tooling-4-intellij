@@ -40,6 +40,18 @@ public class ServerConfigurationManager
     private List<ServerConfiguration> serverConfigurationList = new ArrayList<ServerConfiguration>();
     private Project project;
 
+    public class ConfigurationChangeListener {
+        public void configurationChanged() {
+            ApplicationManager.getApplication().invokeLater(new Runnable() {
+                public void run() {
+                myEventDispatcher.getMulticaster().configurationLoaded();
+                }
+            });
+        }
+    }
+
+    private ConfigurationChangeListener configurationChangeListener = new ConfigurationChangeListener();
+
     public ServerConfigurationManager(final Project project) {
         this.project = project;
         messageManager = ServiceManager.getService(project, MessageManager.class);
@@ -209,6 +221,7 @@ public class ServerConfigurationManager
             serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue("publishType"), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
             serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue("installationType"), ServerConfiguration.DEFAULT_INSTALL_TYPE));
             boolean defaultConfiguration = new Boolean(child.getAttributeValue("default", "false"));
+            serverConfiguration.setConfigurationChangeListener(configurationChangeListener);
             if(defaultConfiguration) {
                 // Check if no other configuration is already the default
                 for(ServerConfiguration serverConfiguration1 : serverConfigurationList) {
