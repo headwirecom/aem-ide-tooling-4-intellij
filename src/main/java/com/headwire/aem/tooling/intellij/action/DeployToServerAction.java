@@ -29,7 +29,7 @@ public class DeployToServerAction
     }
 
     @Override
-    protected boolean isEnabled(@Nullable Project project) {
+    protected boolean isEnabled(@NotNull Project project) {
         ServerConnectionManager connectionManager = getConnectionManager(project);
         return connectionManager != null && connectionManager.isConfigurationSelected();
     }

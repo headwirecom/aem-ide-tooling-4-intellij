@@ -24,12 +24,8 @@ public class RemoveServerConfigurationAction
     }
 
     @Override
-    protected boolean isEnabled(@Nullable Project project) {
-        if(project != null) {
-            ServerConnectionManager connectionManager = getConnectionManager(project);
-            return connectionManager != null && connectionManager.isConfigurationEditable();
-        } else {
-            return false;
-        }
+    protected boolean isEnabled(@NotNull Project project) {
+        ServerConnectionManager connectionManager = getConnectionManager(project);
+        return connectionManager != null && connectionManager.isConfigurationEditable();
     }
 }

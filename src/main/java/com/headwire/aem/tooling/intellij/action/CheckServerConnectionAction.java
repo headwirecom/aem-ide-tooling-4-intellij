@@ -26,13 +26,9 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
     }
 
     @Override
-    protected boolean isEnabled(@Nullable Project project) {
-        if(project != null) {
-            ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-            return serverConnectionManager == null ? false : serverConnectionManager.isConfigurationSelected();
-        } else {
-            return false;
-        }
+    protected boolean isEnabled(@NotNull Project project) {
+        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 
     public void doCheck(final Project project) {
