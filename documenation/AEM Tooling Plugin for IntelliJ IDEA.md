@@ -167,6 +167,96 @@ Keep in mind that **server=y** means the AEM Server is the target of the debug c
 
 After the AEM Server is up you can connect from the plugin.
 
+#### Setting up a New Maven Project
+
+In order to have a good starting point it is best to create a new Maven based on the **Adobe Maven Archetypes** which will generate a base project. That project can then be easily imported into IntelliJ IDEA by **Open** just that the root **pom.xml** file.
+
+For more information about the Archetypes head over to its [GitHub Project Page](https://github.com/Adobe-Marketing-Cloud/aem-project-archetype) and checkout their description.
+
+**Attention**: what the description forgets to mention is that if you don't have the Adobe repo in your Maven **settings.xml** then it will fail. If you have many projects then you might want to use a project specific settings file which would look like this:
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+	          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  
+	<!-- This will not work with anyone that works outside of the Xilinx Network
+	    <mirrors>
+	        <mirror>
+	             <id>nexus</id>
+	            <name>Xilinx Nexus Server</name>
+	            <url>http://wem-tools:8081/nexus/content/groups/public/</url>
+	            <mirrorOf>external:*</mirrorOf>
+	        </mirror>
+	    </mirrors>
+	-->
+	    <profiles>
+	      <profile>
+			<id>cq</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>adobe</id>
+					<name>Adobe Repository</name>
+					<url>http://repo.adobe.com/nexus/content/groups/public/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>adobe-plugins</id>
+					<name>Adobe Plugin Repository</name>
+					<url>http://repo.adobe.com/nexus/content/groups/public/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	  </profiles>
+	</settings>
+
+Then you just add
+	-s ./settings.xml
+to your Maven command line and you will be able to generate your project.
+
+An example for the generation of a project would be like this:
+
+	mvn archetype:generate \
+	-DarchetypeGroupId=com.adobe.granite.archetypes \
+	-DarchetypeArtifactId=aem-project-archetype \
+	-DarchetypeVersion=10 \
+	-DgroupId=com.test.sample \
+	-DartifactId=sample-aem-project \
+	-Dversion=1.0.0-SNAPSHOT \
+	-Dpackage=com.test.sample \
+	-DappsFolderName=aemsampleapps \
+	-DartifactName='Sample AEM Project' \
+	-DcomponentGroupName=aemsample \
+	-DcontentFolderName=aemsamplecontent \
+	-DcssId=asp \
+	-DpackageGroup=aemsamplecontent \
+	-DsiteName='AEM Project Sample' \
+	-s ./settings.xml
+
+The first three options are setting up the Maven project. The **package** is the Java package of your Java source code (OSGi Services, tests etc). The **appsFolder** is the name of the folder underneath **/apps** in the JCR tree. The **DartifactName** is the description of the Maven project. **componentGroupName** is the name of the Group that the Components are placed in inside the Components Dialog. The **contentFolderName** is the name of the folder you content will be placed under the **/content** folder. The **packageGroup** is the group name of the apps / content package.
+
+You can ommit all properties that don't start with **archeytpe** and it will ask you with a prompt.
+
+Here is a list of all supported archetypes:
+
+![List of all Supported Maven Archetypes](./img/6.1.Maven.Archetypes.List.png)
+
 #### Troubleshooting
 
 ##### Installation
@@ -199,4 +289,5 @@ When the plugin is connected in **Debug Mode** to the remote AEM Server a class 
 Because the Hot Swap is done automatically class changes will cause an error during deployment. Therefore regular development should be done with the Debug Connection closed.
 
 **Attention**: HotSwap will replace class code **in memory only** meaning that a restart of the AEM Server will wipe any changes. It is necessary to deploy OSGi modules as soon as possible to avoid irratic changes.
+
 
