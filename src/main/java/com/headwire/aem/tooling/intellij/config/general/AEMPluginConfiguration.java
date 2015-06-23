@@ -3,12 +3,10 @@ package com.headwire.aem.tooling.intellij.config.general;
 import com.headwire.aem.tooling.intellij.ui.AEMPluginConfigurationDialog;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import org.jdom.Element;
 import org.jetbrains.annotations.Nls;
@@ -28,7 +26,7 @@ import javax.swing.*;
 public class AEMPluginConfiguration implements ApplicationComponent, Configurable, PersistentStateComponent<Element> {
 
     private boolean incrementalBuilds = true;
-    private int buildDelayInSeconds = -1;
+    private int deployDelayInSeconds = -1;
 
     private AEMPluginConfigurationDialog configDialog;
 
@@ -54,12 +52,12 @@ public class AEMPluginConfiguration implements ApplicationComponent, Configurabl
         this.incrementalBuilds = incrementalBuilds;
     }
 
-    public int getBuildDelayInSeconds() {
-        return buildDelayInSeconds;
+    public int getDeployDelayInSeconds() {
+        return deployDelayInSeconds;
     }
 
-    public void setBuildDelayInSeconds(int buildDelayInSeconds) {
-        this.buildDelayInSeconds = buildDelayInSeconds;
+    public void setDeployDelayInSeconds(int deployDelayInSeconds) {
+        this.deployDelayInSeconds = deployDelayInSeconds;
     }
     // -------------- Configurable interface implementation --------------------------
 
@@ -108,8 +106,8 @@ public class AEMPluginConfiguration implements ApplicationComponent, Configurabl
         Element aemNode = new Element("aemConfiguration");
         aemNode.setAttribute("incrementalBuilds", String.valueOf(incrementalBuilds));
         aemNode.setAttribute(
-            "buildDelayInSeconds",
-            String.valueOf(incrementalBuilds ? buildDelayInSeconds : -1)
+            "deployDelayInSeconds",
+            String.valueOf(incrementalBuilds ? deployDelayInSeconds : -1)
         );
         root.addContent(aemNode);
         return root;
@@ -119,8 +117,12 @@ public class AEMPluginConfiguration implements ApplicationComponent, Configurabl
         Element aemNode = state.getChild("aemConfiguration");
         if(aemNode != null) {
             incrementalBuilds = aemNode.getAttributeValue("incrementalBuilds", "true").equalsIgnoreCase("true");
-            String value = aemNode.getAttributeValue("buildDelayInSeconds" , "-1");
-            buildDelayInSeconds = incrementalBuilds ? Integer.parseInt(value) : -1;
+            try {
+                String value = aemNode.getAttributeValue("deployDelayInSeconds", "-1");
+                deployDelayInSeconds = Integer.parseInt(value);
+            } catch(NumberFormatException e) {
+                deployDelayInSeconds = -1;
+            }
         }
     }
 }
