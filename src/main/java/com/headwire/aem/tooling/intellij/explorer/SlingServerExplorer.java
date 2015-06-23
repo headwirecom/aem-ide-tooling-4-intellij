@@ -175,7 +175,7 @@ public class SlingServerExplorer
 ////                final AntBuildTargetBase buildTarget = targetNodeDescriptor.getTarget();
 ////                final OpenFileDescriptor descriptor = buildTarget.getOpenFileDescriptor();
 ////                if (descriptor != null) {
-////                    final VirtualFile descriptorFile = descriptor.getFile();
+////                    final VirtualFile descriptorFile = descriptor.getVirtualFile();
 ////                    if (descriptorFile.isValid()) {
 ////                        return descriptor;
 ////                    }

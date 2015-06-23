@@ -98,7 +98,7 @@ public class BundleStateHelper {
 //            IPath outputLocation = javaProject.getOutputLocation();
 //            outputLocation = outputLocation.removeFirstSegments(1);
 //            IPath manifestFilePath = outputLocation.append("META-INF/MANIFEST.MF");
-//            IFile manifestFile = project.getFile(manifestFilePath);
+//            IFile manifestFile = project.getVirtualFile(manifestFilePath);
             String bundleName = module.getSymbolicName();
 //            if (manifestFile.exists()) {
 //                Manifest manifest = new Manifest(manifestFile.getContents());

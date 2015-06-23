@@ -121,7 +121,7 @@ public class ProjectUtil {
             return null;
         }
 
-        IFile filterFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(filterPath);
+        IFile filterFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(project, filterPath);
         Filter filter = null;
         if (filterFile != null && filterFile.exists()) {
             InputStream contents = null;

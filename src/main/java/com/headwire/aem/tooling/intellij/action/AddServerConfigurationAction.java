@@ -17,7 +17,7 @@ public class AddServerConfigurationAction
     }
 
     @Override
-    protected boolean isEnabled(@Nullable Project project) {
+    protected boolean isEnabled(@Nullable Project project, @NotNull DataContext dataContext) {
         return true;
     }
 }

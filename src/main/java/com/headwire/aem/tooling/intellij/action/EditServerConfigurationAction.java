@@ -26,7 +26,7 @@ public class EditServerConfigurationAction
     }
 
     @Override
-    protected boolean isEnabled(@NotNull Project project) {
+    protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager serverConnectionManager = getConnectionManager(project);
         return serverConnectionManager != null && serverConnectionManager.isConfigurationEditable();
     }

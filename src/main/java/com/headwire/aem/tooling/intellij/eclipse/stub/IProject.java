@@ -5,6 +5,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.maven.model.MavenResource;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,5 +70,25 @@ public class IProject {
 
     public Module getModule() {
         return module;
+    }
+
+    public IFile getFile(String path) {
+        IFile ret = null;
+        if(path.startsWith("/")) {
+            VirtualFile virtualFile = project.getProjectFile().getFileSystem().findFileByPath(path);
+            if(virtualFile != null) {
+                ret = new IFile(module, virtualFile);
+            } else {
+                ret = new IFile(module, new File(path));
+            }
+        } else {
+            VirtualFile virtualFile = project.getProjectFile().findFileByRelativePath(path);
+            if(virtualFile != null) {
+                ret = new IFile(module, virtualFile);
+            } else {
+                ret = new IFile(module, new File(project.getProjectFile().getPath(), path));
+            }
+        }
+        return ret;
     }
 }

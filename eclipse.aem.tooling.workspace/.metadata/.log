@@ -222,3 +222,760 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.
 
 !ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-10 09:25:55.248
 !MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+!SESSION 2015-06-16 13:56:12.866 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-06-16 13:56:23.793
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-16 13:56:41.471
+!MESSAGE Manifest com.headwire.plugin:aemtoolingtest.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aemtoolingtest.it.tests.*] 
+!SESSION 2015-06-17 08:01:42.186 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-06-17 08:01:52.370
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-17 08:02:10.515
+!MESSAGE Manifest com.headwire.plugin:aemtoolingtest.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aemtoolingtest.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-17 08:06:04.908
+!MESSAGE Authentication required to access repository descriptors
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:09.383
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:09.493
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:09.599
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:09.973
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:10.126
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:10.281
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:10.451
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:10.521
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:11.237
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:11.419
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:11.552
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:11.613
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:11.773
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:11.908
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.156
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.225
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.225
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.400
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.512
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.602
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.748
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.776
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:12.776
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:13.148
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:13.403
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:13.403
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 08:06:13.471
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+!SESSION 2015-06-17 17:29:42.515 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-06-17 17:29:49.534
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.core.net 1 0 2015-06-17 17:29:54.634
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-17 17:30:05.692
+!MESSAGE Manifest com.headwire.plugin:aemtoolingtest.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aemtoolingtest.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-17 17:31:03.631
+!MESSAGE Authentication required to access repository descriptors
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:08.226
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:08.341
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:08.449
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:08.795
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:08.963
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:09.099
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:09.259
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:09.330
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:10.041
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:10.222
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:10.357
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:10.418
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:10.612
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:10.748
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:10.985
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.053
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.054
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.226
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.331
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.418
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.560
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.588
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.589
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:11.931
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:12.285
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:12.285
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-17 17:31:12.354
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-17 17:31:45.624
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-17 17:31:45.626
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-17 17:32:07.411
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-17 17:32:07.412
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-17 17:34:38.354
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-17 17:34:38.355
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-19 12:38:00.822
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-19 12:38:00.826
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-19 12:42:20.965
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-19 12:42:20.967
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-19 12:42:46.715
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-19 12:42:46.716
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-19 12:43:23.858
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-19 12:43:23.861
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-19 12:44:36.280
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-19 12:44:36.281
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SESSION 2015-06-19 12:44:48.581 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-06-19 12:45:04.023
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-19 12:45:24.454
+!MESSAGE Manifest com.headwire.plugin:aemtoolingtest.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aemtoolingtest.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-19 12:45:27.636
+!MESSAGE Authentication required to access repository descriptors
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:32.317
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:32.435
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:32.548
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:32.907
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:33.056
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:33.238
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:33.460
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:33.530
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:34.289
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:34.497
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:34.644
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:34.712
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:34.889
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.032
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.310
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.386
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.386
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.585
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.699
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.792
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.956
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.986
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:35.986
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:36.367
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:36.700
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:36.700
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-19 12:45:36.775
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-19 13:27:32.431
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-19 13:27:32.434
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more

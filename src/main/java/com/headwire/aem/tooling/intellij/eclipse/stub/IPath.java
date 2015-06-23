@@ -3,6 +3,10 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by schaefa on 5/13/15.
@@ -12,6 +16,7 @@ public class IPath {
     private IPath base;
     private String relativePath;
     private File file;
+    private List<String> segments;
 
     public IPath(@NotNull File file) {
         this.file = file;
@@ -32,21 +37,36 @@ public class IPath {
     }
 
     public File toFile() {
-        return this.file;
+        File ret = null;
+        if(file != null) {
+            ret = file;
+        } else if(base != null) {
+            ret = new File(base.toFile(), relativePath);
+        } else {
+            ret = new File(relativePath);
+        }
+        return ret;
     }
 
-    public IPath makeRelativeTo(IPath fullPath) {
+    public IPath makeRelativeTo(IPath otherPath) {
         IPath ret = null;
-        File parent = fullPath.toFile();
-        if(parent.exists() && parent.isDirectory()) {
-            if(file.getAbsolutePath().startsWith(parent.getAbsolutePath())) {
+        File parent = otherPath.toFile();
+        if(parent != null && parent.exists() && parent.isDirectory()) {
+            IPath absolute = this.makeAbsolute();
+            if(absolute.file.getAbsolutePath().startsWith(parent.getAbsolutePath())) {
                 // Cut of the beginning
-                String relativePath = file.getAbsolutePath().substring(parent.getAbsolutePath().length());
+                String relativePath = absolute.file.getAbsolutePath().substring(parent.getAbsolutePath().length());
                 if(relativePath.startsWith("/")) {
                     relativePath = relativePath.substring(1);
                 }
-                ret = new IPath(fullPath, relativePath);
+                ret = new IPath(otherPath, relativePath);
             }
+        } else if(relativePath != null && relativePath.startsWith(otherPath.relativePath)) {
+            String temp = relativePath.substring(otherPath.relativePath.length());
+            if(temp.startsWith("/")) {
+                temp = temp.substring(1);
+            }
+            ret = new IPath(otherPath, temp);
         }
         return ret;
     }
@@ -70,7 +90,28 @@ public class IPath {
     }
 
     public int segmentCount() {
-        return 0;
+        return getSegments().size();
+    }
+
+    public String segment(int i) {
+        return getSegments().get(i);
+    }
+
+    private List<String> getSegments() {
+        if(segments == null) {
+            //AS TODO: Handle Windows Paths
+            String[] tokens = (relativePath == null ? file.getPath() : relativePath).split("/");
+            List<String> ret = new ArrayList<String>(Arrays.asList(tokens));
+            Iterator<String> i = ret.iterator();
+            while(i.hasNext()) {
+                String value = i.next();
+                if(value == null || value.length() == 0) {
+                    i.remove();
+                }
+            }
+            segments = ret;
+        }
+        return segments;
     }
 
     public IPath removeLastSegments(int i) {
