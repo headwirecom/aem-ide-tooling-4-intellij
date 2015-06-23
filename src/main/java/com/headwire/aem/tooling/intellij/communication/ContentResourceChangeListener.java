@@ -260,33 +260,24 @@ public class ContentResourceChangeListener {
     private  class Runner
         implements Runnable
     {
-//        Lock lock;
-//
-//        public Runner(Lock lock) {
-//            this.lock = lock;
-//        }
-
         @Override
         public void run() {
             while(true) {
                 LinkedList<Pair> work = null;
-//            lock.lock();
                 synchronized(queue) {
                     work = new LinkedList<Pair>(queue);
                     queue.clear();
                 }
-//            lock.unlock();
                     if(work.isEmpty()) {
                         synchronized(queue) {
                             try {
                                 // This should block until an entry is written to the queue
+                                // where a notifyAll() will wake up this thread for another loop
                                 queue.wait();
                             } catch(InterruptedException e) {
                                 // Ignore it
                             }
                         }
-//                sync.lock();
-//                sync.unlock();
                     } else {
                         // Do the updates
                         for(Pair pair : work) {
@@ -294,6 +285,7 @@ public class ContentResourceChangeListener {
                         }
                         // Wait for the timeout
                         try {
+                            //AS TODO: Make this configurable
                             Thread.sleep(30 * 1000);
                         } catch(InterruptedException e) {
                             // Ignore it

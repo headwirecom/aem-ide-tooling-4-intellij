@@ -59,8 +59,8 @@ public class ServerConfigurationDialog
         ret.setHost(host.getText());
         ret.setDescription(description.getText());
         ret.setDefault(defaultConfiguration.isSelected());
-        ret.setConnectionPort(obtainInteger(connectionPort, 0));
-        ret.setConnectionDebugPort(obtainInteger(connectionDebugPort, 0));
+        ret.setConnectionPort(UIUtil.obtainInteger(connectionPort, 0));
+        ret.setConnectionDebugPort(UIUtil.obtainInteger(connectionDebugPort, 0));
         ret.setUserName(connectionUserName.getText());
         char[] password = connectionPassword.getPassword();
         // If password is already set and we did not add anything then we don't changes it. If empty we set it anyway
@@ -72,8 +72,8 @@ public class ServerConfigurationDialog
             ret.setPassword(password);
         }
         ret.setContextPath(connectionContextPath.getText());
-        ret.setStartConnectionTimeoutInSeconds(obtainInteger(startConnectionTimeout, -1));
-        ret.setStopConnectionTimeoutInSeconds(obtainInteger(stopConnectionTimeout, -1));
+        ret.setStartConnectionTimeoutInSeconds(UIUtil.obtainInteger(startConnectionTimeout, -1));
+        ret.setStopConnectionTimeoutInSeconds(UIUtil.obtainInteger(stopConnectionTimeout, -1));
         ServerConfiguration.PublishType publishType =
             neverAutomaticallyPublishContentRadioButton.isSelected() ? ServerConfiguration.PublishType.never :
                 automaticallyPublishOnChangeRadioButton.isSelected() ? ServerConfiguration.PublishType.automaticallyOnChange :
@@ -147,21 +147,5 @@ public class ServerConfigurationDialog
     @Override
     protected JComponent createCenterPanel() {
         return contentPane;
-    }
-
-    private int obtainInteger(JTextField textField, int defaultValue) {
-        int ret = defaultValue;
-        if(textField != null) {
-            ret = Util.convertToInt(textField.getText(), defaultValue);
-        }
-        return ret;
-    }
-
-    private int obtainInteger(JSpinner spinner, int defaultValue) {
-        int ret = defaultValue;
-        if(spinner != null) {
-            ret = Util.convertToInt(spinner.getValue() + "", defaultValue);
-        }
-        return ret;
     }
 }

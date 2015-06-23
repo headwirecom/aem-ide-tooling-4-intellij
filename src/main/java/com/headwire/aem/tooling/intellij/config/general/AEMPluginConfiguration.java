@@ -28,6 +28,7 @@ import javax.swing.*;
 public class AEMPluginConfiguration implements ApplicationComponent, Configurable, PersistentStateComponent<Element> {
 
     private boolean incrementalBuilds = true;
+    private int buildDelayInSeconds = -1;
 
     private AEMPluginConfigurationDialog configDialog;
 
@@ -53,6 +54,13 @@ public class AEMPluginConfiguration implements ApplicationComponent, Configurabl
         this.incrementalBuilds = incrementalBuilds;
     }
 
+    public int getBuildDelayInSeconds() {
+        return buildDelayInSeconds;
+    }
+
+    public void setBuildDelayInSeconds(int buildDelayInSeconds) {
+        this.buildDelayInSeconds = buildDelayInSeconds;
+    }
     // -------------- Configurable interface implementation --------------------------
 
     @Nls
@@ -99,6 +107,10 @@ public class AEMPluginConfiguration implements ApplicationComponent, Configurabl
         Element root = new Element("state");
         Element aemNode = new Element("aemConfiguration");
         aemNode.setAttribute("incrementalBuilds", String.valueOf(incrementalBuilds));
+        aemNode.setAttribute(
+            "buildDelayInSeconds",
+            String.valueOf(incrementalBuilds ? buildDelayInSeconds : -1)
+        );
         root.addContent(aemNode);
         return root;
     }
@@ -107,9 +119,10 @@ public class AEMPluginConfiguration implements ApplicationComponent, Configurabl
         Element aemNode = state.getChild("aemConfiguration");
         if(aemNode != null) {
             incrementalBuilds = aemNode.getAttributeValue("incrementalBuilds", "true").equalsIgnoreCase("true");
+            String value = aemNode.getAttributeValue("buildDelayInSeconds" , "-1");
+            buildDelayInSeconds = incrementalBuilds ? Integer.parseInt(value) : -1;
         }
     }
-
 }
 
 
