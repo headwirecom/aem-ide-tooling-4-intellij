@@ -35,6 +35,7 @@
 
     <application-components>
         <!-- Add your application components here -->
+        <!-- AS NOTE: Any Wrapper class (ending in Wrapper) are classes that mimic the OSGi binding of other services -->
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration</implementation-class>
         </component>
@@ -63,7 +64,7 @@
         </component>
         <component>
             <interface-class>org.apache.sling.ide.filter.FilterLocator</interface-class>
-            <implementation-class>org.apache.sling.ide.impl.vlt.filter.VltFilterLocator</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltFilterLocatorWrapper</implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.impl.vlt.VaultFsLocator</interface-class>
@@ -140,6 +141,11 @@
                 text="Forced Deploy to the Current Server Connection"
                 description="Forced Deployment to the Current Server Connection"
                 icon="AllIcons.Actions.ForceRefresh"/>
+        <action id="AEM.Import.From.Server.Action"
+                class="com.headwire.aem.tooling.intellij.action.ImportFromServerAction"
+                text="Import from"
+                description="Import from current Server Connection"
+                icon="AllIcons.ToolbarDecorator.Import"/>
 
         <group id="AEM.Toolbar">
             <reference id="AEM.Add.Action"/>
@@ -182,6 +188,18 @@
         </group>
         <group id="AEM.Root.Popup">
             <reference id="AEM.Add.Action"/>
+        </group>
+        <!-- Context Menu Popup -->
+        <group id="AEM.Context.Menu.Popup"
+               class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
+               text="AEM"
+               popup="true"
+               icon="/images/aem.gif"
+        >
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="CodeMenu" anchor="last"/>
+            <reference ref="AEM.Import.From.Server.Action"/>
         </group>
     </actions>
 

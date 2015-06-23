@@ -9,8 +9,6 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
-import com.headwire.aem.tooling.intellij.eclipse.wrapper.ResourcesPlugin;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
@@ -189,7 +187,7 @@ public class ResourceChangeCommandFactory {
 
             // If the path of a resource contains or ends with _jcr_content then we do not handle it as it should
             // be done by the corresponding .content.xml file
-            String filePath = resource.getFile().getPath();
+            String filePath = resource.getVirtualFile().getPath();
             if((filePath.indexOf("/_jcr_content/") > 0 || filePath.endsWith("/_jcr_content")) && !(filePath.contains(("/_jcr_content/renditions")))) {
                 return null;
             }
@@ -497,7 +495,7 @@ public class ResourceChangeCommandFactory {
 //AS TODO: The Wrapper's implementation needs to be finished as it only returns null now. Here we only check
 //AS TODO: if the returned resource is not null and does not use it otherwise
 //AS TODO: The wrapper had issues with obtaining the Project / File -> use the Virtual File System instead
-            VirtualFile myFile = serializationFile.getFile().getFileSystem().findFileByPath(childPath.toOSString());
+            VirtualFile myFile = serializationFile.getVirtualFile().getFileSystem().findFileByPath(childPath.toOSString());
 //            IResource childResource = ResourcesPlugin.getWorkspace().getRoot().findMember(childPath);
 //            if (childResource == null) {
             if (myFile == null) {

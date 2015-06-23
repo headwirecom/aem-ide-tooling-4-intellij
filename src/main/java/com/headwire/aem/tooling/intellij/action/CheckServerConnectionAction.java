@@ -26,7 +26,7 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
     }
 
     @Override
-    protected boolean isEnabled(@NotNull Project project) {
+    protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }

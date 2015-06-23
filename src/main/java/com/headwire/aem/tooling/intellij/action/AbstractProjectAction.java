@@ -29,8 +29,9 @@ public abstract class AbstractProjectAction
 
     public void update(AnActionEvent event) {
         Project project = event.getProject();
+        DataContext dataContext = event.getDataContext();
         event.getPresentation().setEnabled(
-            project != null && isEnabled(event.getProject())
+            project != null && isEnabled(project, dataContext)
         );
     }
 
@@ -44,7 +45,7 @@ public abstract class AbstractProjectAction
 
     protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext);
 
-    protected abstract boolean isEnabled(@NotNull Project project);
+    protected abstract boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext);
 
     protected ServerTreeSelectionHandler getSelectionHandler(@Nullable Project project) {
         return project == null ? null : ServiceManager.getService(project, ServerTreeSelectionHandler.class);

@@ -288,7 +288,7 @@ public class ServerConnectionManager {
         return ret;
     }
 
-    private boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
+    public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
         if(!serverConfiguration.isBound()) {
             MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(project);
             List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
@@ -811,9 +811,7 @@ public class ServerConnectionManager {
     }
 
     public void handleFileChange(VirtualFile file, FileChangeType type) {
-        //AS TODO: Right now only updates are supported -> Ensure that all File Change Types are supported
         final String path = file.getPath();
-        messageManager.sendInfoNotification("server.update.file.change.prepare", path, type);
         Module currentModule = null;
         String basePath = null;
         // Check if that relates to any Content Packages and if so then publish it
@@ -832,8 +830,6 @@ public class ServerConnectionManager {
                 // Here we are not interested in a source file but rather in the Artifact. If it is the artifact then
                 // we mark the module as outdated
                 MavenProject mavenProject = module.getMavenProject();
-                String buildDirectory = mavenProject.getBuildDirectory();
-                VirtualFile directoryFile = mavenProject.getDirectoryFile();
                 if(path.startsWith(mavenProject.getBuildDirectory())) {
                     // Check if it is the build file
                     String fileName = file.getName();
@@ -841,8 +837,8 @@ public class ServerConnectionManager {
                     String artifactId = mavenId.getArtifactId();
                     String version = mavenId.getVersion();
                     if(fileName.equals(artifactId + "-" + version + ".jar")) {
+                        messageManager.sendInfoNotification("server.update.file.change.prepare", path, type);
                         module.setStatus(ServerConfiguration.SynchronizationStatus.outdated);
-
                     }
                 }
             }
@@ -850,6 +846,7 @@ public class ServerConnectionManager {
         if(currentModule != null) {
             Repository repository = null;
             try {
+                messageManager.sendInfoNotification("server.update.file.change.prepare", path, type);
                 repository = ServerUtil.getConnectedRepository(
                     new IServer(currentModule.getParent()), new NullProgressMonitor()
                 );
@@ -1082,16 +1079,16 @@ public class ServerConnectionManager {
 
     }
 
-    private MavenResource findMavenSource(Module module, String filePath) {
+    public MavenResource findMavenSource(Module module, String filePath) {
         List<MavenResource> resourceList = findMavenSources(module, filePath);
         return resourceList.isEmpty() ? null : resourceList.get(0);
     }
 
-    private List<MavenResource> findMavenSources(Module module) {
+    public List<MavenResource> findMavenSources(Module module) {
         return findMavenSources(module, null);
     }
 
-    private List<MavenResource> findMavenSources(Module module, String filePath) {
+    public List<MavenResource> findMavenSources(Module module, String filePath) {
         List<MavenResource> ret = new ArrayList<MavenResource>();
         MavenProject mavenProject = module.getMavenProject();
         List<MavenResource> sourcePathList = mavenProject.getResources();

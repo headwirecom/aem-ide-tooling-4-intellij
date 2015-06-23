@@ -3,11 +3,14 @@ package com.headwire.aem.tooling.intellij.eclipse.wrapper;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
+import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -52,8 +55,9 @@ public class ResourcesPlugin {
                 (file.isDirectory() ? new IFolder() : new IFile());
         }
 
-        public IFile getFileForLocation(IPath filterPath) {
-            throw new UnsupportedOperationException("Not implemented yet");
+        public IFile getFileForLocation(IProject project, IPath filterPath) {
+            IFile ret = new IFile(project.getModule(), filterPath.toFile());
+            return ret;
         }
     }
 }

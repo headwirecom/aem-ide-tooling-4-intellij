@@ -2,7 +2,6 @@
   <library name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.0.0" type="repository">
     <properties maven-id="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.0.0" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-api-2.6.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-commons-2.6.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi-commons-2.6.0.jar!/" />
@@ -12,8 +11,13 @@
       <root url="jar://$PROJECT_DIR$/lib/jcr-2.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-io-1.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/org.apache.felix.scr.annotations-1.9.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.0.0.HW.jar!/" />
     </CLASSES>
-    <JAVADOC />
-    <SOURCES />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.0.0.HW-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.0.0.HW-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
