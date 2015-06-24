@@ -523,3 +523,119 @@
 2015-06-19 12:45:36,700 [Worker-3] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
 2015-06-19 12:45:36,700 [Worker-3] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
 2015-06-19 12:45:36,774 [Worker-3] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:56:55,081 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:56:55,093 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/core/src/main/resources
+2015-06-23 16:56:55,712 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Generating 1 MetaType Descriptors in /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/core/target/classes/OSGI-INF/metatype/com.headwire.plugin.aemtoolingtest.core.impl.schedulers.SimpleScheduledTask.xml
+2015-06-23 16:56:55,811 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Writing 1 Service Component Descriptors to /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/core/target/classes/OSGI-INF/com.headwire.plugin.aemtoolingtest.core.impl.servlets.SimpleServlet.xml
+2015-06-23 16:56:55,812 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Writing 1 Service Component Descriptors to /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/core/target/classes/OSGI-INF/com.headwire.plugin.aemtoolingtest.core.impl.schedulers.SimpleScheduledTask.xml
+2015-06-23 16:56:55,814 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Writing 1 Service Component Descriptors to /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/core/target/classes/OSGI-INF/com.headwire.plugin.aemtoolingtest.core.impl.listeners.SimpleResourceListener.xml
+2015-06-23 16:56:55,815 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Writing 1 Service Component Descriptors to /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/core/target/classes/OSGI-INF/com.headwire.plugin.aemtoolingtest.core.impl.filters.LoggingFilter.xml
+2015-06-23 16:56:55,816 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Writing 1 Service Component Descriptors to /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/core/target/classes/OSGI-INF/com.headwire.plugin.aemtoolingtest.core.impl.HelloServiceImpl.xml
+2015-06-23 16:56:55,823 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:56:55,823 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/core/src/test/resources
+2015-06-23 16:56:58,056 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:56:58,057 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/it.tests/src/main/resources
+2015-06-23 16:56:58,265 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:56:58,265 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/it.tests/src/test/resources
+2015-06-23 16:56:58,647 [Worker-7] WARN  o.e.m.c.i.embedder.EclipseLogger - Manifest com.headwire.plugin:aemtoolingtest.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aemtoolingtest.it.tests.*] 
+2015-06-23 16:56:59,283 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:56:59,283 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/it.launcher/src/main/resources
+2015-06-23 16:56:59,285 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:56:59,285 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/it.launcher/src/test/resources
+2015-06-23 16:57:00,468 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:00,469 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/META-INF
+2015-06-23 16:57:00,472 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:00,473 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 3 resources to ../vault-work/META-INF
+2015-06-23 16:57:00,489 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 41 resources
+2015-06-23 16:57:00,494 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:00,494 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/src/test/resources
+2015-06-23 16:57:00,584 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:00,584 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.content/META-INF
+2015-06-23 16:57:00,586 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:00,587 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 3 resources to ../vault-work/META-INF
+2015-06-23 16:57:00,590 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 18 resources
+2015-06-23 16:57:00,592 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:00,593 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.content/src/test/resources
+2015-06-23 16:57:34,571 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:34,571 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/META-INF
+2015-06-23 16:57:34,573 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:34,588 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource to ../vault-work/META-INF
+2015-06-23 16:57:34,590 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2015-06-23 16:57:34,602 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 16:57:34,605 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/src/test/resources
+2015-06-23 16:58:16,409 [Worker-5] WARN  o.a.j.spi2dav.RepositoryServiceImpl - Authentication required to access repository descriptors
+2015-06-23 16:58:18,284 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:18,424 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:18,575 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:18,994 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:19,175 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:19,319 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:19,486 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:19,560 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:20,278 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:20,517 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:20,705 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:20,779 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:20,977 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:21,253 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:21,512 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:21,605 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:21,606 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:21,821 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:21,939 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:22,120 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:22,292 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:22,320 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:22,321 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:22,719 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:23,107 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:23,108 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 16:58:23,179 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:00:27,882 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:00:27,884 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/META-INF
+2015-06-23 17:00:27,885 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:00:27,886 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource to ../vault-work/META-INF
+2015-06-23 17:00:27,886 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2015-06-23 17:00:27,889 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:00:27,889 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/src/test/resources
+2015-06-23 17:01:11,660 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:11,754 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:11,843 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:12,160 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:12,295 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:12,427 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:12,603 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:12,672 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:13,406 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:13,583 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:13,720 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:13,782 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:13,959 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,089 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,306 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,374 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,375 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,552 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,700 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,789 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,930 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,956 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:14,957 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:15,307 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:15,562 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:15,562 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:15,629 [Worker-5] ERROR o.a.j.j.h.ChildNodeEntriesImpl - ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+2015-06-23 17:01:28,068 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:01:28,070 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/META-INF
+2015-06-23 17:01:28,071 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:01:28,071 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource to ../vault-work/META-INF
+2015-06-23 17:01:28,074 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2015-06-23 17:01:28,077 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:01:28,078 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/src/test/resources
+2015-06-23 17:02:25,403 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:02:25,407 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/META-INF
+2015-06-23 17:02:25,409 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:02:25,409 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource to ../vault-work/META-INF
+2015-06-23 17:02:25,410 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2015-06-23 17:02:25,414 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-23 17:02:25,414 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/src/test/resources

@@ -3,9 +3,6 @@ package com.headwire.aem.tooling.intellij.communication;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.intellij.analysis.AnalysisScopeBundle;
 import com.intellij.compiler.impl.ModuleCompileScope;
-import com.intellij.compiler.server.BuildManager;
-import com.intellij.compiler.server.BuildManagerListener;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.module.Module;
@@ -41,53 +38,8 @@ public class ContentResourceChangeListener {
 //    private MessageBusConnection messageBusConnection;
 
 //    private Lock lock = new ReentrantLock();
-    private final LinkedList<Pair> queue = new LinkedList<Pair>();
+    private final LinkedList<FileChange> queue = new LinkedList<FileChange>();
 
-    private static class Pair {
-        private VirtualFile file;
-        private FileChangeType fileChangeType;
-
-        public Pair(VirtualFile file, FileChangeType fileChangeType) {
-            this.file = file;
-            this.fileChangeType = fileChangeType;
-        }
-
-        public VirtualFile getFile() {
-            return file;
-        }
-
-        public FileChangeType getFileChangeType() {
-            return fileChangeType;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if(this == o) {
-                return true;
-            }
-            if(o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            Pair pair = (Pair) o;
-
-            if(!file.equals(pair.file)) {
-                return false;
-            }
-            if(fileChangeType != pair.fileChangeType) {
-                return false;
-            }
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = file.hashCode();
-            result = 31 * result + fileChangeType.hashCode();
-            return result;
-        }
-    }
 
     public ContentResourceChangeListener(@NotNull Project project, @NotNull final ServerConnectionManager serverConnectionManager, @NotNull MessageBusConnection messageBusConnection) {
         pluginConfiguration = ServiceManager.getService(AEMPluginConfiguration.class);
@@ -190,7 +142,7 @@ public class ContentResourceChangeListener {
         String path = file.getPath();
         if(path.indexOf("/jcr_root/") > 0) {
             synchronized(queue) {
-                queue.add(new Pair(file, fileChangeType));
+                queue.add(new FileChange(file, fileChangeType));
                 queue.notifyAll();
             }
         }
@@ -244,9 +196,9 @@ public class ContentResourceChangeListener {
         @Override
         public void run() {
             while(true) {
-                LinkedList<Pair> work = null;
+                LinkedList<FileChange> work = null;
                 synchronized(queue) {
-                    work = new LinkedList<Pair>(queue);
+                    work = new LinkedList<FileChange>(queue);
                     queue.clear();
                 }
                     if(work.isEmpty()) {
@@ -261,9 +213,7 @@ public class ContentResourceChangeListener {
                         }
                     } else {
                         // Do the updates
-                        for(Pair pair : work) {
-                            serverConnectionManager.handleFileChange(pair.getFile(), pair.fileChangeType);
-                        }
+                        serverConnectionManager.handleFileChanges(work);
                         // Wait for the timeout
                         try {
                             int delay = pluginConfiguration.getDeployDelayInSeconds();
