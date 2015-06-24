@@ -16,10 +16,14 @@ import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.filter.FilterLocator;
 import org.jetbrains.idea.maven.model.MavenResource;
+import org.jetbrains.idea.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static com.headwire.aem.tooling.intellij.util.Constants.META_INF_FOLDER_NAME;
+import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE_NAME;
 
 /**
  * Created by schaefa on 5/13/15.
@@ -62,41 +66,61 @@ public class ProjectUtil {
         Filter filter = null;
 
         FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
-        for(MavenResource mavenResource: module.getMavenProject().getResources()) {
-            String path = mavenResource.getDirectory();
-            if(path.indexOf("/META-INF") > 0) {
-                // Found META-INF folder
-                // Find filter.xml file
-                VirtualFile rootFile = module.getMavenProject().getDirectoryFile();
-                VirtualFile moduleRootDirectory = rootFile.getFileSystem().findFileByPath(path);
-                VirtualFile filterFile = findFilterFile(moduleRootDirectory);
-                InputStream contents = null;
-                try {
-                    if(filterFile != null) {
-                        contents = filterFile.getInputStream();
-                        filter = filterLocator.loadFilter(contents);
-                    }
-                } catch (IOException e) {
-                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-//                    "Failed loading filter file for project " + project.getName()
-                        "Failed loading filter file for module " + module
-                            + " from location " + filterFile, e));
-                } finally {
-                    IOUtils.closeQuietly(contents);
+        // First we check if the META-INF folder was already found
+        VirtualFile metaInfFolder = module.getMetaInfFolder();
+        if(metaInfFolder == null) {
+            // Now go through the Maven Resource folder and check
+            MavenProject mavenProject = module.getMavenProject();
+            for(MavenResource mavenResource: module.getMavenProject().getResources()) {
+                String path = mavenResource.getDirectory();
+                if(path.endsWith("/" + META_INF_FOLDER_NAME)) {
+                    metaInfFolder = mavenProject.getDirectoryFile().getFileSystem().findFileByPath(path);
+                    module.setMetaInfFolder(metaInfFolder);
                 }
+            }
+        }
+        if(metaInfFolder == null) {
+            // Lastly we check if we can find the folder somewhere in the maven project file system
+            MavenProject mavenProject = module.getMavenProject();
+            VirtualFile test = mavenProject.getDirectoryFile();
+            metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
+            module.setMetaInfFolder(metaInfFolder);
+        }
+        if(metaInfFolder != null) {
+            // Found META-INF folder
+            // Find filter.xml file
+            VirtualFile filterFile = findFileOrFolder(metaInfFolder, VAULT_FILTER_FILE_NAME, false);
+            InputStream contents = null;
+            try {
+                if(filterFile != null) {
+                    contents = filterFile.getInputStream();
+                    filter = filterLocator.loadFilter(contents);
+                }
+            } catch (IOException e) {
+                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+//                    "Failed loading filter file for project " + project.getName()
+                    "Failed loading filter file for module " + module
+                        + " from location " + filterFile, e));
+            } finally {
+                IOUtils.closeQuietly(contents);
             }
         }
         return filter;
     }
 
-    private static VirtualFile findFilterFile(VirtualFile rootFile) {
+    private static VirtualFile findFileOrFolder(VirtualFile rootFile, String name, boolean isFolder) {
         VirtualFile ret = null;
         for(VirtualFile child: rootFile.getChildren()) {
             if(child.isDirectory()) {
-                ret = findFilterFile(child);
+                if(isFolder) {
+                    if(child.getName().equals(name)) {
+                        return child;
+                    }
+                }
+                ret = findFileOrFolder(child, name, isFolder);
                 if(ret != null) { break; }
             } else {
-                if(child.getName().equals("filter.xml")) {
+                if(child.getName().equals(name)) {
                     ret = child;
                     break;
                 }

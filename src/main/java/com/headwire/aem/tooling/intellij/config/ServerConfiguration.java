@@ -2,6 +2,7 @@ package com.headwire.aem.tooling.intellij.config;
 
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -125,7 +126,9 @@ public class ServerConfiguration
 
     /** Copy Constructor **/
     public ServerConfiguration(ServerConfiguration source) {
-        copy(source);
+        if(source != null) {
+            copy(source);
+        }
     }
 
     void copy(ServerConfiguration source) {
@@ -368,6 +371,7 @@ public class ServerConfiguration
         private transient MavenProject mavenProject;
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
         private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
+        private transient VirtualFile metaInfFolder;
 
         public Module(@NotNull ServerConfiguration parent, @NotNull String artifactId, @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
             this.parent = parent;
@@ -448,6 +452,14 @@ public class ServerConfiguration
 
         public SynchronizationStatus getStatus() {
             return status;
+        }
+
+        public VirtualFile getMetaInfFolder() {
+            return metaInfFolder;
+        }
+
+        public void setMetaInfFolder(VirtualFile metaInfFolder) {
+            this.metaInfFolder = metaInfFolder;
         }
 
         public boolean isOSGiBundle() {

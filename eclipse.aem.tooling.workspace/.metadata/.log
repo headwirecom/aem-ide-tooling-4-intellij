@@ -979,3 +979,231 @@ Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
 	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
 	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
 	... 8 more
+
+!ENTRY org.apache.sling.ide.eclipse-ui 4 0 2015-06-23 10:21:22.845
+!MESSAGE Repository import failed
+!STACK 1
+org.eclipse.core.runtime.CoreException: Import failed
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:101)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	... 3 more
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SUBENTRY 1 org.apache.sling.ide.eclipse-core 4 0 2015-06-23 10:21:22.847
+!MESSAGE Import failed
+!STACK 0
+org.apache.sling.ide.transport.RepositoryException: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.sling.ide.impl.vlt.JcrResult.failure(JcrResult.java:33)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:76)
+	at org.apache.sling.ide.transport.TracingCommand.execute(TracingCommand.java:45)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.executeCommand(ImportRepositoryContentAction.java:406)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.crawlChildrenAndImport(ImportRepositoryContentAction.java:259)
+	at org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction.run(ImportRepositoryContentAction.java:153)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1$1.run(ImportWizard.java:96)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.apache.sling.ide.eclipse.ui.wizards.ImportWizard$1.run(ImportWizard.java:90)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Caused by: javax.jcr.PathNotFoundException: /content/aemtoolingtest/en
+	at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.getDeepNodeEntry(NodeEntryImpl.java:433)
+	at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl.getNodeEntry(HierarchyManagerImpl.java:137)
+	at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getNode(ItemManagerImpl.java:174)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNode(SessionImpl.java:515)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:38)
+	at org.apache.sling.ide.impl.vlt.ListChildrenCommand.execute0(ListChildrenCommand.java:1)
+	at org.apache.sling.ide.impl.vlt.JcrCommand.execute(JcrCommand.java:68)
+	... 8 more
+!SESSION 2015-06-23 16:56:21.296 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/schaefa/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-06-23 16:56:37.944
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-23 16:56:58.648
+!MESSAGE Manifest com.headwire.plugin:aemtoolingtest.it.tests:bundle:0.0.1-SNAPSHOT : Unused Export-Package instructions: [aemtoolingtest.it.tests.*] 
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-23 16:58:16.410
+!MESSAGE Authentication required to access repository descriptors
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:18.285
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:18.425
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:18.576
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:18.994
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:19.175
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:19.320
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:19.487
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:19.560
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:20.278
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:20.517
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:20.705
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:20.780
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:20.977
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:21.254
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:21.512
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:21.605
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:21.606
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:21.821
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:21.940
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:22.121
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:22.293
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:22.321
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:22.321
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:22.720
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:23.107
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:23.108
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 16:58:23.180
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:11.662
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:11.754
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:11.843
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:12.161
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:12.296
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:12.428
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:12.604
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:12.672
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:13.406
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:13.584
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:13.720
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:13.783
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:13.960
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.090
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.306
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.375
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.375
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.552
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.701
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.789
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.931
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.957
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:14.958
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:15.308
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:15.562
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:15.562
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2015-06-23 17:01:15.629
+!MESSAGE ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo.

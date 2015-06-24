@@ -69,8 +69,10 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
@@ -810,83 +812,114 @@ public class ServerConnectionManager {
         }
     }
 
-    public void handleFileChange(VirtualFile file, FileChangeType type) {
-        final String path = file.getPath();
-        Module currentModule = null;
-        String basePath = null;
-        // Check if that relates to any Content Packages and if so then publish it
-        List<Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
-        for(Module module: moduleList) {
-            if(module.isSlingPackage()) {
-                MavenResource mavenResource = findMavenSource(module, path);
-                if(mavenResource != null) {
-                    // This file belongs to this module so we are good to publish it
-                    currentModule = module;
-                    basePath = mavenResource.getDirectory();
-                    messageManager.sendDebugNotification("Found File: '" + path + "' in module: '" + currentModule.getName() + "");
+    public void handleFileChanges(List<FileChange> fileChangeList) {
+        Map<String, Module> resourcePathToModuleMap = new HashMap<String, Module>();
+        for(FileChange fileChange: fileChangeList) {
+            String filePath = fileChange.getFile().getPath();
+            // First go over the map to see if we already found the module
+            boolean found = false;
+            for(Map.Entry<String, Module> entry: resourcePathToModuleMap.entrySet()) {
+                Module module = entry.getValue();
+                String path = entry.getKey();
+                if(filePath.startsWith(path)) {
+                    fileChange.setModule(module);
+                    fileChange.setResourcePath(path);
+                    found = true;
                     break;
                 }
-            } else if(module.isOSGiBundle()) {
-                // Here we are not interested in a source file but rather in the Artifact. If it is the artifact then
-                // we mark the module as outdated
-                MavenProject mavenProject = module.getMavenProject();
-                if(path.startsWith(mavenProject.getBuildDirectory())) {
-                    // Check if it is the build file
-                    String fileName = file.getName();
-                    MavenId mavenId = mavenProject.getMavenId();
-                    String artifactId = mavenId.getArtifactId();
-                    String version = mavenId.getVersion();
-                    if(fileName.equals(artifactId + "-" + version + ".jar")) {
-                        messageManager.sendInfoNotification("server.update.file.change.prepare", path, type);
-                        module.setStatus(ServerConfiguration.SynchronizationStatus.outdated);
+            }
+            if(!found) {
+                // If not found we loop over the modules and see if one is
+                List<Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
+                for(Module module: moduleList) {
+                    if(module.isSlingPackage()) {
+                        MavenResource mavenResource = findMavenSource(module, filePath);
+                        if(mavenResource != null) {
+                            // This file belongs to this module so we are good to publish it
+                            fileChange.setModule(module);
+                            String basePath = mavenResource.getDirectory();
+                            fileChange.setResourcePath(basePath);
+                            resourcePathToModuleMap.put(basePath, module);
+                            break;
+                        }
+                    } else if(module.isOSGiBundle()) {
+                        // Here we are not interested in a source file but rather in the Artifact. If it is the artifact then
+                        // we mark the module as outdated
+                        MavenProject mavenProject = module.getMavenProject();
+                        if(filePath.startsWith(mavenProject.getBuildDirectory())) {
+                            // Check if it is the build file
+                            String fileName = fileChange.getFile().getName();
+                            MavenId mavenId = mavenProject.getMavenId();
+                            String artifactId = mavenId.getArtifactId();
+                            String version = mavenId.getVersion();
+                            if(fileName.equals(artifactId + "-" + version + ".jar")) {
+                                messageManager.sendInfoNotification("server.update.file.change.prepare", filePath, fileChange.getFileChangeType());
+                                module.setStatus(ServerConfiguration.SynchronizationStatus.outdated);
+                            }
+                        }
                     }
                 }
             }
         }
-        if(currentModule != null) {
+        if(!resourcePathToModuleMap.isEmpty()) {
             Repository repository = null;
             try {
-                messageManager.sendInfoNotification("server.update.file.change.prepare", path, type);
+                Module module = resourcePathToModuleMap.values().iterator().next();
                 repository = ServerUtil.getConnectedRepository(
-                    new IServer(currentModule.getParent()), new NullProgressMonitor()
+                    new IServer(module.getParent()), new NullProgressMonitor()
                 );
-                messageManager.sendDebugNotification("Got Repository: " + repository);
-                Command<?> command = null;
-                switch(type) {
-                    case CHANGED:
-                    case CREATED:
-                        command = addFileCommand(repository, currentModule, file, false);
-                        break;
-                    case DELETED:
-                        command = removeFileCommand(repository, currentModule, file);
-                        break;
-                }
-                messageManager.sendDebugNotification("Got Command: " + command);
-                if (command != null) {
-                    Set<String> handledPaths = new HashSet<String>();
-                    ensureParentIsPublished(
-                        currentModule,
-                        basePath,
-                        file,
-                        repository,
-                        handledPaths
-                    );
-                    execute(command);
-                    // Add a property that can be used later to avoid a re-sync if not needed
-                    Util.setModificationStamp(file);
-                    messageManager.sendInfoNotification("server.update.file.change.success", path);
-                } else {
-                    messageManager.sendInfoNotification("server.update.file.change.failed", path, currentModule);
-                }
             } catch(CoreException e) {
-                e.printStackTrace();
-            } catch(SerializationException e) {
-                e.printStackTrace();
-            } catch(IOException e) {
-                e.printStackTrace();
+                //AS TODO: Display an alert about the failure to connect to the Repository
+            }
+            if(repository != null) {
+                for(FileChange fileChange : fileChangeList) {
+                    try {
+                        VirtualFile file = fileChange.getFile();
+                        String path = file.getPath();
+                        FileChangeType type = fileChange.getFileChangeType();
+                        String basePath = fileChange.getResourcePath();
+                        Module currentModule = fileChange.getModule();
+                        messageManager.sendInfoNotification("server.update.file.change.prepare", path, type);
+                        messageManager.sendDebugNotification("Got Repository: " + repository);
+                        Command<?> command = null;
+                        switch(type) {
+                            case CHANGED:
+                            case CREATED:
+                                command = addFileCommand(repository, currentModule, file, false);
+                                break;
+                            case DELETED:
+                                command = removeFileCommand(repository, currentModule, file);
+                                break;
+                        }
+                        messageManager.sendDebugNotification("Got Command: " + command);
+                        if(command != null) {
+                            Set<String> handledPaths = new HashSet<String>();
+                            ensureParentIsPublished(
+                                currentModule,
+                                basePath,
+                                file,
+                                repository,
+                                handledPaths
+                            );
+                            execute(command);
+                            // Add a property that can be used later to avoid a re-sync if not needed
+                            Util.setModificationStamp(file);
+                            messageManager.sendInfoNotification("server.update.file.change.success", path);
+                        } else {
+                            messageManager.sendInfoNotification("server.update.file.change.failed", path, currentModule);
+                        }
+                    } catch(CoreException e) {
+                        e.printStackTrace();
+                    } catch(SerializationException e) {
+                        e.printStackTrace();
+                    } catch(IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
+
     /**
      * Ensures that the parent of this resource has been published to the repository
      *
