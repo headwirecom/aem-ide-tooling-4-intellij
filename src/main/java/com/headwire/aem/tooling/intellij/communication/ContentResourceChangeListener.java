@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedList;
 
 import static com.headwire.aem.tooling.intellij.communication.ServerConnectionManager.FileChangeType;
+import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
  * Created by schaefa on 5/12/15.
@@ -140,7 +141,7 @@ public class ContentResourceChangeListener {
 
     private void handleChange(VirtualFile file, FileChangeType fileChangeType) {
         String path = file.getPath();
-        if(path.indexOf("/jcr_root/") > 0) {
+        if(path.indexOf("/" + JCR_ROOT_FOLDER_NAME + "/") > 0) {
             synchronized(queue) {
                 queue.add(new FileChange(file, fileChangeType));
                 queue.notifyAll();

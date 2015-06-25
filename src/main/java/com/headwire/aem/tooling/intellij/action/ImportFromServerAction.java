@@ -10,24 +10,21 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
 import org.apache.sling.ide.serialization.SerializationManager;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.model.MavenResource;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
  * Created by schaefa on 6/18/15.
@@ -46,7 +43,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
             } else if(virtualFiles.length == 1) {
                 // We only support the Import from one file
                 String path = virtualFiles[0].getPath();
-                ret = path.indexOf("/jcr_root") > 0;
+                ret = path.indexOf("/" + JCR_ROOT_FOLDER_NAME) > 0;
             }
         }
         return ret;
@@ -81,7 +78,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
         ServerConfiguration.Module currentModuleLookup = null;
         for(ServerConfiguration.Module module: moduleList) {
             if(module.isSlingPackage()) {
-                MavenResource mavenResource = serverConnectionManager.findMavenSource(module, file.getPath());
+                MavenResource mavenResource = serverConnectionManager.findContentResource(module, file.getPath());
                 if(mavenResource != null) {
                     // This file belongs to this module so we are good to publish it
                     currentModuleLookup = module;

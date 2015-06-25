@@ -1,5 +1,7 @@
 package com.headwire.aem.tooling.intellij.eclipse;
 
+import com.headwire.aem.tooling.intellij.communication.MessageManager;
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
@@ -9,6 +11,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
@@ -37,6 +40,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.headwire.aem.tooling.intellij.util.Constants.CONTENT_FILE_NAME;
+import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
 
 /**
  * The <tt>ResourceChangeCommandFactory</tt> creates new {@link # Command commands} correspoding to resource addition,
@@ -116,10 +122,10 @@ public class ResourceChangeCommandFactory {
             Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
             Long resourceModificationTimeStamp = resource.getModificationStamp();
 
-            if(modificationTimestamp != null && modificationTimestamp >= resource.getModificationStamp()) {
+            if(modificationTimestamp != null && modificationTimestamp >= resourceModificationTimeStamp) {
                 Activator.getDefault().getPluginLogger()
                     .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
-                        resource, modificationTimestamp, resource.getModificationStamp());
+                        resource, modificationTimestamp, resourceModificationTimeStamp);
                 return null;
             }
         }
@@ -136,7 +142,16 @@ public class ResourceChangeCommandFactory {
         File syncDirectoryAsFile = ProjectUtil.getSyncDirectoryFullPath(resource.getProject()).toFile();
         IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
 
-        Filter filter = ProjectUtil.loadFilter(resource.getModule());
+        ServerConfiguration.Module module = resource.getModule();
+        Filter filter = ProjectUtil.loadFilter(module);
+        // Verify the Filter File
+        //AS NOTE: We cannot allow to have the filter file to be empty otherwise it is possible to delete protected
+        //AS NOTE: nodes like /etc/clientlibs.
+        if(filter == null) {
+            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
+            messageManager.showAlertWithArguments("server.configuration.filter.file.not.found", module.getName());
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
+        }
 
         ResourceProxy resourceProxy = null;
 
@@ -198,7 +213,7 @@ public class ResourceChangeCommandFactory {
             // possible .dir serialization holder
             if (resource.getType() == IResource.FOLDER && resource.getName().endsWith(".dir")) {
                 IFolder folder = (IFolder) resource;
-                IResource contentXml = folder.findMember(".content.xml");
+                IResource contentXml = folder.findMember(CONTENT_FILE_NAME);
                 // .dir serialization holder ; nothing to process here, the .content.xml will trigger the actual work
                 if (contentXml != null && contentXml.exists()
                     && serializationManager.isSerializationFile(contentXml.getLocation().toOSString())) {
@@ -562,7 +577,14 @@ public class ResourceChangeCommandFactory {
         IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
 
 //        Filter filter = ProjectUtil.loadFilter(syncDirectory.getProject());
-        Filter filter = ProjectUtil.loadFilter(resource.getModule());
+        ServerConfiguration.Module module = resource.getModule();
+        Filter filter = ProjectUtil.loadFilter(module);
+        // Verify the Filter File
+        if(filter == null) {
+            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
+            messageManager.showAlert("server.configuration.filter.file.not.found", module.getName());
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
+        }
 
         FilterResult filterResult = getFilterResult(resource, null, filter);
         if (filterResult == FilterResult.DENY || filterResult == FilterResult.PREREQUISITE) {

@@ -146,11 +146,17 @@
                 text="Import from"
                 description="Import from current Server Connection"
                 icon="AllIcons.ToolbarDecorator.Import"/>
+        <action id="AEM.Verify.Configuration.Action"
+                class="com.headwire.aem.tooling.intellij.action.VerifyConfigurationAction"
+                text="Verify Configuration"
+                description="Verify the selected Configuration to work properly with this Plugin"
+                icon="AllIcons.Actions.Share"/>
 
         <group id="AEM.Toolbar">
             <reference id="AEM.Add.Action"/>
             <reference id="AEM.Remove.Action"/>
             <reference id="AEM.Edit.Action"/>
+            <reference id="AEM.Verify.Configuration.Action"/>
             <separator/>
             <reference id="AEM.Check.Action"/>
             <reference id="AEM.Start.Debug.Action"/>

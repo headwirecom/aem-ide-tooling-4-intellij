@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.sling.ide.filter.Filter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.project.MavenProject;
@@ -372,6 +373,8 @@ public class ServerConfiguration
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
         private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
         private transient VirtualFile metaInfFolder;
+        private transient VirtualFile filterFile;
+        private transient Filter filter;
 
         public Module(@NotNull ServerConfiguration parent, @NotNull String artifactId, @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
             this.parent = parent;
@@ -460,6 +463,22 @@ public class ServerConfiguration
 
         public void setMetaInfFolder(VirtualFile metaInfFolder) {
             this.metaInfFolder = metaInfFolder;
+        }
+
+        public VirtualFile getFilterFile() {
+            return filterFile;
+        }
+
+        public void setFilterFile(VirtualFile filterFile) {
+            this.filterFile = filterFile;
+        }
+
+        public Filter getFilter() {
+            return filter;
+        }
+
+        public void setFilter(Filter filter) {
+            this.filter = filter;
         }
 
         public boolean isOSGiBundle() {

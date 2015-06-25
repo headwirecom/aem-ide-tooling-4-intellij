@@ -1,6 +1,5 @@
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
@@ -64,7 +63,6 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -76,6 +74,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
+import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
 
 /**
  * Handles the Server Connections for the Plugin, its state and flags
@@ -113,8 +112,6 @@ public class ServerConnectionManager {
         ServerConfiguration.ServerStatus.connected,
         ServerConfiguration.ServerStatus.disconnecting
     );
-
-    public static final String CONTENT_SOURCE_TO_ROOT_PATH = "/content/jcr_root";
 
     private Project project;
     private ServerTreeSelectionHandler selectionHandler;
@@ -670,7 +667,7 @@ public class ServerConnectionManager {
             );
             messageManager.sendDebugNotification("Got Repository: " + repository);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
-            List<MavenResource> resourceList = findMavenSources(module);
+            List<MavenResource> resourceList = findContentResources(module);
             Set<String> allResourcesUpdatedList = new HashSet<String>();
             MavenProject mavenProject = module.getMavenProject();
             VirtualFile baseFile = mavenProject.getDirectoryFile();
@@ -752,7 +749,7 @@ public class ServerConnectionManager {
     public long getLastModificationTimestamp(Module module) {
         long ret = -1;
 
-        List<MavenResource> resourceList = findMavenSources(module);
+        List<MavenResource> resourceList = findContentResources(module);
         Set<String> allResourcesUpdatedList = new HashSet<String>();
         MavenProject mavenProject = module.getMavenProject();
         VirtualFile baseFile = mavenProject.getDirectoryFile();
@@ -833,7 +830,7 @@ public class ServerConnectionManager {
                 List<Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
                 for(Module module: moduleList) {
                     if(module.isSlingPackage()) {
-                        MavenResource mavenResource = findMavenSource(module, filePath);
+                        MavenResource mavenResource = findContentResource(module, filePath);
                         if(mavenResource != null) {
                             // This file belongs to this module so we are good to publish it
                             fileChange.setModule(module);
@@ -1112,22 +1109,22 @@ public class ServerConnectionManager {
 
     }
 
-    public MavenResource findMavenSource(Module module, String filePath) {
-        List<MavenResource> resourceList = findMavenSources(module, filePath);
+    public MavenResource findContentResource(Module module, String filePath) {
+        List<MavenResource> resourceList = findContentResources(module, filePath);
         return resourceList.isEmpty() ? null : resourceList.get(0);
     }
 
-    public List<MavenResource> findMavenSources(Module module) {
-        return findMavenSources(module, null);
+    public List<MavenResource> findContentResources(Module module) {
+        return findContentResources(module, null);
     }
 
-    public List<MavenResource> findMavenSources(Module module, String filePath) {
+    public List<MavenResource> findContentResources(Module module, String filePath) {
         List<MavenResource> ret = new ArrayList<MavenResource>();
         MavenProject mavenProject = module.getMavenProject();
         List<MavenResource> sourcePathList = mavenProject.getResources();
         for(MavenResource sourcePath: sourcePathList) {
             String basePath = sourcePath.getDirectory();
-            if(basePath.endsWith(CONTENT_SOURCE_TO_ROOT_PATH) && (filePath == null || filePath.startsWith(basePath))) {
+            if(basePath.endsWith(JCR_ROOT_PATH_INDICATOR) && (filePath == null || filePath.startsWith(basePath))) {
                 ret.add(sourcePath);
                 break;
             }
