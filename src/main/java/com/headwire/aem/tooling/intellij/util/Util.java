@@ -63,11 +63,16 @@ public class Util {
 
     private static final FileAttribute MODIFICATION_STAMP_FILE_ATTRIBUTE = new FileAttribute("modificationStampFileAttribute", 1, true);
 
-    @Nullable
+    public static boolean isOutdated(VirtualFile file) {
+        long savedModificationTimeStamp = getModificationStamp(file);
+        long actualModificationTimeStamp = file.getTimeStamp();
+        return savedModificationTimeStamp < actualModificationTimeStamp;
+    }
+
     public static long getModificationStamp(VirtualFile file) {
         long ret = -1;
         Long temporary = file.getUserData(Util.MODIFICATION_DATE_KEY);
-        if(temporary == null) {
+        if(temporary == null || temporary <= 0) {
             if(file instanceof NewVirtualFile) {
                 final DataInputStream is = MODIFICATION_STAMP_FILE_ATTRIBUTE.readAttribute(file);
                 if(is != null) {

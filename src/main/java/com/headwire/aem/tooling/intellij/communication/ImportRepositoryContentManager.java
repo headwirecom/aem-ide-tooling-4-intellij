@@ -47,6 +47,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
+
 /**
  * Created by schaefa on 6/17/15.
  */
@@ -124,8 +126,8 @@ public class ImportRepositoryContentManager {
             contentSyncRoot = ProjectUtil.getSyncDirectoryFullPath(project).toFile();
 
             String relativeFromSyncRoot = projectRelativePath.toOSString();
-            int index = relativeFromSyncRoot.indexOf("/jcr_root/");
-            relativeFromSyncRoot = relativeFromSyncRoot.substring(index + "/jcr_root/".length());
+            int index = relativeFromSyncRoot.indexOf("/" + JCR_ROOT_FOLDER_NAME + "/");
+            relativeFromSyncRoot = relativeFromSyncRoot.substring(index + ("/" + JCR_ROOT_FOLDER_NAME + "/").length());
             repositoryImportRoot = new IPath(
                 new IPath(contentSyncRoot),
                 relativeFromSyncRoot

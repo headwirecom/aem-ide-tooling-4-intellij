@@ -9,4 +9,7 @@ public class Constants {
     public static final String JCR_ROOT_FOLDER_NAME = "jcr_root";
     public static final String CONTENT_FILE_NAME = ".content.xml";
     public static final String VAULT_FILTER_FILE_NAME = "filter.xml";
+
+    public static final String JCR_ROOT_PATH_INDICATOR = "/" + JCR_ROOT_FOLDER_NAME;
+
 }

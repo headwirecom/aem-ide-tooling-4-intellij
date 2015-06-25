@@ -10,6 +10,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
 import com.headwire.aem.tooling.intellij.eclipse.wrapper.ResourcesPlugin;
+import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
@@ -24,13 +25,12 @@ import java.io.InputStream;
 
 import static com.headwire.aem.tooling.intellij.util.Constants.META_INF_FOLDER_NAME;
 import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE_NAME;
+import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
 
 /**
  * Created by schaefa on 5/13/15.
  */
 public class ProjectUtil {
-
-    public static final String CONTENT_SOURCE_TO_ROOT_PATH = "/content/jcr_root";
 
     public static IPath getSyncDirectoryFullPath(IProject project) {
         return getSyncDirectoryValue(project);
@@ -63,39 +63,53 @@ public class ProjectUtil {
 //    }
 
     public static Filter loadFilter(ServerConfiguration.Module module) throws CoreException {
-        Filter filter = null;
-
-        FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
-        // First we check if the META-INF folder was already found
-        VirtualFile metaInfFolder = module.getMetaInfFolder();
-        if(metaInfFolder == null) {
-            // Now go through the Maven Resource folder and check
-            MavenProject mavenProject = module.getMavenProject();
-            for(MavenResource mavenResource: module.getMavenProject().getResources()) {
-                String path = mavenResource.getDirectory();
-                if(path.endsWith("/" + META_INF_FOLDER_NAME)) {
-                    metaInfFolder = mavenProject.getDirectoryFile().getFileSystem().findFileByPath(path);
-                    module.setMetaInfFolder(metaInfFolder);
-                }
+        // First check if the filter file is cached and if it isn't outdated. If it is found and not outdated
+        // then we just return this one. If the filter is outdated then we just reload if the cache file
+        // and if there is not file then we search for it. At the end we place both the file and filter in the cache.
+        Filter filter = module.getFilter();
+        VirtualFile filterFile = module.getFilterFile();
+        if(filter != null) {
+            if(Util.isOutdated(module.getFilterFile())) {
+                filter = null;
             }
         }
-        if(metaInfFolder == null) {
-            // Lastly we check if we can find the folder somewhere in the maven project file system
-            MavenProject mavenProject = module.getMavenProject();
-            VirtualFile test = mavenProject.getDirectoryFile();
-            metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
-            module.setMetaInfFolder(metaInfFolder);
+        if(filterFile == null) {
+            // First we check if the META-INF folder was already found
+            VirtualFile metaInfFolder = module.getMetaInfFolder();
+            if(metaInfFolder == null) {
+                // Now go through the Maven Resource folder and check
+                MavenProject mavenProject = module.getMavenProject();
+                for(MavenResource mavenResource : module.getMavenProject().getResources()) {
+                    String path = mavenResource.getDirectory();
+                    if(path.endsWith("/" + META_INF_FOLDER_NAME)) {
+                        metaInfFolder = mavenProject.getDirectoryFile().getFileSystem().findFileByPath(path);
+                        module.setMetaInfFolder(metaInfFolder);
+                    }
+                }
+            }
+            if(metaInfFolder == null) {
+                // Lastly we check if we can find the folder somewhere in the maven project file system
+                MavenProject mavenProject = module.getMavenProject();
+                VirtualFile test = mavenProject.getDirectoryFile();
+                metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
+                module.setMetaInfFolder(metaInfFolder);
+            }
+            if(metaInfFolder != null) {
+                // Found META-INF folder
+                // Find filter.xml file
+                filterFile = findFileOrFolder(metaInfFolder, VAULT_FILTER_FILE_NAME, false);
+                module.setFilterFile(filterFile);
+                Util.setModificationStamp(filterFile);
+            }
         }
-        if(metaInfFolder != null) {
-            // Found META-INF folder
-            // Find filter.xml file
-            VirtualFile filterFile = findFileOrFolder(metaInfFolder, VAULT_FILTER_FILE_NAME, false);
+        if(filter == null && filterFile != null) {
+            FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
             InputStream contents = null;
             try {
-                if(filterFile != null) {
-                    contents = filterFile.getInputStream();
-                    filter = filterLocator.loadFilter(contents);
-                }
+                contents = filterFile.getInputStream();
+                filter = filterLocator.loadFilter(contents);
+                module.setFilter(filter);
+                Util.setModificationStamp(filterFile);
             } catch (IOException e) {
                 throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 //                    "Failed loading filter file for project " + project.getName()
@@ -203,7 +217,7 @@ public class ProjectUtil {
         // Look for Content Folder
         File contentFolder = null;
         for(String sourceFolder : project.getSourceFolderList()) {
-            if(sourceFolder.endsWith(CONTENT_SOURCE_TO_ROOT_PATH)) {
+            if(sourceFolder.endsWith(JCR_ROOT_PATH_INDICATOR)) {
                 File folder = new File(sourceFolder);
                 if(folder.exists() && folder.isDirectory()) {
                     contentFolder = folder;

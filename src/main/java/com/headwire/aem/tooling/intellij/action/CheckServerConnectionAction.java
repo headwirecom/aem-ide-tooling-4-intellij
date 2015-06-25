@@ -5,6 +5,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration.ServerStatus;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
@@ -36,6 +37,13 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
         final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         final String title = AEMBundle.message("check.configuration.action.name");
         final String description = AEMBundle.message("check.configuration.action.description");
+
+        // First Run the Verifier
+        ActionManager actionManager = ActionManager.getInstance();
+        VerifyConfigurationAction verifyConfigurationAction = (VerifyConfigurationAction) actionManager.getAction("AEM.Verify.Configuration.Action");
+        if(verifyConfigurationAction != null) {
+            verifyConfigurationAction.doVerify(project);
+        }
 
         ProgressManager.getInstance().run(new Task.Modal(project, title, false) {
                 @Nullable
