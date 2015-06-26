@@ -978,7 +978,7 @@ public class ServerConnectionManager {
         execute(addFileCommand(repository, module, parentFile, false));
 
         // save the modification timestamp to avoid a redeploy if nothing has changed
-        Util.setModificationStamp(file);
+        Util.setModificationStamp(parentFile);
 
         handledPaths.add(parentFile.getPath());
         logger.trace("Ensured that resource at path {0} is published", parentFile.getPath());

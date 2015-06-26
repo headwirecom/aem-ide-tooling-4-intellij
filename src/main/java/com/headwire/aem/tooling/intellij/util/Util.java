@@ -2,7 +2,9 @@ package com.headwire.aem.tooling.intellij.util;
 
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileVisitor;
 import com.intellij.openapi.vfs.newvfs.FileAttribute;
 import com.intellij.openapi.vfs.newvfs.NewVirtualFile;
 import com.intellij.util.io.IOUtil;
@@ -67,6 +69,61 @@ public class Util {
         long savedModificationTimeStamp = getModificationStamp(file);
         long actualModificationTimeStamp = file.getTimeStamp();
         return savedModificationTimeStamp < actualModificationTimeStamp;
+    }
+
+    public static void resetModificationStamp(VirtualFile fileOrFolder, boolean recursive) {
+//        fileOrFolder.putUserData(MODIFICATION_DATE_KEY, null);
+//        if(fileOrFolder instanceof NewVirtualFile) {
+//            final DataOutputStream os = MODIFICATION_STAMP_FILE_ATTRIBUTE.writeAttribute(fileOrFolder);
+//            try {
+//                try {
+//                    IOUtil.writeString(StringUtil.notNullize("0"), os);
+//                } finally {
+//                    os.close();
+//                }
+//            } catch(IOException e) {
+//                // Ignore it but we might need to throw an exception
+//                String message = e.getMessage();
+//            }
+//        }
+//        if(recursive && fileOrFolder.isDirectory()) {
+//            for(VirtualFile child: fileOrFolder.getChildren()) {
+//                resetModificationStamp(child, true);
+//            }
+//        }
+        VfsUtilCore.visitChildrenRecursively(
+            fileOrFolder,
+            new ResetFileVisitor(recursive)
+        );
+    }
+
+    public static class ResetFileVisitor
+        extends VirtualFileVisitor
+    {
+        private boolean recursive = false;
+
+        public ResetFileVisitor(boolean recursive) {
+            this.recursive = recursive;
+        }
+
+        @Override
+        public boolean visitFile(VirtualFile file) {
+            file.putUserData(MODIFICATION_DATE_KEY, null);
+            if(file instanceof NewVirtualFile) {
+                final DataOutputStream os = MODIFICATION_STAMP_FILE_ATTRIBUTE.writeAttribute(file);
+                try {
+                    try {
+                        IOUtil.writeString(StringUtil.notNullize("0"), os);
+                    } finally {
+                        os.close();
+                    }
+                } catch(IOException e) {
+                    // Ignore it but we might need to throw an exception
+                    String message = e.getMessage();
+                }
+            }
+            return recursive;
+        }
     }
 
     public static long getModificationStamp(VirtualFile file) {
