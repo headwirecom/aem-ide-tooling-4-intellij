@@ -1,8 +1,18 @@
 ###AEM Tooling Plugin for IntelliJ IDEA
 
-####Introducation
+####Introduction
 
-This is a plugin for IntelliJ IDEA version 14 and up that enables the user to develop, deploy and debug applications on a remote AEM Server. It is modelled after the Eclipse plugin but works slightly different due to the different philosophy behind IDEA.
+This is a plugin for IntelliJ IDEA version 14 and up that enables the user to develop, deploy and debug applications on a remote AEM Server. It is modeled after the Eclipse plugin but works slightly different due to the different philosophy behind IDEA.
+
+#### Prerequisites
+
+This Plugin has a few requirements that must be met in order to work. Many of these requirements are coming from the Eclipse plugin and some are based on IntelliJ:
+
+1. The Project must be based on **Maven**
+2. Content Modules must be a **Content Package**
+3. Java Modules must be a **OSGi Bundle**
+4. Content Modules must provide a **Filter** (filter.xml) and a **jcr_root** folder
+5. OSGi Bundles must be built outside the Plugin before they can be deployed. 
 
 #### Installation
 
@@ -86,9 +96,17 @@ A Server Configuration is created by clicking on the plus (+) icon. After the cr
 
 ![Edit the Installation Settings](./img/2.3.4.Plugin.Edit.Server.Configuration.Install.png)
 
+##### Server Configuration Verification
+
+In order to prevent issues the Plugin has a Verification action that can be used to make sure the Project is compatible with the Plugin prerequisites. Press the Verification Icon and the system will go through the modules and check if they pass the requirements. If there is an issue an alert will be shown indicating the problem and the module in question is marked as **failed**.
+
 ##### Plugin Configuration
 
-The AEM Plugin has a single property that can be configured. Opening the IntelliJ Preferences and go to the **Other Settings** and you can enable / disable the **incremental builds**. This setting will enable or disable the automatic compilation while saving a Java class file similar to Eclipse.
+The AEM Plugin has a single property that can be configured. Opening the IntelliJ Preferences and go to the **Other Settings** and you can enable / disable the **incremental builds**. This setting will enable or disable the automatic compilation while saving a Java class file similar to Eclipse.  
+
+The **Deploy Delay** is a property that if set to a positive number will delay automatic deployments and queue them up. So if you change a file and have a Delay of 30 seconds then any other changed files will queue up until the 30s are over. Keep in mind that the system will queue up changes if the deployment takes some time as it is executed in the background.
+
+![Plugin Preferences](./img/7.1.Plugin.Preferences.png)
 
 #### Check against AEM Server
 
@@ -96,7 +114,7 @@ The AEM Plugin has a single property that can be configured. Opening the Intelli
 
 **Note**: Selecting the Server Configuration or the Module is the same in this context. 
 
-Checking against the currently selecred AEM Server is creating or updating the project module in the server configuration, checking if the Support Bundle is installed and see if the current resources are update to date or out of date.
+Checking against the currently selected AEM Server is creating or updating the project module in the server configuration, checking if the Support Bundle is installed and see if the current resources are update to date or out of date.
 If a Server Connection is marked as **default** then this will be happening automatically when the plugin is opened for the first time.
 
 In order to check you need to click on the **gear** icon:
@@ -115,7 +133,7 @@ There are two ways to deploy the modules:
 1) Deploy the OSGi Modules and **any changed** resource files  
 2) Force Deploy the OSGi Modules and **all** resource files
 
-The deployment of the resource files can take some time depending on the number of changed fileas. After an initial deployment the deployment should be much quicker as only the changed reosurces are deployed which normally only happen when files are changed outside of IntelliJ IDEA.
+The deployment of the resource files can take some time depending on the number of changed files. After an initial deployment the deployment should be much quicker as only the changed resources are deployed which normally only happen when files are changed outside of IntelliJ IDEA.
 
 The **forced** deployed will take its time as all resource files are deployed. This option should only be used when the project is out of sync with the server.
 
@@ -129,7 +147,7 @@ If a Module is selected inside the Server Configuration Tree then only **this** 
 
 #### Manage Modules
 
-Modules can be **excluded** from the **Deployment** so that the resourc files or OSGi packages are not synced with / deployed on the server. Any exlcuded files can be included again.
+Modules can be **excluded** from the **Deployment** so that the resource files or OSGi packages are not synced with / deployed on the server. Any excluded files can be included again.
 
 To bring up the build click on the **Manage Build Configuration** icon:
 
@@ -141,7 +159,7 @@ This will bring up a Dialog where the Modules are listed. The left side are the 
 
 #### Context Menu Options
 
-All of the Toolbar Actions can be executed from the Context Menu inside the plugin window. The selection depends on the current selection and its current state. The root entry (Server Configurations) will only provid **Add New Configuration** but all others will provide all the actions which some might be enabled or disabled.
+All of the Toolbar Actions can be executed from the Context Menu inside the plugin window. The selection depends on the current selection and its current state. The root entry (Server Configurations) will only provide **Add New Configuration** but all others will provide all the actions which some might be enabled or disabled.
 
 This is the Root Entry Context Menu:
 
@@ -251,7 +269,7 @@ An example for the generation of a project would be like this:
 
 The first three options are setting up the Maven project. The **package** is the Java package of your Java source code (OSGi Services, tests etc). The **appsFolder** is the name of the folder underneath **/apps** in the JCR tree. The **DartifactName** is the description of the Maven project. **componentGroupName** is the name of the Group that the Components are placed in inside the Components Dialog. The **contentFolderName** is the name of the folder you content will be placed under the **/content** folder. The **packageGroup** is the group name of the apps / content package.
 
-You can ommit all properties that don't start with **archeytpe** and it will ask you with a prompt.
+You can omit all properties that don't start with **archetype** and it will ask you with a prompt.
 
 Here is a list of all supported archetypes:
 
@@ -265,29 +283,29 @@ If the installation or startup of the plugin fails please have a look at the ide
 
 ##### Configuration
 
-If you can connect to your AEM Server through a web browser you should be able to connect to it through the plugin. That said for the the Debug Connection the port must be opened for you in order to debug. It is also prefereable to keep the server for development close to reduce the lag and latency.
-If the Debug Connection is failing for unknown reasons then a TCP Proxy can be used to watch the conversation between the IDEA and AEM. A good tool for that is [The Grinder](http://grinder.sourceforge.net/g3/tcpproxy.html) which can be installed quicly and reports any traffic between IDEA and AEM. In order to make it work you need to set the outgoing connection port ot the debug port of the AEM server and the incoming connection port to the port configured in the plugin and they must be different. Then you can connect to the AEM Server through the proxy and you might be able to see why the connection fails.
+If you can connect to your AEM Server through a web browser you should be able to connect to it through the plugin. That said for the the Debug Connection the port must be opened for you in order to debug. It is also preferable to keep the server for development close to reduce the lag and latency.
+If the Debug Connection is failing for unknown reasons then a TCP Proxy can be used to watch the conversation between the IDEA and AEM. A good tool for that is [The Grinder](http://grinder.sourceforge.net/g3/tcpproxy.html) which can be installed quickly and reports any traffic between IDEA and AEM. In order to make it work you need to set the outgoing connection port of the debug port of the AEM server and the incoming connection port to the port configured in the plugin and they must be different. Then you can connect to the AEM Server through the proxy and you might be able to see why the connection fails.
 
 ###### Password
 
-The password in the Server Configuration is left empty so that when the password is changed it is justed tipped in. The password field is empty the password remains as is and does not have to be retipped.
+The password in the Server Configuration is left empty and will only show dots for input when a new password is entered. A empty field indicates that the password hasn't changed and **does not** have to be reentered.
 
 ##### Connection
 
-If the Server is checked (to see if the modules / resources are up to date) the connection will close. That said in order to prevent accitendal switches between servers the connection must be closed even if the connection was just used to check. After the connection is closed the user can check, connect or deploy to another server.
+If the Server is checked (to see if the modules / resources are up to date) the connection will close. That said in order to prevent accidental switches between servers the connection must be closed even if the connection was just used to check. After the connection is closed the user can check, connect or deploy to another server.
 
 ##### Deployment
 
 The plugin will not check OSGi dependencies and successful activation of modules. OSGi can deploy a module successfully but fail to activate or to enable a component. 
 
-It is **recommended** to make a full deployment of the project at the beginning of major changes including pulling changes from GIT to ensure that everything is properly deployed. Afterwards Resources, OSGi Modules and classes can be deployed incrementely.
+It is **recommended** to make a full deployment of the project at the beginning of major changes including pulling changes from GIT to ensure that everything is properly deployed. Afterwards Resources, OSGi Modules and classes can be deployed incrementally.
 
 ###### Hot Swap
 
-When the plugin is connected in **Debug Mode** to the remote AEM Server a class can be hot swapped if there were only changes made to **method bodies**. Hot Swap will fail if there are any changes made to the class (adding methods, adding members, changing method signatures etc). If the automatical compilation is enabled the HotSwapping is done whenever a Java file is saved.
+When the plugin is connected in **Debug Mode** to the remote AEM Server a class can be hot swapped if there were only changes made to **method bodies**. Hot Swap will fail if there are any changes made to the class (adding methods, adding members, changing method signatures etc). If the incremental build is enabled the HotSwapping is done whenever a Java file is saved.
 
 Because the Hot Swap is done automatically class changes will cause an error during deployment. Therefore regular development should be done with the Debug Connection closed.
 
-**Attention**: HotSwap will replace class code **in memory only** meaning that a restart of the AEM Server will wipe any changes. It is necessary to deploy OSGi modules as soon as possible to avoid irratic changes.
+**Attention**: HotSwap will replace class code **in memory only** meaning that a restart of the AEM Server will wipe any changes. It is necessary to deploy OSGi modules as soon as possible to avoid erratic changes.
 
 

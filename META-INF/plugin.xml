@@ -151,12 +151,18 @@
                 text="Verify Configuration"
                 description="Verify the selected Configuration to work properly with this Plugin"
                 icon="AllIcons.Actions.Share"/>
+        <action id="AEM.Reset.Configuration.Action"
+                class="com.headwire.aem.tooling.intellij.action.ResetConfigurationAction"
+                text="Reset Configuration"
+                description="Any stored timestamp is reset to allow for a fresh deployment"
+                icon="AllIcons.Actions.Lightning"/>
 
         <group id="AEM.Toolbar">
             <reference id="AEM.Add.Action"/>
             <reference id="AEM.Remove.Action"/>
             <reference id="AEM.Edit.Action"/>
             <reference id="AEM.Verify.Configuration.Action"/>
+            <reference id="AEM.Reset.Configuration.Action"/>
             <separator/>
             <reference id="AEM.Check.Action"/>
             <reference id="AEM.Start.Debug.Action"/>
