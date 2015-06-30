@@ -101,45 +101,29 @@
         <!-- Add your actions here -->
         <action id="AEM.Add.Action"
                 class="com.headwire.aem.tooling.intellij.action.AddServerConfigurationAction"
-                text="Add a New Configuration"
-                description="Create a New Server Configuration"
                 icon="AllIcons.General.Add"
                 />
         <action id="AEM.Edit.Action"
                 class="com.headwire.aem.tooling.intellij.action.EditServerConfigurationAction"
-                text="Edit Current Configuration"
-                description="Edit the Currently Selected Server Configuration"
                 icon="AllIcons.Actions.EditSource"/>
         <action id="AEM.Remove.Action"
                 class="com.headwire.aem.tooling.intellij.action.RemoveServerConfigurationAction"
-                text="Remove Selected Configuration"
-                description="Remove Selected Server Connection Configuration"
                 icon="AllIcons.General.Remove"/>
         <action id="AEM.Check.Action"
                 class="com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction"
-                text="Check Current Connection"
-                description="Check the Currently Selected Server Configuration"
                 icon="AllIcons.CodeStyle.Gear"
                 />
         <action id="AEM.Start.Debug.Action"
                 class="com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction"
-                text="Connect with Selected Server In Debug Mode"
-                description="Create a Connection with the Selected Server in Debug Mode"
                 icon="AllIcons.General.Debug"/>
         <action id="AEM.Stop.Connection.Action"
                 class="com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction"
-                text="End the Currently Established Connection"
-                description="End the Currently Established Connection with the Server"
                 icon="AllIcons.Process.Stop"/>
         <action id="AEM.Deploy.Action"
                 class="com.headwire.aem.tooling.intellij.action.DeployToServerAction"
-                text="Deploy to the Current Server Connection"
-                description="Deploy to the Current Connection with the"
                 icon="AllIcons.Actions.Export"/>
         <action id="AEM.Force.Deploy.Action"
                 class="com.headwire.aem.tooling.intellij.action.ForceDeployToServerAction"
-                text="Forced Deploy to the Current Server Connection"
-                description="Forced Deployment to the Current Server Connection"
                 icon="AllIcons.Actions.ForceRefresh"/>
         <action id="AEM.Import.From.Server.Action"
                 class="com.headwire.aem.tooling.intellij.action.ImportFromServerAction"
@@ -148,14 +132,13 @@
                 icon="AllIcons.ToolbarDecorator.Import"/>
         <action id="AEM.Verify.Configuration.Action"
                 class="com.headwire.aem.tooling.intellij.action.VerifyConfigurationAction"
-                text="Verify Configuration"
-                description="Verify the selected Configuration to work properly with this Plugin"
                 icon="AllIcons.Actions.Share"/>
         <action id="AEM.Reset.Configuration.Action"
                 class="com.headwire.aem.tooling.intellij.action.ResetConfigurationAction"
-                text="Reset Configuration"
-                description="Any stored timestamp is reset to allow for a fresh deployment"
                 icon="AllIcons.Actions.Lightning"/>
+        <action id="AEM.Build.Configuration.Action"
+                class="com.headwire.aem.tooling.intellij.action.BuildConfigurationAction"
+                icon="AllIcons.Actions.Module"/>
 
         <group id="AEM.Toolbar">
             <reference id="AEM.Add.Action"/>
@@ -163,6 +146,7 @@
             <reference id="AEM.Edit.Action"/>
             <reference id="AEM.Verify.Configuration.Action"/>
             <reference id="AEM.Reset.Configuration.Action"/>
+            <reference id="AEM.Build.Configuration.Action"/>
             <separator/>
             <reference id="AEM.Check.Action"/>
             <reference id="AEM.Start.Debug.Action"/>
@@ -190,6 +174,9 @@
             <reference id="AEM.Add.Action"/>
             <reference id="AEM.Remove.Action"/>
             <reference id="AEM.Edit.Action"/>
+            <reference id="AEM.Build.Configuration.Action"/>
+            <reference id="AEM.Verify.Connection.Action"/>
+            <reference id="AEM.Reset.Connection.Action"/>
             <separator/>
             <reference id="AEM.Check.Action"/>
             <reference id="AEM.Start.Debug.Action"/>

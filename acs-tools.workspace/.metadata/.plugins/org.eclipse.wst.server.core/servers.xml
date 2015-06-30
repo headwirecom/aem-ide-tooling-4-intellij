@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<servers>
+  <server auto-publish-time="0" configuration-id="/Servers/Adobe Experience Manager at localhost-config" hostname="localhost" id="Adobe Experience Manager at localhost" launchpad.contextPath="/" launchpad.debugPort="30303" launchpad.password="admin" launchpad.port="4502" launchpad.username="admin" name="Adobe Experience Manager at localhost" runtime-id="Adobe Experience Manager" server-type="org.apache.sling.ide.launchpadServer" server-type-id="org.apache.sling.ide.launchpadServer" start-timeout="30" stop-timeout="15" timestamp="2">
+    <list key="modules" value0="acs-aem-tools-content::org.apache.sling.ide.contentModuleFactory:acs-aem-tools-content::sling.content::1.0" value1="acs-aem-tools-bundle-livereload::org.apache.sling.ide.bundleModuleFactory:acs-aem-tools-bundle-livereload::sling.bundle::1.0" value2="acs-aem-tools-bundle::org.apache.sling.ide.bundleModuleFactory:acs-aem-tools-bundle::sling.bundle::1.0"/>
+  </server>
+</servers>

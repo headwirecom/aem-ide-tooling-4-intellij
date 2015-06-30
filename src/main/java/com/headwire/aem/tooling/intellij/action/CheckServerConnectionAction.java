@@ -7,6 +7,7 @@ import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -21,9 +22,14 @@ import org.jetbrains.annotations.Nullable;
  * Created by schaefa on 6/12/15.
  */
 public class CheckServerConnectionAction extends AbstractProjectAction {
+
+    public CheckServerConnectionAction() {
+        super("check.configuration.action");
+    }
+
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
-        doCheck(project);
+        doCheck(project, dataContext);
     }
 
     @Override
@@ -32,17 +38,20 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 
-    public void doCheck(final Project project) {
+    public void doCheck(final Project project, final DataContext dataContext) {
         final ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
         final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        final String title = AEMBundle.message("check.configuration.action.name");
+        final String title = AEMBundle.message("check.configuration.action.text");
         final String description = AEMBundle.message("check.configuration.action.description");
 
         // First Run the Verifier
         ActionManager actionManager = ActionManager.getInstance();
         VerifyConfigurationAction verifyConfigurationAction = (VerifyConfigurationAction) actionManager.getAction("AEM.Verify.Configuration.Action");
         if(verifyConfigurationAction != null) {
-            verifyConfigurationAction.doVerify(project);
+            verifyConfigurationAction.doVerify(
+                project,
+                SimpleDataContext.getSimpleContext(VerifyConfigurationAction.VERIFY_CONTENT_WITH_WARNINGS, false, dataContext)
+            );
         }
 
         ProgressManager.getInstance().run(new Task.Modal(project, title, false) {

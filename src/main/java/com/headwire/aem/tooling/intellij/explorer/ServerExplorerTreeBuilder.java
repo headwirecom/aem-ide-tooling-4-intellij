@@ -22,6 +22,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.intellij.ide.util.treeView.*;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.util.ProgressIndicatorBase;
@@ -121,7 +122,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
                                     getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                     // Not call the check module method
                                     first = false;
-                                    checkAction.doCheck(myProject);
+                                    checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
 //AS TODO: When we expand here a phantom line remains (not sure how to clean that up -> find a good solution to clean it up or to call this when the tree is fully built
 //                                    expandAll();
 

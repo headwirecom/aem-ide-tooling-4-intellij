@@ -14,6 +14,10 @@ public class StopConnectionAction
     extends AbstractProjectAction
 {
 
+    public StopConnectionAction() {
+        super("stop.configuration.action");
+    }
+
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager connectionManager = getConnectionManager(project);

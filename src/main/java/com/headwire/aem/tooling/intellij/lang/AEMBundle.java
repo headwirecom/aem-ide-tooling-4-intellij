@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  */
 public class AEMBundle {
     public static String message(@NotNull @PropertyKey(resourceBundle = PATH_TO_BUNDLE) String key, @NotNull Object... params) {
-        String message = CommonBundle.message(getBundle(), key, params);
+        String message = CommonBundle.messageOrDefault(getBundle(), key, "", params);
         return message;
     }
 

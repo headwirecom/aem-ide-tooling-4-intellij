@@ -11,9 +11,16 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import jetbrains.buildServer.messages.serviceMessages.Message;
+import org.apache.commons.lang.StringUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.log.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.Icon;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by schaefa on 5/14/15.
@@ -86,6 +93,47 @@ public class MessageManager
 
     public void sendErrorNotification(String bundleMessageId, Object ... parameters) {
         sendNotification(bundleMessageId, NotificationType.ERROR, parameters);
+    }
+
+    public int showAlertWithOptions(@Nullable NotificationType type, @NotNull final String messageId, Object ... arguments) {
+        List<String> selections = new ArrayList<String>();
+        for(int i = 0; i < 3; i++) {
+            String message = AEMBundle.message(messageId + "." + i);
+            if(StringUtils.isNotBlank(message)) {
+                selections.add(message);
+            }
+        }
+        int ret = 0;
+        if(selections.isEmpty()) {
+            ret = Messages.showOkCancelDialog(
+                getMessage(messageId, arguments),
+                getTitle(messageId),
+                getIcon(type)
+            );
+        } else {
+            String[] options = selections.toArray(new String[selections.size()]);
+            ret = Messages.showDialog(
+                project,
+                getMessage(messageId, arguments),
+                getTitle(messageId),
+                options,
+                0,
+                getIcon(type)
+            );
+        }
+        return ret;
+    }
+
+    private Icon getIcon(NotificationType type) {
+        switch(type) {
+            case INFORMATION:
+                return Messages.getInformationIcon();
+            case WARNING:
+                return Messages.getWarningIcon();
+            case ERROR:
+            default:
+                return Messages.getErrorIcon();
+        }
     }
 
     public void showAlert(@NotNull final String messageId) {

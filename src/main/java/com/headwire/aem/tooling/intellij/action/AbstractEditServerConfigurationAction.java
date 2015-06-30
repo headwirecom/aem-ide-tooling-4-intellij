@@ -21,6 +21,9 @@ import javax.swing.Icon;
 public abstract class AbstractEditServerConfigurationAction
     extends AbstractProjectAction
 {
+    public AbstractEditServerConfigurationAction(@NotNull String textId) {
+        super(textId);
+    }
 
     /**
      * Adds or Edits a Server Configuration and makes sure the configuration is valid
@@ -44,14 +47,14 @@ public abstract class AbstractEditServerConfigurationAction
                         if(other != null) {
                             // Collision found -> alert and retry
                             isOk = false;
-                            messageManager.sendErrorNotification("aem.explorer.cannot.change.configuration", target.getName());
+                            getMessageManager(project).sendErrorNotification("aem.explorer.cannot.change.configuration", target.getName());
                         }
                     } else {
                         // Verity Content
                         String message = target.verify();
                         if(message != null) {
                             isOk = false;
-                            messageManager.sendErrorNotification("aem.explorer.server.configuration.invalid", AEMBundle.message(message));
+                            getMessageManager(project).sendErrorNotification("aem.explorer.server.configuration.invalid", AEMBundle.message(message));
                         }
                     }
                     if(isOk) {

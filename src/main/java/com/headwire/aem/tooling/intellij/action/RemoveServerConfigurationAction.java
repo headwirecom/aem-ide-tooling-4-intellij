@@ -14,6 +14,11 @@ import org.jetbrains.annotations.Nullable;
 public class RemoveServerConfigurationAction
     extends AbstractProjectAction
 {
+
+    public RemoveServerConfigurationAction() {
+        super("remove.configuration.action");
+    }
+
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConfigurationManager configurationManager = getConfigurationManager(project);

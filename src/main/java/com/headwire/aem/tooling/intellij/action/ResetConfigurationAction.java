@@ -1,8 +1,10 @@
 package com.headwire.aem.tooling.intellij.action;
 
+import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.components.ServiceManager;
@@ -17,6 +19,11 @@ import java.util.List;
  * Created by schaefa on 6/12/15.
  */
 public class ResetConfigurationAction extends AbstractProjectAction {
+
+    public ResetConfigurationAction() {
+        super("reset.configuration.action");
+    }
+
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         doReset(project);
@@ -37,8 +44,10 @@ public class ResetConfigurationAction extends AbstractProjectAction {
                 // Before we can verify we need to ensure the Configuration is properly bound to Maven
                 serverConnectionManager.checkBinding(source);
                 // Verify each Module to see if all prerequisites are met
+                getMessageManager(project).sendInfoNotification("action.reset.configuration.begin");
                 for(ServerConfiguration.Module module: source.getModuleList()) {
                     if(module.isSlingPackage()) {
+                        getMessageManager(project).sendInfoNotification("action.reset.configuration.start", module.getName());
                         // Check if the Content Modules have a Content Resource
                         List<MavenResource> resourceList = serverConnectionManager.findContentResources(module);
                         for(MavenResource mavenResource: resourceList) {
@@ -47,8 +56,10 @@ public class ResetConfigurationAction extends AbstractProjectAction {
                                 Util.resetModificationStamp(mavenResourceDirectory, true);
                             }
                         }
+                        getMessageManager(project).sendInfoNotification("action.reset.configuration.end", module.getName());
                     }
                 }
+                getMessageManager(project).sendInfoNotification("action.reset.configuration.finish");
             }
         }
     }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1435275780408_0" label="acs-aem-tools" name="acs-aem-tools">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/acs-aem-tools" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/acs-aem-tools-bundle" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/acs-aem-tools-bundle-livereload" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/acs-aem-tools-content" type="4"/>
+</workingSet>
+</workingSetManager>
