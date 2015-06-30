@@ -19,6 +19,15 @@ import org.jetbrains.annotations.Nullable;
 public class DeployToServerAction
     extends AbstractProjectAction
 {
+
+    public DeployToServerAction(@NotNull String textId) {
+        super(textId);
+    }
+
+    public DeployToServerAction() {
+        this("deploy.configuration.action");
+    }
+
     protected boolean isForced() {
         return false;
     }

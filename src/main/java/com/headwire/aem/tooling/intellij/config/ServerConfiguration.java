@@ -50,6 +50,8 @@ public class ServerConfiguration
         notChecked("not checked"),
         /** Module Deployment or Synchronization failed **/
         failed,
+        /** Module Deployment maybe compromised **/
+        compromised,
         /** Bundle was successfully deployed **/
         bundleDeployed("deployed"),
         /** Content Module is synchronized with Sling server **/

@@ -4,6 +4,7 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -21,10 +22,17 @@ public abstract class AbstractProjectAction
     implements DumbAware
 
 {
-    protected MessageManager messageManager;
+    private MessageManager messageManager;
+
+    public AbstractProjectAction(@NotNull String textId) {
+        super(
+            AEMBundle.message(textId + ".text"),
+            AEMBundle.message(textId + ".description"),
+            null
+        );
+    }
 
     public AbstractProjectAction() {
-        messageManager = ServiceManager.getService(MessageManager.class);
     }
 
     public void update(AnActionEvent event) {
@@ -41,6 +49,11 @@ public abstract class AbstractProjectAction
         if(project != null) {
             execute(project, dataContext);
         }
+    }
+
+    @NotNull
+    protected MessageManager getMessageManager(@NotNull Project project) {
+        return ServiceManager.getService(project, MessageManager.class);
     }
 
     protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext);

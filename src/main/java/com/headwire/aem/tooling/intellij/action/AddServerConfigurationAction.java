@@ -11,6 +11,10 @@ import org.jetbrains.annotations.Nullable;
 public class AddServerConfigurationAction
     extends AbstractEditServerConfigurationAction
 {
+    public AddServerConfigurationAction() {
+        super("add.configuration.action");
+    }
+
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         editServerConfiguration(project, null);

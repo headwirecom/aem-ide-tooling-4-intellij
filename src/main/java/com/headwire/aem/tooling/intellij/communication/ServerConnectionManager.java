@@ -409,6 +409,29 @@ public class ServerConnectionManager {
         return ret;
     }
 
+    public List<ResourceProxy> getChildrenNodes(Repository repository, String path) {
+        List<ResourceProxy> ret = new ArrayList<ResourceProxy>();
+        if(path != null && path.length() > 0) {
+            if(path.charAt(0) != '/') {
+                path = "/" + path;
+            }
+            try {
+                Command<ResourceProxy> command = repository.newListChildrenNodeCommand(path);
+                Result<ResourceProxy> result = command.execute();
+                boolean success = result.isSuccess();
+                if(success) {
+                    ResourceProxy resourceProxy = result.get();
+                    for(ResourceProxy childResourceProxy: resourceProxy.getChildren()) {
+                        ret.add(childResourceProxy);
+                    }
+                }
+            } catch(RepositoryException e) {
+                //AS TODO: Throw Proper Exception
+            }
+        }
+        return ret;
+    }
+
     public void deployModules(final DataContext dataContext, boolean force) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {

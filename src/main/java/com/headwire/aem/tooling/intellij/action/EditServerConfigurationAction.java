@@ -14,6 +14,11 @@ import org.jetbrains.annotations.Nullable;
 public class EditServerConfigurationAction
     extends AbstractEditServerConfigurationAction
 {
+
+    public EditServerConfigurationAction() {
+        super("edit.configuration.action");
+    }
+
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);

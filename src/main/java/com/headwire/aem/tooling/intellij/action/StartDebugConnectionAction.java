@@ -13,6 +13,11 @@ import org.jetbrains.annotations.Nullable;
 public class StartDebugConnectionAction
     extends AbstractProjectAction
 {
+
+    public StartDebugConnectionAction() {
+        super("debug.configuration.action");
+    }
+
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager connectionManager = getConnectionManager(project);

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.apache.sling.ide.launchpadLaunchConfigurationType">
+<stringAttribute key="server-id" value="Adobe Experience Manager at localhost"/>
+</launchConfiguration>

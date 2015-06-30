@@ -406,6 +406,10 @@ public class ResourceChangeCommandFactory {
                     IOUtils.closeQuietly(contents);
                 }
 
+                //AS TODO: This does not work if there is a a missing .xontent.xml file for each parent folder outside
+                //AS TODO: of the filter path as they. I am not sure whey this must called covers()
+                //AS TODO: This is not an easy fix as the node fails to be created as the ItemDefinitionProviderImpl.getQNodeDefinition()
+                //AS TODO: isn't able to find the node definition.
                 String repositoryPath = serializationManager.getRepositoryPath(resourceLocation);
                 String potentialPath = serializationData.getPath();
                 boolean covered = serializationData.covers(repositoryPath);
