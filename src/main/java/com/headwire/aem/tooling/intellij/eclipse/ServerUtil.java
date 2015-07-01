@@ -3,6 +3,8 @@ package com.headwire.aem.tooling.intellij.eclipse;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.headwire.aem.tooling.intellij.communication.MessageManager;
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IModule;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IProgressMonitor;
@@ -10,14 +12,19 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ISlingLaunchpadConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ISlingLaunchpadServer;
+import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.eclipse.stub.SlingLaunchpadServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.intellij.notification.NotificationType;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.RepositoryException;
 import org.apache.sling.ide.transport.RepositoryFactory;
 import org.apache.sling.ide.transport.RepositoryInfo;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 //AS TOOD: Copy from the Eclipse Project -> Clean up
 public abstract class ServerUtil {
@@ -119,24 +126,46 @@ public abstract class ServerUtil {
 //        return null;
     }
 
-    public static Repository getConnectedRepository(IServer server, IProgressMonitor monitor) throws CoreException {
-        if (server==null) {
-            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "No server available/selected."));
-        }
+//AS TODO: Original Code until 6/30/15
+//    public static Repository getConnectedRepository(IServer server, IProgressMonitor monitor) throws CoreException {
+//        if (server==null) {
+//            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "No server available/selected."));
+//        }
+//        if (server.getServerState()!=IServer.STATE_STARTED) {
+//            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "Server not started, please start server first."));
+//        }
+//        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+//        try {
+//            RepositoryInfo repositoryInfo = getRepositoryInfo(server, monitor);
+//            return repository.getRepository(repositoryInfo, false);
+//        } catch (URISyntaxException e) {
+//            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+//        } catch (RuntimeException e) {
+//            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+//        } catch (RepositoryException e) {
+//            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+//        }
+//    }
+
+    @Nullable
+    public static Repository getConnectedRepository(@NotNull IServer server, @NotNull IProgressMonitor monitor, @NotNull MessageManager messageManager) {
+        Repository ret = null;
         if (server.getServerState()!=IServer.STATE_STARTED) {
-            throw new CoreException(new Status(Status.WARNING, Activator.PLUGIN_ID, "Server not started, please start server first."));
+            messageManager.showAlertWithArguments(NotificationType.ERROR, "aem.explorer.deploy.connection.not.stared");
+        } else {
+            RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+            try {
+                RepositoryInfo repositoryInfo = getRepositoryInfo(server, monitor);
+                ret = repository.getRepository(repositoryInfo, false);
+            } catch(URISyntaxException e) {
+                messageManager.showAlertWithArguments(NotificationType.ERROR, "aem.explorer.deploy.connection.configuration.bad.url", server.getServerConfiguration().getName());
+            } catch(RuntimeException e) {
+                messageManager.showAlertWithArguments(NotificationType.ERROR, "aem.explorer.deploy.connection.unexpected.problem", server.getServerConfiguration().getName(), e.getMessage());
+            } catch(RepositoryException e) {
+                messageManager.showAlertWithArguments(NotificationType.ERROR, "aem.explorer.deploy.connection.repository.problem", server.getServerConfiguration().getName(), e.getMessage());
+            }
         }
-        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
-        try {
-            RepositoryInfo repositoryInfo = getRepositoryInfo(server, monitor);
-            return repository.getRepository(repositoryInfo, false);
-        } catch (URISyntaxException e) {
-            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-        } catch (RuntimeException e) {
-            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-        } catch (RepositoryException e) {
-            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-        }
+        return ret;
     }
 
 //    public static Repository getConnectedRepository(

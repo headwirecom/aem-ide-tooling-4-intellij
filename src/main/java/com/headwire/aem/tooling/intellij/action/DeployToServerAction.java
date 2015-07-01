@@ -84,7 +84,7 @@ public class DeployToServerAction
                                     }
                                     indicator.setFraction(0.3);
                                     // First Check if the Install Support Bundle is installed
-                                    ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(true);
+                                    ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(false);
                                     indicator.setFraction(0.5);
                                     ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
                                     if(module != null) {

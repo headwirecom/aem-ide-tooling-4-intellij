@@ -10,9 +10,13 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IModuleResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
+import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
+import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
+import com.headwire.aem.tooling.intellij.util.Constants;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
@@ -375,36 +379,44 @@ public class ServerConnectionManager {
                 boolean success = false;
                 Result<ResourceProxy> result = null;
                 messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
-                Repository repository = null;
-                try {
-                    repository = ServerUtil.connectRepository(new IServer(serverConfiguration), new NullProgressMonitor());
-                } catch(CoreException e) {
-                    // Show Alert and exit
-                    //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
-                    if(e.getCause().getClass() == IllegalArgumentException.class) {
-                        messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository.refused", serverConfiguration.getName());
-                    } else {
-                        messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
-                    }
-                    return null;
-                }
-                Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
-                result = command.execute();
-                success = result.isSuccess();
+                Repository repository = obtainRepository(serverConfiguration, messageManager);
+                if(repository != null) {
+                    Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
+                    result = command.execute();
+                    success = result.isSuccess();
 
-                messageManager.sendInfoNotification("aem.explorer.connected.sling.repository", success);
-                if(success) {
-                    serverConfiguration.setServerStatus(ServerConfiguration.ServerStatus.connected);
-                    RepositoryInfo repositoryInfo = ServerUtil.getRepositoryInfo(
-                        new IServer(serverConfiguration), new NullProgressMonitor()
-                    );
-                    ret = Activator.getDefault().getOsgiClientFactory().createOsgiClient(repositoryInfo);
+                    messageManager.sendInfoNotification("aem.explorer.connected.sling.repository", success);
+                    if(success) {
+                        serverConfiguration.setServerStatus(ServerConfiguration.ServerStatus.connected);
+                        RepositoryInfo repositoryInfo = ServerUtil.getRepositoryInfo(
+                            new IServer(serverConfiguration), new NullProgressMonitor()
+                        );
+                        ret = Activator.getDefault().getOsgiClientFactory().createOsgiClient(repositoryInfo);
+                    }
                 }
             } catch(URISyntaxException e) {
                 messageManager.sendErrorNotification("aem.explorer.server.uri.bad", serverConfiguration.getName(), e);
             }
         } else {
             messageManager.sendErrorNotification("aem.explorer.cannot.connect.repository.missing.configuration", serverConfiguration.getName());
+        }
+        return ret;
+    }
+
+    @Nullable
+    public static Repository obtainRepository(@NotNull ServerConfiguration serverConfiguration, @NotNull MessageManager messageManager) {
+        Repository ret = null;
+        messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+        try {
+            ret = ServerUtil.connectRepository(new IServer(serverConfiguration), new NullProgressMonitor());
+        } catch(CoreException e) {
+            // Show Alert and exit
+            //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
+            if(e.getCause().getClass() == IllegalArgumentException.class) {
+                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository.refused", serverConfiguration.getName());
+            } else {
+                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
+            }
         }
         return ret;
     }
@@ -686,76 +698,83 @@ public class ServerConnectionManager {
         }
         try {
             repository = ServerUtil.getConnectedRepository(
-                new IServer(module.getParent()), new NullProgressMonitor()
+                new IServer(module.getParent()), new NullProgressMonitor(), messageManager
             );
-            messageManager.sendDebugNotification("Got Repository: " + repository);
-            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
-            List<MavenResource> resourceList = findContentResources(module);
-            Set<String> allResourcesUpdatedList = new HashSet<String>();
-            MavenProject mavenProject = module.getMavenProject();
-            VirtualFile baseFile = mavenProject.getDirectoryFile();
-            for(MavenResource resource: resourceList) {
-                String resourceDirectoryPath = resource.getDirectory();
-                VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resourceDirectoryPath);
-                messageManager.sendDebugNotification("Resource File to deploy: " + resourceFile);
-                List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
-                getChangedResourceList(resourceFile, changedResources);
-                //AS TODO: Create a List of Changed Resources
-                for(VirtualFile changedResource : changedResources) {
-                    try {
-                        Command<?> command = addFileCommand(repository, module, changedResource, force);
-                        if(command != null) {
-                            long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
-                            lastModificationTimestamp = Math.max(parentLastModificationTimestamp, lastModificationTimestamp);
-                            allResourcesUpdatedList.add(changedResource.getPath());
-
-                            messageManager.sendDebugNotification("Publish file: " + changedResource);
-                            messageManager.sendDebugNotification("Publish for module: " + module.getName());
-                            execute(command);
-
-                            // save the modification timestamp to avoid a redeploy if nothing has changed
-                            Util.setModificationStamp(changedResource);
-                            lastModificationTimestamp = Math.max(changedResource.getTimeStamp(), lastModificationTimestamp);
-                        } else {
-                            // We do not update the file but we need to find the last mdoification timestamp
-                            // We need to obtain the command to see if it is deployed
-                            command = addFileCommand(repository, module, changedResource, true);
+            if(repository != null) {
+                messageManager.sendDebugNotification("Got Repository: " + repository);
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
+                List<MavenResource> resourceList = findContentResources(module);
+                Set<String> allResourcesUpdatedList = new HashSet<String>();
+                MavenProject mavenProject = module.getMavenProject();
+                VirtualFile baseFile = mavenProject.getDirectoryFile();
+                for(MavenResource resource : resourceList) {
+                    String resourceDirectoryPath = resource.getDirectory();
+                    VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resourceDirectoryPath);
+                    messageManager.sendDebugNotification("Resource File to deploy: " + resourceFile);
+                    List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
+                    getChangedResourceList(resourceFile, changedResources);
+                    //AS TODO: Create a List of Changed Resources
+                    for(VirtualFile changedResource : changedResources) {
+                        try {
+                            Command<?> command = addFileCommand(repository, module, changedResource, force);
                             if(command != null) {
-                                long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, allResourcesUpdatedList);
-                                lastModificationTimestamp = Math.max(lastModificationTimestamp, parentLastModificationTimestamp);
+                                long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
+                                lastModificationTimestamp = Math.max(parentLastModificationTimestamp, lastModificationTimestamp);
                                 allResourcesUpdatedList.add(changedResource.getPath());
-                                long timestamp = changedResource.getTimeStamp();
-                                lastModificationTimestamp = Math.max(lastModificationTimestamp, timestamp);
+
+                                messageManager.sendDebugNotification("Publish file: " + changedResource);
+                                messageManager.sendDebugNotification("Publish for module: " + module.getName());
+                                execute(command);
+
+                                // save the modification timestamp to avoid a redeploy if nothing has changed
+                                Util.setModificationStamp(changedResource);
+                                lastModificationTimestamp = Math.max(changedResource.getTimeStamp(), lastModificationTimestamp);
+                            } else {
+                                // We do not update the file but we need to find the last mdoification timestamp
+                                // We need to obtain the command to see if it is deployed
+                                command = addFileCommand(repository, module, changedResource, true);
+                                if(command != null) {
+                                    long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, allResourcesUpdatedList);
+                                    lastModificationTimestamp = Math.max(lastModificationTimestamp, parentLastModificationTimestamp);
+                                    allResourcesUpdatedList.add(changedResource.getPath());
+                                    long timestamp = changedResource.getTimeStamp();
+                                    lastModificationTimestamp = Math.max(lastModificationTimestamp, timestamp);
+                                }
                             }
-                        }
-                    } catch(CoreException e) {
-                        Throwable cause = e.getCause();
-                        if(cause instanceof ConstraintViolationException) {
-                            // Ignore Constraint Violation and keep on looping through
-                            messageManager.sendErrorNotification("aem.explorer.deploy.resource.failed.due.to.constraints", changedResource, e);
-                        } else {
-                            messageManager.sendDebugNotification("Failed to deploy: '" + changedResource + " due to exception : " + e);
-                            throw e;
+                        } catch(CoreException e) {
+                            Status status = e.getStatus();
+                            if(status != null) {
+                                // The Core Exception is used to end the processing of publishing a file. In case of an error it will stop the entire processing
+                                // and in case of a warning it will proceed
+                                NotificationType type = status.getStatus() == IStatus.ERROR ? NotificationType.ERROR : NotificationType.WARNING;
+                                messageManager.showAlert(type, AEMBundle.message("aem.explorer.deploy.exception.title"), status.getMessage());
+                                if(type == NotificationType.ERROR) {
+                                    return;
+                                }
+                            } else {
+                                messageManager.showAlert(NotificationType.ERROR, AEMBundle.message("aem.explorer.deploy.exception.title"), e.getCause().getMessage());
+                                return;
+                            }
                         }
                     }
                 }
-            }
-            // reorder the child nodes at the end, when all create/update/deletes have been processed
-//AS TODO: This needs to be resolved
-            for (String resourcePath : allResourcesUpdatedList) {
-                VirtualFile file = baseFile.getFileSystem().findFileByPath(resourcePath);
-                if(file != null) {
-                    execute(reorderChildNodesCommand(repository, module, file));
-                } else {
-                    messageManager.sendErrorNotification("aem.explorer.deploy.failed.to.reorder.missing.resource", resourcePath);
+                // reorder the child nodes at the end, when all create/update/deletes have been processed
+                //AS TODO: This needs to be resolved -> done but needs to be verified
+                for(String resourcePath : allResourcesUpdatedList) {
+                    VirtualFile file = baseFile.getFileSystem().findFileByPath(resourcePath);
+                    if(file != null) {
+                        execute(reorderChildNodesCommand(repository, module, file));
+                    } else {
+                        messageManager.sendErrorNotification("aem.explorer.deploy.failed.to.reorder.missing.resource", resourcePath);
+                    }
                 }
-            }
-            module.setLastModificationTimestamp(lastModificationTimestamp);
-            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
-            if(force) {
-                messageManager.sendInfoNotification("aem.explorer.deploy.module.by.force.success", module);
-            } else {
-                messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
+                module.setLastModificationTimestamp(lastModificationTimestamp);
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
+                if(force) {
+                    messageManager.sendInfoNotification("aem.explorer.deploy.module.by.force.success", module);
+                } else {
+                    messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
+                }
             }
         } catch(CoreException e) {
             messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", module, e);
@@ -882,15 +901,10 @@ public class ServerConnectionManager {
             }
         }
         if(!resourcePathToModuleMap.isEmpty()) {
-            Repository repository = null;
-            try {
-                Module module = resourcePathToModuleMap.values().iterator().next();
-                repository = ServerUtil.getConnectedRepository(
-                    new IServer(module.getParent()), new NullProgressMonitor()
-                );
-            } catch(CoreException e) {
-                //AS TODO: Display an alert about the failure to connect to the Repository
-            }
+            Module module = resourcePathToModuleMap.values().iterator().next();
+            Repository repository =  ServerUtil.getConnectedRepository(
+                new IServer(module.getParent()), new NullProgressMonitor(), messageManager
+            );
             if(repository != null) {
                 for(FileChange fileChange : fileChangeList) {
                     try {
@@ -978,8 +992,8 @@ public class ServerConnectionManager {
         VirtualFile parentFile = file.getParent();
         messageManager.sendDebugNotification("Check Parent File: " + parentFile);
         String parentFilePath = parentFile.getPath();
-        if(parentFile.getPath().equals(basePath)) {
-            logger.trace("Path {0} can not have a parent, skipping", parentFile.getPath());
+        if(parentFilePath.equals(basePath)) {
+            logger.trace("Path {0} can not have a parent, skipping", parentFilePath);
             return ret;
         }
 
@@ -997,8 +1011,27 @@ public class ServerConnectionManager {
         // handle the parent's parent first, if needed
         long lastParentModificationTimestamp = ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths);
 
-        // create this resource
-        execute(addFileCommand(repository, module, parentFile, false));
+        try {
+            // create this resource
+            execute(addFileCommand(repository, module, parentFile, false));
+        } catch(CoreException e) {
+            Status status = e.getStatus();
+            if(status != null) {
+                throw new CoreException(
+                    new Status(
+                        status.getStatus(), status.getComponentId(), status.getActionId(),
+                        AEMBundle.message(
+                            ( status.getActionId() == Constants.COMMAND_EXECUTION_FAILURE ?
+                                "aem.explorer.deploy.create.parent.failed.message" :
+                                "aem.explorer.deploy.create.parent.unsuccessful.message" ),
+                            status.getMessage(), e.getCause().getMessage()),
+                        e
+                    )
+                );
+            } else {
+                throw e;
+            }
+        }
 
         // save the modification timestamp to avoid a redeploy if nothing has changed
         Util.setModificationStamp(parentFile);
@@ -1116,20 +1149,22 @@ public class ServerConnectionManager {
                 Throwable cause = e.getCause();
                 if(cause != null) {
                     throw new CoreException(
-                        "Failed to publish path: " + command.getPath() + ", due to Exception result: " + result.toString(),
-                        cause
+                        new Status(
+                            Status.ERROR, Constants.SERVER_CONNECTION_MANAGER, Constants.COMMAND_EXECUTION_FAILURE,
+                            command.getPath(),
+                            e
+                        )
                     );
                 }
             }
-            // TODO - proper error logging
             throw new CoreException(
-//                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed publishing path="
-//                + command.getPath() + ", result=" + result.toString())
-                "Failed to publish path: " + command.getPath() + ", result: " + result.toString()
-
+                new Status(
+                    Status.ERROR, Constants.SERVER_CONNECTION_MANAGER, Constants.COMMAND_EXECUTION_UNSUCCESSFUL,
+                    AEMBundle.message("aem.explorer.deploy.command.execution.unsuccessful.message", command.getPath()),
+                    null
+                )
             );
         }
-
     }
 
     public MavenResource findContentResource(Module module, String filePath) {

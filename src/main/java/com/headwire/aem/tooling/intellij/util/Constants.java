@@ -12,4 +12,10 @@ public class Constants {
 
     public static final String JCR_ROOT_PATH_INDICATOR = "/" + JCR_ROOT_FOLDER_NAME;
 
+    // Component Ids for Status Messages
+    public static final int SERVER_CONNECTION_MANAGER = 10;
+
+    // Action Ids for Status Messages
+    public static final int COMMAND_EXECUTION_FAILURE = 10;
+    public static final int COMMAND_EXECUTION_UNSUCCESSFUL = 11;
 }
