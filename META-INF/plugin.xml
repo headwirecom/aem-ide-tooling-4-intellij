@@ -109,15 +109,23 @@
         <action id="AEM.Remove.Action"
                 class="com.headwire.aem.tooling.intellij.action.RemoveServerConfigurationAction"
                 icon="AllIcons.General.Remove"/>
+        <action id="AEM.Verify.Configuration.Action"
+                class="com.headwire.aem.tooling.intellij.action.VerifyConfigurationAction"
+                icon="AllIcons.Actions.Share"/>
+        <action id="AEM.Reset.Configuration.Action"
+                class="com.headwire.aem.tooling.intellij.action.ResetConfigurationAction"
+                icon="AllIcons.Actions.Lightning"/>
+        <action id="AEM.Build.Configuration.Action"
+                class="com.headwire.aem.tooling.intellij.action.BuildConfigurationAction"
+                icon="AllIcons.Actions.Module"/>
         <action id="AEM.Check.Action"
                 class="com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction"
-                icon="AllIcons.CodeStyle.Gear"
-                />
+                icon="AllIcons.CodeStyle.Gear"/>
         <action id="AEM.Start.Debug.Action"
                 class="com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction"
                 icon="AllIcons.General.Debug"/>
         <action id="AEM.Stop.Connection.Action"
-                class="com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction"
+                class="com.headwire.aem.tooling.intellij.action.StopConnectionAction"
                 icon="AllIcons.Process.Stop"/>
         <action id="AEM.Deploy.Action"
                 class="com.headwire.aem.tooling.intellij.action.DeployToServerAction"
@@ -130,15 +138,6 @@
                 text="Import from"
                 description="Import from current Server Connection"
                 icon="AllIcons.ToolbarDecorator.Import"/>
-        <action id="AEM.Verify.Configuration.Action"
-                class="com.headwire.aem.tooling.intellij.action.VerifyConfigurationAction"
-                icon="AllIcons.Actions.Share"/>
-        <action id="AEM.Reset.Configuration.Action"
-                class="com.headwire.aem.tooling.intellij.action.ResetConfigurationAction"
-                icon="AllIcons.Actions.Lightning"/>
-        <action id="AEM.Build.Configuration.Action"
-                class="com.headwire.aem.tooling.intellij.action.BuildConfigurationAction"
-                icon="AllIcons.Actions.Module"/>
 
         <group id="AEM.Toolbar">
             <reference id="AEM.Add.Action"/>
@@ -151,32 +150,17 @@
             <reference id="AEM.Check.Action"/>
             <reference id="AEM.Start.Debug.Action"/>
             <reference id="AEM.Stop.Connection.Action"/>
+            <separator/>
             <reference id="AEM.Deploy.Action"/>
             <reference id="AEM.Force.Deploy.Action"/>
-            <!--<reference id="Maven.UpdateFolders"/>-->
-
-            <!--<group id="Maven.DownloadAllGroupPopup" popup="true" class="org.jetbrains.idea.maven.project.actions.DownloadActionGroup"-->
-                   <!--icon="AllIcons.Actions.Download">-->
-                <!--<reference id="Maven.DownloadAllGroup"/>-->
-            <!--</group>-->
-            <!--<separator/>-->
-            <!--<reference id="Maven.AddManagedFiles"/>-->
-            <!--<separator/>-->
-            <!--<reference id="Maven.RunBuild"/>-->
-            <!--<reference id="Maven.ExecuteGoal"/>-->
-            <!--<reference id="Maven.ToggleOffline"/>-->
-            <!--<reference id="Maven.ToggleSkipTests"/>-->
-            <!--<reference id="Maven.CollapseAll"/>-->
-            <!--<separator/>-->
-            <!--<reference id="Maven.ShowSettings"/>-->
         </group>
         <group id="AEM.Connection.Popup">
             <reference id="AEM.Add.Action"/>
             <reference id="AEM.Remove.Action"/>
             <reference id="AEM.Edit.Action"/>
             <reference id="AEM.Build.Configuration.Action"/>
-            <reference id="AEM.Verify.Connection.Action"/>
-            <reference id="AEM.Reset.Connection.Action"/>
+            <reference id="AEM.Verify.Configuration.Action"/>
+            <reference id="AEM.Reset.Configuration.Action"/>
             <separator/>
             <reference id="AEM.Check.Action"/>
             <reference id="AEM.Start.Debug.Action"/>

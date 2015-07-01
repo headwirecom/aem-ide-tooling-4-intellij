@@ -1,15 +1,19 @@
 package com.headwire.aem.tooling.intellij.console;
 
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.intellij.execution.filters.HyperlinkInfo;
 import com.intellij.notification.EventLogCategory;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
+import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.notification.NotificationsAdapter;
 import com.intellij.notification.impl.NotificationsConfigurationImpl;
 import com.intellij.notification.impl.NotificationsManagerImpl;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.RangeMarker;
 import com.intellij.openapi.editor.impl.DocumentImpl;
@@ -387,9 +391,32 @@ public class ConsoleLog {
         }
 
         private void printNotification(Notification notification) {
-            if(!NotificationsConfigurationImpl.getSettings(notification.getGroupId()).isShouldLog()) {
-                return;
+            ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, ServerTreeSelectionHandler.class);
+            if(selectionHandler != null) {
+                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                switch(serverConfiguration.getLogFilter()) {
+                    case debug:
+                        break;
+                    case info:
+                        if(notification instanceof DebugNotification) {
+                            return;
+                        }
+                        break;
+                    case warning:
+                        if(notification.getType() == NotificationType.INFORMATION) {
+                            return;
+                        }
+                        break;
+                    case error:
+                    default:
+                        if(notification.getType() != NotificationType.ERROR) {
+                            return;
+                        }
+                }
             }
+//            if(!NotificationsConfigurationImpl.getSettings(notification.getGroupId()).isShouldLog()) {
+//                return;
+//            }
             myProjectModel.addNotification(notification);
 
             ConsoleLogConsole console = getConsole(notification);
@@ -453,6 +480,10 @@ public class ConsoleLog {
 
     public static ProjectTracker getProjectComponent(Project project) {
         return project.getComponent(ProjectTracker.class);
+    }
+
+    public static void addNotification(@NotNull Project project, @NotNull Notification notification) {
+        getLogModel(project).addNotification(notification);
     }
 
     private static class NotificationHyperlinkInfo implements HyperlinkInfo {

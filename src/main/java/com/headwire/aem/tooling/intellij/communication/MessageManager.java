@@ -1,9 +1,12 @@
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.console.ConsoleLog;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogCategory;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory;
+import com.headwire.aem.tooling.intellij.console.DebugNotification;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.ide.plugins.PluginManager;
+import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
@@ -42,6 +45,11 @@ public class MessageManager
 //AS TODO: Find a way to switch it off when released -> Constant
 //        sendNotification("Debug Message", message, NotificationType.INFORMATION);
         logger.trace(message);
+//        ConsoleLog.addNotification(
+//            project,
+//            new DebugNotification("Debug Message", message)
+//        );
+        new DebugNotification("Debug Message", message).notify(project);
     }
 
 //    public void sendNotification(String message, NotificationType type) {

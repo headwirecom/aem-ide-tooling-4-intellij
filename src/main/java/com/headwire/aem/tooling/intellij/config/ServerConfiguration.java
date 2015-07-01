@@ -40,6 +40,7 @@ public class ServerConfiguration
     public static final InstallationType DEFAULT_INSTALL_TYPE = InstallationType.installViaBundleUpload;
     public static final ServerStatus DEFAULT_SERVER_STATUS = ServerStatus.notConnected;
     public static final SynchronizationStatus DEFAULT_SERVER_SYNCHRONIZATION_STATUS = SynchronizationStatus.notChecked;
+    public static final LogFilter DEFAULT_LOG_FILTER = LogFilter.error;
 
     protected static final String COMPONENT_NAME = "ServerConfiguration";
 
@@ -100,6 +101,8 @@ public class ServerConfiguration
         public String getName() { return name; }
     };
 
+    public enum LogFilter {debug, info, warning, error};
+
     private String name = "";
     private String host = "";
     private String description = "";
@@ -113,6 +116,7 @@ public class ServerConfiguration
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
     private InstallationType installationType = DEFAULT_INSTALL_TYPE;
     private boolean defaultConfiguration = false;
+    private LogFilter logFilter = DEFAULT_LOG_FILTER;
 
     // Don't store Server Status as it is reset when the Configuration is loaded again
     //AS TODO: Not sure about this -> Check if that works
@@ -293,6 +297,14 @@ public class ServerConfiguration
     public void setSynchronizationStatus(SynchronizationStatus synchronizationStatus) {
         this.synchronizationStatus = synchronizationStatus != null ? synchronizationStatus : DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
         if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
+    }
+
+    public LogFilter getLogFilter() {
+        return logFilter;
+    }
+
+    public void setLogFilter(LogFilter logFilter) {
+        this.logFilter = logFilter;
     }
 
     public boolean isDefault() {
