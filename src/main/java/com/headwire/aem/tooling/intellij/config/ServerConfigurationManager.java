@@ -33,6 +33,24 @@ public class ServerConfigurationManager
         implements PersistentStateComponent<Element>, ProjectComponent {
 
     private static final Logger LOGGER = Logger.getInstance(ServerConfigurationManager.class);
+    public static final String LOG_FILTER = "logFilter";
+    public static final String NAME = "name";
+    public static final String HOST = "host";
+    public static final String DESCRIPTION = "description";
+    public static final String CONNECTION_PORT = "connectionPort";
+    public static final String CONNECTION_DEBUG_PORT = "connectionDebugPort";
+    public static final String USER_NAME = "userName";
+    public static final String PASSWORD = "password";
+    public static final String CONTEXT_PATH = "contextPath";
+    public static final String START_CONNECTION_TIMEOUT = "startConnectionTimeout";
+    public static final String STOP_CONNECTION_TIMEOUT = "stopConnectionTimeout";
+    public static final String PUBLISH_TYPE = "publishType";
+    public static final String INSTALLATION_TYPE = "installationType";
+    public static final String DEFAULT = "default";
+    public static final String ARTIFACT_ID = "artifactId";
+    public static final String SYMBOLIC_NAME = "symbolicName";
+    public static final String PART_OF_BUILD = "partOfBuild";
+    public static final String LAST_MODIFICATION_TIMESTAMP = "lastModificationTimestamp";
 
     private MessageManager messageManager;
     private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
@@ -172,27 +190,28 @@ public class ServerConfigurationManager
         int i = 0;
         for(ServerConfiguration serverConfiguration: serverConfigurationList) {
             Element childNode = new Element("ssc-" + i++);
-            childNode.setAttribute("name", serverConfiguration.getName());
-            childNode.setAttribute("host", serverConfiguration.getHost());
-            childNode.setAttribute("description", serverConfiguration.getDescription());
-            childNode.setAttribute("connectionPort", serverConfiguration.getConnectionPort() + "");
-            childNode.setAttribute("connectionDebugPort", serverConfiguration.getConnectionDebugPort() + "");
-            childNode.setAttribute("userName", serverConfiguration.getUserName());
+            childNode.setAttribute(NAME, serverConfiguration.getName());
+            childNode.setAttribute(HOST, serverConfiguration.getHost());
+            childNode.setAttribute(DESCRIPTION, serverConfiguration.getDescription());
+            childNode.setAttribute(CONNECTION_PORT, serverConfiguration.getConnectionPort() + "");
+            childNode.setAttribute(CONNECTION_DEBUG_PORT, serverConfiguration.getConnectionDebugPort() + "");
+            childNode.setAttribute(USER_NAME, serverConfiguration.getUserName());
             //AS TODO: Can we store that in an encrypted form?
-            childNode.setAttribute("password", new String(serverConfiguration.getPassword()));
-            childNode.setAttribute("contextPath", serverConfiguration.getContextPath());
-            childNode.setAttribute("startConnectionTimeout", serverConfiguration.getStartConnectionTimeoutInSeconds() + "");
-            childNode.setAttribute("stopConnectionTimeout", serverConfiguration.getStopConnectionTimeoutInSeconds() + "");
-            childNode.setAttribute("publishType", serverConfiguration.getPublishType() + "");
-            childNode.setAttribute("installationType", serverConfiguration.getInstallationType() + "");
-            childNode.setAttribute("default", serverConfiguration.isDefault() + "");
+            childNode.setAttribute(PASSWORD, new String(serverConfiguration.getPassword()));
+            childNode.setAttribute(CONTEXT_PATH, serverConfiguration.getContextPath());
+            childNode.setAttribute(START_CONNECTION_TIMEOUT, serverConfiguration.getStartConnectionTimeoutInSeconds() + "");
+            childNode.setAttribute(STOP_CONNECTION_TIMEOUT, serverConfiguration.getStopConnectionTimeoutInSeconds() + "");
+            childNode.setAttribute(PUBLISH_TYPE, serverConfiguration.getPublishType() + "");
+            childNode.setAttribute(INSTALLATION_TYPE, serverConfiguration.getInstallationType() + "");
+            childNode.setAttribute(DEFAULT, serverConfiguration.isDefault() + "");
+            childNode.setAttribute(LOG_FILTER, serverConfiguration.getLogFilter() + "");
             int j = 0;
             for(ServerConfiguration.Module module: serverConfiguration.getModuleList()) {
                 Element moduleChildNode = new Element("sscm-" + j++);
-                moduleChildNode.setAttribute("artifactId", module.getArtifactId());
-                moduleChildNode.setAttribute("symbolicName", module.getSymbolicName());
-                moduleChildNode.setAttribute("partOfBuild", module.isPartOfBuild() + "");
-                moduleChildNode.setAttribute("lastModificationTimestamp", module.getLastModificationTimestamp() + "");
+                moduleChildNode.setAttribute(ARTIFACT_ID, module.getArtifactId());
+                moduleChildNode.setAttribute(SYMBOLIC_NAME, module.getSymbolicName());
+                moduleChildNode.setAttribute(PART_OF_BUILD, module.isPartOfBuild() + "");
+                moduleChildNode.setAttribute(LAST_MODIFICATION_TIMESTAMP, module.getLastModificationTimestamp() + "");
                 childNode.addContent(moduleChildNode);
             }
             root.addContent(childNode);
@@ -208,19 +227,19 @@ public class ServerConfigurationManager
         serverConfigurationList.clear();
         for(Element child: elementList) {
             ServerConfiguration serverConfiguration = new ServerConfiguration();
-            serverConfiguration.setName(child.getAttributeValue("name"));
-            serverConfiguration.setHost(child.getAttributeValue("host"));
-            serverConfiguration.setDescription(child.getAttributeValue("description"));
-            serverConfiguration.setConnectionPort(Util.convertToInt(child.getAttributeValue("connectionPort"), 0));
-            serverConfiguration.setConnectionDebugPort(Util.convertToInt(child.getAttributeValue("connectionDebugPort"), 0));
-            serverConfiguration.setUserName(child.getAttributeValue("userName"));
-            serverConfiguration.setPassword(child.getAttributeValue("password").toCharArray());
-            serverConfiguration.setContextPath(child.getAttributeValue("contextPath"));
-            serverConfiguration.setStartConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue("startConnectionTimeout"), -1));
-            serverConfiguration.setStopConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue("stopConnectionTimeout"), -1));
-            serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue("publishType"), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
-            serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue("installationType"), ServerConfiguration.DEFAULT_INSTALL_TYPE));
-            boolean defaultConfiguration = new Boolean(child.getAttributeValue("default", "false"));
+            serverConfiguration.setName(child.getAttributeValue(NAME));
+            serverConfiguration.setHost(child.getAttributeValue(HOST));
+            serverConfiguration.setDescription(child.getAttributeValue(DESCRIPTION));
+            serverConfiguration.setConnectionPort(Util.convertToInt(child.getAttributeValue(CONNECTION_PORT), 0));
+            serverConfiguration.setConnectionDebugPort(Util.convertToInt(child.getAttributeValue(CONNECTION_DEBUG_PORT), 0));
+            serverConfiguration.setUserName(child.getAttributeValue(USER_NAME));
+            serverConfiguration.setPassword(child.getAttributeValue(PASSWORD).toCharArray());
+            serverConfiguration.setContextPath(child.getAttributeValue(CONTEXT_PATH));
+            serverConfiguration.setStartConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue(START_CONNECTION_TIMEOUT), -1));
+            serverConfiguration.setStopConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue(STOP_CONNECTION_TIMEOUT), -1));
+            serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue(PUBLISH_TYPE), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
+            serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue(INSTALLATION_TYPE), ServerConfiguration.DEFAULT_INSTALL_TYPE));
+            boolean defaultConfiguration = new Boolean(child.getAttributeValue(DEFAULT, "false"));
             serverConfiguration.setConfigurationChangeListener(configurationChangeListener);
             if(defaultConfiguration) {
                 // Check if no other configuration is already the default
@@ -233,12 +252,13 @@ public class ServerConfigurationManager
                 }
             }
             serverConfiguration.setDefault(defaultConfiguration);
+            serverConfiguration.setLogFilter(Util.convertToEnum(child.getAttributeValue(LOG_FILTER), ServerConfiguration.DEFAULT_LOG_FILTER));
             for(Element element: child.getChildren()) {
                 try {
-                    String artifactId = element.getAttributeValue("artifactId", "No Artifact Id");
-                    String symbolicName = element.getAttributeValue("symbolicName", "");
-                    boolean isPartOfBuild = new Boolean(element.getAttributeValue("partOfBuild", "true"));
-                    long lastModificationTimestamp = new Long(element.getAttributeValue("lastModificationTimestamp", "-1"));
+                    String artifactId = element.getAttributeValue(ARTIFACT_ID, "No Artifact Id");
+                    String symbolicName = element.getAttributeValue(SYMBOLIC_NAME, "");
+                    boolean isPartOfBuild = new Boolean(element.getAttributeValue(PART_OF_BUILD, "true"));
+                    long lastModificationTimestamp = new Long(element.getAttributeValue(LAST_MODIFICATION_TIMESTAMP, "-1"));
                     ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, artifactId, symbolicName, isPartOfBuild, lastModificationTimestamp);
                     serverConfiguration.addModule(module);
                 } catch(Exception e) {

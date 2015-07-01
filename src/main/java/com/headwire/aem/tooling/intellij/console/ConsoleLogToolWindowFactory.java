@@ -1,5 +1,11 @@
 package com.headwire.aem.tooling.intellij.console;
 
+import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
+import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.ui.BuildSelectionDialog;
+import com.headwire.aem.tooling.intellij.ui.ConsoleLogSettingsDialog;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.actions.ContextHelpAction;
 import com.intellij.notification.impl.NotificationsConfigurable;
@@ -12,6 +18,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.ToggleAction;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actions.ScrollToTheEndToolbarAction;
 import com.intellij.openapi.editor.actions.ToggleUseSoftWrapsToolbarAction;
@@ -106,16 +113,26 @@ public class ConsoleLogToolWindowFactory
     }
 
     private static class EditNotificationSettings extends DumbAwareAction {
-        private final Project myProject;
+        private final Project project;
 
         public EditNotificationSettings(Project project) {
-            super("Settings", "Edit notification settings", AllIcons.General.Settings);
-            myProject = project;
+            super("Settings", "Edit AEM Console Log settings", AllIcons.General.Settings);
+            this.project = project;
         }
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            ShowSettingsUtil.getInstance().editConfigurable(myProject, new NotificationsConfigurable());
+            ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+            ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+            ServerConfigurationManager configurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
+            if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
+                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                ConsoleLogSettingsDialog dialog = new ConsoleLogSettingsDialog(project, serverConfiguration);
+                if(dialog.showAndGet()) {
+                    // Modules might have changed and so update the tree
+                    configurationManager.updateServerConfiguration(serverConfiguration);
+                }
+            }
         }
     }
 
