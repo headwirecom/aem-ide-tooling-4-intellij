@@ -3,18 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e8001779-2c80-4417-9343-f2a698fc0cd2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/acs-tools.workspace/acs-aem-tools" afterPath="$PROJECT_DIR$/acs-tools.workspace/acs-aem-tools" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" afterPath="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Constants.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/CoreException.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/CoreException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/DeployToServerAction.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/DeployToServerAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ImportRepositoryContentManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ImportRepositoryContentManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/MessageManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/MessageManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ServerUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ServerUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/Status.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/Status.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/VerifyConfigurationAction.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/VerifyConfigurationAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aemtoolingtest/.idea/workspace.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aemtoolingtest/.idea/workspace.xml" />
     </list>
     <ignored path="AEM Tooling Plugin.iws" />
@@ -160,8 +148,8 @@
       <file leaf-file-name="MessageManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/MessageManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.41569167" vertical-offset="1001" max-vertical-offset="3225">
-              <caret line="109" column="20" selection-start-line="109" selection-start-column="20" selection-end-line="109" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.24071991" vertical-offset="1001" max-vertical-offset="3225">
+              <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2535#2536#0" expanded="true" />
@@ -2724,12 +2712,12 @@
       <workItem from="1434383745934" duration="3264000" />
       <workItem from="1434396079350" duration="2362000" />
       <workItem from="1434398809133" duration="16518000" />
-      <workItem from="1434553107116" duration="204158000" />
+      <workItem from="1434553107116" duration="204346000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="888369000" />
+    <option name="totallyTimeSpent" value="888557000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -3420,8 +3408,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/MessageManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41569167" vertical-offset="1001" max-vertical-offset="3225">
-          <caret line="109" column="20" selection-start-line="109" selection-start-column="20" selection-end-line="109" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.24071991" vertical-offset="1001" max-vertical-offset="3225">
+          <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2535#2536#0" expanded="true" />
