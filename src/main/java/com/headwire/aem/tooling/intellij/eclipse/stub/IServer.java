@@ -46,12 +46,15 @@ public class IServer {
 //        return 0;
     }
 
-
     public IServerType getServerType() {
         return serverType;
     }
 
-//    /*
+    public ServerConfiguration getServerConfiguration() {
+        return serverConfiguration;
+    }
+
+    //    /*
 //     * Publish to the server using the progress monitor. The result of the
 //     * publish operation is returned as an IStatus.
 //     */

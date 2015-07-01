@@ -96,26 +96,30 @@ public class MessageManager
     }
 
     public int showAlertWithOptions(@Nullable NotificationType type, @NotNull final String messageId, Object ... arguments) {
+        String title = getTitle(messageId);
+        String message = getMessage(messageId, arguments);
+        // Make sure the Message is also placed inside the Log Console
+        sendNotification(title, message, type);
         List<String> selections = new ArrayList<String>();
         for(int i = 0; i < 3; i++) {
-            String message = AEMBundle.message(messageId + "." + i);
-            if(StringUtils.isNotBlank(message)) {
-                selections.add(message);
+            String selectionText = AEMBundle.message(messageId + "." + i);
+            if(StringUtils.isNotBlank(selectionText)) {
+                selections.add(selectionText);
             }
         }
         int ret = 0;
         if(selections.isEmpty()) {
             ret = Messages.showOkCancelDialog(
-                getMessage(messageId, arguments),
-                getTitle(messageId),
+                message,
+                title,
                 getIcon(type)
             );
         } else {
             String[] options = selections.toArray(new String[selections.size()]);
             ret = Messages.showDialog(
                 project,
-                getMessage(messageId, arguments),
-                getTitle(messageId),
+                message,
+                title,
                 options,
                 0,
                 getIcon(type)
@@ -144,11 +148,36 @@ public class MessageManager
         showAlert(getTitle(messageId), getMessage(messageId, arguments));
     }
 
+    public void showAlertWithArguments(@NotNull NotificationType type, @NotNull final String messageId, Object...arguments) {
+        showAlert(type, getTitle(messageId), getMessage(messageId, arguments));
+    }
+
     public void showAlert(@NotNull final String title, @NotNull final String message) {
+        // AS TODO: Originally the call was placed onto another Thread but it seems not to be necessary -> check and adjust
+        showAlert(NotificationType.ERROR, title, message);
+//        ApplicationManager.getApplication().invokeLater(
+//            new Runnable() {
+//                public void run() {
+//                    Messages.showWarningDialog(project, message, title);
+//                }
+//            }
+//        );
+    }
+
+    public void showAlert(@NotNull final NotificationType type, @NotNull final String title, @NotNull final String message) {
+        // Make sure the Message is also placed inside the Log Console
+        sendNotification(title, message, type);
         ApplicationManager.getApplication().invokeLater(
             new Runnable() {
                 public void run() {
-                    Messages.showWarningDialog(project, message, title);
+                    Messages.showDialog(
+                        project,
+                        message,
+                        title,
+                        new String[]{Messages.OK_BUTTON},
+                        0,
+                        getIcon(type)
+                    );
                 }
             }
         );

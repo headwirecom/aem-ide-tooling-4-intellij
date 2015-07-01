@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
 import com.headwire.aem.tooling.intellij.eclipse.ResourceAndInfo;
 import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
@@ -17,6 +18,8 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.intellij.notification.NotificationType;
+import com.intellij.openapi.components.ServiceManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.jackrabbit.vault.util.Text;
 import org.apache.sling.ide.filter.Filter;
@@ -95,81 +98,82 @@ public class ImportRepositoryContentManager {
 
 //        this.monitor = monitor;
 
-        repository = ServerUtil.getConnectedRepository(server, monitor);
-
-        File syncDirectory = ProjectUtil.getSyncDirectoryFile(project);
-        this.builder = serializationManager.newBuilder(
-            repository, syncDirectory
-        );
-
-        SerializationKindManager skm;
-
-        try {
-            skm = new SerializationKindManager();
-            skm.init(repository);
-        } catch (RepositoryException e1) {
-            throw new InvocationTargetException(e1);
-        }
-
-        filter = ProjectUtil.loadFilter(project);
-
-//        ProgressUtils.advance(monitor, 1);
-
-        try {
-
-            contentSyncRootDir = ProjectUtil.getSyncDirectory(project);
-//AS TODO: The Repository Import Root needs to be a path that points from the /jcr_root to the folder where the import started with.
-//            repositoryImportRoot = projectRelativePath
-//                .makeRelativeTo(contentSyncRootDir.getProjectRelativePath())
-//                .makeAbsolute();
-
-            contentSyncRoot = ProjectUtil.getSyncDirectoryFullPath(project).toFile();
-
-            String relativeFromSyncRoot = projectRelativePath.toOSString();
-            int index = relativeFromSyncRoot.indexOf("/" + JCR_ROOT_FOLDER_NAME + "/");
-            relativeFromSyncRoot = relativeFromSyncRoot.substring(index + ("/" + JCR_ROOT_FOLDER_NAME + "/").length());
-            repositoryImportRoot = new IPath(
-                new IPath(contentSyncRoot),
-                relativeFromSyncRoot
+        MessageManager messageManager = ServiceManager.getService(project.getModule().getProject(), MessageManager.class);
+        repository = ServerUtil.getConnectedRepository(server, monitor, messageManager);
+        if(repository != null) {
+            File syncDirectory = ProjectUtil.getSyncDirectoryFile(project);
+            this.builder = serializationManager.newBuilder(
+                repository, syncDirectory
             );
 
+            SerializationKindManager skm;
 
-            readVltIgnoresNotUnderImportRoot(contentSyncRootDir, repositoryImportRoot);
-
-//            ProgressUtils.advance(monitor, 1);
-
-            Activator
-                .getDefault()
-                .getPluginLogger()
-                .trace("Starting import; repository start point is {0}, workspace start point is {1}",
-                    repositoryImportRoot, projectRelativePath);
-
-            recordNotIgnoredResources();
-
-//            ProgressUtils.advance(monitor, 1);
-
-            String contentPath = repositoryImportRoot.toPortableString();
-            if(!contentPath.startsWith("/")) {
-                contentPath = "/" + contentPath;
+            try {
+                skm = new SerializationKindManager();
+                skm.init(repository);
+            } catch(RepositoryException e1) {
+                throw new InvocationTargetException(e1);
             }
-            crawlChildrenAndImport(contentPath);
 
-            removeNotIgnoredAndNotUpdatedResources(new NullProgressMonitor());
+            filter = ProjectUtil.loadFilter(project);
 
-//            ProgressUtils.advance(monitor, 1);
+            //        ProgressUtils.advance(monitor, 1);
 
-//        } catch (OperationCanceledException e) {
-//            throw e;
-        } catch (Exception e) {
-            throw new InvocationTargetException(e);
-        } finally {
-            if (builder!=null) {
-                builder.destroy();
-                builder = null;
+            try {
+
+                contentSyncRootDir = ProjectUtil.getSyncDirectory(project);
+                //AS TODO: The Repository Import Root needs to be a path that points from the /jcr_root to the folder where the import started with.
+                //            repositoryImportRoot = projectRelativePath
+                //                .makeRelativeTo(contentSyncRootDir.getProjectRelativePath())
+                //                .makeAbsolute();
+
+                contentSyncRoot = ProjectUtil.getSyncDirectoryFullPath(project).toFile();
+
+                String relativeFromSyncRoot = projectRelativePath.toOSString();
+                int index = relativeFromSyncRoot.indexOf("/" + JCR_ROOT_FOLDER_NAME + "/");
+                relativeFromSyncRoot = relativeFromSyncRoot.substring(index + ("/" + JCR_ROOT_FOLDER_NAME + "/").length());
+                repositoryImportRoot = new IPath(
+                    new IPath(contentSyncRoot),
+                    relativeFromSyncRoot
+                );
+
+
+                readVltIgnoresNotUnderImportRoot(contentSyncRootDir, repositoryImportRoot);
+
+                //            ProgressUtils.advance(monitor, 1);
+
+                Activator
+                    .getDefault()
+                    .getPluginLogger()
+                    .trace("Starting import; repository start point is {0}, workspace start point is {1}",
+                        repositoryImportRoot, projectRelativePath);
+
+                recordNotIgnoredResources();
+
+                //            ProgressUtils.advance(monitor, 1);
+
+                String contentPath = repositoryImportRoot.toPortableString();
+                if(!contentPath.startsWith("/")) {
+                    contentPath = "/" + contentPath;
+                }
+                crawlChildrenAndImport(contentPath);
+
+                removeNotIgnoredAndNotUpdatedResources(new NullProgressMonitor());
+
+                //            ProgressUtils.advance(monitor, 1);
+
+                //        } catch (OperationCanceledException e) {
+                //            throw e;
+            } catch(Exception e) {
+                throw new InvocationTargetException(e);
+            } finally {
+                if(builder != null) {
+                    builder.destroy();
+                    builder = null;
+                }
+                monitor.done();
             }
-            monitor.done();
         }
-
     }
 
     private void readVltIgnoresNotUnderImportRoot(IFolder syncDir, IPath repositoryImportRoot) throws IOException,

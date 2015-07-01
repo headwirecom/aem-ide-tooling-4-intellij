@@ -95,22 +95,17 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                         Object temp = dataContext.getData(VERIFY_CONTENT_WITH_WARNINGS);
                         boolean verifyWithWarnings = !(temp instanceof Boolean) || ((Boolean) temp);
                         if(verifyWithWarnings && filter != null) {
-                            Repository repository = null;
-                            try {
-                                repository = ServerUtil.getConnectedRepository(
-                                    new IServer(module.getParent()), new NullProgressMonitor()
-                                );
-                            } catch(CoreException e) {
-                                //AS TODO: Add proper error handling
-                            }
-                            // Get the Content Root /jcr_root)
-                            for(MavenResource mavenResource: resourceList) {
-                                VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(mavenResource.getDirectory());
-                                if(rootFile != null) {
-                                    // Loop over all folders and check if .content.xml file is there
-                                    ret = checkFolderContent(repository, messageManager, serverConnectionManager, module, null, rootFile, filter);
-                                    if(ret == Messages.CANCEL) {
-                                        return;
+                            Repository repository = ServerConnectionManager.obtainRepository(module.getParent(), messageManager);
+                            if(repository != null) {
+                                // Get the Content Root /jcr_root)
+                                for(MavenResource mavenResource : resourceList) {
+                                    VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(mavenResource.getDirectory());
+                                    if(rootFile != null) {
+                                        // Loop over all folders and check if .content.xml file is there
+                                        ret = checkFolderContent(repository, messageManager, serverConnectionManager, module, null, rootFile, filter);
+                                        if(ret == Messages.CANCEL) {
+                                            return;
+                                        }
                                     }
                                 }
                             }
@@ -123,22 +118,27 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
 
     private int checkFolderContent(Repository repository, MessageManager messageManager, ServerConnectionManager serverConnectionManager, ServerConfiguration.Module module, File rootDirectory, VirtualFile parentDirectory, Filter filter) {
         int ret = Messages.OK;
+        // Loop over all files in the given folder
         for(VirtualFile child: parentDirectory.getChildren()) {
+            // We only need to check Folders
             if(child.isDirectory()) {
+                // If the Root Directory is null then just started -> Create Root Directory File and work on its children
                 if(rootDirectory == null) {
                     rootDirectory = new File(parentDirectory.getPath());
                 } else {
-                    String relativePath = parentDirectory.getPath().substring(rootDirectory.getPath().length());
+                    // Get Relative Paths
+                    String relativeParentPath = parentDirectory.getPath().substring(rootDirectory.getPath().length());
                     String relativeChildPath = child.getPath().substring(rootDirectory.getPath().length());
                     List<ResourceProxy> childNodes = null;
                     FilterResult filterResult = null;
                     if(filter != null) {
+                        // Check if the Resource is part of the Filter
                         filterResult = filter.filter(rootDirectory, relativeChildPath);
                     }
+                    // We don't need to check anything if it is part of one of the filter entries
                     if(filterResult != FilterResult.ALLOW) {
                         if(filterResult == FilterResult.DENY) {
-                            // File is not part of filter
-//                            messageManager.showAlertWithArguments("server.configuration.content.folder.filtered.out", relativeChildPath, module.getName());
+                            // File is not part of a filter entry so it will never be deployed
                             ret = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.filtered.out", relativeChildPath, module.getName());
                             module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
                             if(ret == Messages.CANCEL) {
@@ -146,9 +146,9 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                             }
                         } else if(child.findChild(Constants.CONTENT_FILE_NAME) == null) {
                             boolean isOk = false;
-                            // .content.xml file not found
+                            // .content.xml file not found in the filter -> check if that folder exists on the Server
                             if(repository != null && childNodes == null) {
-                                childNodes = serverConnectionManager.getChildrenNodes(repository, relativePath);
+                                childNodes = serverConnectionManager.getChildrenNodes(repository, relativeParentPath);
                                 for(ResourceProxy childNode: childNodes) {
                                     String path = childNode.getPath();
                                     boolean found = path.equals(relativeChildPath);
@@ -160,7 +160,6 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                             }
                             if(!isOk) {
                                 ret = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.configuration.not.found", relativeChildPath, module.getName());
-//                                messageManager.showAlertWithArguments("server.configuration.content.folder.configuration.not.found", relativeChildPath, module.getName());
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
                                 if(ret == Messages.CANCEL) {
                                     return ret;
@@ -169,6 +168,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                         }
                     }
                 }
+                // Check the children of the current folder
                 ret = checkFolderContent(repository, messageManager, serverConnectionManager, module, rootDirectory, child, filter);
                 if(ret == Messages.CANCEL) {
                     return ret;
