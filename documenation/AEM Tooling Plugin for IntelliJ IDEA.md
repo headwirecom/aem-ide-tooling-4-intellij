@@ -13,6 +13,7 @@ This Plugin has a few requirements that must be met in order to work. Many of th
 3. Java Modules must be a **OSGi Bundle**
 4. Content Modules must provide a **Filter** (filter.xml) and a **jcr_root** folder
 5. OSGi Bundles must be built outside the Plugin before they can be deployed. 
+6. Parent Folders outside the filter.xml filters must either have a content configuration file (.content.xml) or must already exist on the server.
 
 #### Installation
 
@@ -58,6 +59,8 @@ The **Felix OSGi Annotation Processor** is hooking into the compilation process 
 
 **Attention**: this plugin can only work with a **Maven** based project as it requires some information that are otherwise not attainable. 
 
+**Note**: there is a checkbox called **Default** below the Connection name and description. If checked the plugin will do the **check connection** right when IntelliJ is started to that user can start working on that project right away. Keep in mind that the **AEM Server** must be started at that time otherwise the check will fail and must be done manually later.  
+
 To deploy and debug the remote AEM server the plugin needs to know which sever to connect to, user and password etc. For that the user needs to create at least one **Server Configuration**. It is possible to have multiple server configurations and to deploy to each of them separately.
 A Server Configuration is created by clicking on the plus (+) icon. After the creation the Server Configuration can be edited by the edit icon (3rd from the left). Configuration are only created / stored when the configuration is valid and finished by clicking on the **Ok** button. Otherwise the changes are discarded. So here we go:
 
@@ -96,11 +99,19 @@ A Server Configuration is created by clicking on the plus (+) icon. After the cr
 
 ![Edit the Installation Settings](./img/2.3.4.Plugin.Edit.Server.Configuration.Install.png)
 
+#### Maintenance Services
+
 ##### Server Configuration Verification
 
 In order to prevent issues the Plugin has a Verification action that can be used to make sure the Project is compatible with the Plugin prerequisites. Press the Verification Icon and the system will go through the modules and check if they pass the requirements. If there is an issue an alert will be shown indicating the problem and the module in question is marked as **failed**.
 
-##### Plugin Configuration
+##### Reset Configuration
+
+In order to speed up deployment the plugin keeps the last modification timestamp stored locally both in memory as well as on the file system. With that any file that has **not changed** since the last deployment is not deploy again.  
+With the **Reset Configuration** the user can wipe these cached modification timestamps and make sure the project is deployed from scratch. This is especially important if the project is deployed onto multiple servers.  
+Another way to accomplish a full deployment without dropping the cached modification timestamps is to use **force deploy**.
+
+##### Global Plugin Configuration
 
 The AEM Plugin has a single property that can be configured. Opening the IntelliJ Preferences and go to the **Other Settings** and you can enable / disable the **incremental builds**. This setting will enable or disable the automatic compilation while saving a Java class file similar to Eclipse.  
 
@@ -110,7 +121,7 @@ The **Deploy Delay** is a property that if set to a positive number will delay a
 
 #### Check against AEM Server
 
-**Attention**: in order to work on a Server Configuration you need to have one selected and this one is then use to check or connect to. Beside the Debug Connection which is established connection all actions are executed against the current selected configuration aka server. That said in order to prevent deployment to different servers if there is a checked or connected server then you can only check and deploy against this server. You need to stop that connection in order to deploy to another server.
+**Attention**: in order to work on a Server Configuration you need to have one selected and this one is then use to check or connect to. Beside the Debug Connection which is established connection all actions are executed against the current selected configuration aka server. That said in order to prevent deployment to different servers if there is a checked or connected server then you can only check and deploy against this server. You need to **stop that connection** in order to deploy to another server.
 
 **Note**: Selecting the Server Configuration or the Module is the same in this context. 
 
@@ -275,6 +286,18 @@ Here is a list of all supported archetypes:
 
 ![List of all Supported Maven Archetypes](./img/6.1.Maven.Archetypes.List.png)
 
+#### Importing Content from AEM Server
+
+Much of the Content cannot be created manually without having an existing structure to copy from but even then it is not quite easy to get it right. For that a page, page component etc is created on the server and then imported from that server into our local IntelliJ project. Here is how to do it:  
+
+**Attention**: it is advisable to update your project with your Version Control System and deploy any changes to the server to avoid out of sync issues before making any changes to the server. In addition changes from the imported should be placed into the VCS fairly quickly to avoid problems for other developers.
+
+1) **Right-click** on the node to which the content is imported. Keep in mind that content is imported from the corresponding node in the JCR tree.
+2) Go to the **AEM** entry in the context menu and there select **Import from**.
+3) Let the import run through
+
+Now verify the import and add the changes to your Version Control System (VCS).
+
 #### Troubleshooting
 
 ##### Installation
@@ -300,6 +323,7 @@ The plugin will not check OSGi dependencies and successful activation of modules
 
 It is **recommended** to make a full deployment of the project at the beginning of major changes including pulling changes from GIT to ensure that everything is properly deployed. Afterwards Resources, OSGi Modules and classes can be deployed incrementally.
 
+For the Content there is a problem when a parent folder which is not in the filter.xml filters but one of its children is and that parent folder does not have a content configuration file (.content.xml). 
 ###### Hot Swap
 
 When the plugin is connected in **Debug Mode** to the remote AEM Server a class can be hot swapped if there were only changes made to **method bodies**. Hot Swap will fail if there are any changes made to the class (adding methods, adding members, changing method signatures etc). If the incremental build is enabled the HotSwapping is done whenever a Java file is saved.
