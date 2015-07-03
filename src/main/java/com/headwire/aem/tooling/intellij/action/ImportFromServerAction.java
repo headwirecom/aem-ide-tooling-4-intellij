@@ -19,7 +19,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
 import org.apache.sling.ide.serialization.SerializationManager;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.maven.model.MavenResource;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -78,8 +77,8 @@ public class ImportFromServerAction extends AbstractProjectAction {
         ServerConfiguration.Module currentModuleLookup = null;
         for(ServerConfiguration.Module module: moduleList) {
             if(module.isSlingPackage()) {
-                MavenResource mavenResource = serverConnectionManager.findContentResource(module, file.getPath());
-                if(mavenResource != null) {
+                String contentPath = serverConnectionManager.findContentResource(module, file.getPath());
+                if(contentPath != null) {
                     // This file belongs to this module so we are good to publish it
                     currentModuleLookup = module;
 //                    basePath = mavenResource.getDirectory();
@@ -116,7 +115,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
 
                                         IServer server = new IServer(currentModule.getParent());
                                         String path = file.getPath();
-                                        String modulePath = currentModule.getMavenProject().getDirectory();
+                                        String modulePath = currentModule.getModuleProject().getModuleDirectory().getPath();
                                         String relativePath = path.substring(modulePath.length());
                                         if(relativePath.startsWith("/")) {
                                             relativePath = relativePath.substring(1);

@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.sling.ide.filter.Filter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.maven.project.MavenProject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -354,10 +353,10 @@ public class ServerConfiguration
         return ret;
     }
 
-    public Module addModule(Project project, MavenProject mavenProject) {
+    public Module addModule(Project project, ModuleProject moduleProject) {
         Module ret = obtainModuleBySymbolicName(name);
         if(ret == null) {
-            ret = new Module(this, project, mavenProject);
+            ret = new Module(this, project, moduleProject);
             moduleList.add(ret);
         }
         return ret;
@@ -383,7 +382,7 @@ public class ServerConfiguration
         private boolean partOfBuild = true;
         private long lastModificationTimestamp;
         private transient Project project;
-        private transient MavenProject mavenProject;
+        private transient ModuleProject moduleProject;
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
         private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
         private transient VirtualFile metaInfFolder;
@@ -399,16 +398,16 @@ public class ServerConfiguration
             this.configurationChangeListener = parent.configurationChangeListener;
         }
 
-        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull MavenProject mavenProject) {
+        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull ModuleProject moduleProject) {
             this.parent = parent;
-            this.artifactId = mavenProject.getMavenId().getArtifactId();
-            this.symbolicName = getSymbolicName(mavenProject);
+            this.artifactId = moduleProject.getArtifactId();
+            this.symbolicName = getSymbolicName(moduleProject);
             this.configurationChangeListener = parent.configurationChangeListener;
-            rebind(project, mavenProject);
+            rebind(project, moduleProject);
         }
 
-        public static String getSymbolicName(MavenProject project) {
-            return project.getMavenId().getGroupId() + "." + project.getMavenId().getArtifactId();
+        public static String getSymbolicName(ModuleProject project) {
+            return project.getGroupId() + "." + project.getArtifactId();
         }
 
         public boolean isPartOfBuild() {
@@ -438,7 +437,7 @@ public class ServerConfiguration
         }
 
         public String getName() {
-            return project == null ? "No Project" : mavenProject.getName();
+            return project == null ? "No Project" : moduleProject.getName();
         }
 
         public long getLastModificationTimestamp() {
@@ -456,15 +455,15 @@ public class ServerConfiguration
         }
 
         public String getVersion() {
-            return project == null ? "No Project" : mavenProject.getMavenId().getVersion();
+            return project == null ? "No Project" : moduleProject.getVersion();
         }
 
         public Project getProject() {
             return project;
         }
 
-        public MavenProject getMavenProject() {
-            return mavenProject;
+        public ModuleProject getModuleProject() {
+            return moduleProject;
         }
 
         public SynchronizationStatus getStatus() {
@@ -496,26 +495,26 @@ public class ServerConfiguration
         }
 
         public boolean isOSGiBundle() {
-            return project != null && mavenProject.getPackaging().equalsIgnoreCase("bundle");
+            return project != null && moduleProject.isOSGiBundle();
         }
 
         public boolean isSlingPackage() {
-            return project != null && mavenProject.getPackaging().equalsIgnoreCase("content-package");
+            return project != null && moduleProject.isContent();
         }
 
         public boolean isBound() {
-            return mavenProject != null;
+            return moduleProject != null;
         }
 
-        public boolean rebind(@NotNull Project project, @NotNull MavenProject mavenProject) {
+        public boolean rebind(@NotNull Project project, @NotNull ModuleProject moduleProject) {
             boolean ret = false;
             parent.bound = true;
             // Check if the Symbolic Name match
-            String symbolicName = getSymbolicName(mavenProject);
+            String symbolicName = getSymbolicName(moduleProject);
             if(this.symbolicName.equals(symbolicName)) {
                 this.project = project;
-                this.mavenProject = mavenProject;
-                this.artifactId = mavenProject.getMavenId().getArtifactId();
+                this.moduleProject = moduleProject;
+                this.artifactId = moduleProject.getArtifactId();
                 if(!isOSGiBundle() && !isSlingPackage()) {
                     setStatus(SynchronizationStatus.unsupported);
                 } else {

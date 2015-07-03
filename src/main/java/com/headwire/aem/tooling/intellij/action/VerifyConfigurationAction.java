@@ -23,7 +23,6 @@ import org.apache.sling.ide.filter.FilterResult;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.ResourceProxy;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.maven.model.MavenResource;
 
 import java.io.File;
 import java.util.List;
@@ -83,7 +82,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                             }
                         }
                         // Check if the Content Modules have a Content Resource
-                        List<MavenResource> resourceList = serverConnectionManager.findContentResources(module);
+                        List<String> resourceList = serverConnectionManager.findContentResources(module);
                         if(resourceList.isEmpty()) {
                             ret = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.not.", module.getName());
                             module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
@@ -98,8 +97,8 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                             Repository repository = ServerConnectionManager.obtainRepository(module.getParent(), messageManager);
                             if(repository != null) {
                                 // Get the Content Root /jcr_root)
-                                for(MavenResource mavenResource : resourceList) {
-                                    VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(mavenResource.getDirectory());
+                                for(String contentPath : resourceList) {
+                                    VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(contentPath);
                                     if(rootFile != null) {
                                         // Loop over all folders and check if .content.xml file is there
                                         ret = checkFolderContent(repository, messageManager, serverConnectionManager, module, null, rootFile, filter);

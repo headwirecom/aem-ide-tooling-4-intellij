@@ -1,5 +1,7 @@
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.config.ModuleProject;
+import com.headwire.aem.tooling.intellij.config.ModuleProjectFactory;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
@@ -57,13 +59,8 @@ import org.apache.sling.ide.transport.ResourceProxy;
 import org.apache.sling.ide.transport.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.maven.model.MavenId;
-import org.jetbrains.idea.maven.model.MavenResource;
-import org.jetbrains.idea.maven.project.MavenProject;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.osgi.framework.Version;
 
-import javax.jcr.nodetype.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -201,12 +198,11 @@ public class ServerConnectionManager {
             if(module.isPartOfBuild()) {
                 // Check Binding
                 if(checkBinding(module.getParent())) {
-                    MavenProject mavenProject = module.getMavenProject();
-                    if(mavenProject != null) {
-                        MavenId mavenId = mavenProject.getMavenId();
-                        String moduleName = mavenProject.getName();
-                        String artifactId = mavenId.getArtifactId();
-                        String version = mavenId.getVersion();
+                    ModuleProject moduleProject = module.getModuleProject();
+                    if(moduleProject != null) {
+                        String moduleName = moduleProject.getName();
+                        String artifactId = moduleProject.getArtifactId();
+                        String version = moduleProject.getVersion();
                         version = checkBundleVersion(version);
 //                        Version localVersion = new Version(version);
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
@@ -293,26 +289,24 @@ public class ServerConnectionManager {
 
     public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
         if(!serverConfiguration.isBound()) {
-            MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(project);
-            List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
+            List<ModuleProject> moduleProjects = ModuleProjectFactory.getProjectModules(project);
             List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
-            for(MavenProject mavenProject : mavenProjects) {
-                MavenId mavenId = mavenProject.getMavenId();
-                String moduleName = mavenProject.getName();
-                String artifactId = mavenId.getArtifactId();
-                String version = mavenId.getVersion();
+            for(ModuleProject moduleProject : moduleProjects) {
+                String moduleName = moduleProject.getName();
+                String artifactId = moduleProject.getArtifactId();
+                String version = moduleProject.getVersion();
                 // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
                 messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
                 // Ignore the Unnamed Projects
                 if(moduleName == null) {
                     continue;
                 }
-                ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(mavenProject));
+                ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleProject));
                 if(module == null) {
-                    module = serverConfiguration.addModule(project, mavenProject);
+                    module = serverConfiguration.addModule(project, moduleProject);
                 } else if(!module.isBound()) {
                     // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-                    module.rebind(project, mavenProject);
+                    module.rebind(project, moduleProject);
                     moduleList.remove(module);
                 } else {
                     moduleList.remove(module);
@@ -614,14 +608,14 @@ public class ServerConnectionManager {
         messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
         InputStream contents = null;
         // Check if this is a OSGi Bundle
-        final MavenProject mavenProject = module.getMavenProject();
-        if(mavenProject.getPackaging().equalsIgnoreCase("bundle")) {
+        final ModuleProject moduleProject = module.getModuleProject();
+        if(moduleProject.isOSGiBundle()) {
             try {
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
                 //                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
-                File buildDirectory = new File(module.getMavenProject().getBuildDirectory());
+                File buildDirectory = new File(module.getModuleProject().getBuildDirectoryName());
                 if(buildDirectory.exists() && buildDirectory.isDirectory()) {
-                    File buildFile = new File(buildDirectory, module.getMavenProject().getFinalName() + ".jar");
+                    File buildFile = new File(buildDirectory, module.getModuleProject().getBuildFileName() + ".jar");
                     messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
                     if(buildFile.exists()) {
                         // This is not working as of now. The test project is not able to resolve aem-api and I cannot built it with
@@ -643,7 +637,7 @@ public class ServerConnectionManager {
 //                                                    if(projectsManager == null) {
 //                                                        messageManager.showAlert("Maven Failure", "Could not find Maven Project Manager, need to build manually");
 //                                                    } else {
-//                                                        String workingDirectory = mavenProject.getDirectory();
+//                                                        String workingDirectory = moduleProject.getDirectory();
 //                                                        MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
 //                                                        final MavenRunnerParameters params = new MavenRunnerParameters(
 //                                                            true,
@@ -703,13 +697,12 @@ public class ServerConnectionManager {
             if(repository != null) {
                 messageManager.sendDebugNotification("Got Repository: " + repository);
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
-                List<MavenResource> resourceList = findContentResources(module);
+                List<String> resourceList = findContentResources(module);
                 Set<String> allResourcesUpdatedList = new HashSet<String>();
-                MavenProject mavenProject = module.getMavenProject();
-                VirtualFile baseFile = mavenProject.getDirectoryFile();
-                for(MavenResource resource : resourceList) {
-                    String resourceDirectoryPath = resource.getDirectory();
-                    VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resourceDirectoryPath);
+                ModuleProject moduleProject = module.getModuleProject();
+                VirtualFile baseFile = moduleProject.getModuleDirectory();
+                for(String resource : resourceList) {
+                    VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resource);
                     messageManager.sendDebugNotification("Resource File to deploy: " + resourceFile);
                     List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
                     getChangedResourceList(resourceFile, changedResources);
@@ -791,13 +784,12 @@ public class ServerConnectionManager {
     public long getLastModificationTimestamp(Module module) {
         long ret = -1;
 
-        List<MavenResource> resourceList = findContentResources(module);
+        List<String> resourceList = findContentResources(module);
         Set<String> allResourcesUpdatedList = new HashSet<String>();
-        MavenProject mavenProject = module.getMavenProject();
-        VirtualFile baseFile = mavenProject.getDirectoryFile();
-        for(MavenResource resource: resourceList) {
-            String resourceDirectoryPath = resource.getDirectory();
-            VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resourceDirectoryPath);
+        ModuleProject moduleProject = module.getModuleProject();
+        VirtualFile baseFile = moduleProject.getModuleDirectory();
+        for(String resource: resourceList) {
+            VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resource);
             messageManager.sendDebugNotification("LMT Resource File to check: " + resourceFile);
             List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
             getChangedResourceList(resourceFile, changedResources);
@@ -872,25 +864,24 @@ public class ServerConnectionManager {
                 List<Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
                 for(Module module: moduleList) {
                     if(module.isSlingPackage()) {
-                        MavenResource mavenResource = findContentResource(module, filePath);
-                        if(mavenResource != null) {
+                        String contentPath = findContentResource(module, filePath);
+                        if(contentPath != null) {
                             // This file belongs to this module so we are good to publish it
                             fileChange.setModule(module);
-                            String basePath = mavenResource.getDirectory();
-                            fileChange.setResourcePath(basePath);
-                            resourcePathToModuleMap.put(basePath, module);
+                            fileChange.setResourcePath(contentPath);
+                            resourcePathToModuleMap.put(contentPath, module);
                             break;
                         }
                     } else if(module.isOSGiBundle()) {
                         // Here we are not interested in a source file but rather in the Artifact. If it is the artifact then
                         // we mark the module as outdated
-                        MavenProject mavenProject = module.getMavenProject();
-                        if(filePath.startsWith(mavenProject.getBuildDirectory())) {
+                        ModuleProject moduleProject = module.getModuleProject();
+                        if(filePath.startsWith(moduleProject.getBuildDirectoryName())) {
                             // Check if it is the build file
                             String fileName = fileChange.getFile().getName();
-                            MavenId mavenId = mavenProject.getMavenId();
-                            String artifactId = mavenId.getArtifactId();
-                            String version = mavenId.getVersion();
+                            String artifactId = moduleProject.getArtifactId();
+                            String version = moduleProject.getVersion();
+                            //AS TODO: Can't we use the getBuildFileName() (aka MavenProject.getFinalName())
                             if(fileName.equals(artifactId + "-" + version + ".jar")) {
                                 messageManager.sendInfoNotification("server.update.file.change.prepare", filePath, fileChange.getFileChangeType());
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.outdated);
@@ -1167,23 +1158,25 @@ public class ServerConnectionManager {
         }
     }
 
-    public MavenResource findContentResource(Module module, String filePath) {
-        List<MavenResource> resourceList = findContentResources(module, filePath);
+    public String findContentResource(Module module, String filePath) {
+        List<String> resourceList = findContentResources(module, filePath);
         return resourceList.isEmpty() ? null : resourceList.get(0);
     }
 
-    public List<MavenResource> findContentResources(Module module) {
+    public List<String> findContentResources(Module module) {
         return findContentResources(module, null);
     }
 
-    public List<MavenResource> findContentResources(Module module, String filePath) {
-        List<MavenResource> ret = new ArrayList<MavenResource>();
-        MavenProject mavenProject = module.getMavenProject();
-        List<MavenResource> sourcePathList = mavenProject.getResources();
-        for(MavenResource sourcePath: sourcePathList) {
-            String basePath = sourcePath.getDirectory();
+    public List<String> findContentResources(Module module, String filePath) {
+        List<String> ret = new ArrayList<String>();
+        ModuleProject moduleProject = module.getModuleProject();
+        List<String> contentDirectoryPaths = moduleProject.getContentDirectoryPaths();
+//        List<MavenResource> sourcePathList = moduleProject.getResources();
+//        for(MavenResource sourcePath: sourcePathList) {
+//            String basePath = sourcePath.getDirectory();
+        for(String basePath: contentDirectoryPaths) {
             if(basePath.endsWith(JCR_ROOT_PATH_INDICATOR) && (filePath == null || filePath.startsWith(basePath))) {
-                ret.add(sourcePath);
+                ret.add(basePath);
                 break;
             }
         }

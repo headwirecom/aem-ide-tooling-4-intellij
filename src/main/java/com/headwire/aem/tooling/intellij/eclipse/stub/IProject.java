@@ -3,7 +3,6 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.maven.model.MavenResource;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class IProject {
     }
 
     public IFolder getFolder(IPath path) {
-        VirtualFile file = module.getMavenProject().getFile().getFileSystem().findFileByPath(path.toOSString());
+        VirtualFile file = module.getModuleProject().getModuleDirectory().getFileSystem().findFileByPath(path.toOSString());
         return new IFolder(module, file);
     }
 
@@ -33,8 +32,8 @@ public class IProject {
 
     public List<String> getSourceFolderList() {
         List<String> ret = new ArrayList<String>();
-        for(MavenResource mavenResource: module.getMavenProject().getResources()) {
-            ret.add(mavenResource.getDirectory());
+        for(String path: module.getModuleProject().getContentDirectoryPaths()) {
+            ret.add(path);
         }
         return ret;
     }
@@ -43,9 +42,9 @@ public class IProject {
         String filePath = path.toOSString();
         VirtualFile file;
         if(filePath.startsWith("/")) {
-            file = module.getMavenProject().getFile().getFileSystem().findFileByPath(filePath);
+            file = module.getModuleProject().getModuleDirectory().getFileSystem().findFileByPath(filePath);
         } else {
-            file = module.getMavenProject().getFile().findFileByRelativePath(filePath);
+            file = module.getModuleProject().getModuleDirectory().findFileByRelativePath(filePath);
         }
         return file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
     }
