@@ -93,7 +93,7 @@
             <implementation-class>com.headwire.aem.tooling.intellij.communication.ServerConnectionManager</implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog$ProjectTracker</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLogProjectTracker</implementation-class>
         </component>
     </project-components>
 

@@ -115,7 +115,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
 
                                         IServer server = new IServer(currentModule.getParent());
                                         String path = file.getPath();
-                                        String modulePath = currentModule.getModuleProject().getModuleDirectory().getPath();
+                                        String modulePath = currentModule.getModuleProject().getModuleDirectory();
                                         String relativePath = path.substring(modulePath.length());
                                         if(relativePath.startsWith("/")) {
                                             relativePath = relativePath.substring(1);

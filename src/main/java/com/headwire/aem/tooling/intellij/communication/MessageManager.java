@@ -10,6 +10,7 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
@@ -29,16 +30,14 @@ import java.util.List;
  * Created by schaefa on 5/14/15.
  */
 public class MessageManager
-    implements ProjectComponent
+    extends AbstractProjectComponent
 {
     private static final NotificationGroup NOTIFICATION_GROUP = NotificationGroup.toolWindowGroup(ConsoleLogCategory.CONSOLE_LOG_CATEGORY, ConsoleLogToolWindowFactory.TOOL_WINDOW_ID);
 
     private Logger logger = Activator.getDefault().getPluginLogger();
 
-    private Project project;
-
     public MessageManager(@NotNull Project project) {
-        this.project = project;
+        super(project);
     }
 
     public void sendDebugNotification(String message) {
@@ -49,7 +48,7 @@ public class MessageManager
 //            project,
 //            new DebugNotification("Debug Message", message)
 //        );
-        new DebugNotification("Debug Message", message).notify(project);
+        new DebugNotification("Debug Message", message).notify(myProject);
     }
 
 //    public void sendNotification(String message, NotificationType type) {
@@ -62,7 +61,7 @@ public class MessageManager
             message,
             type,
             null
-        ).notify(project);
+        ).notify(myProject);
     }
 
     public void sendNotification(String bundleMessageId, NotificationType type, Object ... parameters) {
@@ -125,7 +124,7 @@ public class MessageManager
         } else {
             String[] options = selections.toArray(new String[selections.size()]);
             ret = Messages.showDialog(
-                project,
+                myProject,
                 message,
                 title,
                 options,
@@ -179,7 +178,7 @@ public class MessageManager
             new Runnable() {
                 public void run() {
                     Messages.showDialog(
-                        project,
+                        myProject,
                         message,
                         title,
                         new String[]{Messages.OK_BUTTON},
@@ -189,26 +188,6 @@ public class MessageManager
                 }
             }
         );
-    }
-
-    @Override
-    public void projectOpened() {
-
-    }
-
-    @Override
-    public void projectClosed() {
-
-    }
-
-    @Override
-    public void initComponent() {
-
-    }
-
-    @Override
-    public void disposeComponent() {
-
     }
 
     @NotNull

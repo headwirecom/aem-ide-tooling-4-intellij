@@ -13,6 +13,7 @@ import com.intellij.notification.impl.NotificationsConfigurationImpl;
 import com.intellij.notification.impl.NotificationsManagerImpl;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.RangeMarker;
@@ -57,7 +58,9 @@ import java.util.regex.Pattern;
 /**
  * Created by schaefa on 5/6/15.
  */
-public class ConsoleLog {
+public class ConsoleLog
+    extends ApplicationComponent.Adapter
+{
     public static final String LOG_REQUESTOR = "Internal log requestor";
     //    public static final String LOG_TOOL_WINDOW_ID = "Event Log";
     public static final String HELP_ID = "reference.toolwindows.event.log";
@@ -65,7 +68,7 @@ public class ConsoleLog {
     private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]*>");
     private static final Pattern A_PATTERN = Pattern.compile("<a ([^>]* )?href=[\"\']([^>]*)[\"\'][^>]*>");
     private static final Set<String> NEW_LINES = ContainerUtil.newHashSet("<br>", "</br>", "<br/>", "<p>", "</p>", "<p/>");
-    private static final String DEFAULT_CATEGORY = "";
+    protected static final String DEFAULT_CATEGORY = "";
 
     private final ConsoleLogModel myModel = new ConsoleLogModel(null, ApplicationManager.getApplication());
 
@@ -84,20 +87,24 @@ public class ConsoleLog {
         });
     }
 
+    protected ConsoleLogModel getModel() {
+        return myModel;
+    }
+
     public static void expireNotification(@NotNull Notification notification) {
         getApplicationComponent().myModel.removeNotification(notification);
         for(Project p : ProjectManager.getInstance().getOpenProjects()) {
-            getProjectComponent(p).myProjectModel.removeNotification(notification);
+            getProjectComponent(p).getMyProjectModel().removeNotification(notification);
         }
     }
 
-    private static ConsoleLog getApplicationComponent() {
+    protected static ConsoleLog getApplicationComponent() {
         return ApplicationManager.getApplication().getComponent(ConsoleLog.class);
     }
 
     @NotNull
     public static ConsoleLogModel getLogModel(@Nullable Project project) {
-        return project != null ? getProjectComponent(project).myProjectModel : getApplicationComponent().myModel;
+        return project != null ? getProjectComponent(project).getMyProjectModel() : getApplicationComponent().myModel;
     }
 
     @Nullable
@@ -349,127 +356,9 @@ public class ConsoleLog {
         }
     }
 
-    public static class ProjectTracker extends AbstractProjectComponent {
-        private final Map<String, ConsoleLogConsole> myCategoryMap = ContainerUtil.newConcurrentMap();
-        private final List<Notification> myInitial = ContainerUtil.createLockFreeCopyOnWriteList();
-        private final ConsoleLogModel myProjectModel;
-
-        public ProjectTracker(@NotNull final Project project) {
-            super(project);
-
-            myProjectModel = new ConsoleLogModel(project, project);
-
-            for(Notification notification : getApplicationComponent().myModel.takeNotifications()) {
-                printNotification(notification);
-            }
-
-            project.getMessageBus().connect(project).subscribe(Notifications.TOPIC, new NotificationsAdapter() {
-                @Override
-                public void notify(@NotNull Notification notification) {
-                    printNotification(notification);
-                }
-            });
-        }
-
-        public void initDefaultContent() {
-            createNewContent(DEFAULT_CATEGORY);
-
-            for(Notification notification : myInitial) {
-                doPrintNotification(notification, ObjectUtils.assertNotNull(getConsole(notification)));
-            }
-            myInitial.clear();
-        }
-
-        @Override
-        public void projectOpened() {
-        }
-
-        @Override
-        public void projectClosed() {
-            getApplicationComponent().myModel.setStatusMessage(null, 0);
-            StatusBar.Info.set("", null, LOG_REQUESTOR);
-        }
-
-        private void printNotification(Notification notification) {
-            ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, ServerTreeSelectionHandler.class);
-            if(selectionHandler != null) {
-                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-                switch(serverConfiguration.getLogFilter()) {
-                    case debug:
-                        break;
-                    case info:
-                        if(notification instanceof DebugNotification) {
-                            return;
-                        }
-                        break;
-                    case warning:
-                        if(notification.getType() == NotificationType.INFORMATION) {
-                            return;
-                        }
-                        break;
-                    case error:
-                    default:
-                        if(notification.getType() != NotificationType.ERROR) {
-                            return;
-                        }
-                }
-            }
-//            if(!NotificationsConfigurationImpl.getSettings(notification.getGroupId()).isShouldLog()) {
-//                return;
-//            }
-            myProjectModel.addNotification(notification);
-
-            ConsoleLogConsole console = getConsole(notification);
-            if(console == null) {
-                myInitial.add(notification);
-            } else {
-                doPrintNotification(notification, console);
-            }
-        }
-
-        private void doPrintNotification(@NotNull final Notification notification, @NotNull final ConsoleLogConsole console) {
-            StartupManager.getInstance(myProject).runWhenProjectIsInitialized(new DumbAwareRunnable() {
-                @Override
-                public void run() {
-                    if(!ShutDownTracker.isShutdownHookRunning() && !myProject.isDisposed()) {
-                        ApplicationManager.getApplication().runReadAction(new Runnable() {
-                            public void run() {
-                                console.doPrintNotification(notification);
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
-        @Nullable
-        private ConsoleLogConsole getConsole(Notification notification) {
-            if(myCategoryMap.get(DEFAULT_CATEGORY) == null) {
-                return null; // still not initialized
-            }
-
-            String name = getContentName(notification);
-            ConsoleLogConsole console = myCategoryMap.get(name);
-            return console != null ? console : createNewContent(name);
-        }
-
-        @NotNull
-        private ConsoleLogConsole createNewContent(String name) {
-            ApplicationManager.getApplication().assertIsDispatchThread();
-            ConsoleLogConsole newConsole = new ConsoleLogConsole(myProjectModel);
-//AS This does the same thing as the line commented out below
-//AS TODO: This creates an endless loop
-//            getProjectComponent(myProject).initDefaultContent();
-            ConsoleLogToolWindowFactory.createContent(myProject, getLogWindow(myProject), newConsole, name);
-            myCategoryMap.put(name, newConsole);
-
-            return newConsole;
-        }
-
-    }
 
     @NotNull
-    private static String getContentName(Notification notification) {
+    protected static String getContentName(Notification notification) {
         for(EventLogCategory category : EventLogCategory.EP_NAME.getExtensions()) {
             if(category.acceptsNotification(notification.getGroupId())) {
                 return category.getDisplayName();
@@ -478,8 +367,8 @@ public class ConsoleLog {
         return DEFAULT_CATEGORY;
     }
 
-    public static ProjectTracker getProjectComponent(Project project) {
-        return project.getComponent(ProjectTracker.class);
+    public static ConsoleLogProjectTracker getProjectComponent(Project project) {
+        return project.getComponent(ConsoleLogProjectTracker.class);
     }
 
     public static void addNotification(@NotNull Project project, @NotNull Notification notification) {

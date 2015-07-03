@@ -56,13 +56,13 @@ public class ModuleProjectImpl
     }
 
     @Override
-    public String getBuildDirectoryName() {
+    public String getBuildDirectoryPath() {
         return mavenProject.getBuildDirectory();
     }
 
     @Override
-    public VirtualFile getModuleDirectory() {
-        return mavenProject.getDirectoryFile();
+    public String getModuleDirectory() {
+        return mavenProject.getDirectoryFile().getPath();
     }
 
     @Override

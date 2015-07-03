@@ -38,6 +38,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -82,26 +83,9 @@ import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_IND
  *
  * Created by schaefa on 5/21/15.
  */
-public class ServerConnectionManager {
-
-//    public enum ConnectionState { connecting, connected, disconnecting, disconnected, failed };
-//
-//    public enum SynchronizationState {
-//        unknown, updating("synchronizing"), updated("synchronized"), outdated;
-//
-//        private String name;
-//
-//        SynchronizationState() {
-//            this.name = name();
-//        }
-//
-//        SynchronizationState(String name) {
-//            this.name = name;
-//        }
-//
-//        public String getName() { return name; }
-//    }
-//
+public class ServerConnectionManager
+    extends AbstractProjectComponent
+{
 
     private static List<ServerConfiguration.ServerStatus> CONFIGURATION_CHECKED = Arrays.asList(
         ServerConfiguration.ServerStatus.checking,
@@ -114,14 +98,13 @@ public class ServerConnectionManager {
         ServerConfiguration.ServerStatus.disconnecting
     );
 
-    private Project project;
     private ServerTreeSelectionHandler selectionHandler;
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
     private ResourceChangeCommandFactory commandFactory;
 
     public ServerConnectionManager(@NotNull Project project) {
-        this.project = project;
+        super(project);
         messageManager = ServiceManager.getService(project, MessageManager.class);
         serverConfigurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
         commandFactory = new ResourceChangeCommandFactory(ServiceManager.getService(SerializationManager.class));
@@ -289,7 +272,7 @@ public class ServerConnectionManager {
 
     public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
         if(!serverConfiguration.isBound()) {
-            List<ModuleProject> moduleProjects = ModuleProjectFactory.getProjectModules(project);
+            List<ModuleProject> moduleProjects = ModuleProjectFactory.getProjectModules(myProject);
             List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
             for(ModuleProject moduleProject : moduleProjects) {
                 String moduleName = moduleProject.getName();
@@ -303,10 +286,10 @@ public class ServerConnectionManager {
                 }
                 ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleProject));
                 if(module == null) {
-                    module = serverConfiguration.addModule(project, moduleProject);
+                    module = serverConfiguration.addModule(myProject, moduleProject);
                 } else if(!module.isBound()) {
                     // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-                    module.rebind(project, moduleProject);
+                    module.rebind(myProject, moduleProject);
                     moduleList.remove(module);
                 } else {
                     moduleList.remove(module);
@@ -476,7 +459,7 @@ public class ServerConnectionManager {
         //AS TODO: It is working but the configuration is listed and made persistent. That is not too bad because
         //AS TODO: after changes a reconnect will update the configuration.
         RemoteConfigurationType remoteConfigurationType = new RemoteConfigurationType();
-        RunConfiguration runConfiguration = remoteConfigurationType.getFactory().createTemplateConfiguration(project);
+        RunConfiguration runConfiguration = remoteConfigurationType.getFactory().createTemplateConfiguration(myProject);
         RemoteConfiguration remoteConfiguration = (RemoteConfiguration) runConfiguration;
         // Server means if you are listening. If not you are attaching.
         remoteConfiguration.SERVER_MODE = false;
@@ -491,7 +474,6 @@ public class ServerConnectionManager {
             false
         );
         runManager.setTemporaryConfiguration(configuration);
-//            myRunManager.setSelectedConfiguration(configuration);
         //AS TODO: Make sure that this is the proper way to obtain the DEBUG Executor
         Executor executor = ExecutorRegistry.getInstance().getExecutorById(ToolWindowId.DEBUG);
         ExecutionUtil.runConfiguration(configuration, executor);
@@ -613,7 +595,7 @@ public class ServerConnectionManager {
             try {
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
                 //                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
-                File buildDirectory = new File(module.getModuleProject().getBuildDirectoryName());
+                File buildDirectory = new File(module.getModuleProject().getBuildDirectoryPath());
                 if(buildDirectory.exists() && buildDirectory.isDirectory()) {
                     File buildFile = new File(buildDirectory, module.getModuleProject().getBuildFileName() + ".jar");
                     messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
@@ -700,7 +682,7 @@ public class ServerConnectionManager {
                 List<String> resourceList = findContentResources(module);
                 Set<String> allResourcesUpdatedList = new HashSet<String>();
                 ModuleProject moduleProject = module.getModuleProject();
-                VirtualFile baseFile = moduleProject.getModuleDirectory();
+                VirtualFile baseFile = module.getProject().getBaseDir();
                 for(String resource : resourceList) {
                     VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resource);
                     messageManager.sendDebugNotification("Resource File to deploy: " + resourceFile);
@@ -787,7 +769,7 @@ public class ServerConnectionManager {
         List<String> resourceList = findContentResources(module);
         Set<String> allResourcesUpdatedList = new HashSet<String>();
         ModuleProject moduleProject = module.getModuleProject();
-        VirtualFile baseFile = moduleProject.getModuleDirectory();
+        VirtualFile baseFile = module.getProject().getBaseDir();
         for(String resource: resourceList) {
             VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resource);
             messageManager.sendDebugNotification("LMT Resource File to check: " + resourceFile);
@@ -876,7 +858,7 @@ public class ServerConnectionManager {
                         // Here we are not interested in a source file but rather in the Artifact. If it is the artifact then
                         // we mark the module as outdated
                         ModuleProject moduleProject = module.getModuleProject();
-                        if(filePath.startsWith(moduleProject.getBuildDirectoryName())) {
+                        if(filePath.startsWith(moduleProject.getBuildDirectoryPath())) {
                             // Check if it is the build file
                             String fileName = fileChange.getFile().getName();
                             String artifactId = moduleProject.getArtifactId();
@@ -1004,7 +986,8 @@ public class ServerConnectionManager {
 
         try {
             // create this resource
-            execute(addFileCommand(repository, module, parentFile, false));
+            Command command = addFileCommand(repository, module, parentFile, false);
+            execute(command);
         } catch(CoreException e) {
             Status status = e.getStatus();
             if(status != null) {

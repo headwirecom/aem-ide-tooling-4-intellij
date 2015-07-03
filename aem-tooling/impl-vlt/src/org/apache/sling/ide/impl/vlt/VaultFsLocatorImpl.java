@@ -22,6 +22,7 @@ import java.io.IOException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import com.intellij.openapi.components.ApplicationComponent;
 import org.apache.jackrabbit.vault.fs.Mounter;
 import org.apache.jackrabbit.vault.fs.api.RepositoryAddress;
 import org.apache.jackrabbit.vault.fs.api.VaultFileSystem;
@@ -31,7 +32,10 @@ import org.apache.jackrabbit.vault.fs.config.ConfigurationException;
 import org.apache.jackrabbit.vault.fs.config.DefaultWorkspaceFilter;
 import org.apache.jackrabbit.vault.util.Constants;
 
-public class VaultFsLocatorImpl implements VaultFsLocator {
+public class VaultFsLocatorImpl
+    extends ApplicationComponent.Adapter
+    implements VaultFsLocator
+{
 
     @Override
     public VaultFileSystem getFileSystem(RepositoryAddress repositoryAddress, File contentSyncRoot, Session session)

@@ -109,7 +109,7 @@ In order to prevent issues the Plugin has a Verification action that can be used
 
 In order to speed up deployment the plugin keeps the last modification timestamp stored locally both in memory as well as on the file system. With that any file that has **not changed** since the last deployment is not deploy again.  
 With the **Reset Configuration** the user can wipe these cached modification timestamps and make sure the project is deployed from scratch. This is especially important if the project is deployed onto multiple servers.  
-Another way to accomplish a full deployment without dropping the cached modification timestamps is to use **force deploy**.
+Another way to accomplish a full deployment without dropping the cached modification timestamps is to use **force deploy**. Keep in mind though that the **Reset** is clearing of all cached timestamps whereas the **Forced Deploy** is only temporary ignoring them.
 
 ##### Global Plugin Configuration
 
@@ -146,11 +146,13 @@ There are two ways to deploy the modules:
 
 The deployment of the resource files can take some time depending on the number of changed files. After an initial deployment the deployment should be much quicker as only the changed resources are deployed which normally only happen when files are changed outside of IntelliJ IDEA.
 
-The **forced** deployed will take its time as all resource files are deployed. This option should only be used when the project is out of sync with the server.
+The **forced** deployed will take its time as all resource files are deployed. This option should only be used when the project is out of sync with the server but it's execution can be limited to a selected module.
 
 This are the icon to deploy the modules:
 
 ![Deploy / Forced Deploy](./img/2.5.Plugin.Deploy.Module.png)
+
+**Attention**: the **Forced Deployment** is temporary ignoring the cached timestamps. If this deployment fails all caches are still in effect.
 
 #### Deploy of Selected Module
 
@@ -278,9 +280,9 @@ An example for the generation of a project would be like this:
 	-DsiteName='AEM Project Sample' \
 	-s ./settings.xml
 
-The first three options are setting up the Maven project. The **package** is the Java package of your Java source code (OSGi Services, tests etc). The **appsFolder** is the name of the folder underneath **/apps** in the JCR tree. The **DartifactName** is the description of the Maven project. **componentGroupName** is the name of the Group that the Components are placed in inside the Components Dialog. The **contentFolderName** is the name of the folder you content will be placed under the **/content** folder. The **packageGroup** is the group name of the apps / content package.
+The first three options are setting up the Maven project. The **package** is the Java package of your Java source code (OSGi Services, tests etc). The **appsFolder** is the name of the folder underneath **/apps** in the JCR tree. The **artifactName** is the description of the Maven project. **componentGroupName** is the name of the Group that the Components are placed in inside the Components Dialog. The **contentFolderName** is the name of the folder your content will be placed under the **/content** folder. The **packageGroup** is the group name of the apps / content package.
 
-You can omit all properties that don't start with **archetype** and it will ask you with a prompt.
+You can omit all properties that do not start with **archetype** and it will ask you with a prompt.
 
 Here is a list of all supported archetypes:
 
@@ -288,7 +290,7 @@ Here is a list of all supported archetypes:
 
 #### Importing Content from AEM Server
 
-Much of the Content cannot be created manually without having an existing structure to copy from but even then it is not quite easy to get it right. For that a page, page component etc is created on the server and then imported from that server into our local IntelliJ project. Here is how to do it:  
+Much of the Content cannot be created manually without having an existing structure to copy from but even then it is not quite easy to get it right. For that a page, page component etc should be created on the server and then imported from that server into our local IntelliJ project. Here is how to do it:  
 
 **Attention**: it is advisable to update your project with your Version Control System and deploy any changes to the server to avoid out of sync issues before making any changes to the server. In addition changes from the imported should be placed into the VCS fairly quickly to avoid problems for other developers.
 
@@ -319,17 +321,29 @@ If the Server is checked (to see if the modules / resources are up to date) the 
 
 ##### Deployment
 
-The plugin will not check OSGi dependencies and successful activation of modules. OSGi can deploy a module successfully but fail to activate or to enable a component. 
+The plugin will not check OSGi dependencies and successful activation of modules. OSGi can deploy a module successfully but fail to activate or even to enable a component. 
 
 It is **recommended** to make a full deployment of the project at the beginning of major changes including pulling changes from GIT to ensure that everything is properly deployed. Afterwards Resources, OSGi Modules and classes can be deployed incrementally.
 
-For the Content there is a problem when a parent folder which is not in the filter.xml filters but one of its children is and that parent folder does not have a content configuration file (.content.xml). 
+For the Content there is a problem where the Jackrabbit client code cannot handle parent folders of filtered files which are not part of the filter and do not contain a content configuration file (.content.xml) or do not exist on the server. For example the filter has an entry **/apps/test/components** and there is a parent folder called **/apps/test** and it neither contains a .content.xml file nor does it exist on the server.  
+
+There are two ways to fix them. Either create a .content.xml file or deploy the content outside of the plugin first to the server manually so that the folder already exists when the content is deployed.
+
+Keep in mind that the Plugin keeps a local cache of the last deployed time of Content files and afterwards will only deploy them when a change to the file were made. So if there were any changes made to the project that are not reflected in a changed last modification timestamp of a file then it is advisable to either **Reset the Configuration** or do a **Forced Deployment**. Both are doing more or less the same but a reset it permanently reseting the cache whereas the Force Deployment is (temporary) ignoring it. The forced deployment can be limited to a module and in does not change the cached timestamps.
+
+###### Fixing Deployment Issues
+
+These are steps to troubleshoot deployments:
+
+1. Verify the Project
+2. Fetch any changes from VCS
+3. Reset Configuration and Deploy or Force Deploy
+4. Build and Deploy the Project either manually or via Maven (with Profiles)
+
 ###### Hot Swap
 
 When the plugin is connected in **Debug Mode** to the remote AEM Server a class can be hot swapped if there were only changes made to **method bodies**. Hot Swap will fail if there are any changes made to the class (adding methods, adding members, changing method signatures etc). If the incremental build is enabled the HotSwapping is done whenever a Java file is saved.
 
-Because the Hot Swap is done automatically class changes will cause an error during deployment. Therefore regular development should be done with the Debug Connection closed.
+Because the Hot Swap is done automatically class changes will cause an error during deployment. Therefore regular development should be done with the Debug Connection closed / stopped.
 
 **Attention**: HotSwap will replace class code **in memory only** meaning that a restart of the AEM Server will wipe any changes. It is necessary to deploy OSGi modules as soon as possible to avoid erratic changes.
-
-
