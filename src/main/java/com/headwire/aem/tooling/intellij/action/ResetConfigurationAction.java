@@ -11,7 +11,6 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.maven.model.MavenResource;
 
 import java.util.List;
 
@@ -49,9 +48,9 @@ public class ResetConfigurationAction extends AbstractProjectAction {
                     if(module.isSlingPackage()) {
                         getMessageManager(project).sendInfoNotification("action.reset.configuration.start", module.getName());
                         // Check if the Content Modules have a Content Resource
-                        List<MavenResource> resourceList = serverConnectionManager.findContentResources(module);
-                        for(MavenResource mavenResource: resourceList) {
-                            VirtualFile mavenResourceDirectory = project.getBaseDir().getFileSystem().findFileByPath(mavenResource.getDirectory());
+                        List<String> resourceList = serverConnectionManager.findContentResources(module);
+                        for(String contentPath: resourceList) {
+                            VirtualFile mavenResourceDirectory = project.getBaseDir().getFileSystem().findFileByPath(contentPath);
                             if(mavenResourceDirectory != null) {
                                 Util.resetModificationStamp(mavenResourceDirectory, true);
                             }

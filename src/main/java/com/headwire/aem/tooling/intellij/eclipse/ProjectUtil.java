@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.eclipse;
 
+import com.headwire.aem.tooling.intellij.config.ModuleProject;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
@@ -16,8 +17,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.filter.FilterLocator;
-import org.jetbrains.idea.maven.model.MavenResource;
-import org.jetbrains.idea.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,19 +77,18 @@ public class ProjectUtil {
             VirtualFile metaInfFolder = module.getMetaInfFolder();
             if(metaInfFolder == null) {
                 // Now go through the Maven Resource folder and check
-                MavenProject mavenProject = module.getMavenProject();
-                for(MavenResource mavenResource : module.getMavenProject().getResources()) {
-                    String path = mavenResource.getDirectory();
-                    if(path.endsWith("/" + META_INF_FOLDER_NAME)) {
-                        metaInfFolder = mavenProject.getDirectoryFile().getFileSystem().findFileByPath(path);
+                ModuleProject moduleProject = module.getModuleProject();
+                for(String contentPath: moduleProject.getContentDirectoryPaths()) {
+                    if(contentPath.endsWith("/" + META_INF_FOLDER_NAME)) {
+                        metaInfFolder = moduleProject.getModuleDirectory().getFileSystem().findFileByPath(contentPath);
                         module.setMetaInfFolder(metaInfFolder);
                     }
                 }
             }
             if(metaInfFolder == null) {
                 // Lastly we check if we can find the folder somewhere in the maven project file system
-                MavenProject mavenProject = module.getMavenProject();
-                VirtualFile test = mavenProject.getDirectoryFile();
+                ModuleProject moduleProject = module.getModuleProject();
+                VirtualFile test = moduleProject.getModuleDirectory();
                 metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
                 module.setMetaInfFolder(metaInfFolder);
             }
