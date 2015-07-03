@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.util;
 
+import com.intellij.openapi.components.ApplicationComponent;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
 
@@ -9,6 +10,7 @@ import java.net.URL;
  * Created by schaefa on 5/5/15.
  */
 public class ArtifactsLocatorImpl
+    extends ApplicationComponent.Adapter
     implements EmbeddedArtifactLocator
 {
 //    private static final String ARTIFACTS_LOCATION = "target/artifacts";

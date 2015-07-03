@@ -145,15 +145,28 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                             }
                         } else if(child.findChild(Constants.CONTENT_FILE_NAME) == null) {
                             boolean isOk = false;
-                            // .content.xml file not found in the filter -> check if that folder exists on the Server
                             if(repository != null && childNodes == null) {
-                                childNodes = serverConnectionManager.getChildrenNodes(repository, relativeParentPath);
-                                for(ResourceProxy childNode: childNodes) {
-                                    String path = childNode.getPath();
-                                    boolean found = path.equals(relativeChildPath);
-                                    if(found) {
-                                        isOk = true;
+                                // First check if there are only folders as children and if all of them are inside the filters
+                                boolean isGood = true;
+                                for(VirtualFile grandChild: child.getChildren()) {
+                                    filterResult = filter.filter(rootDirectory, relativeChildPath + "/" + grandChild.getName());
+                                    if(filterResult != FilterResult.ALLOW) {
+                                        isGood = false;
                                         break;
+                                    }
+                                }
+                                if(isGood) {
+                                    isOk = true;
+                                } else {
+                                    // .content.xml file not found in the filter -> check if that folder exists on the Server
+                                    childNodes = serverConnectionManager.getChildrenNodes(repository, relativeParentPath);
+                                    for(ResourceProxy childNode : childNodes) {
+                                        String path = childNode.getPath();
+                                        boolean found = path.equals(relativeChildPath);
+                                        if(found) {
+                                            isOk = true;
+                                            break;
+                                        }
                                     }
                                 }
                             }

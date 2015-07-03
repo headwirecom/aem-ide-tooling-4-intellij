@@ -233,9 +233,14 @@ public class ResourceChangeCommandFactory {
             case PREREQUISITE:
                 // never try to 'create' the root node, we assume it exists
                 if (!resourceProxy.getPath().equals("/")) {
-                    // we don't explicitly set the primary type, which will allow the the repository to choose the best
-                    // suited one ( typically nt:unstructured )
-                    return new ResourceAndInfo(new ResourceProxy(resourceProxy.getPath()), null, true);
+                    //AS TODO: This does not work with 6.0 -> Try to set the primary type explicit if found for folders
+                    if(resourceProxy.getChildren().size() > 0) {
+                        return new ResourceAndInfo(resourceProxy, null, true);
+                    } else {
+                        // we don't explicitly set the primary type, which will allow the the repository to choose the best
+                        // suited one ( typically nt:unstructured )
+                        return new ResourceAndInfo(new ResourceProxy(resourceProxy.getPath()), null, true);
+                    }
                 }
             case DENY: // falls through
             default:

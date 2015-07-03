@@ -14,7 +14,7 @@ import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionPopupMenu;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
@@ -46,7 +46,8 @@ import java.awt.event.ContainerListener;
  * Created by schaefa on 6/12/15.
  */
 public class ServerTreeManager
-    implements ProjectComponent, Disposable
+    extends AbstractProjectComponent
+    implements Disposable
 {
 
     private Tree tree;
@@ -75,6 +76,7 @@ public class ServerTreeManager
 
 
     public ServerTreeManager(@NotNull Project project) {
+        super(project);
         final MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
         final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
         tree = new Tree(model);
@@ -210,26 +212,6 @@ public class ServerTreeManager
             myKeyMapListener = null;
             listener.stopListen();
         }
-    }
-
-    @Override
-    public void projectOpened() {
-
-    }
-
-    @Override
-    public void projectClosed() {
-
-    }
-
-    @Override
-    public void initComponent() {
-
-    }
-
-    @Override
-    public void disposeComponent() {
-
     }
 
     @NotNull

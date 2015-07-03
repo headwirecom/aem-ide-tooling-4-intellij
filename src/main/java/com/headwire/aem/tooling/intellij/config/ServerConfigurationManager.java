@@ -4,8 +4,8 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -30,7 +30,9 @@ import java.util.List;
     }
 )
 public class ServerConfigurationManager
-        implements PersistentStateComponent<Element>, ProjectComponent {
+    extends AbstractProjectComponent
+    implements PersistentStateComponent<Element>
+{
 
     private static final Logger LOGGER = Logger.getInstance(ServerConfigurationManager.class);
     public static final String LOG_FILTER = "logFilter";
@@ -56,7 +58,6 @@ public class ServerConfigurationManager
     private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
 //    private ConfigurationListener configurationListener;
     private List<ServerConfiguration> serverConfigurationList = new ArrayList<ServerConfiguration>();
-    private Project project;
 
     public class ConfigurationChangeListener {
         public void configurationChanged() {
@@ -71,7 +72,7 @@ public class ServerConfigurationManager
     private ConfigurationChangeListener configurationChangeListener = new ConfigurationChangeListener();
 
     public ServerConfigurationManager(final Project project) {
-        this.project = project;
+        super(project);
         messageManager = ServiceManager.getService(project, MessageManager.class);
     }
 
@@ -271,7 +272,7 @@ public class ServerConfigurationManager
         myIsInitialized = Boolean.TRUE;
         final String title = "Loading Server Configurations";
         queueLater(
-            new Task.Backgroundable(project, title, false) {
+            new Task.Backgroundable(myProject, title, false) {
                 public void run(@NotNull final ProgressIndicator indicator) {
                     if (getProject().isDisposed()) {
                         return;

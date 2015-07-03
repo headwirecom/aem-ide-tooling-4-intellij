@@ -24,7 +24,7 @@ public class IProject {
     }
 
     public IFolder getFolder(IPath path) {
-        VirtualFile file = module.getModuleProject().getModuleDirectory().getFileSystem().findFileByPath(path.toOSString());
+        VirtualFile file = module.getProject().getBaseDir().getFileSystem().findFileByPath(path.toOSString());
         return new IFolder(module, file);
     }
 
@@ -42,9 +42,9 @@ public class IProject {
         String filePath = path.toOSString();
         VirtualFile file;
         if(filePath.startsWith("/")) {
-            file = module.getModuleProject().getModuleDirectory().getFileSystem().findFileByPath(filePath);
+            file = module.getProject().getBaseDir().getFileSystem().findFileByPath(filePath);
         } else {
-            file = module.getModuleProject().getModuleDirectory().findFileByRelativePath(filePath);
+            file = module.getProject().getBaseDir().findFileByRelativePath(filePath);
         }
         return file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
     }

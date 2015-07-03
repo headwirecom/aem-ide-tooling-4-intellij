@@ -23,7 +23,9 @@ import javax.swing.*;
                 @Storage(id = "other", file = "aemPluginConfigurations.config")
         }
 )
-public class AEMPluginConfiguration implements ApplicationComponent, Configurable, PersistentStateComponent<Element> {
+public class AEMPluginConfiguration
+    extends ApplicationComponent.Adapter
+    implements Configurable, PersistentStateComponent<Element> {
 
     private boolean incrementalBuilds = true;
     private int deployDelayInSeconds = -1;
@@ -36,12 +38,6 @@ public class AEMPluginConfiguration implements ApplicationComponent, Configurabl
     @NotNull
     public String getComponentName() {
         return "AEM Plugin Configuration";
-    }
-
-    public void initComponent() {
-    }
-
-    public void disposeComponent() {
     }
 
     public boolean isIncrementalBuilds() {

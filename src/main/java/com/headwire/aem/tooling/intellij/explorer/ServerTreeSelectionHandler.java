@@ -1,6 +1,7 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.Tree;
 import org.apache.sling.ide.osgi.OsgiClient;
@@ -15,19 +16,17 @@ import java.util.List;
 /**
  * Created by schaefa on 5/12/15.
  */
-public class ServerTreeSelectionHandler {
+public class ServerTreeSelectionHandler
+    extends AbstractProjectComponent
+{
 
     private Tree tree;
 
     public ServerTreeSelectionHandler(@NotNull Project project) {
+        super(project);
     }
 
     public void init(@NotNull Tree tree) {
-        this.tree = tree;
-    }
-
-    @Deprecated
-    public ServerTreeSelectionHandler(Tree tree) {
         this.tree = tree;
     }
 

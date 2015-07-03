@@ -80,7 +80,7 @@ public class ProjectUtil {
                 ModuleProject moduleProject = module.getModuleProject();
                 for(String contentPath: moduleProject.getContentDirectoryPaths()) {
                     if(contentPath.endsWith("/" + META_INF_FOLDER_NAME)) {
-                        metaInfFolder = moduleProject.getModuleDirectory().getFileSystem().findFileByPath(contentPath);
+                        metaInfFolder = module.getProject().getBaseDir().getFileSystem().findFileByPath(contentPath);
                         module.setMetaInfFolder(metaInfFolder);
                     }
                 }
@@ -88,7 +88,7 @@ public class ProjectUtil {
             if(metaInfFolder == null) {
                 // Lastly we check if we can find the folder somewhere in the maven project file system
                 ModuleProject moduleProject = module.getModuleProject();
-                VirtualFile test = moduleProject.getModuleDirectory();
+                VirtualFile test = module.getProject().getBaseDir().getFileSystem().findFileByPath(moduleProject.getModuleDirectory());
                 metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
                 module.setMetaInfFolder(metaInfFolder);
             }
