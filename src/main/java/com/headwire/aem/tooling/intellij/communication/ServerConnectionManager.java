@@ -355,7 +355,6 @@ public class ServerConnectionManager
             try {
                 boolean success = false;
                 Result<ResourceProxy> result = null;
-                messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
                 Repository repository = obtainRepository(serverConfiguration, messageManager);
                 if(repository != null) {
                     Command<ResourceProxy> command = repository.newListChildrenNodeCommand("/");
@@ -386,6 +385,8 @@ public class ServerConnectionManager
         messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
         try {
             ret = ServerUtil.connectRepository(new IServer(serverConfiguration), new NullProgressMonitor());
+            // Check if the Connection is still alive by fetching the root nodes
+            getChildrenNodes(ret, "/");
         } catch(CoreException e) {
             // Show Alert and exit
             //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
@@ -398,7 +399,24 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public List<ResourceProxy> getChildrenNodes(Repository repository, String path) {
+    @Nullable
+    public static void disconnectRepository(@NotNull ServerConfiguration serverConfiguration, @NotNull MessageManager messageManager) {
+//        messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+        try {
+            ServerUtil.stopRepository(new IServer(serverConfiguration), new NullProgressMonitor());
+        } catch(CoreException e) {
+            messageManager.sendDebugNotification("Failed to disconnect: " + e.getMessage());
+//            // Show Alert and exit
+//            //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
+//            if(e.getCause().getClass() == IllegalArgumentException.class) {
+//                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository.refused", serverConfiguration.getName());
+//            } else {
+//                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
+//            }
+        }
+    }
+
+    public static List<ResourceProxy> getChildrenNodes(Repository repository, String path) {
         List<ResourceProxy> ret = new ArrayList<ResourceProxy>();
         if(path != null && path.length() > 0) {
             if(path.charAt(0) != '/') {
@@ -413,6 +431,8 @@ public class ServerConnectionManager
                     for(ResourceProxy childResourceProxy: resourceProxy.getChildren()) {
                         ret.add(childResourceProxy);
                     }
+                } else {
+                    result.get();
                 }
             } catch(RepositoryException e) {
                 //AS TODO: Throw Proper Exception
