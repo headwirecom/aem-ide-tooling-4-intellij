@@ -2,7 +2,15 @@ package com.headwire.aem.tooling.intellij.communication;
 
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.intellij.analysis.AnalysisScopeBundle;
+import com.intellij.codeInsight.CodeSmellInfo;
+import com.intellij.compiler.impl.FileSetCompileScope;
 import com.intellij.compiler.impl.ModuleCompileScope;
+import com.intellij.lang.annotation.HighlightSeverity;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.compiler.CompileContext;
+import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.module.Module;
@@ -14,17 +22,23 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.vcs.CodeSmellDetector;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileAdapter;
 import com.intellij.openapi.vfs.VirtualFileCopyEvent;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.vfs.VirtualFileMoveEvent;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowId;
+import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import static com.headwire.aem.tooling.intellij.communication.ServerConnectionManager.FileChangeType;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
@@ -155,18 +169,29 @@ public class ContentResourceChangeListener {
             VirtualFile file = event.getFile();
             if("java".equalsIgnoreCase(file.getExtension())) {
                 final Project project = ProjectUtil.guessProjectForFile(event.getFile());
-                ProgressManager.getInstance().run(
-                    new Task.Backgroundable(project, AnalysisScopeBundle.message("analyzing.project"), true) {
-                        public void run(@NotNull ProgressIndicator indicator) {
-                            executeMakeInUIThread(event);
+                ApplicationManager.getApplication().invokeLater(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                executeMakeInUIThread(event);
+                            }
                         }
-                    }
                 );
+//                ProgressManager.getInstance().run(
+////                    new Task.Backgroundable(project, AnalysisScopeBundle.message("analyzing.project"), true) {
+//                        new Task.Modal(project, AnalysisScopeBundle.message("analyzing.project"), true) {
+//                            public void run(@NotNull ProgressIndicator indicator) {
+//                                executeMakeInUIThread(event);
+//                            }
+//                        }
+//                );
+//                executeMakeInUIThread(event);
             }
         }
     }
 
-    private void executeMakeInUIThread(VirtualFileEvent event) {
+    private void executeMakeInUIThread(final VirtualFileEvent event) {
+        boolean isWriteAccess = ApplicationManager.getApplication().isWriteAccessAllowed();
         Project[] projects = ProjectManager.getInstance().getOpenProjects();
         for(final Project project : projects) {
             if(project.isInitialized() && !project.isDisposed() &&
@@ -176,14 +201,49 @@ public class ContentResourceChangeListener {
                 if(module != null) {
                     final CompilerManager compilerManager = CompilerManager.getInstance(project);
                     if(!compilerManager.isCompilationActive() &&
-                        !compilerManager.isExcludedFromCompilation(event.getFile()) &&
-                        !compilerManager.isUpToDate(new ModuleCompileScope(module, false))) {
-                        // Changed file found in module. Make it.
-                        UIUtil.invokeAndWaitIfNeeded(new Runnable() {
-                            public void run() {
-                                compilerManager.make(module, null);
+                        !compilerManager.isExcludedFromCompilation(event.getFile()) // &&
+//                        !compilerManager.isUpToDate(new FileSetCompileScope(Arrays.asList(event.getFile()), new Module[] {module}))
+                    ) {
+                        // Check first if there are no errors in the code
+                        CodeSmellDetector codeSmellDetector = CodeSmellDetector.getInstance(project);
+                        boolean isOk = true;
+                        if(codeSmellDetector != null) {
+                            List<CodeSmellInfo> codeSmellInfoList = codeSmellDetector.findCodeSmells(Arrays.asList(event.getFile()));
+                            for(CodeSmellInfo codeSmellInfo: codeSmellInfoList) {
+                                if(codeSmellInfo.getSeverity() == HighlightSeverity.ERROR) {
+                                    isOk = false;
+                                    break;
+                                }
                             }
-                        });
+                        }
+                        if(isOk) {
+                            // Changed file found in module. Make it.
+//                            UIUtil.invokeAndWaitIfNeeded(new Runnable() {
+//                                public void run() {
+                                    compilerManager.compile(
+                                            new VirtualFile[]{event.getFile()},
+                                            new CompileStatusNotification() {
+                                                @Override
+                                                public void finished(boolean b, int i, int i1, CompileContext compileContext) {
+                                                    final ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.MESSAGES_WINDOW);
+                                                    if (tw != null && tw.isVisible()) {
+                                                        tw.hide(null);
+                                                    }
+                                                }
+                                            }
+                                    );
+                                    //                                compilerManager.make(module, null);
+//                                }
+//                            });
+                        } else {
+                            MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
+                            if(messageManager != null) {
+                                messageManager.sendErrorNotification(
+                                    "server.update.file.change.with.error",
+                                    event.getFile()
+                                );
+                            }
+                        }
                     }
                 }
             }

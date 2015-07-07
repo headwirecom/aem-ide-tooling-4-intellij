@@ -52,7 +52,8 @@ public class ConsoleLogModel
         ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, ServerTreeSelectionHandler.class);
         if(selectionHandler != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            switch(serverConfiguration.getLogFilter()) {
+            ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
+            switch (logFilter) {
                 case debug:
                     add(notification);
                     break;
