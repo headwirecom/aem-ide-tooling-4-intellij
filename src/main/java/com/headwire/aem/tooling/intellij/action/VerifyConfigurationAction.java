@@ -56,72 +56,70 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
         ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         MessageManager messageManager = getMessageManager(project);
+        ServerConfigurationManager serverConfigurationManager = getConfigurationManager(project);
         if(selectionHandler != null && serverConnectionManager != null && messageManager != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
             if(source != null) {
                 try {
                     messageManager.sendInfoNotification("server.configuration.start.verification", source.getName());
                     // Before we can verify we need to ensure the Configuration is properly bound to Maven
-                    serverConnectionManager.checkBinding(source);
+                    List<ServerConfiguration.Module> unboundModules = serverConnectionManager.bindModules(source);
+                    if (!unboundModules.isEmpty()) {
+                        for (ServerConfiguration.Module module : unboundModules) {
+                            ret = messageManager.showAlertWithOptions(NotificationType.WARNING, "server.configuration.unresolved.module", module.getName());
+                            if (ret == 1) {
+                                source.removeModule(module);
+                                if (serverConfigurationManager != null) {
+                                    serverConfigurationManager.updateServerConfiguration(source);
+                                }
+                            } else if (ret == Messages.CANCEL) {
+                                return;
+                            }
+                        }
+                    }
                     // Verify each Module to see if all prerequisites are met
-                    for(ServerConfiguration.Module module : source.getModuleList()) {
-                        if(module.isSlingPackage()) {
+                    for(ServerConfiguration.Module module: source.getModuleList()) {
+                        if (module.isSlingPackage()) {
                             // Check if the Filter is available for Content Modules
                             Filter filter = null;
                             try {
                                 filter = ProjectUtil.loadFilter(module);
-                                if(filter == null) {
+                                if (filter == null) {
                                     ret = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.not.found", module.getName());
                                     module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                    if(ret == Messages.CANCEL) {
+                                    if (ret == Messages.CANCEL) {
                                         return;
                                     }
                                 }
-                            } catch(CoreException e) {
+                            } catch (CoreException e) {
                                 ret = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.failure", module.getName(), e.getMessage());
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                if(ret == Messages.CANCEL) {
+                                if (ret == Messages.CANCEL) {
                                     return;
                                 }
                             }
                             // Check if the Content Modules have a Content Resource
                             List<String> resourceList = serverConnectionManager.findContentResources(module);
-                            if(resourceList.isEmpty()) {
+                            if (resourceList.isEmpty()) {
                                 ret = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.not.", module.getName());
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                if(ret == Messages.CANCEL) {
+                                if (ret == Messages.CANCEL) {
                                     return;
                                 }
                             }
                             // Check if Content Module Folders all have a .content.xml
                             Object temp = dataContext.getData(VERIFY_CONTENT_WITH_WARNINGS);
                             boolean verifyWithWarnings = !(temp instanceof Boolean) || ((Boolean) temp);
-                            if(verifyWithWarnings && filter != null) {
-                                ServerConfiguration serverConfiguration = module.getParent();
-                                Repository repository = ServerConnectionManager.obtainRepository(serverConfiguration, messageManager);
-//                                // First check if the Repository Connection is still active and if not disconnect and re-fetch
-//                                List<ResourceProxy> nodes = serverConnectionManager.getChildrenNodes(repository, "/");
-//                                if(nodes.isEmpty()) {
-//                                    ServerConnectionManager.disconnectRepository(serverConfiguration, messageManager);
-//                                    repository = ServerConnectionManager.obtainRepository(serverConfiguration, messageManager);
-//                                    // Check again if it fails now then report failure to connect
-//                                    nodes = serverConnectionManager.getChildrenNodes(repository, "/");
-//                                    if(nodes.isEmpty()) {
-//                                        messageManager.showAlertWithArguments(
-//                                            NotificationType.ERROR,
-//                                            "server.configuration.failed.to.connect.to.repository",
-//                                            serverConfiguration.getName(), serverConfiguration.getHost(), serverConfiguration.getConnectionPort()
-//                                        );
-//                                    }
-//                                }
-                                if(repository != null) {
+                            if (verifyWithWarnings && filter != null) {
+                                Repository repository = ServerConnectionManager.obtainRepository(module.getParent(), messageManager);
+                                if (repository != null) {
                                     // Get the Content Root /jcr_root)
-                                    for(String contentPath : resourceList) {
+                                    for (String contentPath : resourceList) {
                                         VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(contentPath);
-                                        if(rootFile != null) {
+                                        if (rootFile != null) {
                                             // Loop over all folders and check if .content.xml file is there
                                             ret = checkFolderContent(repository, messageManager, serverConnectionManager, module, null, rootFile, filter);
-                                            if(ret == Messages.CANCEL) {
+                                            if (ret == Messages.CANCEL) {
                                                 return;
                                             }
                                         }

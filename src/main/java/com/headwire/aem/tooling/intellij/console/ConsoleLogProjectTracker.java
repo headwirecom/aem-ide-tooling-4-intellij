@@ -79,22 +79,23 @@ public class ConsoleLogProjectTracker
         ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, ServerTreeSelectionHandler.class);
         if(selectionHandler != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            switch(serverConfiguration.getLogFilter()) {
+            ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
+            switch (logFilter) {
                 case debug:
                     break;
                 case info:
-                    if(notification instanceof DebugNotification) {
+                    if (notification instanceof DebugNotification) {
                         return;
                     }
                     break;
                 case warning:
-                    if(notification.getType() == NotificationType.INFORMATION) {
+                    if (notification.getType() == NotificationType.INFORMATION) {
                         return;
                     }
                     break;
                 case error:
                 default:
-                    if(notification.getType() != NotificationType.ERROR) {
+                    if (notification.getType() != NotificationType.ERROR) {
                         return;
                     }
             }

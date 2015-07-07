@@ -60,6 +60,8 @@ import org.apache.sling.ide.transport.ResourceProxy;
 import org.apache.sling.ide.transport.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.osgi.framework.Version;
 
 import java.io.File;
@@ -105,8 +107,8 @@ public class ServerConnectionManager
 
     public ServerConnectionManager(@NotNull Project project) {
         super(project);
-        messageManager = ServiceManager.getService(project, MessageManager.class);
-        serverConfigurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
+        messageManager = ServiceManager.getService(myProject, MessageManager.class);
+        serverConfigurationManager = ServiceManager.getService(myProject, ServerConfigurationManager.class);
         commandFactory = new ResourceChangeCommandFactory(ServiceManager.getService(SerializationManager.class));
     }
 
@@ -270,34 +272,48 @@ public class ServerConnectionManager
         return ret;
     }
 
+    /**
+     * Binding is the process of connecting the Project's Modules with the Maven Modules (its sub projects)
+     *
+     * @param serverConfiguration The Server Connection that is checked and bound if not already done
+     * @return True if the the connection was successfully bound otherwise flase
+     */
     public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
         if(!serverConfiguration.isBound()) {
-            List<ModuleProject> moduleProjects = ModuleProjectFactory.getProjectModules(myProject);
-            List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
-            for(ModuleProject moduleProject : moduleProjects) {
-                String moduleName = moduleProject.getName();
-                String artifactId = moduleProject.getArtifactId();
-                String version = moduleProject.getVersion();
-                // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
-                messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
-                // Ignore the Unnamed Projects
-                if(moduleName == null) {
-                    continue;
-                }
-                ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleProject));
-                if(module == null) {
-                    module = serverConfiguration.addModule(myProject, moduleProject);
-                } else if(!module.isBound()) {
-                    // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-                    module.rebind(myProject, moduleProject);
-                    moduleList.remove(module);
-                } else {
-                    moduleList.remove(module);
-                }
-            }
+            List<Module> moduleList = bindModules(serverConfiguration);
             return moduleList.isEmpty();
         }
         return true;
+    }
+
+    public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration) {
+        MavenProjectsManager mavenProjectsManager = ServiceManager.getService(myProject, MavenProjectsManager.class);
+        List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
+
+        List<ModuleProject> moduleProjects = ModuleProjectFactory.getProjectModules(myProject);
+        List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
+        for(ModuleProject moduleProject : moduleProjects) {
+            String moduleName = moduleProject.getName();
+            String artifactId = moduleProject.getArtifactId();
+            String version = moduleProject.getVersion();
+            // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
+            messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
+            // Ignore the Unnamed Projects
+            if(moduleName == null) {
+                continue;
+            }
+            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleProject));
+            if(module == null) {
+                module = serverConfiguration.addModule(myProject, moduleProject);
+            } else if(!module.isBound()) {
+                // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
+                module.rebind(myProject, moduleProject);
+                moduleList.remove(module);
+            } else {
+                moduleList.remove(module);
+            }
+        }
+        return moduleList;
     }
 
     public enum BundleStatus { upToDate, outDated, failed };

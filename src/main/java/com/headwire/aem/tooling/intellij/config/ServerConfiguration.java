@@ -353,6 +353,14 @@ public class ServerConfiguration
         return ret;
     }
 
+    public boolean removeModule(Module module) {
+        boolean ret = false;
+        if(moduleList.contains(module)) {
+            ret = moduleList.remove(module);
+        }
+        return ret;
+    }
+
     public Module addModule(Project project, ModuleProject moduleProject) {
         Module ret = obtainModuleBySymbolicName(name);
         if(ret == null) {
