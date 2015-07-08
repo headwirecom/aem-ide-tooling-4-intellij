@@ -50,15 +50,15 @@ public class ContentResourceChangeListener {
 
     private AEMPluginConfiguration pluginConfiguration;
     private final ServerConnectionManager serverConnectionManager;
-//    private MessageBusConnection messageBusConnection;
+    private final Project project;
 
-//    private Lock lock = new ReentrantLock();
     private final LinkedList<FileChange> queue = new LinkedList<FileChange>();
 
 
     public ContentResourceChangeListener(@NotNull Project project, @NotNull final ServerConnectionManager serverConnectionManager, @NotNull MessageBusConnection messageBusConnection) {
         pluginConfiguration = ServiceManager.getService(AEMPluginConfiguration.class);
         this.serverConnectionManager = serverConnectionManager;
+        this.project = project;
 
         Thread thread = new Thread(new Runner());
         thread.setDaemon(true);
@@ -70,10 +70,11 @@ public class ContentResourceChangeListener {
 
                 @Override
                 public void contentsChanged(@NotNull VirtualFileEvent event) {
-                    executeMake(event);
-                    if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
-                        handleChange(event.getFile(), FileChangeType.CHANGED);
-//                        serverConnectionManager.handleFileChange(event.getFile(), FileChangeType.CHANGED);
+                    if(event.isFromSave()) {
+                        executeMake(event);
+                        if (serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
+                            handleChange(event.getFile(), FileChangeType.CHANGED);
+                        }
                     }
                 }
 
@@ -81,7 +82,6 @@ public class ContentResourceChangeListener {
                 public void fileCreated(@NotNull VirtualFileEvent event) {
                     if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
                         handleChange(event.getFile(), FileChangeType.CREATED);
-//                        serverConnectionManager.handleFileChange(event.getFile(), FileChangeType.CREATED);
                     }
                 }
 
@@ -97,7 +97,6 @@ public class ContentResourceChangeListener {
                         // We delete before the Move because the original file still exists
                         VirtualFile file = event.getFile();
                         handleChange(file, FileChangeType.DELETED);
-//                        serverConnectionManager.handleFileChange(file, FileChangeType.DELETED);
                     }
                 }
 
@@ -106,7 +105,6 @@ public class ContentResourceChangeListener {
                     if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
                         // Delete the JCR Resource before the file is gone
                         handleChange(event.getFile(), FileChangeType.DELETED);
-//                        serverConnectionManager.handleFileChange(event.getFile(), FileChangeType.DELETED);
                     }
                 }
 
@@ -116,7 +114,6 @@ public class ContentResourceChangeListener {
                         // After the move we create the new file
                         VirtualFile file = event.getFile();
                         handleChange(event.getFile(), FileChangeType.CREATED);
-//                        serverConnectionManager.handleFileChange(file, FileChangeType.CREATED);
                     }
                 }
 
@@ -124,7 +121,6 @@ public class ContentResourceChangeListener {
                 public void fileCopied(@NotNull VirtualFileCopyEvent event) {
                     if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
                         handleChange(event.getFile(), FileChangeType.CREATED);
-//                        serverConnectionManager.handleFileChange(event.getFile(), FileChangeType.CREATED);
                     }
                 }
             },
@@ -169,85 +165,66 @@ public class ContentResourceChangeListener {
             VirtualFile file = event.getFile();
             if("java".equalsIgnoreCase(file.getExtension())) {
                 final Project project = ProjectUtil.guessProjectForFile(event.getFile());
+                //AS TODO: In order to use the Code Snell Detector this needs to be invoked in a Read Only Thread but part of the Dispatcher Thread
                 ApplicationManager.getApplication().invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                executeMakeInUIThread(event);
-                            }
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            executeMakeInUIThread(event);
                         }
+                    }
                 );
-//                ProgressManager.getInstance().run(
-////                    new Task.Backgroundable(project, AnalysisScopeBundle.message("analyzing.project"), true) {
-//                        new Task.Modal(project, AnalysisScopeBundle.message("analyzing.project"), true) {
-//                            public void run(@NotNull ProgressIndicator indicator) {
-//                                executeMakeInUIThread(event);
-//                            }
-//                        }
-//                );
-//                executeMakeInUIThread(event);
             }
         }
     }
 
     private void executeMakeInUIThread(final VirtualFileEvent event) {
-        boolean isWriteAccess = ApplicationManager.getApplication().isWriteAccessAllowed();
-        Project[] projects = ProjectManager.getInstance().getOpenProjects();
-        for(final Project project : projects) {
-            if(project.isInitialized() && !project.isDisposed() &&
-                project.isOpen() && !project.isDefault()) {
-                final ProjectFileIndex projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
-                final Module module = projectFileIndex.getModuleForFile(event.getFile());
-                if(module != null) {
-                    final CompilerManager compilerManager = CompilerManager.getInstance(project);
-                    if(!compilerManager.isCompilationActive() &&
-                        !compilerManager.isExcludedFromCompilation(event.getFile()) // &&
-//                        !compilerManager.isUpToDate(new FileSetCompileScope(Arrays.asList(event.getFile()), new Module[] {module}))
-                    ) {
-                        // Check first if there are no errors in the code
-                        CodeSmellDetector codeSmellDetector = CodeSmellDetector.getInstance(project);
-                        boolean isOk = true;
-                        if(codeSmellDetector != null) {
-                            List<CodeSmellInfo> codeSmellInfoList = codeSmellDetector.findCodeSmells(Arrays.asList(event.getFile()));
-                            for(CodeSmellInfo codeSmellInfo: codeSmellInfoList) {
-                                if(codeSmellInfo.getSeverity() == HighlightSeverity.ERROR) {
-                                    isOk = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if(isOk) {
-                            // Changed file found in module. Make it.
-//                            UIUtil.invokeAndWaitIfNeeded(new Runnable() {
-//                                public void run() {
-                                    compilerManager.compile(
-                                            new VirtualFile[]{event.getFile()},
-                                            new CompileStatusNotification() {
-                                                @Override
-                                                public void finished(boolean b, int i, int i1, CompileContext compileContext) {
-                                                    final ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.MESSAGES_WINDOW);
-                                                    if (tw != null && tw.isVisible()) {
-                                                        tw.hide(null);
-                                                    }
-                                                }
-                                            }
-                                    );
-                                    //                                compilerManager.make(module, null);
-//                                }
-//                            });
-                        } else {
-                            MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
-                            if(messageManager != null) {
-                                messageManager.sendErrorNotification(
-                                    "server.update.file.change.with.error",
-                                    event.getFile()
-                                );
-                            }
+        if(project.isInitialized() && !project.isDisposed() && project.isOpen()) {
+            final CompilerManager compilerManager = CompilerManager.getInstance(project);
+            if(!compilerManager.isCompilationActive() &&
+                !compilerManager.isExcludedFromCompilation(event.getFile()) // &&
+            ) {
+                // Check first if there are no errors in the code
+                CodeSmellDetector codeSmellDetector = CodeSmellDetector.getInstance(project);
+                boolean isOk = true;
+                if(codeSmellDetector != null) {
+                    List<CodeSmellInfo> codeSmellInfoList = codeSmellDetector.findCodeSmells(Arrays.asList(event.getFile()));
+                    for(CodeSmellInfo codeSmellInfo: codeSmellInfoList) {
+                        if(codeSmellInfo.getSeverity() == HighlightSeverity.ERROR) {
+                            isOk = false;
+                            break;
                         }
                     }
                 }
+                if(isOk) {
+                    // Changed file found in module. Make it.
+                    ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.MESSAGES_WINDOW);
+                    final boolean isShown = tw != null && tw.isVisible();
+                    compilerManager.compile(
+                        new VirtualFile[]{event.getFile()},
+                        new CompileStatusNotification() {
+                            @Override
+                            public void finished(boolean b, int i, int i1, CompileContext compileContext) {
+                                ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.MESSAGES_WINDOW);
+                                if (tw != null && tw.isVisible()) {
+                                    // Close / Hide the Build Message Window after we did the build if it wasn't shown
+                                    if(!isShown) {
+                                        tw.hide(null);
+                                    }
+                                }
+                            }
+                        }
+                    );
+                } else {
+                    MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
+                    if(messageManager != null) {
+                        messageManager.sendErrorNotification(
+                            "server.update.file.change.with.error",
+                            event.getFile()
+                        );
+                    }
+                }
             }
-//            }
         }
     }
 
