@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
+import com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener;
@@ -16,8 +17,10 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -32,9 +35,13 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JPanel;
 import javax.swing.ToolTipManager;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.BorderLayout;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.util.Enumeration;
 
 /**
  * Created by schaefa on 3/19/15.
@@ -68,10 +75,10 @@ public class SlingServerExplorer
         final MessageBus bus = myProject.getMessageBus();
         myConn = bus.connect();
         serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+//        ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
         new ContentResourceChangeListener(myProject, serverConnectionManager, myConn);
 
-        RunManagerEx myRunManager = RunManagerEx.getInstanceEx(myProject);
+//        RunManagerEx myRunManager = RunManagerEx.getInstanceEx(myProject);
         messageManager = ServiceManager.getService(myProject, MessageManager.class);
 
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
@@ -119,14 +126,42 @@ public class SlingServerExplorer
         myTree.addContainerListener(new ContainerListener() {
             @Override
             public void componentAdded(ContainerEvent containerEvent) {
-                messageManager.sendDebugNotification("Container Event: " + containerEvent);
+                messageManager.sendDebugNotification("Container Added Event: " + containerEvent);
             }
 
             @Override
             public void componentRemoved(ContainerEvent containerEvent) {
-                messageManager.sendDebugNotification("Container Event: " + containerEvent);
+                messageManager.sendDebugNotification("Container Remove Event: " + containerEvent);
             }
         });
+
+        // At the end of the Tool Window is created we run the Check if a project is marked as Default
+        Object modelRoot = myTree.getModel().getRoot();
+        if (modelRoot instanceof DefaultMutableTreeNode) {
+            DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) modelRoot;
+            Enumeration e = rootNode.children();
+            //                    Enumeration<TreeNode> e = rootNode.pathFromAncestorEnumeration(rootNode);
+            while (e.hasMoreElements()) {
+                TreeNode child = (TreeNode) e.nextElement();
+                if (child instanceof DefaultMutableTreeNode) {
+                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
+                    Object target = childNode.getUserObject();
+                    if (target instanceof SlingServerNodeDescriptor) {
+                        SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
+                        if (descriptor.getTarget().isDefault()) {
+                            myTree.setSelectionPath(new TreePath(childNode.getPath()));
+                            // Not call the check module method
+                            ActionManager actionManager = ActionManager.getInstance();
+                            CheckServerConnectionAction checkAction = (CheckServerConnectionAction) actionManager.getAction("AEM.Check.Action");
+                            if(checkAction != null) {
+                                checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void dispose() {
