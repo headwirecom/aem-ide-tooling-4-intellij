@@ -1,27 +1,22 @@
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
-import com.intellij.analysis.AnalysisScopeBundle;
+import com.headwire.aem.tooling.intellij.explorer.ServerTreeManager;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
 import com.intellij.codeInsight.CodeSmellInfo;
-import com.intellij.compiler.impl.FileSetCompileScope;
-import com.intellij.compiler.impl.ModuleCompileScope;
 import com.intellij.lang.annotation.HighlightSeverity;
-import com.intellij.openapi.application.Application;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectUtil;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.vcs.CodeSmellDetector;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileAdapter;
@@ -32,11 +27,13 @@ import com.intellij.openapi.vfs.VirtualFileMoveEvent;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowId;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.util.messages.MessageBusConnection;
-import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,7 +43,9 @@ import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_N
 /**
  * Created by schaefa on 5/12/15.
  */
-public class ContentResourceChangeListener {
+public class ContentResourceChangeListener
+    extends AbstractProjectComponent
+{
 
     private AEMPluginConfiguration pluginConfiguration;
     private final ServerConnectionManager serverConnectionManager;
@@ -55,7 +54,9 @@ public class ContentResourceChangeListener {
     private final LinkedList<FileChange> queue = new LinkedList<FileChange>();
 
 
-    public ContentResourceChangeListener(@NotNull Project project, @NotNull final ServerConnectionManager serverConnectionManager, @NotNull MessageBusConnection messageBusConnection) {
+    public ContentResourceChangeListener(@NotNull Project project) {
+        super(project);
+        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         pluginConfiguration = ServiceManager.getService(AEMPluginConfiguration.class);
         this.serverConnectionManager = serverConnectionManager;
         this.project = project;
@@ -67,7 +68,6 @@ public class ContentResourceChangeListener {
         // Create the Listener on File Changes
         VirtualFileManager.getInstance().addVirtualFileListener(
             new VirtualFileAdapter() {
-
                 @Override
                 public void contentsChanged(@NotNull VirtualFileEvent event) {
                     if(event.isFromSave()) {
@@ -127,6 +127,43 @@ public class ContentResourceChangeListener {
             project
         );
 
+        // Register a Startup Manager to check the project if it is default after the project is initialized
+        StartupManager startupManager = StartupManager.getInstance(project);
+        startupManager.runWhenProjectIsInitialized(
+            new Runnable() {
+                @Override
+                public void run() {
+                    ServerTreeManager serverTreeManager = ServiceManager.getService(myProject, ServerTreeManager.class);
+                    if(serverTreeManager != null) {
+                        // At the end of the Tool Window is created we run the Check if a project is marked as Default
+                        Object modelRoot = serverTreeManager.getTree().getModel().getRoot();
+                        if (modelRoot instanceof DefaultMutableTreeNode) {
+                            DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) modelRoot;
+                            Enumeration e = rootNode.children();
+                            while (e.hasMoreElements()) {
+                                TreeNode child = (TreeNode) e.nextElement();
+                                if (child instanceof DefaultMutableTreeNode) {
+                                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
+                                    Object target = childNode.getUserObject();
+                                    if (target instanceof SlingServerNodeDescriptor) {
+                                        SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
+                                        if (descriptor.getTarget().isDefault()) {
+                                            serverTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
+                                            // Not call the check module method
+                                            ActionManager actionManager = ActionManager.getInstance();
+                                            CheckServerConnectionAction checkAction = (CheckServerConnectionAction) actionManager.getAction("AEM.Check.Action");
+                                            if (checkAction != null) {
+                                                checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
         //AS TODO: That would work if we would build the project without maven but that is not the case
         //AS TODO: Also maven is not sending events on the Build Manager Listeners
         //AS TODO: If that does not work we can remove the messageBusConnection from the constructor

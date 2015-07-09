@@ -74,13 +74,7 @@ public class SlingServerExplorer
         ToolTipManager.sharedInstance().registerComponent(myTree);
         final MessageBus bus = myProject.getMessageBus();
         myConn = bus.connect();
-        serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-//        ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
-        new ContentResourceChangeListener(myProject, serverConnectionManager, myConn);
-
-//        RunManagerEx myRunManager = RunManagerEx.getInstanceEx(myProject);
         messageManager = ServiceManager.getService(myProject, MessageManager.class);
-
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
         // and when it is taken down even when not started or stopped through the Plugin
         myConn.subscribe(
@@ -134,34 +128,34 @@ public class SlingServerExplorer
                 messageManager.sendDebugNotification("Container Remove Event: " + containerEvent);
             }
         });
-
-        // At the end of the Tool Window is created we run the Check if a project is marked as Default
-        Object modelRoot = myTree.getModel().getRoot();
-        if (modelRoot instanceof DefaultMutableTreeNode) {
-            DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) modelRoot;
-            Enumeration e = rootNode.children();
-            //                    Enumeration<TreeNode> e = rootNode.pathFromAncestorEnumeration(rootNode);
-            while (e.hasMoreElements()) {
-                TreeNode child = (TreeNode) e.nextElement();
-                if (child instanceof DefaultMutableTreeNode) {
-                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
-                    Object target = childNode.getUserObject();
-                    if (target instanceof SlingServerNodeDescriptor) {
-                        SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
-                        if (descriptor.getTarget().isDefault()) {
-                            myTree.setSelectionPath(new TreePath(childNode.getPath()));
-                            // Not call the check module method
-                            ActionManager actionManager = ActionManager.getInstance();
-                            CheckServerConnectionAction checkAction = (CheckServerConnectionAction) actionManager.getAction("AEM.Check.Action");
-                            if(checkAction != null) {
-                                checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
+//
+//        // At the end of the Tool Window is created we run the Check if a project is marked as Default
+//        Object modelRoot = myTree.getModel().getRoot();
+//        if (modelRoot instanceof DefaultMutableTreeNode) {
+//            DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) modelRoot;
+//            Enumeration e = rootNode.children();
+//            //                    Enumeration<TreeNode> e = rootNode.pathFromAncestorEnumeration(rootNode);
+//            while (e.hasMoreElements()) {
+//                TreeNode child = (TreeNode) e.nextElement();
+//                if (child instanceof DefaultMutableTreeNode) {
+//                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
+//                    Object target = childNode.getUserObject();
+//                    if (target instanceof SlingServerNodeDescriptor) {
+//                        SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
+//                        if (descriptor.getTarget().isDefault()) {
+//                            myTree.setSelectionPath(new TreePath(childNode.getPath()));
+//                            // Not call the check module method
+//                            ActionManager actionManager = ActionManager.getInstance();
+//                            CheckServerConnectionAction checkAction = (CheckServerConnectionAction) actionManager.getAction("AEM.Check.Action");
+//                            if(checkAction != null) {
+//                                checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
     }
 
     public void dispose() {
