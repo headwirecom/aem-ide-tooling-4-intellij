@@ -47,14 +47,15 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
         // First Run the Verifier
         ActionManager actionManager = ActionManager.getInstance();
         VerifyConfigurationAction verifyConfigurationAction = (VerifyConfigurationAction) actionManager.getAction("AEM.Verify.Configuration.Action");
+        boolean verifiedOk = true;
         if(verifyConfigurationAction != null) {
-            verifyConfigurationAction.doVerify(
+            verifiedOk = verifyConfigurationAction.doVerify(
                 project,
                 SimpleDataContext.getSimpleContext(VerifyConfigurationAction.VERIFY_CONTENT_WITH_WARNINGS, false, dataContext)
             );
         }
-
-        ProgressManager.getInstance().run(new Task.Modal(project, title, false) {
+        if(verifiedOk) {
+            ProgressManager.getInstance().run(new Task.Modal(project, title, false) {
                 @Nullable
                 public NotificationInfo getNotificationInfo() {
                     return new NotificationInfo("Sling", "Sling Deployment Checks", "");
@@ -68,7 +69,7 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
                         indicator.setFraction(0.0);
                         ApplicationManager.getApplication().runReadAction(new Runnable() {
                             public void run() {
-                                if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
+                                if (!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
                                     return;
                                 }
                                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
@@ -78,21 +79,21 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
                                 indicator.setFraction(0.2);
                                 try {
                                     Thread.sleep(1000);
-                                } catch(InterruptedException e1) {
+                                } catch (InterruptedException e1) {
                                     e1.printStackTrace();
                                 }
 
                                 indicator.setFraction(0.3);
                                 OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
-                                if(osgiClient != null) {
+                                if (osgiClient != null) {
                                     indicator.setFraction(0.4);
                                     ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
-                                    if(status != ServerConnectionManager.BundleStatus.failed) {
+                                    if (status != ServerConnectionManager.BundleStatus.failed) {
                                         // If a Module is selected then check only this one
                                         indicator.setFraction(0.6);
                                         ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
                                         indicator.setFraction(0.7);
-                                        if(module != null) {
+                                        if (module != null) {
                                             // Handle Module only
                                             serverConnectionManager.checkModule(osgiClient, module);
                                         } else {
@@ -112,5 +113,6 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
                     }
                 }
             });
+        }
     }
 }

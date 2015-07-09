@@ -59,8 +59,6 @@ public class SlingServerExplorer
 
     public SlingServerExplorer(final Project project) {
         super(true, true);
-//AS TODO; This is for drag and drop but we don't support that -> remove later
-//        setTransferHandler(new MyTransferHandler());
         myProject = project;
         myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
 
@@ -128,34 +126,6 @@ public class SlingServerExplorer
                 messageManager.sendDebugNotification("Container Remove Event: " + containerEvent);
             }
         });
-//
-//        // At the end of the Tool Window is created we run the Check if a project is marked as Default
-//        Object modelRoot = myTree.getModel().getRoot();
-//        if (modelRoot instanceof DefaultMutableTreeNode) {
-//            DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) modelRoot;
-//            Enumeration e = rootNode.children();
-//            //                    Enumeration<TreeNode> e = rootNode.pathFromAncestorEnumeration(rootNode);
-//            while (e.hasMoreElements()) {
-//                TreeNode child = (TreeNode) e.nextElement();
-//                if (child instanceof DefaultMutableTreeNode) {
-//                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
-//                    Object target = childNode.getUserObject();
-//                    if (target instanceof SlingServerNodeDescriptor) {
-//                        SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
-//                        if (descriptor.getTarget().isDefault()) {
-//                            myTree.setSelectionPath(new TreePath(childNode.getPath()));
-//                            // Not call the check module method
-//                            ActionManager actionManager = ActionManager.getInstance();
-//                            CheckServerConnectionAction checkAction = (CheckServerConnectionAction) actionManager.getAction("AEM.Check.Action");
-//                            if(checkAction != null) {
-//                                checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
     }
 
     public void dispose() {
@@ -244,34 +214,4 @@ public class SlingServerExplorer
 //        }
         return super.getData(dataId);
     }
-//
-//    //AS TODO: Do we really need this (transfer of what)
-//    private final class MyTransferHandler extends TransferHandler {
-//
-//        @Override
-//        public boolean importData(final TransferSupport support) {
-//            if(canImport(support)) {
-////                addBuildFile(getAntFiles(support));
-//                return true;
-//            }
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean canImport(final TransferSupport support) {
-//            return FileCopyPasteUtil.isFileListFlavorAvailable(support.getDataFlavors());
-//        }
-//
-//        private VirtualFile[] getAntFiles(final TransferSupport support) {
-//            java.util.List<VirtualFile> virtualFileList = new ArrayList<VirtualFile>();
-//            final java.util.List<File> fileList = FileCopyPasteUtil.getFileList(support.getTransferable());
-//            if(fileList != null) {
-//                for(File file : fileList) {
-//                    ContainerUtil.addIfNotNull(virtualFileList, VfsUtil.findFileByIoFile(file, true));
-//                }
-//            }
-//
-//            return VfsUtil.toVirtualFileArray(virtualFileList);
-//        }
-//    }
 }

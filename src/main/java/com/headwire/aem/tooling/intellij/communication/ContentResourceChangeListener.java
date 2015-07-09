@@ -61,6 +61,9 @@ public class ContentResourceChangeListener
         this.serverConnectionManager = serverConnectionManager;
         this.project = project;
 
+        // File Change Events are not handled right away but queued up and handled in
+        // batches to avoid a constant load on the IDEA. The timeout is configurable so
+        // that the user can decide the delay
         Thread thread = new Thread(new Runner());
         thread.setDaemon(true);
         thread.start();
@@ -201,7 +204,6 @@ public class ContentResourceChangeListener
             // Check if the file is a Java Class and if os build it
             VirtualFile file = event.getFile();
             if("java".equalsIgnoreCase(file.getExtension())) {
-                final Project project = ProjectUtil.guessProjectForFile(event.getFile());
                 //AS TODO: In order to use the Code Snell Detector this needs to be invoked in a Read Only Thread but part of the Dispatcher Thread
                 ApplicationManager.getApplication().invokeLater(
                     new Runnable() {

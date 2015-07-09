@@ -17,6 +17,7 @@ package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.ide.util.treeView.AbstractTreeStructure;
 import com.intellij.ide.util.treeView.NodeDescriptor;
 import com.intellij.openapi.components.ServiceManager;
@@ -30,20 +31,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 final class ServerExplorerTreeStructure extends AbstractTreeStructure {
-    private static final Logger LOG = Logger.getInstance("#com.intellij.lang.ant.config.explorer.AntExplorerTreeStructure");
+    private static final Logger LOG = Logger.getInstance(ServerExplorerTreeStructure.class);
     private final Project myProject;
     private final Object myRoot = new Object();
     private boolean myFilteredTargets = false;
-//  private static final Comparator<AntBuildTarget> ourTargetComparator = new Comparator<AntBuildTarget>() {
-//    @Override
-//    public int compare(final AntBuildTarget target1, final AntBuildTarget target2) {
-//      final String name1 = target1.getDisplayName();
-//      if (name1 == null) return Integer.MIN_VALUE;
-//      final String name2 = target2.getDisplayName();
-//      if (name2 == null) return Integer.MAX_VALUE;
-//      return name1.compareToIgnoreCase(name2);
-//    }
-//  };
 
     public ServerExplorerTreeStructure(final Project project) {
         myProject = project;
@@ -82,10 +73,12 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
         final ServerConfigurationManager configuration = ServiceManager.getService(myProject, ServerConfigurationManager.class);
         if(element == myRoot) {
             if(!configuration.isInitialized()) {
-                return new Object[]{"Loading Server Configurations"};
+                return new Object[]{AEMBundle.message("tree.builder.configurations.loading.name")};
             }
             final ServerConfiguration[] serverConfigurations = configuration.getServerConfigurations();
-            return serverConfigurations.length == 0 ? new Object[]{"Server Configuration Loading"} : serverConfigurations;
+            return serverConfigurations.length == 0 ?
+                new Object[]{AEMBundle.message("tree.builder.no.configurations.defined.name")} :
+                serverConfigurations;
         }
 
         if (element instanceof ServerConfiguration) {
@@ -129,14 +122,10 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
         return myRoot;
     }
 
-    public void setFilteredTargets(boolean value) {
-        myFilteredTargets = value;
-    }
-
     private final class RootNodeDescriptor extends ServerNodeDescriptor {
         public RootNodeDescriptor(Project project, NodeDescriptor parentDescriptor) {
             super(project, parentDescriptor);
-            myName = "Server Configurations";
+            myName = AEMBundle.message("tree.builder.root.node.name");
         }
 
         @Override
