@@ -12,7 +12,7 @@ import com.intellij.util.ui.UIUtil;
 import java.awt.Color;
 import java.awt.Font;
 
-final class SlingServerNodeDescriptor
+public final class SlingServerNodeDescriptor
     extends AbstractConfigurationNodeDescriptor<ServerConfiguration> {
 
     public SlingServerNodeDescriptor(final Project project, final NodeDescriptor parentDescriptor, final ServerConfiguration target) {
