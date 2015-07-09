@@ -35,6 +35,7 @@ public class HelloServiceImpl implements HelloService {
 	
 	@Override
 	public String getMessage() {
+		// Test112
 		return "Hello World, this is instance " + settings.getSlingId();
 	}
 

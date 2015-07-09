@@ -105,63 +105,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
 
         public void configurationLoaded() {
             queueUpdate();
-//AS TODO: Moved to the Explorer because checking does not make much sense until the Plugin is opened.
-//            if(first) {
-//                // Only run this when the Explorer is available
-//                SlingServerExplorer explorer = ServiceManager.getService(myProject, SlingServerExplorer.class);
-//                if(explorer != null) {
-//                    Object modelRoot = getTreeModel().getRoot();
-//                    if (modelRoot instanceof DefaultMutableTreeNode) {
-//                        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) modelRoot;
-//                        Enumeration e = rootNode.children();
-//                        //                    Enumeration<TreeNode> e = rootNode.pathFromAncestorEnumeration(rootNode);
-//                        while (e.hasMoreElements()) {
-//                            TreeNode child = (TreeNode) e.nextElement();
-//                            if (child instanceof DefaultMutableTreeNode) {
-//                                DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
-//                                Object target = childNode.getUserObject();
-//                                if (target instanceof SlingServerNodeDescriptor) {
-//                                    SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
-//                                    if (descriptor.getTarget().isDefault()) {
-//                                        getTree().setSelectionPath(new TreePath(childNode.getPath()));
-//                                        // Not call the check module method
-//                                        first = false;
-//                                        checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
-//                                        //AS TODO: When we expand here a phantom line remains (not sure how to clean that up -> find a good solution to clean it up or to call this when the tree is fully built
-//                                        //                                    expandAll();
-//
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                Object root = getTreeStructure().getRootElement();
-//                Object[] children = getTreeStructure().getChildElements(root);
-//                for(Object child : children) {
-//                    // Now find its children to make find the Server Configurations
-//                    if(child instanceof SlingServerNodeDescriptor) {
-//                        ServerConfiguration serverConfiguration = ((SlingServerNodeDescriptor) child).getServerConfiguration();
-//                        if(serverConfiguration.isDefault()) {
-//                            // Now how to select that entry
-////                            getTree().
-//                        }
-//                    }
-//                }
-//            }
         }
-
-//    public void buildFileAdded(AntBuildFile buildFile) {
-//      queueUpdate();
-//    }
-//
-//    public void buildFileChanged(AntBuildFile buildFile) {
-//      queueUpdateFrom(buildFile, false);
-//    }
-//
-//    public void buildFileRemoved(AntBuildFile buildFile) {
-//      queueUpdate();
-//    }
     }
 
     public void expandAll() {
