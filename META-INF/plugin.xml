@@ -27,7 +27,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="AEM" anchor="right" icon="/images/aem.gif"
-                    factoryClass="com.headwire.aem.tooling.intellij.ServersToolWindowFactory"/>
+                    factoryClass="com.headwire.aem.tooling.intellij.explorer.ServersToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="AllIcons.Ide.NoNotifications13"
                     factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
@@ -94,6 +94,9 @@
         </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLogProjectTracker</implementation-class>
+        </component>
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener</implementation-class>
         </component>
     </project-components>
 
