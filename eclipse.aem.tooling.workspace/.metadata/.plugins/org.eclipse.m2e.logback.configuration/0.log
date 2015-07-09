@@ -639,3 +639,8 @@
 2015-06-23 17:02:25,410 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
 2015-06-23 17:02:25,414 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2015-06-23 17:02:25,414 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/schaefa/Development/headwire/AEM.Tooling.4.IntelliJ/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/ui.apps/src/test/resources
+2015-07-08 18:28:19,412 [Worker-5] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using NULL lifecycle mapping for MavenProject: com.headwire.plugin:aemtoolingtest:0.0.1-SNAPSHOT @ /Users/schaefa/Development/headwire/AdobeAEM.projects/HW.AEM.Tooling/eclipse.aem.tooling.workspace/aemtoolingtest/pom.xml.
+2015-07-08 18:32:22,093 [Worker-3] WARN  o.a.j.spi2dav.RepositoryServiceImpl - Authentication required to access repository descriptors
+2015-07-08 18:32:22,155 [Worker-3] WARN  o.a.j.spi2dav.RepositoryServiceImpl - Authentication required to access repository descriptors
+2015-07-09 08:34:47,711 [Worker-7] WARN  o.a.j.spi2dav.RepositoryServiceImpl - Authentication required to access repository descriptors
+2015-07-09 08:34:47,767 [Worker-7] WARN  o.a.j.spi2dav.RepositoryServiceImpl - Authentication required to access repository descriptors

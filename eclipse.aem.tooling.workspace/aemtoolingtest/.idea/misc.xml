@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -17,17 +20,8 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/classes" />
-  </component>
-  <component name="ServerConfiguration">
-    <ssc-0 name="Default Configuration" host="localhost" description="My Default Dev Server" connectionPort="4502" connectionDebugPort="30303" userName="admin" password="admin" contextPath="/" startConnectionTimeout="30" stopConnectionTimeout="15" publishType="never" installationType="installViaBundleUpload" default="false" logFilter="error">
-      <sscm-0 artifactId="aemtoolingtest.it.tests" symbolicName="com.headwire.plugin.aemtoolingtest.it.tests" partOfBuild="true" lastModificationTimestamp="0" />
-      <sscm-1 artifactId="aemtoolingtest.it.launcher" symbolicName="com.headwire.plugin.aemtoolingtest.it.launcher" partOfBuild="true" lastModificationTimestamp="0" />
-      <sscm-2 artifactId="aemtoolingtest.core" symbolicName="com.headwire.plugin.aemtoolingtest.core" partOfBuild="true" lastModificationTimestamp="0" />
-      <sscm-3 artifactId="aemtoolingtest.ui.apps" symbolicName="com.headwire.plugin.aemtoolingtest.ui.apps" partOfBuild="true" lastModificationTimestamp="1433974457000" />
-      <sscm-4 artifactId="aemtoolingtest.ui.content" symbolicName="com.headwire.plugin.aemtoolingtest.ui.content" partOfBuild="true" lastModificationTimestamp="1433955542000" />
-    </ssc-0>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="masterDetails">
     <states>

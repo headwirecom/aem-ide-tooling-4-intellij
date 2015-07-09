@@ -1,6 +1,7 @@
 package com.headwire.aem.tooling.intellij.config;
 
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
@@ -9,6 +10,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -21,12 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The Server Configuration Manager responsible for Loading & Saving the Server Configurations into the Workspace File
+ * inside the IDEA folder (.idea/workspace.xml) and to provide the configurations to the plugin.
+ *
  * Created by schaefa on 3/19/15.
  */
 @State(
     name = ServerConfiguration.COMPONENT_NAME,
     storages = {
-        @Storage(id = "serverConfigurations", file = "$PROJECT_FILE$")
+        @Storage(id = "serverConfigurations", file = StoragePathMacros.WORKSPACE_FILE)
     }
 )
 public class ServerConfigurationManager
@@ -56,7 +61,6 @@ public class ServerConfigurationManager
 
     private MessageManager messageManager;
     private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
-//    private ConfigurationListener configurationListener;
     private List<ServerConfiguration> serverConfigurationList = new ArrayList<ServerConfiguration>();
 
     public class ConfigurationChangeListener {
@@ -132,7 +136,6 @@ public class ServerConfigurationManager
         if(configuration != null && configuration != serverConfiguration) {
             configuration.copy(serverConfiguration);
         }
-//        myEventDispatcher.getMulticaster().configurationLoaded();
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             public void run() {
                 myEventDispatcher.getMulticaster().configurationLoaded();
@@ -270,7 +273,7 @@ public class ServerConfigurationManager
             serverConfigurationList.add(serverConfiguration);
         }
         myIsInitialized = Boolean.TRUE;
-        final String title = "Loading Server Configurations";
+        final String title = AEMBundle.message("tree.builder.configurations.loading.name");
         queueLater(
             new Task.Backgroundable(myProject, title, false) {
                 public void run(@NotNull final ProgressIndicator indicator) {
