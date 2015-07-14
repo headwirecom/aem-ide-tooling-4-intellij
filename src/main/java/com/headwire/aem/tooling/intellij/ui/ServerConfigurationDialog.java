@@ -30,6 +30,7 @@ public class ServerConfigurationDialog
     private JTextField name;
     private JTextField description;
     private JCheckBox defaultConfiguration;
+    private JCheckBox buildWithMaven;
 
     private ServerConfiguration serverConfiguration;
 
@@ -59,6 +60,7 @@ public class ServerConfigurationDialog
         ret.setHost(host.getText());
         ret.setDescription(description.getText());
         ret.setDefault(defaultConfiguration.isSelected());
+        ret.setBuildWithMaven(buildWithMaven.isSelected());
         ret.setConnectionPort(UIUtil.obtainInteger(connectionPort, 0));
         ret.setConnectionDebugPort(UIUtil.obtainInteger(connectionDebugPort, 0));
         ret.setUserName(connectionUserName.getText());
@@ -96,6 +98,7 @@ public class ServerConfigurationDialog
             host.setText(serverConfiguration.getHost());
             description.setText(serverConfiguration.getDescription());
             defaultConfiguration.setSelected(serverConfiguration.isDefault());
+            buildWithMaven.setSelected(serverConfiguration.isBuildWithMaven());
             connectionPort.setText(serverConfiguration.getConnectionPort() + "");
             connectionDebugPort.setText(serverConfiguration.getConnectionDebugPort() + "");
             connectionUserName.setText(serverConfiguration.getUserName());

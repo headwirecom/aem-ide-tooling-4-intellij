@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.5-BETA-1</version>
+    <version>0.5-BETA-2</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,9 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>Beta 2: A Deploy of an OSGi Bundle module will call Maven to build the artifact first.
+                    This can be switched on (default) or off in the Server Connection Configuration.
+        </li>
         <li>Beta 1: First Beta Release. It includes many fixes including the making it work without the Plugin Window
                     to be open, avoiding to compile Java classes with errors, avoiding repetitive messages during
                     check / verify.

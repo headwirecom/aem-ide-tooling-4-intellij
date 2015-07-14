@@ -115,6 +115,7 @@ public class ServerConfiguration
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
     private InstallationType installationType = DEFAULT_INSTALL_TYPE;
     private boolean defaultConfiguration = false;
+    private boolean buildWithMaven = true;
     private LogFilter logFilter = DEFAULT_LOG_FILTER;
 
     // Don't store Server Status as it is reset when the Configuration is loaded again
@@ -142,6 +143,7 @@ public class ServerConfiguration
         host = source.host;
         description = source.description;
         defaultConfiguration = source.defaultConfiguration;
+        buildWithMaven = source.buildWithMaven;
         connectionPort = source.connectionPort;
         connectionDebugPort = source.connectionDebugPort;
         userName = source.userName;
@@ -312,6 +314,14 @@ public class ServerConfiguration
 
     public void setDefault(boolean defaultConfiguration) {
         this.defaultConfiguration = defaultConfiguration;
+    }
+
+    public boolean isBuildWithMaven() {
+        return buildWithMaven;
+    }
+
+    public void setBuildWithMaven(boolean buildWithMaven) {
+        this.buildWithMaven = buildWithMaven;
     }
 
     public boolean isBooted() {

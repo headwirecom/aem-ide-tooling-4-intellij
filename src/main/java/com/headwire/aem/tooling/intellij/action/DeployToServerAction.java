@@ -89,7 +89,7 @@ public class DeployToServerAction
                                     ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
                                     if(module != null) {
                                         // Deploy only the selected Module
-                                        connectionManager.deployModule(module, forceDeploy);
+                                        connectionManager.deployModule(dataContext, module, forceDeploy);
                                     } else {
                                         // Deploy all Modules of the Project
                                         connectionManager.deployModules(dataContext, forceDeploy);
