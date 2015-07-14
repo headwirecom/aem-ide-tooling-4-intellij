@@ -1,5 +1,14 @@
 ### AEM Tooling for IntelliJ IDE Plugin
 
+#### Updates:
+
+**0.5-BETA-2** is available which now tries to perform a Maven build for OSGi Modules during the deployment. This feature
+can be switched off (on is the default) in the Server Connection Configuration of the Plugin. If the Edit Button is
+disabled make sure you stop the connection first.
+
+**Attention**: There is a little problem with IntelliJ where the first Maven build from the AEM Plugin will fail. There
+is an Alert that pops up and it will suggest that you try once more. During the initial tests that did solve the issue.
+
 #### Introduction
 
 This projects creates an IntelliJ IDE plugin for version 14 and up providing the same features as the Eclipse AEM
