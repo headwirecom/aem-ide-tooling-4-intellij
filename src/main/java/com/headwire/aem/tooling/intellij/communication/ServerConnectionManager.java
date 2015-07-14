@@ -38,11 +38,15 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowId;
+import com.intellij.openapi.wm.ToolWindowManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
@@ -60,8 +64,13 @@ import org.apache.sling.ide.transport.ResourceProxy;
 import org.apache.sling.ide.transport.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
+import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
+import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
+import org.jetbrains.idea.maven.utils.MavenDataKeys;
+import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 import org.osgi.framework.Version;
 
 import java.io.File;
@@ -104,6 +113,8 @@ public class ServerConnectionManager
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
     private ResourceChangeCommandFactory commandFactory;
+
+    private static boolean firstRun = true;
 
     public ServerConnectionManager(@NotNull Project project) {
         super(project);
@@ -463,19 +474,19 @@ public class ServerConnectionManager
             checkBinding(serverConfiguration);
             List<Module> moduleList = serverConfiguration.getModuleList();
             for(ServerConfiguration.Module module: moduleList) {
-                deployModule(module, force);
+                deployModule(dataContext, module, force);
             }
         } else {
             messageManager.sendNotification("aem.explorer.deploy.modules.no.configuration.selected", NotificationType.WARNING);
         }
     }
 
-    public void deployModule(@NotNull ServerConfiguration.Module module, boolean force) {
+    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force) {
         messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
         checkBinding(module.getParent());
         if(module.isPartOfBuild()) {
             if(module.isOSGiBundle()) {
-                publishBundle(module);
+                publishBundle(dataContext, module);
             } else if(module.isSlingPackage()) {
                 //AS TODO: Add the synchronization of the entire module
                 publishModule(module, force);
@@ -622,7 +633,7 @@ public class ServerConnectionManager
 
     // Publishing Stuff --------------------------
 
-    public void publishBundle(@NotNull Module module) {
+    public void publishBundle(@NotNull final DataContext dataContext, final @NotNull Module module) {
         messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
         InputStream contents = null;
         // Check if this is a OSGi Bundle
@@ -630,46 +641,57 @@ public class ServerConnectionManager
         if(moduleProject.isOSGiBundle()) {
             try {
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
-                //                    sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
+                if(module.getParent().isBuildWithMaven()) {
+                    List<String> goals = MavenDataKeys.MAVEN_GOALS.getData(dataContext);
+                    if (goals == null) {
+                        goals = new ArrayList<String>();
+                    }
+                    if (goals.isEmpty()) {
+                        goals.add("package");
+                    }
+                    messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.goals", goals);
+                    final MavenProjectsManager projectsManager = MavenActionUtil.getProjectsManager(dataContext);
+                    if (projectsManager == null) {
+                        messageManager.showAlert("Maven Failure", "Could not find Maven Project Manager, need to build manually");
+                    } else {
+                        final ToolWindow tw = ToolWindowManager.getInstance(module.getProject()).getToolWindow(ToolWindowId.RUN);
+                        final boolean isShown = tw != null && tw.isVisible();
+                        String workingDirectory = moduleProject.getModuleDirectory();
+                        MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
+                        final MavenRunnerParameters params = new MavenRunnerParameters(
+                            true,
+                            workingDirectory,
+                            goals,
+                            explicitProfiles.getEnabledProfiles(),
+                            explicitProfiles.getDisabledProfiles());
+                        try {
+                            MavenRunConfigurationType.runConfiguration(module.getProject(), params, null);
+                            if (!isShown) {
+                                ApplicationManager.getApplication().invokeLater(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            tw.hide(null);
+                                        }
+                                    },
+                                    ModalityState.NON_MODAL
+                                    //                                    ApplicationManager.getApplication().getCurrentModalityState()
+                                );
+                            }
+                        } catch (IllegalStateException e) {
+                            if (firstRun) {
+                                firstRun = false;
+                                messageManager.showAlert("aem.explorer.deploy.module.maven.first.run.failure");
+                            }
+                        }
+                        messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.done");
+                    }
+                }
                 File buildDirectory = new File(module.getModuleProject().getBuildDirectoryPath());
                 if(buildDirectory.exists() && buildDirectory.isDirectory()) {
                     File buildFile = new File(buildDirectory, module.getModuleProject().getBuildFileName() + ".jar");
                     messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
                     if(buildFile.exists()) {
-                        // This is not working as of now. The test project is not able to resolve aem-api and I cannot built it with
-                        // the Maven Plugin as well.
-                        //AS TODO: For now the User has to built it manually -> add a check and alert the user if a file has changed since the last build
-//                                        // Check and build the module first if necessary
-//                                        ApplicationManager.getApplication().invokeAndWait(
-//                                            new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    List<String> goals = MavenDataKeys.MAVEN_GOALS.getData(dataContext);
-//                                                    if(goals == null) {
-//                                                        goals = new ArrayList<String>();
-//                                                    }
-//                                                    if(goals.isEmpty()) {
-//                                                        goals.add("package");
-//                                                    }
-//                                                    final MavenProjectsManager projectsManager = MavenActionUtil.getProjectsManager(dataContext);
-//                                                    if(projectsManager == null) {
-//                                                        messageManager.showAlert("Maven Failure", "Could not find Maven Project Manager, need to build manually");
-//                                                    } else {
-//                                                        String workingDirectory = moduleProject.getDirectory();
-//                                                        MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
-//                                                        final MavenRunnerParameters params = new MavenRunnerParameters(
-//                                                            true,
-//                                                            workingDirectory,
-//                                                            goals,
-//                                                            explicitProfiles.getEnabledProfiles(),
-//                                                            explicitProfiles.getDisabledProfiles());
-//                                                        MavenRunConfigurationType.runConfiguration(project, params, null);
-//                                                    }
-//                                                }
-//                                            },
-//                                            ApplicationManager.getApplication().getCurrentModalityState()
-//                                        );
-
                         EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
                         contents = bundle.openInputStream();
                         obtainSGiClient().installBundle(contents, bundle.getName());

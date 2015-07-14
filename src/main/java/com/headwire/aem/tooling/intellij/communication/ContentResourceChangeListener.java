@@ -237,14 +237,13 @@ public class ContentResourceChangeListener
                 }
                 if(isOk) {
                     // Changed file found in module. Make it.
-                    ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.MESSAGES_WINDOW);
+                    final ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.MESSAGES_WINDOW);
                     final boolean isShown = tw != null && tw.isVisible();
                     compilerManager.compile(
                         new VirtualFile[]{event.getFile()},
                         new CompileStatusNotification() {
                             @Override
                             public void finished(boolean b, int i, int i1, CompileContext compileContext) {
-                                ToolWindow tw = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.MESSAGES_WINDOW);
                                 if (tw != null && tw.isVisible()) {
                                     // Close / Hide the Build Message Window after we did the build if it wasn't shown
                                     if(!isShown) {

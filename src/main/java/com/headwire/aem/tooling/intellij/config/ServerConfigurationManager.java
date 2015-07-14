@@ -54,6 +54,7 @@ public class ServerConfigurationManager
     public static final String PUBLISH_TYPE = "publishType";
     public static final String INSTALLATION_TYPE = "installationType";
     public static final String DEFAULT = "default";
+    public static final String BUILD_WITH_MAVEN = "buildWithMaven";
     public static final String ARTIFACT_ID = "artifactId";
     public static final String SYMBOLIC_NAME = "symbolicName";
     public static final String PART_OF_BUILD = "partOfBuild";
@@ -208,6 +209,7 @@ public class ServerConfigurationManager
             childNode.setAttribute(PUBLISH_TYPE, serverConfiguration.getPublishType() + "");
             childNode.setAttribute(INSTALLATION_TYPE, serverConfiguration.getInstallationType() + "");
             childNode.setAttribute(DEFAULT, serverConfiguration.isDefault() + "");
+            childNode.setAttribute(BUILD_WITH_MAVEN, serverConfiguration.isBuildWithMaven() + "");
             childNode.setAttribute(LOG_FILTER, serverConfiguration.getLogFilter() + "");
             int j = 0;
             for(ServerConfiguration.Module module: serverConfiguration.getModuleList()) {
@@ -256,6 +258,7 @@ public class ServerConfigurationManager
                 }
             }
             serverConfiguration.setDefault(defaultConfiguration);
+            serverConfiguration.setBuildWithMaven(new Boolean(child.getAttributeValue(BUILD_WITH_MAVEN, "true")));
             serverConfiguration.setLogFilter(Util.convertToEnum(child.getAttributeValue(LOG_FILTER), ServerConfiguration.DEFAULT_LOG_FILTER));
             for(Element element: child.getChildren()) {
                 try {
