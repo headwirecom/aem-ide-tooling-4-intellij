@@ -80,6 +80,8 @@ A Server Configuration is created by clicking on the plus (+) icon. After the cr
 
 ![Enter Host Informations](./img/2.3.1.Plugin.Edit.Server.Configuration.png)
 **Note**: Default means that if the plugin is opened this server configuration will be automatically checked and selected. There is only one server configuration allowed to be default.  
+**Note**: Build with Maven is a flag that enables (default) or disabled the automatic Maven Build when an OSGi Bundle is deployed. This feature is making sure that the latest changes are deployed rather than the last, external built archive.
+**Attention**: For unknown reasons the first Maven Build is failing as it cannot find the **Run** message window. Any subsequent build seems to work just fine and so the plugin will display an alert asking the user to redo a deployment.  
 
 4) Edit the timeouts (not supported yet)  
 
@@ -138,7 +140,8 @@ Then you will see the Configuration and its Modules together with their states:
 
 #### Deploy the Modules
 
-**Attention**: OSGi Modules are deployed as a JAR file and so the Maven module has to be built beforehand. Afterwards the JAR file can be deployed as OSGi Module to the AEM OSGi container.
+**Attention**: OSGi Modules are deployed as a JAR file and so the Maven module has to be built beforehand. Afterwards the JAR file can be deployed as OSGi Module to the AEM OSGi container.  
+**Attention**: if the **Build with Maven** flag is disabled the plugin will deploy the last built archive which might not contain the latest changes.  
 
 There are two ways to deploy the modules:  
 1) Deploy the OSGi Modules and **any changed** resource files  
@@ -194,7 +197,7 @@ In order to debug code on the AEM Server the AEM server must be started in debug
 
 In this example 30303 is the **Debug Port** and can be adjusted to your needs as long as it does not conflict with any other TCP/IP ports used especially the AEM Server HTTP port (normally 4052).
 
-Keep in mind that **server=y** means the AEM Server is the target of the debug connection and cannot be changed.
+Keep in mind that **server=y** means the AEM Server is the target of the debug connection and must not be changed.
 
 After the AEM Server is up you can connect from the plugin.
 
