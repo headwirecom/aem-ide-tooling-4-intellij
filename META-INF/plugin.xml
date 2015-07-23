@@ -35,10 +35,11 @@
     <depends>org.jetbrains.idea.maven</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="AEM" anchor="right" icon="/images/aem.gif"
+        <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder"/>
+        <toolWindow id="AEM" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.ServersToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
-                    icon="AllIcons.Ide.NoNotifications13"
+                    icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
     </extensions>
 
@@ -189,7 +190,7 @@
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
                text="AEM"
                popup="true"
-               icon="/images/aem.gif"
+               icon="/images/hw.png"
         >
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>

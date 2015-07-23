@@ -366,5 +366,14 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven3-server-lib/archetype-common-2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
