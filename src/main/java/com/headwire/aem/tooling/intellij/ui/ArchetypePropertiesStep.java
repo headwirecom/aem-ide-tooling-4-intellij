@@ -15,6 +15,7 @@
  */
 package com.headwire.aem.tooling.intellij.ui;
 
+import com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
@@ -27,7 +28,6 @@ import org.jetbrains.idea.maven.model.MavenId;
 import org.jetbrains.idea.maven.project.MavenEnvironmentForm;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.MavenUtil;
-import org.jetbrains.idea.maven.wizards.MavenModuleBuilder;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -42,7 +42,7 @@ import java.util.Map;
 public class ArchetypePropertiesStep extends ModuleWizardStep {
 
     private final Project myProjectOrNull;
-    private final MavenModuleBuilder myBuilder;
+    private final SlingModuleBuilder myBuilder;
 
     private JPanel myMainPanel;
     private JPanel myEnvironmentPanel;
@@ -53,7 +53,7 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
 
     private Map<String, String> myAvailableProperties = new HashMap<String, String>();
 
-    public ArchetypePropertiesStep(@Nullable Project project, MavenModuleBuilder builder) {
+    public ArchetypePropertiesStep(@Nullable Project project, SlingModuleBuilder builder) {
         myProjectOrNull = project;
         myBuilder = builder;
 
@@ -74,7 +74,8 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
 
     @Override
     public void updateStep() {
-        MavenArchetype archetype = myBuilder.getArchetype();
+        SlingModuleBuilder.ArchetypeTemplate archetypeTemplate = myBuilder.getArchetypeTemplate();
+        MavenArchetype archetype = archetypeTemplate.getMavenArchetype();
 
         Map<String, String> props = new LinkedHashMap<String, String>();
 
@@ -90,7 +91,9 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
         if (archetype.repository != null) props.put("archetypeRepository", archetype.repository);
 
         //Add any props from the Builder
-        props.putAll(myBuilder.getPropertiesToCreateByArtifact());
+        for(Map.Entry<String, String> entry: archetypeTemplate.getRequiredProperties().entrySet()) {
+            props.put(entry.getKey(), entry.getValue());
+        }
 
         myMavenPropertiesPanel.setDataFromMap(props);
     }
@@ -102,7 +105,7 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
 
     @Override
     public boolean isStepVisible() {
-        return myBuilder.getArchetype() != null;
+        return myBuilder.getArchetypeTemplate() != null;
     }
 
     @Override
