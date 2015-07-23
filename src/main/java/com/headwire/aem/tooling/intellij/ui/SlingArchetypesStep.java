@@ -262,7 +262,7 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
     @Override
     public void updateDataModel() {
         MavenArchetype selectedArchetype = getSelectedArchetype();
-        moduleBuilder.setArchetype(selectedArchetype);
+        moduleBuilder.selectArchetype(  selectedArchetype);
     }
 
 //    private static class MyRenderer extends ColoredTreeCellRenderer {

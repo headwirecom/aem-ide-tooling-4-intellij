@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e8001779-2c80-4417-9343-f2a698fc0cd2" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/images/aem.gif" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AEM Tooling Plugin.iml" afterPath="$PROJECT_DIR$/AEM Tooling Plugin.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/lang/AEMBundle.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/lang/AEMBundle.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingModuleBuilder.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingModuleBuilder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aemtoolingtest/.idea/workspace.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aemtoolingtest/.idea/workspace.xml" />
     </list>
     <ignored path="AEM Tooling Plugin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,161 +46,134 @@
       <file leaf-file-name="SlingModuleBuilder.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingModuleBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-27.296297" vertical-offset="3178" max-vertical-offset="6225">
-              <caret line="261" column="49" selection-start-line="261" selection-start-column="49" selection-end-line="261" selection-end-column="49" />
+            <state vertical-scroll-proportion="-46.666668" vertical-offset="2040" max-vertical-offset="6405">
+              <caret line="220" column="27" selection-start-line="220" selection-start-column="27" selection-end-line="220" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4189#4712#0" expanded="true" />
-                <element signature="e#4711#4712#0" expanded="true" />
-                <element signature="e#4769#4770#0" expanded="true" />
-                <element signature="e#4812#4813#0" expanded="true" />
-                <element signature="e#4868#4869#0" expanded="true" />
-                <element signature="e#4898#4899#0" expanded="true" />
-                <element signature="e#4950#4951#0" expanded="true" />
-                <element signature="e#5005#5006#0" expanded="true" />
-                <element signature="e#5049#5050#0" expanded="true" />
-                <element signature="e#5109#5110#0" expanded="true" />
-                <element signature="e#5455#5456#0" expanded="true" />
-                <element signature="e#5511#5512#0" expanded="true" />
-                <element signature="e#5747#5748#0" expanded="true" />
-                <element signature="e#5789#5790#0" expanded="true" />
-                <element signature="e#5858#5859#0" expanded="true" />
-                <element signature="e#5909#5910#0" expanded="true" />
-                <element signature="e#6769#6770#0" expanded="true" />
-                <element signature="e#6815#6816#0" expanded="true" />
-                <element signature="e#7033#7034#0" expanded="true" />
-                <element signature="e#7078#7079#0" expanded="true" />
-                <element signature="e#7128#7129#0" expanded="true" />
-                <element signature="e#7170#7171#0" expanded="true" />
-                <element signature="e#7228#7229#0" expanded="true" />
-                <element signature="e#7269#7270#0" expanded="true" />
-                <element signature="e#7315#7316#0" expanded="true" />
-                <element signature="e#7353#7354#0" expanded="true" />
-                <element signature="e#7545#7546#0" expanded="true" />
-                <element signature="e#7584#7585#0" expanded="true" />
-                <element signature="e#7625#7626#0" expanded="true" />
-                <element signature="e#7664#7665#0" expanded="true" />
-                <element signature="e#7708#7709#0" expanded="true" />
-                <element signature="e#7740#7741#0" expanded="true" />
-                <element signature="e#7777#7778#0" expanded="true" />
-                <element signature="e#7811#7812#0" expanded="true" />
-                <element signature="e#7869#7870#0" expanded="true" />
-                <element signature="e#7908#7909#0" expanded="true" />
-                <element signature="e#7952#7953#0" expanded="true" />
-                <element signature="e#7986#7987#0" expanded="true" />
-                <element signature="e#8042#8043#0" expanded="true" />
-                <element signature="e#8082#8083#0" expanded="true" />
-                <element signature="e#8158#8159#0" expanded="true" />
-                <element signature="e#8209#8210#0" expanded="true" />
-                <element signature="e#8277#8278#0" expanded="true" />
-                <element signature="e#8330#8331#0" expanded="true" />
-                <element signature="e#8558#8559#0" expanded="true" />
-                <element signature="e#8588#8589#0" expanded="true" />
-                <element signature="e#9344#9363#0" expanded="true" />
-                <element signature="e#12918#12934#0" expanded="true" />
-                <element signature="e#13393#13394#0" expanded="true" />
-                <element signature="e#13431#13432#0" expanded="true" />
-                <element signature="e#13606#13607#0" expanded="true" />
-                <element signature="e#13647#13648#0" expanded="true" />
-                <element signature="e#13831#13832#0" expanded="true" />
-                <element signature="e#13869#13870#0" expanded="true" />
-                <element signature="e#14044#14045#0" expanded="true" />
-                <element signature="e#14085#14086#0" expanded="true" />
-                <element signature="e#14273#14274#0" expanded="true" />
-                <element signature="e#14315#14316#0" expanded="true" />
-                <element signature="e#14527#14528#0" expanded="true" />
-                <element signature="e#14576#14577#0" expanded="true" />
+                <element signature="e#3483#3502#0" expanded="true" />
+                <element signature="e#4165#4714#0" expanded="true" />
+                <element signature="e#4713#4714#0" expanded="true" />
+                <element signature="e#4771#4772#0" expanded="true" />
+                <element signature="e#4814#4815#0" expanded="true" />
+                <element signature="e#4870#4871#0" expanded="true" />
+                <element signature="e#4900#4901#0" expanded="true" />
+                <element signature="e#4952#4953#0" expanded="true" />
+                <element signature="e#5007#5008#0" expanded="true" />
+                <element signature="e#5051#5052#0" expanded="true" />
+                <element signature="e#5111#5112#0" expanded="true" />
+                <element signature="e#5457#5458#0" expanded="true" />
+                <element signature="e#5513#5514#0" expanded="true" />
+                <element signature="e#5749#5750#0" expanded="true" />
+                <element signature="e#5791#5792#0" expanded="true" />
+                <element signature="e#5860#5861#0" expanded="true" />
+                <element signature="e#5911#5912#0" expanded="true" />
+                <element signature="e#6774#6775#0" expanded="true" />
+                <element signature="e#6820#6821#0" expanded="true" />
+                <element signature="e#7038#7039#0" expanded="true" />
+                <element signature="e#7083#7084#0" expanded="true" />
+                <element signature="e#7133#7134#0" expanded="true" />
+                <element signature="e#7175#7176#0" expanded="true" />
+                <element signature="e#7233#7234#0" expanded="true" />
+                <element signature="e#7274#7275#0" expanded="true" />
+                <element signature="e#7320#7321#0" expanded="true" />
+                <element signature="e#7358#7359#0" expanded="true" />
+                <element signature="e#7550#7551#0" expanded="true" />
+                <element signature="e#7589#7590#0" expanded="true" />
+                <element signature="e#7630#7631#0" expanded="true" />
+                <element signature="e#7669#7670#0" expanded="true" />
+                <element signature="e#7713#7714#0" expanded="true" />
+                <element signature="e#7745#7746#0" expanded="true" />
+                <element signature="e#7782#7783#0" expanded="true" />
+                <element signature="e#7816#7817#0" expanded="true" />
+                <element signature="e#8006#8007#0" expanded="true" />
+                <element signature="e#8046#8047#0" expanded="true" />
+                <element signature="e#8569#8570#0" expanded="true" />
+                <element signature="e#8609#8610#0" expanded="true" />
+                <element signature="e#8685#8686#0" expanded="true" />
+                <element signature="e#8736#8737#0" expanded="true" />
+                <element signature="e#8804#8805#0" expanded="true" />
+                <element signature="e#8857#8858#0" expanded="true" />
+                <element signature="e#9085#9086#0" expanded="true" />
+                <element signature="e#9115#9116#0" expanded="true" />
+                <element signature="e#9863#9882#0" expanded="true" />
+                <element signature="e#13437#13453#0" expanded="true" />
+                <element signature="e#13912#13913#0" expanded="true" />
+                <element signature="e#13950#13951#0" expanded="true" />
+                <element signature="e#14125#14126#0" expanded="true" />
+                <element signature="e#14166#14167#0" expanded="true" />
+                <element signature="e#14350#14351#0" expanded="true" />
+                <element signature="e#14388#14389#0" expanded="true" />
+                <element signature="e#14563#14564#0" expanded="true" />
+                <element signature="e#14604#14605#0" expanded="true" />
+                <element signature="e#14792#14793#0" expanded="true" />
+                <element signature="e#14834#14835#0" expanded="true" />
+                <element signature="e#15046#15047#0" expanded="true" />
+                <element signature="e#15095#15096#0" expanded="true" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MavenModuleWizardStep.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenModuleWizardStep.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1707" max-vertical-offset="4830">
+              <caret line="152" column="31" selection-start-line="152" selection-start-column="31" selection-end-line="152" selection-end-column="31" />
+              <folding>
+                <element signature="e#0#11705#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MavenArchetypesStep.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenArchetypesStep.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.2669039" vertical-offset="0" max-vertical-offset="4215">
+              <caret line="83" column="54" selection-start-line="83" selection-start-column="22" selection-end-line="83" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MavenArchetypesStep.form" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenArchetypesStep.form">
+          <provider selected="true" editor-type-id="ui-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MavenModuleWizardStep.form" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenModuleWizardStep.form">
+          <provider selected="true" editor-type-id="ui-designer">
+            <state />
           </provider>
         </entry>
       </file>
       <file leaf-file-name="ArchetypePropertiesStep.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.333333" vertical-offset="669" max-vertical-offset="2070">
-              <caret line="65" column="70" selection-start-line="65" selection-start-column="70" selection-end-line="65" selection-end-column="70" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="2025">
+              <caret line="107" column="45" selection-start-line="107" selection-start-column="45" selection-end-line="107" selection-end-column="45" />
               <folding>
-                <element signature="e#0#4631#0" expanded="true" />
+                <element signature="e#0#4862#0" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#2002#2018#0" expanded="true" />
-                <element signature="e#2929#2945#0" expanded="true" />
-                <element signature="e#3674#3675#0" expanded="true" />
-                <element signature="e#3708#3709#0" expanded="true" />
-                <element signature="e#3760#3761#0" expanded="true" />
-                <element signature="e#3815#3816#0" expanded="true" />
-                <element signature="e#4557#4558#0" expanded="true" />
-                <element signature="e#4627#4628#0" expanded="true" />
+                <element signature="e#2012#2028#0" expanded="true" />
+                <element signature="e#3051#3067#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ArchetypePropertiesStep.form" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.form">
-          <provider selected="true" editor-type-id="ui-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SelectPropertiesStep.class" pinned="false" current-in-tab="false">
-        <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven.jar!/org/jetbrains/idea/maven/wizards/SelectPropertiesStep.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.634615" vertical-offset="319" max-vertical-offset="1170">
-              <caret line="98" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SlingServerExplorer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="2730">
-              <caret line="216" column="0" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3105">
-              <caret line="38" column="27" selection-start-line="38" selection-start-column="24" selection-end-line="38" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SlingArchetypesStep.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SlingArchetypesStep.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="4.6263347" vertical-offset="0" max-vertical-offset="4305">
-              <caret line="271" column="61" selection-start-line="271" selection-start-column="61" selection-end-line="271" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2862" max-vertical-offset="4305">
+              <caret line="264" column="40" selection-start-line="264" selection-start-column="40" selection-end-line="264" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="archetypes.configuration.properties" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/com/headwire/aem/tooling/intellij/explorer/archetypes.configuration.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="567" max-vertical-offset="1440">
-              <caret line="89" column="11" selection-start-line="89" selection-start-column="11" selection-end-line="89" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AEMBundle.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/lang/AEMBundle.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="810">
-              <caret line="52" column="40" selection-start-line="52" selection-start-column="40" selection-end-line="52" selection-end-column="40" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -218,10 +186,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/DebugNotification.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ModuleProject.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ModuleProjectImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IResource.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IProject.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ProjectUtil.java" />
@@ -261,14 +225,18 @@
         <option value="$PROJECT_DIR$/src/main/resources/config/archetypes.configuration.txt" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/lang/AEMBundle.java" />
         <option value="$PROJECT_DIR$/src/main/resources/config/archetypes.configuration.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.java" />
         <option value="$PROJECT_DIR$/src/main/resources/com/headwire/aem/tooling/intellij/explorer/archetypes.configuration.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingModuleBuilder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ArchetypeSelectPropertiesStep.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SelectPropertiesStep.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SelectPropertiesStep.form" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenModuleWizardStep.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenArchetypesStep.form" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenModuleWizardStep.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingModuleBuilder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenArchetypesStep.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.java" />
       </list>
     </option>
   </component>
@@ -1227,6 +1195,74 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="MavenModuleWizardStep" />
+              <option name="myItemType" value="com.intellij.uiDesigner.projectView.FormNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MavenArchetypesStep" />
+              <option name="myItemType" value="com.intellij.uiDesigner.projectView.FormNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="ArchetypePropertiesStep" />
               <option name="myItemType" value="com.intellij.uiDesigner.projectView.FormNode" />
             </PATH_ELEMENT>
@@ -1742,12 +1778,12 @@
       <workItem from="1436900117257" duration="3178000" />
       <workItem from="1437413047781" duration="1206000" />
       <workItem from="1437421482847" duration="584000" />
-      <workItem from="1437422379940" duration="46119000" />
+      <workItem from="1437422379940" duration="49842000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1008742000" />
+    <option name="totallyTimeSpent" value="1012465000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -1794,7 +1830,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33200952" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25377283" sideWeight="0.4996624" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25377283" sideWeight="0.4996624" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962668" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -1960,34 +1996,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/MessageManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42704627" vertical-offset="105" max-vertical-offset="2520">
-          <caret line="57" column="33" selection-start-line="57" selection-start-column="17" selection-end-line="57" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/lang-api/src/com/intellij/execution/configurations/ConfigurationTypeUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="690">
-          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/plugins/maven/src/main/java/org/jetbrains/idea/maven/execution/MavenRunConfigurationType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07473309" vertical-offset="1812" max-vertical-offset="2655">
-          <caret line="173" column="5" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/lang-api/src/com/intellij/execution/runners/ExecutionEnvironment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="379" max-vertical-offset="2475">
-          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/lang-api/src/com/intellij/execution/RunManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3210">
@@ -2456,102 +2464,124 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenModuleWizardStep.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenArchetypesStep.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.333333" vertical-offset="669" max-vertical-offset="2070">
-          <caret line="65" column="70" selection-start-line="65" selection-start-column="70" selection-end-line="65" selection-end-column="70" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="2025">
+          <caret line="107" column="45" selection-start-line="107" selection-start-column="45" selection-end-line="107" selection-end-column="45" />
           <folding>
-            <element signature="e#0#4631#0" expanded="true" />
+            <element signature="e#0#4862#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#2002#2018#0" expanded="true" />
-            <element signature="e#2929#2945#0" expanded="true" />
-            <element signature="e#3674#3675#0" expanded="true" />
-            <element signature="e#3708#3709#0" expanded="true" />
-            <element signature="e#3760#3761#0" expanded="true" />
-            <element signature="e#3815#3816#0" expanded="true" />
-            <element signature="e#4557#4558#0" expanded="true" />
-            <element signature="e#4627#4628#0" expanded="true" />
+            <element signature="e#2012#2028#0" expanded="true" />
+            <element signature="e#3051#3067#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenModuleWizardStep.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1707" max-vertical-offset="4830">
+          <caret line="152" column="31" selection-start-line="152" selection-start-column="31" selection-end-line="152" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#11705#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingModuleBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-27.296297" vertical-offset="3178" max-vertical-offset="6225">
-          <caret line="261" column="49" selection-start-line="261" selection-start-column="49" selection-end-line="261" selection-end-column="49" />
+        <state vertical-scroll-proportion="-46.666668" vertical-offset="2040" max-vertical-offset="6405">
+          <caret line="220" column="27" selection-start-line="220" selection-start-column="27" selection-end-line="220" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4189#4712#0" expanded="true" />
-            <element signature="e#4711#4712#0" expanded="true" />
-            <element signature="e#4769#4770#0" expanded="true" />
-            <element signature="e#4812#4813#0" expanded="true" />
-            <element signature="e#4868#4869#0" expanded="true" />
-            <element signature="e#4898#4899#0" expanded="true" />
-            <element signature="e#4950#4951#0" expanded="true" />
-            <element signature="e#5005#5006#0" expanded="true" />
-            <element signature="e#5049#5050#0" expanded="true" />
-            <element signature="e#5109#5110#0" expanded="true" />
-            <element signature="e#5455#5456#0" expanded="true" />
-            <element signature="e#5511#5512#0" expanded="true" />
-            <element signature="e#5747#5748#0" expanded="true" />
-            <element signature="e#5789#5790#0" expanded="true" />
-            <element signature="e#5858#5859#0" expanded="true" />
-            <element signature="e#5909#5910#0" expanded="true" />
-            <element signature="e#6769#6770#0" expanded="true" />
-            <element signature="e#6815#6816#0" expanded="true" />
-            <element signature="e#7033#7034#0" expanded="true" />
-            <element signature="e#7078#7079#0" expanded="true" />
-            <element signature="e#7128#7129#0" expanded="true" />
-            <element signature="e#7170#7171#0" expanded="true" />
-            <element signature="e#7228#7229#0" expanded="true" />
-            <element signature="e#7269#7270#0" expanded="true" />
-            <element signature="e#7315#7316#0" expanded="true" />
-            <element signature="e#7353#7354#0" expanded="true" />
-            <element signature="e#7545#7546#0" expanded="true" />
-            <element signature="e#7584#7585#0" expanded="true" />
-            <element signature="e#7625#7626#0" expanded="true" />
-            <element signature="e#7664#7665#0" expanded="true" />
-            <element signature="e#7708#7709#0" expanded="true" />
-            <element signature="e#7740#7741#0" expanded="true" />
-            <element signature="e#7777#7778#0" expanded="true" />
-            <element signature="e#7811#7812#0" expanded="true" />
-            <element signature="e#7869#7870#0" expanded="true" />
-            <element signature="e#7908#7909#0" expanded="true" />
-            <element signature="e#7952#7953#0" expanded="true" />
-            <element signature="e#7986#7987#0" expanded="true" />
-            <element signature="e#8042#8043#0" expanded="true" />
-            <element signature="e#8082#8083#0" expanded="true" />
-            <element signature="e#8158#8159#0" expanded="true" />
-            <element signature="e#8209#8210#0" expanded="true" />
-            <element signature="e#8277#8278#0" expanded="true" />
-            <element signature="e#8330#8331#0" expanded="true" />
-            <element signature="e#8558#8559#0" expanded="true" />
-            <element signature="e#8588#8589#0" expanded="true" />
-            <element signature="e#9344#9363#0" expanded="true" />
-            <element signature="e#12918#12934#0" expanded="true" />
-            <element signature="e#13393#13394#0" expanded="true" />
-            <element signature="e#13431#13432#0" expanded="true" />
-            <element signature="e#13606#13607#0" expanded="true" />
-            <element signature="e#13647#13648#0" expanded="true" />
-            <element signature="e#13831#13832#0" expanded="true" />
-            <element signature="e#13869#13870#0" expanded="true" />
-            <element signature="e#14044#14045#0" expanded="true" />
-            <element signature="e#14085#14086#0" expanded="true" />
-            <element signature="e#14273#14274#0" expanded="true" />
-            <element signature="e#14315#14316#0" expanded="true" />
-            <element signature="e#14527#14528#0" expanded="true" />
-            <element signature="e#14576#14577#0" expanded="true" />
+            <element signature="e#3483#3502#0" expanded="true" />
+            <element signature="e#4165#4714#0" expanded="true" />
+            <element signature="e#4713#4714#0" expanded="true" />
+            <element signature="e#4771#4772#0" expanded="true" />
+            <element signature="e#4814#4815#0" expanded="true" />
+            <element signature="e#4870#4871#0" expanded="true" />
+            <element signature="e#4900#4901#0" expanded="true" />
+            <element signature="e#4952#4953#0" expanded="true" />
+            <element signature="e#5007#5008#0" expanded="true" />
+            <element signature="e#5051#5052#0" expanded="true" />
+            <element signature="e#5111#5112#0" expanded="true" />
+            <element signature="e#5457#5458#0" expanded="true" />
+            <element signature="e#5513#5514#0" expanded="true" />
+            <element signature="e#5749#5750#0" expanded="true" />
+            <element signature="e#5791#5792#0" expanded="true" />
+            <element signature="e#5860#5861#0" expanded="true" />
+            <element signature="e#5911#5912#0" expanded="true" />
+            <element signature="e#6774#6775#0" expanded="true" />
+            <element signature="e#6820#6821#0" expanded="true" />
+            <element signature="e#7038#7039#0" expanded="true" />
+            <element signature="e#7083#7084#0" expanded="true" />
+            <element signature="e#7133#7134#0" expanded="true" />
+            <element signature="e#7175#7176#0" expanded="true" />
+            <element signature="e#7233#7234#0" expanded="true" />
+            <element signature="e#7274#7275#0" expanded="true" />
+            <element signature="e#7320#7321#0" expanded="true" />
+            <element signature="e#7358#7359#0" expanded="true" />
+            <element signature="e#7550#7551#0" expanded="true" />
+            <element signature="e#7589#7590#0" expanded="true" />
+            <element signature="e#7630#7631#0" expanded="true" />
+            <element signature="e#7669#7670#0" expanded="true" />
+            <element signature="e#7713#7714#0" expanded="true" />
+            <element signature="e#7745#7746#0" expanded="true" />
+            <element signature="e#7782#7783#0" expanded="true" />
+            <element signature="e#7816#7817#0" expanded="true" />
+            <element signature="e#8006#8007#0" expanded="true" />
+            <element signature="e#8046#8047#0" expanded="true" />
+            <element signature="e#8569#8570#0" expanded="true" />
+            <element signature="e#8609#8610#0" expanded="true" />
+            <element signature="e#8685#8686#0" expanded="true" />
+            <element signature="e#8736#8737#0" expanded="true" />
+            <element signature="e#8804#8805#0" expanded="true" />
+            <element signature="e#8857#8858#0" expanded="true" />
+            <element signature="e#9085#9086#0" expanded="true" />
+            <element signature="e#9115#9116#0" expanded="true" />
+            <element signature="e#9863#9882#0" expanded="true" />
+            <element signature="e#13437#13453#0" expanded="true" />
+            <element signature="e#13912#13913#0" expanded="true" />
+            <element signature="e#13950#13951#0" expanded="true" />
+            <element signature="e#14125#14126#0" expanded="true" />
+            <element signature="e#14166#14167#0" expanded="true" />
+            <element signature="e#14350#14351#0" expanded="true" />
+            <element signature="e#14388#14389#0" expanded="true" />
+            <element signature="e#14563#14564#0" expanded="true" />
+            <element signature="e#14604#14605#0" expanded="true" />
+            <element signature="e#14792#14793#0" expanded="true" />
+            <element signature="e#14834#14835#0" expanded="true" />
+            <element signature="e#15046#15047#0" expanded="true" />
+            <element signature="e#15095#15096#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="4.6263347" vertical-offset="0" max-vertical-offset="4305">
-          <caret line="271" column="61" selection-start-line="271" selection-start-column="61" selection-end-line="271" selection-end-column="61" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2862" max-vertical-offset="4305">
+          <caret line="264" column="40" selection-start-line="264" selection-start-column="40" selection-end-line="264" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenArchetypesStep.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2669039" vertical-offset="0" max-vertical-offset="4215">
+          <caret line="83" column="54" selection-start-line="83" selection-start-column="22" selection-end-line="83" selection-end-column="54" />
+          <folding />
         </state>
       </provider>
     </entry>

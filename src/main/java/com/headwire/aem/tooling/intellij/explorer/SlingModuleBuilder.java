@@ -1,8 +1,11 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
+import com.headwire.aem.tooling.intellij.ui.ArchetypePropertiesStep;
+import com.headwire.aem.tooling.intellij.ui.MavenModuleWizardStep;
 import com.headwire.aem.tooling.intellij.ui.SlingArchetypesStep;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.util.projectWizard.JavaModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.SourcePathsBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
@@ -32,16 +35,11 @@ import org.jetbrains.idea.maven.model.MavenId;
 import org.jetbrains.idea.maven.project.MavenEnvironmentForm;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
-import org.jetbrains.idea.maven.services.MavenRepositoryServicesManager;
 import org.jetbrains.idea.maven.utils.MavenUtil;
-import org.jetbrains.idea.maven.wizards.MavenModuleBuilder;
 import org.jetbrains.idea.maven.wizards.MavenModuleBuilderHelper;
-import org.jetbrains.idea.maven.wizards.MavenModuleWizardStep;
-import org.jetbrains.idea.maven.wizards.SelectPropertiesStep;
 
 import javax.swing.Icon;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,8 +59,7 @@ import java.util.Set;
  * Created by schaefa on 7/20/15.
  */
 public class SlingModuleBuilder
-//    extends ModuleBuilder
-    extends MavenModuleBuilder
+    extends ModuleBuilder
     implements SourcePathsBuilder
 {
     public static final String ARCHETYPES_CONFIGURATION_PROPERTIES = "archetypes.configuration.properties";
@@ -81,7 +78,8 @@ public class SlingModuleBuilder
     private boolean myInheritVersion;
 
     private MavenId myProjectId;
-    private MavenArchetype myArchetype;
+    private List<ArchetypeTemplate> archetypeTemplateList = new ArrayList<ArchetypeTemplate>();
+    private ArchetypeTemplate archetypeTemplate;
 
     private MavenEnvironmentForm myEnvironmentForm;
 
@@ -107,7 +105,7 @@ public class SlingModuleBuilder
                 }
 
                 new MavenModuleBuilderHelper(myProjectId, myAggregatorProject, myParentProject, myInheritGroupId,
-                    myInheritVersion, myArchetype, myPropertiesToCreateByArtifact, "Create new Sling Maven module").configure(project, root, false);
+                    myInheritVersion, archetypeTemplate.getMavenArchetype(), myPropertiesToCreateByArtifact, "Create new Sling Maven module").configure(project, root, false);
             }
         });
     }
@@ -165,7 +163,7 @@ public class SlingModuleBuilder
         //AS TODO: Fix that
         return new ModuleWizardStep[]{
             new MavenModuleWizardStep(this, wizardContext, !wizardContext.isNewWizard()),
-            new SelectPropertiesStep(wizardContext.getProject(), this)
+            new ArchetypePropertiesStep(wizardContext.getProject(), this)
         };
 //        return new ModuleWizardStep[] {};
     }
@@ -223,12 +221,26 @@ public class SlingModuleBuilder
         return myProjectId;
     }
 
-    public void setArchetype(MavenArchetype archetype) {
-        myArchetype = archetype;
+    public void setArchetypeTemplate(ArchetypeTemplate archetypeTemplate) {
+        this.archetypeTemplate = archetypeTemplate;
     }
 
-    public MavenArchetype getArchetype() {
-        return myArchetype;
+    public ArchetypeTemplate getArchetypeTemplate() {
+        return archetypeTemplate;
+    }
+
+    public void selectArchetype(MavenArchetype mavenArchetype) {
+        if(mavenArchetype == null) {
+            archetypeTemplate = null;
+        } else {
+            for (ArchetypeTemplate template : archetypeTemplateList) {
+                if (template.getMavenArchetype().equals(mavenArchetype)) {
+                    archetypeTemplate = template;
+                    // Found and Done
+                    break;
+                }
+            }
+        }
     }
 
     public MavenEnvironmentForm getEnvironmentForm() {
@@ -256,10 +268,10 @@ public class SlingModuleBuilder
     @Override
     public ModuleWizardStep getCustomOptionsStep(WizardContext context, Disposable parentDisposable) {
         // Prepare the Sling / AEM Archetypes for IntelliJ
-        List<ArchetypeTemplate> archetypeList = obtainArchetypes();
+        archetypeTemplateList = obtainArchetypes();
         //AS TODO: Instead of showing the List of Maven Archetypes we are just showing the ones available with
         //AS TODO: a table. The user can then select one of them.
-        SlingArchetypesStep step = new SlingArchetypesStep(this, archetypeList);
+        SlingArchetypesStep step = new SlingArchetypesStep(this, archetypeTemplateList);
         Disposer.register(parentDisposable, step);
         return step;
     }
