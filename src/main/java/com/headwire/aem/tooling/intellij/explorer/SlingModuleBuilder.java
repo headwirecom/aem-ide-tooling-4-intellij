@@ -1,0 +1,409 @@
+package com.headwire.aem.tooling.intellij.explorer;
+
+import com.headwire.aem.tooling.intellij.ui.SlingArchetypesStep;
+import com.intellij.icons.AllIcons;
+import com.intellij.ide.util.projectWizard.JavaModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.SourcePathsBuilder;
+import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.module.JavaModuleType;
+import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.module.StdModuleTypes;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.DumbAwareRunnable;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.projectRoots.JavaSdk;
+import com.intellij.openapi.projectRoots.SdkTypeId;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
+import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.util.IconLoader;
+import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.maven.indices.MavenIndicesManager;
+import org.jetbrains.idea.maven.model.MavenArchetype;
+import org.jetbrains.idea.maven.model.MavenId;
+import org.jetbrains.idea.maven.project.MavenEnvironmentForm;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.jetbrains.idea.maven.project.MavenProjectsManager;
+import org.jetbrains.idea.maven.services.MavenRepositoryServicesManager;
+import org.jetbrains.idea.maven.utils.MavenUtil;
+import org.jetbrains.idea.maven.wizards.MavenModuleBuilder;
+import org.jetbrains.idea.maven.wizards.MavenModuleBuilderHelper;
+import org.jetbrains.idea.maven.wizards.MavenModuleWizardStep;
+import org.jetbrains.idea.maven.wizards.SelectPropertiesStep;
+
+import javax.swing.Icon;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+/**
+ * This Module Builder is making sure the Sling / AEM Archetypes are provides and gives the user
+ * the appropriate choices. It will then hand it over to Maven to finish the Setup.
+ *
+ * Created by schaefa on 7/20/15.
+ */
+public class SlingModuleBuilder
+//    extends ModuleBuilder
+    extends MavenModuleBuilder
+    implements SourcePathsBuilder
+{
+    public static final String ARCHETYPES_CONFIGURATION_PROPERTIES = "archetypes.configuration.properties";
+    public static final String GROUP_ID = "groupId";
+    public static final String ARTIFACT_ID = "artifactId";
+    public static final String VERSION = "version";
+    public static final String REPOSITORY = "repository";
+    public static final String DESCRIPTION = "description";
+    public static final String REQUIRED_PROPERTY = "required-property";
+    public static final String ARCHETYPE = "archetype";
+
+    private MavenProject myAggregatorProject;
+    private MavenProject myParentProject;
+
+    private boolean myInheritGroupId;
+    private boolean myInheritVersion;
+
+    private MavenId myProjectId;
+    private MavenArchetype myArchetype;
+
+    private MavenEnvironmentForm myEnvironmentForm;
+
+    private Map<String, String> myPropertiesToCreateByArtifact;
+
+    public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
+        final Project project = rootModel.getProject();
+
+        final VirtualFile root = createAndGetContentEntry();
+        rootModel.addContentEntry(root);
+
+        // todo this should be moved to generic ModuleBuilder
+        if (myJdk != null){
+            rootModel.setSdk(myJdk);
+        } else {
+            rootModel.inheritSdk();
+        }
+
+        MavenUtil.runWhenInitialized(project, new DumbAwareRunnable() {
+            public void run() {
+                if (myEnvironmentForm != null) {
+                    myEnvironmentForm.setData(MavenProjectsManager.getInstance(project).getGeneralSettings());
+                }
+
+                new MavenModuleBuilderHelper(myProjectId, myAggregatorProject, myParentProject, myInheritGroupId,
+                    myInheritVersion, myArchetype, myPropertiesToCreateByArtifact, "Create new Sling Maven module").configure(project, root, false);
+            }
+        });
+    }
+
+    @Override
+    public String getBuilderId() {
+        return getClass().getName();
+    }
+
+    @Override
+    public String getPresentableName() {
+        return "Sling";
+    }
+
+    @Override
+    public String getParentGroup() {
+        return JavaModuleType.BUILD_TOOLS_GROUP;
+    }
+
+    @Override
+    public int getWeight() {
+        return JavaModuleBuilder.BUILD_SYSTEM_WEIGHT;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Sling Maven modules are used for developing <b>JVM-based</b> applications with dependencies managed by <b>Maven</b>. " +
+            "You can create either a blank Maven module or a module based on a <b>Maven archetype</b>.";
+    }
+
+    @Override
+    public Icon getBigIcon() {
+        return AllIcons.Modules.Types.JavaModule;
+    }
+
+    @Override
+    public Icon getNodeIcon() {
+        //AS TODO: Change this to a Sling Icon
+        return IconLoader.getIcon("/images/sling.gif");
+//        return MavenIcons.MavenLogo;
+    }
+
+    public ModuleType getModuleType() {
+        return StdModuleTypes.JAVA;
+    }
+
+    @Override
+    public boolean isSuitableSdkType(SdkTypeId sdk) {
+        return sdk == JavaSdk.getInstance();
+    }
+
+    @Override
+    public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext, @NotNull ModulesProvider modulesProvider) {
+        // The next steps need to be customized as I need to add our own settings.xml and add the Archetype Properties
+        //AS TODO: Fix that
+        return new ModuleWizardStep[]{
+            new MavenModuleWizardStep(this, wizardContext, !wizardContext.isNewWizard()),
+            new SelectPropertiesStep(wizardContext.getProject(), this)
+        };
+//        return new ModuleWizardStep[] {};
+    }
+
+    private VirtualFile createAndGetContentEntry() {
+        String path = FileUtil.toSystemIndependentName(getContentEntryPath());
+        new File(path).mkdirs();
+        return LocalFileSystem.getInstance().refreshAndFindFileByPath(path);
+    }
+
+    public List<Pair<String, String>> getSourcePaths() {
+        return Collections.emptyList();
+    }
+
+    public void setSourcePaths(List<Pair<String, String>> sourcePaths) {
+    }
+
+    public void addSourcePath(Pair<String, String> sourcePathInfo) {
+    }
+
+    public void setAggregatorProject(MavenProject project) {
+        myAggregatorProject = project;
+    }
+
+    public MavenProject getAggregatorProject() {
+        return myAggregatorProject;
+    }
+
+    public void setParentProject(MavenProject project) {
+        myParentProject = project;
+    }
+
+    public MavenProject getParentProject() {
+        return myParentProject;
+    }
+
+    public void setInheritedOptions(boolean groupId, boolean version) {
+        myInheritGroupId = groupId;
+        myInheritVersion = version;
+    }
+
+    public boolean isInheritGroupId() {
+        return myInheritGroupId;
+    }
+
+    public boolean isInheritVersion() {
+        return myInheritVersion;
+    }
+
+    public void setProjectId(MavenId id) {
+        myProjectId = id;
+    }
+
+    public MavenId getProjectId() {
+        return myProjectId;
+    }
+
+    public void setArchetype(MavenArchetype archetype) {
+        myArchetype = archetype;
+    }
+
+    public MavenArchetype getArchetype() {
+        return myArchetype;
+    }
+
+    public MavenEnvironmentForm getEnvironmentForm() {
+        return myEnvironmentForm;
+    }
+
+    public void setEnvironmentForm(MavenEnvironmentForm environmentForm) {
+        myEnvironmentForm = environmentForm;
+    }
+
+    public Map<String, String> getPropertiesToCreateByArtifact() {
+        return myPropertiesToCreateByArtifact;
+    }
+
+    public void setPropertiesToCreateByArtifact(Map<String, String> propertiesToCreateByArtifact) {
+        myPropertiesToCreateByArtifact = propertiesToCreateByArtifact;
+    }
+
+    @Override
+    public String getGroupName() {
+        return "Sling";
+    }
+
+    @Nullable
+    @Override
+    public ModuleWizardStep getCustomOptionsStep(WizardContext context, Disposable parentDisposable) {
+        // Prepare the Sling / AEM Archetypes for IntelliJ
+        List<ArchetypeTemplate> archetypeList = obtainArchetypes();
+        //AS TODO: Instead of showing the List of Maven Archetypes we are just showing the ones available with
+        //AS TODO: a table. The user can then select one of them.
+        SlingArchetypesStep step = new SlingArchetypesStep(this, archetypeList);
+        Disposer.register(parentDisposable, step);
+        return step;
+    }
+
+    //AS TODO: Change this to a dynamic discovery
+    private List<ArchetypeTemplate> obtainArchetypes() {
+        List<ArchetypeTemplate> ret = new ArrayList<ArchetypeTemplate>();
+        MavenIndicesManager mavenIndicesManager = MavenIndicesManager.getInstance();
+        Set<MavenArchetype> loadedArchetypes = mavenIndicesManager.getArchetypes();
+        try {
+            InputStream inputStream = this.getClass().getResourceAsStream(ARCHETYPES_CONFIGURATION_PROPERTIES);
+            Properties archetypeProperties = new Properties();
+            archetypeProperties.load(inputStream);
+            for(String name: archetypeProperties.stringPropertyNames()) {
+                List<String> tokens = StringUtil.split(name, ".");
+                if(tokens.size() < 3) {
+                    //AS TODO: Report invalid property
+                } else {
+                    if(!ARCHETYPE.equals(tokens.get(0))) {
+                        //AS TODO: Report invalid start token
+                    }
+                    int index = Integer.parseInt(tokens.get(1));
+                    // Make sure there is an entry for each index
+                    while(index >= ret.size()) {
+                        ret.add(new ArchetypeTemplate());
+                    }
+                    ArchetypeTemplate archetype = ret.get(index);
+                    String type = tokens.get(2);
+                    if(GROUP_ID.equals(type)) {
+                        archetype.setGroupId(archetypeProperties.getProperty(name));
+                    } else if(ARTIFACT_ID.equals(type)) {
+                        archetype.setArtifactId(archetypeProperties.getProperty(name));
+                    } else if(VERSION.equals(type)) {
+                        archetype.setVersion(archetypeProperties.getProperty(name));
+                    } else if(REPOSITORY.equals(type)) {
+                        archetype.setRepository(archetypeProperties.getProperty(name));
+                    } else if(DESCRIPTION.equals(type)) {
+                        archetype.setDescription(archetypeProperties.getProperty(name));
+                    } else if(REQUIRED_PROPERTY.equals(type)) {
+                        if(tokens.size() != 4) {
+                            //AS TODO: Report invalid required property
+                        } else {
+                            archetype.addRequiredProperty(tokens.get(3), archetypeProperties.getProperty(name));
+                        }
+                    }
+                }
+            }
+            // At the end remove any invalid entries
+            Iterator<ArchetypeTemplate> i = ret.iterator();
+            while(i.hasNext()) {
+                if(!i.next().isValid()) {
+                    //AS TODO: Add a Debug Statement to indicate that an entry was removed
+                    i.remove();
+                }
+            }
+            // Finally Add any archetypes to Maven in order to make the available
+            i = ret.iterator();
+            while(i.hasNext()) {
+                MavenArchetype mavenArchetype = i.next().getMavenArchetype();
+                if (!loadedArchetypes.contains(mavenArchetype)) {
+                    mavenIndicesManager.addArchetype(mavenArchetype);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            // Should not happens as we already checked that above
+        } catch (IOException e) {
+            //AS TODO: Report that problem
+        }
+        return ret;
+    }
+
+    public static class ArchetypeTemplate {
+        private String groupId;
+        private String artifactId;
+        private String version;
+        private String description;
+        private String repository;
+        private Map<String,String> requiredProperties = new HashMap<String, String>();
+
+        public MavenArchetype getMavenArchetype() {
+            return new MavenArchetype(
+                groupId,
+                artifactId,
+                version,
+                repository,
+                description
+            );
+        }
+
+        public boolean isValid() {
+            return StringUtil.isNotEmpty(groupId) && StringUtil.isNotEmpty(artifactId) && StringUtil.isNotEmpty(version);
+        }
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public ArchetypeTemplate setGroupId(String groupId) {
+            this.groupId = groupId;
+            return this;
+        }
+
+        public String getArtifactId() {
+            return artifactId;
+        }
+
+        public ArchetypeTemplate setArtifactId(String artifactId) {
+            this.artifactId = artifactId;
+            return this;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public ArchetypeTemplate setVersion(String version) {
+            this.version = version;
+            return this;
+        }
+
+        public String getRepository() {
+            return repository;
+        }
+
+        public ArchetypeTemplate setRepository(String repository) {
+            this.repository = repository;
+            return this;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public ArchetypeTemplate setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Map<String, String> getRequiredProperties() {
+            return requiredProperties;
+        }
+
+        public void addRequiredProperty(String name, String defaultValue) {
+            requiredProperties.put(name, defaultValue);
+        }
+    }
+}

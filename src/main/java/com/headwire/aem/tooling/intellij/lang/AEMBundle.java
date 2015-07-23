@@ -7,6 +7,9 @@ import org.jetbrains.annotations.PropertyKey;
 
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -17,6 +20,25 @@ public class AEMBundle {
         String message = CommonBundle.messageOrDefault(getBundle(), key, "", params);
         return message;
     }
+
+//    public static Properties loadProperties(String path) {
+//        Reference<ResourceBundle> referenceBundle = propertiesBundleMap.get(path);
+//        ResourceBundle bundle = com.intellij.reference.SoftReference.dereference(referenceBundle);
+//        if(bundle == null) {
+//            bundle = ResourceBundle.getBundle(path);
+//            referenceBundle = new SoftReference<ResourceBundle>(bundle);
+//            propertiesBundleMap.put(path, referenceBundle);
+//        }
+//        Properties ret = new Properties();
+//        if(bundle != null) {
+//            for(String key: bundle.keySet()) {
+//                ret.setProperty(key, bundle.getString(key));
+//            }
+//        }
+//        return ret;
+//    }
+//
+//    private static Map<String, Reference<ResourceBundle>> propertiesBundleMap = new HashMap<String, Reference<ResourceBundle>>();
 
     private static Reference<ResourceBundle> ourBundle;
     @NonNls
