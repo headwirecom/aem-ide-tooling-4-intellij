@@ -20,6 +20,7 @@ import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.containers.hash.HashMap;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenPropertiesPanel;
@@ -29,9 +30,17 @@ import org.jetbrains.idea.maven.project.MavenEnvironmentForm;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.MavenUtil;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.BorderLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,17 +50,23 @@ import java.util.Map;
  */
 public class ArchetypePropertiesStep extends ModuleWizardStep {
 
+    public static final String NAME_PLACEHOLDER = "$name$";
+    public static final String NAME_FOR_FOLDER_PLACEHOLDER = "$nameForFolder$";
+    public static final String ARTIFACT_ID_PLACEHOLDER = "$artifactId$";
     private final Project myProjectOrNull;
     private final SlingModuleBuilder myBuilder;
 
     private JPanel myMainPanel;
     private JPanel myEnvironmentPanel;
     private JPanel myPropertiesPanel;
+    private JTextField artifactName;
+    private JCheckBox overrideCheckBox;
 
     private MavenEnvironmentForm myEnvironmentForm;
     private MavenPropertiesPanel myMavenPropertiesPanel;
 
     private Map<String, String> myAvailableProperties = new HashMap<String, String>();
+    private Map<String, String> requiredProperties = new java.util.HashMap<String, String>();
 
     public ArchetypePropertiesStep(@Nullable Project project, SlingModuleBuilder builder) {
         myProjectOrNull = project;
@@ -68,8 +83,34 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
 
         myEnvironmentPanel.add(myEnvironmentForm.createComponent(), BorderLayout.CENTER);
 
+        //AS TODO: If we keep on using the archetype properties we might add a description to the Required Properties
+        //AS TODO: but then we need to copy this class over and add the description to the dialog.
         myMavenPropertiesPanel = new MavenPropertiesPanel(myAvailableProperties);
         myPropertiesPanel.add(myMavenPropertiesPanel);
+
+        overrideCheckBox.setSelected(true);
+        artifactName.addKeyListener(
+            new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+                    super.keyReleased(keyEvent);
+                    if(overrideCheckBox.isSelected()) {
+                        updateProperties();
+                    }
+                }
+            }
+        );
+        artifactName.addFocusListener(
+            new FocusAdapter() {
+                @Override
+                public void focusLost(FocusEvent focusEvent) {
+                    super.focusLost(focusEvent);
+                    if(overrideCheckBox.isSelected()) {
+                        updateProperties();
+                    }
+                }
+            }
+        );
     }
 
     @Override
@@ -89,10 +130,28 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
         props.put("archetypeArtifactId", archetype.artifactId);
         props.put("archetypeVersion", archetype.version);
         if (archetype.repository != null) props.put("archetypeRepository", archetype.repository);
+        myMavenPropertiesPanel.setDataFromMap(props);
 
         //Add any props from the Builder
-        for(Map.Entry<String, String> entry: archetypeTemplate.getRequiredProperties().entrySet()) {
-            props.put(entry.getKey(), entry.getValue());
+        requiredProperties = archetypeTemplate.getRequiredProperties();
+        updateProperties();
+    }
+
+    private void updateProperties() {
+        MavenId projectId = myBuilder.getProjectId();
+        Map<String, String> props = myMavenPropertiesPanel.getDataAsMap();
+        for(Map.Entry<String, String> entry: requiredProperties.entrySet()) {
+            String propValue = entry.getValue();
+            if(StringUtil.isNotEmpty(propValue)) {
+                if(propValue.contains(NAME_PLACEHOLDER)) {
+                    propValue = propValue.replace(NAME_PLACEHOLDER, artifactName.getText());
+                } else if(propValue.contains(NAME_FOR_FOLDER_PLACEHOLDER)) {
+                    propValue = propValue.replace(NAME_FOR_FOLDER_PLACEHOLDER, artifactName.getText().toLowerCase().replaceAll("[^a-zA-Z]", ""));
+                } else if(propValue.contains(ARTIFACT_ID_PLACEHOLDER)) {
+                    propValue = propValue.replace(ARTIFACT_ID_PLACEHOLDER, projectId.getArtifactId());
+                }
+            }
+            props.put(entry.getKey(), propValue);
         }
 
         myMavenPropertiesPanel.setDataFromMap(props);
