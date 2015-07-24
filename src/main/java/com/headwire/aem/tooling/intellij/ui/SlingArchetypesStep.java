@@ -2,7 +2,9 @@ package com.headwire.aem.tooling.intellij.ui;
 
 import com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.wizard.CommitStepException;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.popup.ListItemDescriptorAdapter;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.CollectionListModel;
@@ -20,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder.ArchetypeTemplate;
@@ -35,11 +39,15 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
     private final SlingModuleBuilder moduleBuilder;
     private final List<SlingModuleBuilder.ArchetypeTemplate> mavenArchetypeList;
 
-    public SlingArchetypesStep(SlingModuleBuilder builder, @NotNull List<SlingModuleBuilder.ArchetypeTemplate> archetypeList) {
+    public SlingArchetypesStep(SlingModuleBuilder builder, @NotNull List<ArchetypeTemplate> archetypeList) {
         moduleBuilder = builder;
         mavenArchetypeList = archetypeList;
         archetypeJBList.setModel(
-            new CollectionListModel<SlingModuleBuilder.ArchetypeTemplate>(mavenArchetypeList)
+            new CollectionListModel<ArchetypeTemplate>(
+                mavenArchetypeList.isEmpty() ?
+                    Arrays.asList(new NoArchetypeTemplate()) :
+                    mavenArchetypeList
+            )
         );
         archetypeJBList.addListSelectionListener(
             new ListSelectionListener() {
@@ -55,8 +63,12 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
                     @Nullable
                     @Override
                     public String getTextFor(Object value) {
-                        ArchetypeTemplate archetype = (ArchetypeTemplate) value;
-                        return archetype.getGroupId() + " : " + archetype.getArtifactId() + " : " + archetype.getVersion();
+                        if(value instanceof NoArchetypeTemplate) {
+                            return ((NoArchetypeTemplate) value).getDescription();
+                        } else {
+                            ArchetypeTemplate archetype = (ArchetypeTemplate) value;
+                            return archetype.getGroupId() + " : " + archetype.getArtifactId() + " : " + archetype.getVersion();
+                        }
                     }
 
                     @Nullable
@@ -67,21 +79,29 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
 
                     @Override
                     public boolean hasSeparatorAboveOf(Object value) {
-                        ArchetypeTemplate current = (ArchetypeTemplate) value;
-                        int index = mavenArchetypeList.indexOf(current);
-                        boolean separator = index == 0;
-                        if(!separator) {
-                            ArchetypeTemplate previous = mavenArchetypeList.get(index - 1);
-                            separator = !previous.getGroupId().equals(current.getGroupId()) || !previous.getArtifactId().equals(current.getArtifactId());
+                        if(value instanceof NoArchetypeTemplate) {
+                            return false;
+                        } else {
+                            ArchetypeTemplate current = (ArchetypeTemplate) value;
+                            int index = mavenArchetypeList.indexOf(current);
+                            boolean separator = index == 0;
+                            if (!separator) {
+                                ArchetypeTemplate previous = mavenArchetypeList.get(index - 1);
+                                separator = !previous.getGroupId().equals(current.getGroupId()) || !previous.getArtifactId().equals(current.getArtifactId());
+                            }
+                            return separator;
                         }
-                        return separator;
                     }
 
                     @Nullable
                     @Override
                     public String getCaptionAboveOf(Object value) {
-                        ArchetypeTemplate archetype = (ArchetypeTemplate) value;
-                        return archetype.getGroupId() + " : " + archetype.getArtifactId();
+                        if(value instanceof NoArchetypeTemplate) {
+                            return "";
+                        } else {
+                            ArchetypeTemplate archetype = (ArchetypeTemplate) value;
+                            return archetype.getGroupId() + " : " + archetype.getArtifactId();
+                        }
                     }
                 }
             )
@@ -90,8 +110,20 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
         archetypeDescriptionField.setEditable(false);
         archetypeDescriptionField.setBackground(UIUtil.getPanelBackground());
 
-//        requestUpdate();
         updateComponents();
+    }
+
+    public boolean validate()
+        throws ConfigurationException
+    {
+        // If this no Archetype is selected then throw a Commit Step Exception
+        if(mavenArchetypeList.isEmpty()) {
+            throw new ConfigurationException("No Archetype available for Sling / AEM. To create a module please use another Builder like Maven.");
+        }
+        if(archetypeJBList.getSelectedValue() == null) {
+            throw new ConfigurationException("No Archetype was selected. If this is for a Project select an Archetype. For a Module please use another Builder");
+        }
+        return true;
     }
 
     public JPanel getMainPanel() {
@@ -110,145 +142,16 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
         return ret;
     }
 
-//    private static MavenArchetype getArchetypeInfoFromPathComponent(Object sel) {
-//        return (MavenArchetype)((DefaultMutableTreeNode)sel).getUserObject();
-//    }
-
     private void updateArchetypeDescription() {
         MavenArchetype sel = getSelectedArchetype();
         String desc = sel == null ? null : sel.description;
         if (StringUtil.isEmptyOrSpaces(desc)) {
             archetypeDescriptionScrollPane.setVisible(false);
-        }
-        else {
+        } else {
             archetypeDescriptionScrollPane.setVisible(true);
             archetypeDescriptionField.setText(desc);
         }
     }
-
-//    @Nullable
-//    private static TreePath findNodePath(MavenArchetype object, TreeModel model, Object parent) {
-//        for (int i = 0; i < model.getChildCount(parent); i++) {
-//            DefaultMutableTreeNode each = (DefaultMutableTreeNode)model.getChild(parent, i);
-//            if (each.getUserObject().equals(object)) return new TreePath(each.getPath());
-//
-//            TreePath result = findNodePath(object, model, each);
-//            if (result != null) return result;
-//        }
-//        return null;
-//    }
-//
-//    private static TreeNode groupAndSortArchetypes(Set<MavenArchetype> archetypes) {
-//        List<MavenArchetype> list = new ArrayList<MavenArchetype>(archetypes);
-//
-//        Collections.sort(list, new Comparator<MavenArchetype>() {
-//            public int compare(MavenArchetype o1, MavenArchetype o2) {
-//                String key1 = o1.groupId + ":" + o1.artifactId;
-//                String key2 = o2.groupId + ":" + o2.artifactId;
-//
-//                int result = key1.compareToIgnoreCase(key2);
-//                if (result != 0) return result;
-//
-//                return o2.version.compareToIgnoreCase(o1.version);
-//            }
-//        });
-//
-//        Map<String, List<MavenArchetype>> map = new TreeMap<String, List<MavenArchetype>>();
-//
-//        for (MavenArchetype each : list) {
-//            String key = each.groupId + ":" + each.artifactId;
-//            List<MavenArchetype> versions = map.get(key);
-//            if (versions == null) {
-//                versions = new ArrayList<MavenArchetype>();
-//                map.put(key, versions);
-//            }
-//            versions.add(each);
-//        }
-//
-//        DefaultMutableTreeNode result = new DefaultMutableTreeNode("root", true);
-//        for (List<MavenArchetype> each : map.values()) {
-//            MavenArchetype eachArchetype = each.get(0);
-//            DefaultMutableTreeNode node = new DefaultMutableTreeNode(eachArchetype, true);
-//            for (MavenArchetype eachVersion : each) {
-//                DefaultMutableTreeNode versionNode = new DefaultMutableTreeNode(eachVersion, false);
-//                node.add(versionNode);
-//            }
-//            result.add(node);
-//        }
-//
-//        return result;
-//    }
-
-//    public void requestUpdate() {
-//
-//        MavenArchetype selectedArch = getSelectedArchetype();
-//        if (selectedArch == null) {
-//            selectedArch = moduleBuilder.getArchetype();
-//        }
-//        if (selectedArch != null) myUseArchetypeCheckBox.setSelected(true);
-//
-//        if (myArchetypesTree.getRowCount() == 0) updateArchetypesList(selectedArch);
-//    }
-
-//    public void updateArchetypesList(final MavenArchetype selected) {
-//        ApplicationManager.getApplication().assertIsDispatchThread();
-//
-//        myLoadingIcon.setBackground(myArchetypesTree.getBackground());
-//
-//        ((CardLayout)myArchetypesPanel.getLayout()).show(myArchetypesPanel, "loading");
-//
-//        final Object currentUpdaterMarker = new Object();
-//        myCurrentUpdaterMarker = currentUpdaterMarker;
-//
-//        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-//            public void run() {
-//                final Set<MavenArchetype> archetypes = MavenIndicesManager.getInstance().getArchetypes();
-//
-//                //noinspection SSBasedInspection
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    public void run() {
-//                        if (currentUpdaterMarker != myCurrentUpdaterMarker) return; // Other updater has been run.
-//
-//                        ((CardLayout) myArchetypesPanel.getLayout()).show(myArchetypesPanel, "archetypes");
-//
-//                        TreeNode root = groupAndSortArchetypes(archetypes);
-//                        TreeModel model = new DefaultTreeModel(root);
-//                        myArchetypesTree.setModel(model);
-//
-//                        if (selected != null) {
-//                            TreePath path = findNodePath(selected, model, model.getRoot());
-//                            if (path != null) {
-//                                myArchetypesTree.expandPath(path.getParentPath());
-//                                TreeUtil.selectPath(myArchetypesTree, path, true);
-//                            }
-//                        }
-//
-//                        updateArchetypeDescription();
-//                    }
-//                });
-//            }
-//        });
-//    }
-
-//    public boolean isSkipUpdateUI() {
-//        return skipUpdateUI;
-//    }
-
-//    private void archetypeMayBeChanged() {
-//        MavenArchetype selectedArchetype = getSelectedArchetype();
-//        if (((moduleBuilder.getArchetype() == null) != (selectedArchetype == null))) {
-//            moduleBuilder.setArchetype(selectedArchetype);
-//            skipUpdateUI = true;
-//            try {
-//                if (myStep != null) {
-//                    myStep.fireStateChanged();
-//                }
-//            }
-//            finally {
-//                skipUpdateUI = false;
-//            }
-//        }
-//    }
 
     @Override
     public void dispose() {
@@ -265,28 +168,10 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
         moduleBuilder.selectArchetype(  selectedArchetype);
     }
 
-//    private static class MyRenderer extends ColoredTreeCellRenderer {
-//        public void customizeCellRenderer(JTree tree,
-//                                          Object value,
-//                                          boolean selected,
-//                                          boolean expanded,
-//                                          boolean leaf,
-//                                          int row,
-//                                          boolean hasFocus) {
-//            Object userObject = ((DefaultMutableTreeNode)value).getUserObject();
-//            if (!(userObject instanceof MavenArchetype)) return;
-//
-//            MavenArchetype info = (MavenArchetype)userObject;
-//
-//            if (leaf) {
-//                append(info.artifactId, SimpleTextAttributes.GRAY_ATTRIBUTES);
-//                append(":" + info.version, SimpleTextAttributes.REGULAR_ATTRIBUTES);
-//            }
-//            else {
-//                append(info.groupId + ":", SimpleTextAttributes.GRAY_ATTRIBUTES);
-//                append(info.artifactId, SimpleTextAttributes.REGULAR_ATTRIBUTES);
-//            }
-//        }
-//    }
-
+    public static class NoArchetypeTemplate extends ArchetypeTemplate {
+        @Override
+        public String getDescription() {
+            return "There are no Archetypes for Modules";
+        }
+    }
 }

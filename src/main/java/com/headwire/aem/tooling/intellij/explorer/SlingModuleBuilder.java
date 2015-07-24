@@ -1,11 +1,10 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.ui.ArchetypePropertiesStep;
-import com.headwire.aem.tooling.intellij.ui.MavenModuleWizardStep;
 import com.headwire.aem.tooling.intellij.ui.SlingArchetypesStep;
+import com.headwire.aem.tooling.intellij.util.PropertiesHandler;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.util.projectWizard.JavaModuleBuilder;
-import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.SourcePathsBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
@@ -36,7 +35,9 @@ import org.jetbrains.idea.maven.project.MavenEnvironmentForm;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.MavenUtil;
+import org.jetbrains.idea.maven.wizards.MavenModuleBuilder;
 import org.jetbrains.idea.maven.wizards.MavenModuleBuilderHelper;
+import org.jetbrains.idea.maven.wizards.MavenModuleWizardStep;
 
 import javax.swing.Icon;
 import java.io.File;
@@ -59,7 +60,10 @@ import java.util.Set;
  * Created by schaefa on 7/20/15.
  */
 public class SlingModuleBuilder
-    extends ModuleBuilder
+//    extends ModuleBuilder
+//AS NOTE: We extend the Maven Module Builder not because we need some of the code but rather because
+//AS NOTE: we then can use 'MavenModuleWizardStep' class instead of copying over here
+    extends MavenModuleBuilder
     implements SourcePathsBuilder
 {
     public static final String ARCHETYPES_CONFIGURATION_PROPERTIES = "archetypes.configuration.properties";
@@ -98,7 +102,8 @@ public class SlingModuleBuilder
             rootModel.inheritSdk();
         }
 
-        MavenUtil.runWhenInitialized(project, new DumbAwareRunnable() {
+        MavenUtil.runWhenInitialized(
+            project, new DumbAwareRunnable() {
             public void run() {
                 if (myEnvironmentForm != null) {
                     myEnvironmentForm.setData(MavenProjectsManager.getInstance(project).getGeneralSettings());
@@ -106,8 +111,9 @@ public class SlingModuleBuilder
 
                 new MavenModuleBuilderHelper(myProjectId, myAggregatorProject, myParentProject, myInheritGroupId,
                     myInheritVersion, archetypeTemplate.getMavenArchetype(), myPropertiesToCreateByArtifact, "Create new Sling Maven module").configure(project, root, false);
+                }
             }
-        });
+        );
     }
 
     @Override
@@ -143,9 +149,7 @@ public class SlingModuleBuilder
 
     @Override
     public Icon getNodeIcon() {
-        //AS TODO: Change this to a Sling Icon
         return IconLoader.getIcon("/images/sling.gif");
-//        return MavenIcons.MavenLogo;
     }
 
     public ModuleType getModuleType() {
@@ -159,13 +163,13 @@ public class SlingModuleBuilder
 
     @Override
     public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext, @NotNull ModulesProvider modulesProvider) {
-        // The next steps need to be customized as I need to add our own settings.xml and add the Archetype Properties
-        //AS TODO: Fix that
+        // It is not possible with IntelliJ to use the same Form with another class AFAIK
+        // The original Select Properties Step is replaced by our own as we need to handle additional Properties from
+        // archetype (required properties) and provide a Name field for convenience.
         return new ModuleWizardStep[]{
             new MavenModuleWizardStep(this, wizardContext, !wizardContext.isNewWizard()),
             new ArchetypePropertiesStep(wizardContext.getProject(), this)
         };
-//        return new ModuleWizardStep[] {};
     }
 
     private VirtualFile createAndGetContentEntry() {
@@ -268,10 +272,12 @@ public class SlingModuleBuilder
     @Override
     public ModuleWizardStep getCustomOptionsStep(WizardContext context, Disposable parentDisposable) {
         // Prepare the Sling / AEM Archetypes for IntelliJ
-        archetypeTemplateList = obtainArchetypes();
-        //AS TODO: Instead of showing the List of Maven Archetypes we are just showing the ones available with
-        //AS TODO: a table. The user can then select one of them.
-        SlingArchetypesStep step = new SlingArchetypesStep(this, archetypeTemplateList);
+        if(archetypeTemplateList.isEmpty()) {
+            archetypeTemplateList = obtainArchetypes();
+        }
+        List<ArchetypeTemplate> list = context.getProject() == null ? archetypeTemplateList : new ArrayList<ArchetypeTemplate>();
+        // Instead of displaying a List of All Maven Archetypes we just show the ones applicable.
+        SlingArchetypesStep step = new SlingArchetypesStep(this, list);
         Disposer.register(parentDisposable, step);
         return step;
     }
@@ -285,36 +291,33 @@ public class SlingModuleBuilder
             InputStream inputStream = this.getClass().getResourceAsStream(ARCHETYPES_CONFIGURATION_PROPERTIES);
             Properties archetypeProperties = new Properties();
             archetypeProperties.load(inputStream);
-            for(String name: archetypeProperties.stringPropertyNames()) {
-                List<String> tokens = StringUtil.split(name, ".");
-                if(tokens.size() < 3) {
-                    //AS TODO: Report invalid property
-                } else {
-                    if(!ARCHETYPE.equals(tokens.get(0))) {
-                        //AS TODO: Report invalid start token
-                    }
-                    int index = Integer.parseInt(tokens.get(1));
-                    // Make sure there is an entry for each index
-                    while(index >= ret.size()) {
-                        ret.add(new ArchetypeTemplate());
-                    }
-                    ArchetypeTemplate archetype = ret.get(index);
-                    String type = tokens.get(2);
-                    if(GROUP_ID.equals(type)) {
-                        archetype.setGroupId(archetypeProperties.getProperty(name));
-                    } else if(ARTIFACT_ID.equals(type)) {
-                        archetype.setArtifactId(archetypeProperties.getProperty(name));
-                    } else if(VERSION.equals(type)) {
-                        archetype.setVersion(archetypeProperties.getProperty(name));
-                    } else if(REPOSITORY.equals(type)) {
-                        archetype.setRepository(archetypeProperties.getProperty(name));
-                    } else if(DESCRIPTION.equals(type)) {
-                        archetype.setDescription(archetypeProperties.getProperty(name));
-                    } else if(REQUIRED_PROPERTY.equals(type)) {
-                        if(tokens.size() != 4) {
-                            //AS TODO: Report invalid required property
-                        } else {
-                            archetype.addRequiredProperty(tokens.get(3), archetypeProperties.getProperty(name));
+            // Filter out any entries that does not start with the archetype token
+            archetypeProperties = PropertiesHandler.filterProperties(archetypeProperties, ARCHETYPE);
+            // Now Collect the Properties by Indexes
+            Map<Integer, Properties> collectedArchetypeProperties = PropertiesHandler.collectProperties(archetypeProperties);
+            for(Integer index: collectedArchetypeProperties.keySet()) {
+                // Make sure there is an entry for each index
+                while(index >= ret.size()) {
+                    ret.add(new ArchetypeTemplate());
+                }
+                ArchetypeTemplate archetype = ret.get(index);
+                Properties props = collectedArchetypeProperties.get(index);
+                for(String name: props.stringPropertyNames()) {
+                    if(GROUP_ID.equals(name)) {
+                        archetype.setGroupId(props.getProperty(name));
+                    } else if(ARTIFACT_ID.equals(name)) {
+                        archetype.setArtifactId(props.getProperty(name));
+                    } else if(VERSION.equals(name)) {
+                        archetype.setVersion(props.getProperty(name));
+                    } else if(REPOSITORY.equals(name)) {
+                        archetype.setRepository(props.getProperty(name));
+                    } else if(DESCRIPTION.equals(name)) {
+                        archetype.setDescription(props.getProperty(name));
+                    } else {
+                        // Filter for Required Properties
+                        Properties requiredProperties = PropertiesHandler.filterProperties(props, REQUIRED_PROPERTY);
+                        for(String requiredPropertyName: requiredProperties.stringPropertyNames()) {
+                            archetype.addRequiredProperty(requiredPropertyName, requiredProperties.getProperty(requiredPropertyName));
                         }
                     }
                 }
@@ -336,7 +339,7 @@ public class SlingModuleBuilder
                 }
             }
         } catch (FileNotFoundException e) {
-            // Should not happens as we already checked that above
+            //AS TODO: Report that problem
         } catch (IOException e) {
             //AS TODO: Report that problem
         }
