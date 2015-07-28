@@ -40,7 +40,7 @@ public class DeployToServerAction
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager connectionManager = getConnectionManager(project);
-        return connectionManager != null && connectionManager.isConfigurationSelected();
+        return connectionManager != null && connectionManager.isConnectionInUse();
     }
 
     private void doDeploy(final DataContext dataContext, final Project project, final boolean forceDeploy) {

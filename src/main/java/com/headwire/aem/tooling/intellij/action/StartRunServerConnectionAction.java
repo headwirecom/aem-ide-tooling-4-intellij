@@ -21,9 +21,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by schaefa on 6/12/15.
  */
-public class CheckServerConnectionAction extends AbstractProjectAction {
+public class StartRunServerConnectionAction extends AbstractProjectAction {
 
-    public CheckServerConnectionAction() {
+    public StartRunServerConnectionAction() {
         super("check.configuration.action");
     }
 
@@ -34,8 +34,8 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
+        ServerConnectionManager connectionManager = getConnectionManager(project);
+        return connectionManager != null && connectionManager.isConnectionNotInUse();
     }
 
     public void doCheck(final Project project, final DataContext dataContext) {
@@ -101,7 +101,7 @@ public class CheckServerConnectionAction extends AbstractProjectAction {
                                             serverConnectionManager.checkModules(osgiClient);
                                         }
                                         indicator.setFraction(1.0);
-                                        serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.checked);
+                                        serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.running);
                                     }
                                 } else {
                                     serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerStatus.failed);

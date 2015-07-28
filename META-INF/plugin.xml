@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.6-BETA-1</version>
+    <version>0.6-BETA-2</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,10 +10,13 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.6 Beta 2: Checking a Selected Configuration is renamed to Run as it indicates a persistence which is
+                        what it actually does. Also renamed the Reset Current Configuration to Purge Plugin Cache Data.
+        </li>
         <li>0.6 Beta 1: Added the support to create new Projects through Maven Archetypes (AEM or Sling). The Builder
                         is geared towards that and only shows the available Archetypes and let the user set the
                         required properties. The rest remains the same as creating a Project through the Maven Builder
-                        and using archetypes there.
+                        and using archetypes there
         </li>
         <li>0.5 Beta 2: A Deploy of an OSGi Bundle module will call Maven to build the artifact first.
                         This can be switched on (default) or off in the Server Connection Configuration.
@@ -137,8 +140,8 @@
                 class="com.headwire.aem.tooling.intellij.action.BuildConfigurationAction"
                 icon="AllIcons.Actions.Module"/>
         <action id="AEM.Check.Action"
-                class="com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction"
-                icon="AllIcons.CodeStyle.Gear"/>
+                class="com.headwire.aem.tooling.intellij.action.StartRunServerConnectionAction"
+                icon="AllIcons.General.Run"/>
         <action id="AEM.Start.Debug.Action"
                 class="com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction"
                 icon="AllIcons.General.Debug"/>

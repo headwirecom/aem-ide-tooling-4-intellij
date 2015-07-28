@@ -2,8 +2,6 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 
-import java.util.List;
-
 /**
  * Created by schaefa on 5/14/15.
  */
@@ -233,7 +231,7 @@ public class IServer {
     public int getServerState() {
         switch(serverConfiguration.getServerStatus()) {
             case connected:
-            case checked:
+            case running:
 //            case upToDate:
                 return STATE_STARTED;
             default:

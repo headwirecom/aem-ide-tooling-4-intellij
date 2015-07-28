@@ -1,15 +1,12 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
-import com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
-import com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.intellij.execution.ExecutionAdapter;
 import com.intellij.execution.ExecutionManager;
-import com.intellij.execution.RunManagerEx;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
@@ -17,10 +14,8 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -35,13 +30,9 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JPanel;
 import javax.swing.ToolTipManager;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.BorderLayout;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
-import java.util.Enumeration;
 
 /**
  * Created by schaefa on 3/19/15.

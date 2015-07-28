@@ -1,6 +1,6 @@
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction;
+import com.headwire.aem.tooling.intellij.action.StartRunServerConnectionAction;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
@@ -15,7 +15,6 @@ import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.vcs.CodeSmellDetector;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -154,7 +153,7 @@ public class ContentResourceChangeListener
                                             serverTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                             // Not call the check module method
                                             ActionManager actionManager = ActionManager.getInstance();
-                                            CheckServerConnectionAction checkAction = (CheckServerConnectionAction) actionManager.getAction("AEM.Check.Action");
+                                            StartRunServerConnectionAction checkAction = (StartRunServerConnectionAction) actionManager.getAction("AEM.Check.Action");
                                             if (checkAction != null) {
                                                 checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
                                             }

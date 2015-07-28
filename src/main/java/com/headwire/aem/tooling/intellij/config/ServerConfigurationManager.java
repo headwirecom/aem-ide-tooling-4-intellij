@@ -94,7 +94,7 @@ public class ServerConfigurationManager
         for(ServerConfiguration serverConfiguration: serverConfigurationList) {
             if(
                 serverConfiguration.getServerStatus() == ServerConfiguration.ServerStatus.connected ||
-                serverConfiguration.getServerStatus() == ServerConfiguration.ServerStatus.checked
+                serverConfiguration.getServerStatus() == ServerConfiguration.ServerStatus.running
             ) {
                 ret = serverConfiguration;
                 break;

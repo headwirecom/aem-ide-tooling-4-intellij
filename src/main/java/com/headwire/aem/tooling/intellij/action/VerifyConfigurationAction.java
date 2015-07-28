@@ -48,7 +48,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
+        return serverConnectionManager != null && serverConnectionManager.isConnectionInUse();
     }
 
     public boolean doVerify(final Project project, final DataContext dataContext) {
