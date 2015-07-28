@@ -100,13 +100,15 @@ public class ServerConnectionManager
 
     private static List<ServerConfiguration.ServerStatus> CONFIGURATION_CHECKED = Arrays.asList(
         ServerConfiguration.ServerStatus.checking,
-        ServerConfiguration.ServerStatus.checked
+        ServerConfiguration.ServerStatus.running
     );
 
     private static List<ServerConfiguration.ServerStatus> CONFIGURATION_IN_USE = Arrays.asList(
         ServerConfiguration.ServerStatus.connecting,
         ServerConfiguration.ServerStatus.connected,
-        ServerConfiguration.ServerStatus.disconnecting
+        ServerConfiguration.ServerStatus.disconnecting,
+        ServerConfiguration.ServerStatus.checking,
+        ServerConfiguration.ServerStatus.running
     );
 
     private ServerTreeSelectionHandler selectionHandler;
@@ -132,8 +134,8 @@ public class ServerConnectionManager
     public boolean isConfigurationEditable() {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         return serverConfiguration != null &&
-            ( CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus()) ||
-              !CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus()) )
+//            ( CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus()) ||
+              !CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus())
             ;
     }
 
@@ -150,8 +152,8 @@ public class ServerConnectionManager
     public boolean isConnectionIsStoppable() {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         return serverConfiguration != null &&
-            ( CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus()) ||
-              CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus()) )
+//            ( CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus()) ||
+              CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus())
             ;
     }
 

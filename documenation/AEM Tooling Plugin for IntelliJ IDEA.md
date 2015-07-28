@@ -121,16 +121,16 @@ The **Deploy Delay** is a property that if set to a positive number will delay a
 
 ![Plugin Preferences](./img/7.1.Plugin.Preferences.png)
 
-#### Check against AEM Server
+#### Run against AEM Server
 
-**Attention**: in order to work on a Server Configuration you need to have one selected and this one is then use to check or connect to. Beside the Debug Connection which is established connection all actions are executed against the current selected configuration aka server. That said in order to prevent deployment to different servers if there is a checked or connected server then you can only check and deploy against this server. You need to **stop that connection** in order to deploy to another server.
+**Attention**: in order to work on a Server Configuration you need to have one selected and this one is then use to connect to. Beside the Debug Connection which is established a physical socket connection all actions are executed against the current selected configuration aka server on a temporary connection. That said in order to prevent deployment to different servers if there is a connection to a  server then you can only work against this server. You need to **stop that connection** in order to work with another server. This is similar to the concept of TCP vs UDP. One creates a session whereas the other are stateless connections for the time of the operation. Starting the connection is Run Mode is just making sure that for the time the Run Mode is established any work will be done against that connection.
 
 **Note**: Selecting the Server Configuration or the Module is the same in this context. 
 
-Checking against the currently selected AEM Server is creating or updating the project module in the server configuration, checking if the Support Bundle is installed and see if the current resources are update to date or out of date.
+Running against the currently selected AEM Server is creating or updating the project module in the server configuration, checking if the Support Bundle is installed and see if the current resources are update to date or out of date.
 If a Server Connection is marked as **default** then this will be happening automatically when the plugin is opened for the first time.
 
-In order to check you need to click on the **gear** icon:
+In order to run you need to click on the **play** icon:
 
 ![Check the currently selected Server](./img/2.4.0.Plugin.Check.Server.Configuration.png)
 
@@ -201,7 +201,9 @@ Keep in mind that **server=y** means the AEM Server is the target of the debug c
 
 After the AEM Server is up you can connect from the plugin.
 
-#### Setting up a New Maven Project
+#### Setting up a New Maven Project Manually
+
+**Note**: the plugin now supports the creation of a project using the Sling / AEM Archetypes from inside IntelliJ IDEA. Have a look at the **next** section.
 
 In order to have a good starting point it is best to create a new Maven based on the **Adobe Maven Archetypes** which will generate a base project. That project can then be easily imported into IntelliJ IDEA by **Open** just that the root **pom.xml** file.
 
@@ -290,6 +292,39 @@ You can omit all properties that do not start with **archetype** and it will ask
 Here is a list of all supported archetypes:
 
 ![List of all Supported Maven Archetypes](./img/6.1.Maven.Archetypes.List.png)
+
+#### Setting up a New Maven Project in the Plugin
+
+In the 0.6-BETA-1 the creation of a Sling / AEM project is integrated into the plugin. It is as simple as selecting the desired archetype, adding some properties and the project is created and added as a new IntelliJ IDEA project. It works similar to the creation of a generic Maven Archetype project but it is specific to the Sling / AEM Archetypes adding support to the required properties of the AEM Archetypes.
+
+In order to create a new project these are the steps to be done:
+
+1) Select Menu -> File -> New -> Project or Menu -> File -> New Project
+
+![IDEA New Project](./img/8.1.Maven.Archetype.New.Project.png)
+
+![New Project Window](./img/8.2.Maven.Archetypes.Select.png)
+
+2) Select the **Sling** Group on the left and then select the appropriate archetype on the right
+
+![Archetype Selection](./img/8.3.Maven.Archetypes.Selected.png)
+
+3) Enter the Maven Project Properties
+
+![Maven Project Properties](./img/8.4.Maven.Archetypes.Maven.Properties.png)
+
+4) Enter the Archetype Properties
+
+![Archetype Properties](./img/8.5.Maven.Archetypes.Properrties.png)
+
+**Attention**: The Artifact Name on the top is the same as the property with the same name below. It is used to fill in rest of the properties so that all required properties are fill when this field is entered. In order to prevent that you can uncheck the **Do Fill In** checkbox on the side.
+After you entered the artifact name you can still go to any property and change it's value but as long as **Do Fill In** is checked any changes to the Artifact Name text field will reset any changes.
+**Attention**: even though the Artifact Name is the same as the **artifactName** property below the plugin will take the value of the property in the list below. The **Artifact Name** field is only there for convenience.
+
+5) Add the Project Settings and Finish it
+
+![Project Settings to Finish It](./img/8.6.Maven.Archetypes.Project.png)
+
 
 #### Importing Content from AEM Server
 

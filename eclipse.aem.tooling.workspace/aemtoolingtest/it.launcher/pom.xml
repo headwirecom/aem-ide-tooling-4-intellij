@@ -39,7 +39,7 @@
     </scm-->
 
     <!-- 
-        To keep the instance under test running and run individual tests
+        To keep the instance under test checking and run individual tests
         against it, use:
         
             mvn clean verify -DkeepJarRunning=true -Dhttp.port=8080

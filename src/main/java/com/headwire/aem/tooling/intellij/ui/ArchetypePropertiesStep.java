@@ -39,8 +39,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -60,7 +58,7 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
     private JPanel myEnvironmentPanel;
     private JPanel myPropertiesPanel;
     private JTextField artifactName;
-    private JCheckBox overrideCheckBox;
+    private JCheckBox doFillIn;
 
     private MavenEnvironmentForm myEnvironmentForm;
     private MavenPropertiesPanel myMavenPropertiesPanel;
@@ -88,13 +86,13 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
         myMavenPropertiesPanel = new MavenPropertiesPanel(myAvailableProperties);
         myPropertiesPanel.add(myMavenPropertiesPanel);
 
-        overrideCheckBox.setSelected(true);
+        doFillIn.setSelected(true);
         artifactName.addKeyListener(
             new KeyAdapter() {
                 @Override
                 public void keyReleased(KeyEvent keyEvent) {
                     super.keyReleased(keyEvent);
-                    if(overrideCheckBox.isSelected()) {
+                    if(doFillIn.isSelected()) {
                         updateProperties();
                     }
                 }
@@ -105,7 +103,7 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
                 @Override
                 public void focusLost(FocusEvent focusEvent) {
                     super.focusLost(focusEvent);
-                    if(overrideCheckBox.isSelected()) {
+                    if(doFillIn.isSelected()) {
                         updateProperties();
                     }
                 }

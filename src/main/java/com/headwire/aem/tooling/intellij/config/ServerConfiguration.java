@@ -47,7 +47,7 @@ public class ServerConfiguration
     public enum InstallationType {installViaBundleUpload, installFromFilesystem};
     public enum SynchronizationStatus {
         /** Module was not checked against Sling server **/
-        notChecked("not checked"),
+        notChecked("not running"),
         /** Module Deployment or Synchronization failed **/
         failed,
         /** Module Deployment maybe compromised **/
@@ -85,7 +85,7 @@ public class ServerConfiguration
 
     public enum ServerStatus {
 //        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed, upToDate("synchronized"), outdated("out dated");
-        notConnected("not connected"), connecting, connected, disconnecting, disconnected, checking, checked, failed;
+        notConnected("not connected"), connecting, connected, disconnecting, disconnected, checking, running, failed;
 
         private String name;
 

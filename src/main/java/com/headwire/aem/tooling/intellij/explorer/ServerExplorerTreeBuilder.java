@@ -15,20 +15,16 @@
  */
 package com.headwire.aem.tooling.intellij.explorer;
 
-import com.headwire.aem.tooling.intellij.action.CheckServerConnectionAction;
+import com.headwire.aem.tooling.intellij.action.StartRunServerConnectionAction;
 import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.intellij.ide.util.treeView.*;
 import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.util.ProgressIndicatorBase;
 import com.intellij.openapi.progress.util.ProgressIndicatorUtils;
 import com.intellij.openapi.project.Project;
-import com.intellij.util.ui.tree.TreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -36,12 +32,9 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
@@ -51,7 +44,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
     private final Project myProject;
     private ServerConfigurationManager myConfig;
     private ExpandedStateUpdater myExpansionListener;
-    private CheckServerConnectionAction checkAction;
+    private StartRunServerConnectionAction checkAction;
 
     public ServerExplorerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel) {
         super(tree, treeModel, new ServerExplorerTreeStructure(project), IndexComparator.INSTANCE);
@@ -65,7 +58,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
         getTree().getModel().addTreeModelListener(new ChangeListener());
 
         ActionManager actionManager = ActionManager.getInstance();
-        checkAction = (CheckServerConnectionAction) actionManager.getAction("AEM.Check.Action");
+        checkAction = (StartRunServerConnectionAction) actionManager.getAction("AEM.Check.Action");
     }
 
 
