@@ -3,30 +3,17 @@
   <component name="ChangeListManager">
     <list id="e8001779-2c80-4417-9343-f2a698fc0cd2" name="Default" comment="" />
     <list default="true" id="91c2fe14-6608-43ab-899d-e717983a13fe" name="AEM Tooling" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/8.1.Maven.Archetype.New.Project.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/8.2.Maven.Archetypes.Select.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/8.3.Maven.Archetypes.Selected.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/8.4.Maven.Archetypes.Maven.Properties.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/8.5.Maven.Archetypes.Properrties.png.old" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/8.5.Maven.Archetypes.Properrties.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/8.6.Maven.Archetypes.Project.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/CheckServerConnectionAction.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunServerConnectionAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AEM Tooling Plugin.zip" afterPath="$PROJECT_DIR$/AEM Tooling Plugin.zip" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunServerConnectionAction.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunConnectionAction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.md" afterPath="$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" afterPath="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.form" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.form" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/DeployToServerAction.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/DeployToServerAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IServer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.form" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.form" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/VerifyConfigurationAction.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/VerifyConfigurationAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartDebugConnectionAction.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartDebugConnectionAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aemtoolingtest/it.launcher/pom.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aemtoolingtest/it.launcher/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aemtoolingtest/.idea/workspace.xml" afterPath="$PROJECT_DIR$/eclipse.aem.tooling.workspace/aemtoolingtest/.idea/workspace.xml" />
     </list>
@@ -57,80 +44,211 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="DaemonCodeAnalyzer">
-    <disable_hints />
-  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="AEM Tooling Plugin" />
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="ServerConfigurationDialog.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="59" column="78" selection-start-line="59" selection-start-column="78" selection-end-line="59" selection-end-column="78" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#8449#8450#0" expanded="false" />
+                <element signature="e#8483#8484#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContentResourceChangeListener.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="165" column="0" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#11174#11175#0" expanded="false" />
+                <element signature="e#11258#11259#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="144" column="42" selection-start-line="144" selection-start-column="20" selection-end-line="144" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ActionManagerImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/platform-impl/src/com/intellij/openapi/actionSystem/impl/ActionManagerImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="488" column="0" selection-start-line="488" selection-start-column="0" selection-end-line="488" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#56913#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#17639#17640#0" expanded="false" />
+                <element signature="e#17683#17684#0" expanded="false" />
+                <element signature="e#17756#17757#0" expanded="false" />
+                <element signature="e#17803#17804#0" expanded="false" />
+                <element signature="e#17895#17896#0" expanded="false" />
+                <element signature="e#17938#17939#0" expanded="false" />
+                <element signature="e#18022#18023#0" expanded="false" />
+                <element signature="e#18068#18069#0" expanded="false" />
+                <element signature="e#21623#21624#0" expanded="false" />
+                <element signature="e#21692#21693#0" expanded="false" />
+                <element signature="e#21972#21973#0" expanded="false" />
+                <element signature="e#22012#22013#0" expanded="false" />
+                <element signature="e#43131#43132#0" expanded="false" />
+                <element signature="e#43163#43164#0" expanded="false" />
+                <element signature="e#43344#43345#0" expanded="false" />
+                <element signature="e#43410#43411#0" expanded="false" />
+                <element signature="e#43791#43792#0" expanded="false" />
+                <element signature="e#43819#43820#0" expanded="false" />
+                <element signature="e#44554#44555#0" expanded="false" />
+                <element signature="e#44589#44590#0" expanded="false" />
+                <element signature="e#44657#44658#0" expanded="false" />
+                <element signature="e#44697#44698#0" expanded="false" />
+                <element signature="e#46038#46039#0" expanded="false" />
+                <element signature="e#46079#46080#0" expanded="false" />
+                <element signature="e#46336#46337#0" expanded="false" />
+                <element signature="e#46386#46387#0" expanded="false" />
+                <element signature="e#46477#46478#0" expanded="false" />
+                <element signature="e#46521#46522#0" expanded="false" />
+                <element signature="e#48603#48604#0" expanded="false" />
+                <element signature="e#48643#48644#0" expanded="false" />
+                <element signature="e#48701#48702#0" expanded="false" />
+                <element signature="e#48741#48742#0" expanded="false" />
+                <element signature="e#51660#51661#0" expanded="false" />
+                <element signature="e#51746#51747#0" expanded="false" />
+                <element signature="e#54839#54840#0" expanded="false" />
+                <element signature="e#54894#54895#0" expanded="false" />
+                <element signature="e#54956#54957#0" expanded="false" />
+                <element signature="e#54999#55000#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StartRunConnectionAction.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunConnectionAction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#1187#1188#0" expanded="false" />
+                <element signature="e#1238#1239#0" expanded="false" />
+                <element signature="e#1342#1343#0" expanded="false" />
+                <element signature="e#1385#1386#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerTreeSelectionHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerTreeSelectionHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#750#751#0" expanded="false" />
+                <element signature="e#780#781#0" expanded="false" />
+                <element signature="e#824#825#0" expanded="false" />
+                <element signature="e#856#857#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ServerConnectionManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-25.481482" vertical-offset="332" max-vertical-offset="17400">
-              <caret line="155" column="82" selection-start-line="155" selection-start-column="82" selection-end-line="155" selection-end-column="82" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#7860#7861#0" expanded="false" />
+                <element signature="e#7933#7934#0" expanded="false" />
+                <element signature="e#35234#35235#0" expanded="false" />
+                <element signature="e#35335#35336#0" expanded="false" />
+                <element signature="e#62298#62299#0" expanded="false" />
+                <element signature="e#62355#62356#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DeployToServerAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/DeployToServerAction.java">
+      <file leaf-file-name="CoreProgressManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/core-impl/src/com/intellij/openapi/progress/impl/CoreProgressManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1425">
-              <caret line="42" column="81" selection-start-line="42" selection-start-column="81" selection-end-line="42" selection-end-column="81" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="562" column="0" selection-start-line="562" selection-start-column="0" selection-end-line="562" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#20598#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#3982#3983#0" expanded="false" />
+                <element signature="e#4027#4028#0" expanded="false" />
+                <element signature="e#4370#4371#0" expanded="false" />
+                <element signature="e#4417#4418#0" expanded="false" />
+                <element signature="e#4478#4479#0" expanded="false" />
+                <element signature="e#4533#4534#0" expanded="false" />
+                <element signature="e#4593#4594#0" expanded="false" />
+                <element signature="e#4647#4648#0" expanded="false" />
+                <element signature="e#5729#5730#0" expanded="false" />
+                <element signature="e#5773#5774#0" expanded="false" />
+                <element signature="e#8324#8325#0" expanded="false" />
+                <element signature="e#8355#8356#0" expanded="false" />
+                <element signature="e#9748#9749#0" expanded="false" />
+                <element signature="e#9779#9780#0" expanded="false" />
+                <element signature="e#12642#12643#0" expanded="false" />
+                <element signature="e#12687#12688#0" expanded="false" />
+                <element signature="e#12870#12871#0" expanded="false" />
+                <element signature="e#12916#12917#0" expanded="false" />
+                <element signature="e#13383#13384#0" expanded="false" />
+                <element signature="e#13491#13492#0" expanded="false" />
+                <element signature="e#14000#14001#0" expanded="false" />
+                <element signature="e#14060#14061#0" expanded="false" />
+                <element signature="e#18884#18885#0" expanded="false" />
+                <element signature="e#18943#18944#0" expanded="false" />
+                <element signature="e#19598#19599#0" expanded="false" />
+                <element signature="e#19625#19626#0" expanded="false" />
+                <element signature="e#19667#19668#0" expanded="false" />
+                <element signature="e#19694#19695#0" expanded="false" />
+                <element signature="e#19937#19938#0" expanded="false" />
+                <element signature="e#19978#19979#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="VerifyConfigurationAction.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/VerifyConfigurationAction.java">
+      <file leaf-file-name="ImportFromServerAction.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/ImportFromServerAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3583062" vertical-offset="0" max-vertical-offset="3315">
-              <caret line="50" column="93" selection-start-line="50" selection-start-column="93" selection-end-line="50" selection-end-column="93" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ForceDeployToServerAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/ForceDeployToServerAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StartRunServerConnectionAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunServerConnectionAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1560">
-              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RemoveServerConfigurationAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/RemoveServerConfigurationAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
-              <caret line="33" column="74" selection-start-line="33" selection-start-column="74" selection-end-line="33" selection-end-column="74" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StartDebugConnectionAction.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="StartDebugConnectionAction.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartDebugConnectionAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
-              <caret line="37" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.189747">
+              <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -146,11 +264,14 @@
       </map>
     </option>
   </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerTreeSelectionHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerTreeManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/general/AEMPluginConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/ArtifactsLocatorImpl.java" />
         <option value="$PROJECT_DIR$/aem-tooling/impl-vlt/src/org/apache/sling/ide/impl/vlt/VaultFsLocatorImpl.java" />
@@ -164,11 +285,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeStructure.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.form" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.java" />
-        <option value="$PROJECT_DIR$/Readme.md" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/Test.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/MavenArchetypesStep.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/MavenArchetypesStep.form" />
@@ -193,13 +309,20 @@
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.form" />
         <option value="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/CheckServerConnectionAction.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunServerConnectionAction.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/RemoveServerConfigurationAction.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/DeployToServerAction.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/VerifyConfigurationAction.java" />
+        <option value="$PROJECT_DIR$/Readme.md" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunConnectionAction.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartDebugConnectionAction.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java" />
       </list>
     </option>
   </component>
@@ -230,6 +353,9 @@
   </component>
   <component name="MavenProjectNavigator">
     <treeState />
+  </component>
+  <component name="NamedScopeManager">
+    <order />
   </component>
   <component name="ProjectFrameBounds">
     <option name="width" value="2560" />
@@ -279,7 +405,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -320,7 +446,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="openapi.jar" />
+              <option name="myItemId" value="jdom.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jdom" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -338,7 +468,69 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="openapi.jar" />
+              <option name="myItemId" value="jdom.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -360,7 +552,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="openapi.jar" />
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -386,7 +582,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="openapi.jar" />
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -398,233 +598,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="module" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="openapi.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="openapi.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wizard" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="openapi.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="openapi.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="projectWizard" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit-4.11.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit-4.11.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="idea.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="idea.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="idea.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
+              <option name="myItemId" value="progress" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -654,7 +628,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
+              <option name="myItemId" value="openapi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="progress" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -684,49 +666,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
+              <option name="myItemId" value="openapi" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="idea.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="newProjectWizard" />
+              <option name="myItemId" value="actionSystem" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -756,243 +700,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
+              <option name="myItemId" value="openapi" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="projectWizard" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="idea.jar" />
+              <option name="myItemId" value="actionSystem" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ide" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="actions" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="classes.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="classes.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="classes.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="classes.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; IDEA IC-141.1532.4 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="classes.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="event" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="maven.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="maven.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="maven" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wizards" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="maven.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="maven" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="maven.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="maven" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="execution" />
+              <option name="myItemId" value="impl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1017,44 +733,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vlt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1073,62 +751,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="messages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="explorer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1155,10 +777,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1189,100 +807,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SlingArchetypesStep" />
-              <option name="myItemType" value="com.intellij.uiDesigner.projectView.FormNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ArchetypePropertiesStep" />
-              <option name="myItemType" value="com.intellij.uiDesigner.projectView.FormNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1416,28 +940,14 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="META-INF" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1590,96 +1100,47 @@
       <option name="PROGRAM_PARAMETERS" />
       <method />
     </configuration>
-    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
-      <module name="" />
-      <setting name="vmparams" value="" />
-      <setting name="cmdLine" value="run-app" />
-      <setting name="depsClasspath" value="false" />
-      <setting name="passParentEnv" value="true" />
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <setting name="launchBrowser" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
-      <method />
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
-      <method />
-    </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
+      <module />
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
       <option name="HEIGHT" value="300" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
-      <pass-parent-envs>true</pass-parent-envs>
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
+    <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
+      <module name="" />
       <envs />
-      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
@@ -1717,10 +1178,18 @@
       <option name="usbDebugPort" value="7936" />
       <method />
     </configuration>
-    <configuration default="true" type="JarApplication" factoryName="JAR Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="JAR_PATH" value="$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.0.0-javadoc.jar" />
-      <envs />
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+      <option name="BCName" value="" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="/Applications/Flash Player Debugger.app" />
+        </LauncherParameters>
+      </option>
+      <option name="moduleName" value="" />
+      <option name="trusted" value="true" />
       <method />
     </configuration>
     <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
@@ -1739,51 +1208,88 @@
       </ExternalSystemSettings>
       <method />
     </configuration>
-    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
-      <option name="BCName" value="" />
-      <option name="launcherParameters">
-        <LauncherParameters>
-          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
-          <option name="launcherType" value="OSDefault" />
-          <option name="newPlayerInstance" value="false" />
-          <option name="playerPath" value="/Applications/Flash Player Debugger.app" />
-        </LauncherParameters>
-      </option>
-      <option name="moduleName" value="" />
-      <option name="trusted" value="true" />
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <module name="" />
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="depsClasspath" value="false" />
+      <setting name="passParentEnv" value="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <setting name="launchBrowser" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+    <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="myFilePath" />
-      <option name="GLUE" />
-      <option name="myNameFilter" />
-      <option name="myGeneratedName" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
+      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="JAR_PATH" value="$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.0.0-javadoc.jar" />
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <pass-parent-envs>true</pass-parent-envs>
       <envs />
       <method />
     </configuration>
@@ -1890,13 +1396,21 @@
       <option name="project" value="LOCAL" />
       <updated>1437672270475</updated>
       <workItem from="1437672270855" duration="164000" />
-      <workItem from="1437672455938" duration="29414000" />
+      <workItem from="1437672455938" duration="37897000" />
+      <workItem from="1438715707671" duration="556000" />
+      <workItem from="1439228582604" duration="278000" />
+      <workItem from="1440265512519" duration="809000" />
+      <workItem from="1441504531956" duration="262000" />
+      <workItem from="1441505039048" duration="111000" />
+      <workItem from="1441726820374" duration="368000" />
+      <workItem from="1441729338373" duration="707000" />
+      <workItem from="1441730856928" duration="658000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1042160000" />
+    <option name="totallyTimeSpent" value="1054392000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -1919,40 +1433,40 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="2560" height="1600" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="0" width="2560" height="1600" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4992057" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Tasks" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37973857" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Tasks" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980143" sideWeight="0.5003376" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962668" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913166" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267974" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980143" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33200952" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25377283" sideWeight="0.4996624" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25377283" sideWeight="0.4996624" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962668" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962668" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950708" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Archetypes" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37973857" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Notes" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962668" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267974" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -2000,17 +1514,26 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <option name="myTodoPanelSettings">
-      <TodoPanelSettings />
-    </option>
-  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java</url>
+          <line>156</line>
+          <properties />
+          <option name="timeStamp" value="586" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java</url>
+          <line>163</line>
+          <properties />
+          <option name="timeStamp" value="588" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="585" />
+      <option name="time" value="592" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2019,228 +1542,128 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven-server-api.jar!/org/jetbrains/idea/maven/model/MavenArchetype.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2383863" vertical-offset="0" max-vertical-offset="1170">
-          <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/util/src/com/intellij/openapi/util/text/StringUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="16444" max-vertical-offset="46170">
-          <caret line="1252" column="33" selection-start-line="1252" selection-start-column="33" selection-end-line="1252" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar!/java/util/ResourceBundle.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2383863" vertical-offset="0" max-vertical-offset="13470">
-          <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/lang/AEMBundle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="810">
-          <caret line="52" column="40" selection-start-line="52" selection-start-column="40" selection-end-line="52" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerExplorer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="2730">
-          <caret line="216" column="0" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/platform-impl/src/com/intellij/ide/plugins/PluginManagerMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.448399" vertical-offset="7257" max-vertical-offset="8100">
-          <caret line="84" column="22" selection-start-line="84" selection-start-column="22" selection-end-line="84" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/core-impl/src/com/intellij/ide/plugins/PluginManagerCore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25980392" vertical-offset="7843" max-vertical-offset="19065">
-          <caret line="609" column="16" selection-start-line="609" selection-start-column="16" selection-end-line="609" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/platform-impl/src/com/intellij/ide/plugins/PluginManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14234875" vertical-offset="0" max-vertical-offset="3105">
-          <caret line="55" column="44" selection-start-line="55" selection-start-column="44" selection-end-line="55" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar!/java/lang/Class.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3435208" vertical-offset="6949" max-vertical-offset="19185">
-          <caret line="551" column="23" selection-start-line="551" selection-start-column="23" selection-end-line="551" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/platform-impl/src/com/intellij/ide/IdeEventQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="9259" max-vertical-offset="15945">
-          <caret line="736" column="0" selection-start-line="736" selection-start-column="0" selection-end-line="736" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven.jar!/org/jetbrains/idea/maven/wizards/SelectPropertiesStep.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.634615" vertical-offset="319" max-vertical-offset="1170">
+        <state vertical-scroll-proportion="-14.634615">
           <caret line="98" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven.jar!/org/jetbrains/idea/maven/wizards/MavenModuleBuilderHelper.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.5638433" vertical-offset="1582" max-vertical-offset="2520">
+        <state vertical-scroll-proportion="-1.5638433">
           <caret line="60" column="43" selection-start-line="60" selection-start-column="13" selection-end-line="60" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven.jar!/org/jetbrains/idea/maven/wizards/MavenModuleWizardStep.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.09249743" vertical-offset="615" max-vertical-offset="3705">
+        <state vertical-scroll-proportion="-0.09249743">
           <caret line="65" column="11" selection-start-line="65" selection-start-column="11" selection-end-line="65" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar!/java/awt/Container.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34263393" vertical-offset="23783" max-vertical-offset="31185">
+        <state vertical-scroll-proportion="0.34263393">
           <caret line="1733" column="64" selection-start-line="1733" selection-start-column="42" selection-end-line="1733" selection-end-column="64" />
-          <folding>
-            <element signature="e#57843#57844#0" expanded="true" />
-            <element signature="e#57896#57897#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar!/java/awt/event/KeyListener.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21763393" vertical-offset="0" max-vertical-offset="896">
+        <state vertical-scroll-proportion="0.21763393">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar!/java/awt/event/KeyAdapter.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.100446425" vertical-offset="0" max-vertical-offset="896">
+        <state vertical-scroll-proportion="0.100446425">
           <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar!/java/util/Properties.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.100446425" vertical-offset="0" max-vertical-offset="8805">
+        <state vertical-scroll-proportion="0.100446425">
           <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
+        <state vertical-scroll-proportion="0.0">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/apache/sling/ide/impl/vlt/ActivatorTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
+        <state vertical-scroll-proportion="0.0">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/lib/junit-4.11.jar!/org/junit/Assert.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.68" vertical-offset="1878" max-vertical-offset="4590">
+        <state vertical-scroll-proportion="-19.68">
           <caret line="180" column="23" selection-start-line="180" selection-start-column="23" selection-end-line="180" selection-end-column="23" />
-          <folding>
-            <element signature="e#7297#7298#0" expanded="true" />
-            <element signature="e#7357#7358#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/com/headwire/aem/tooling/intellij/util/PropertiesHandlerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1389" max-vertical-offset="2310">
+        <state vertical-scroll-proportion="0.0">
           <caret line="93" column="59" selection-start-line="93" selection-start-column="59" selection-end-line="93" selection-end-column="59" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/com/headwire/aem/tooling/intellij/explorer/archetypes.configuration.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1455">
+        <state vertical-scroll-proportion="0.0">
           <caret line="9" column="34" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/PropertiesHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2460">
+        <state vertical-scroll-proportion="0.0">
           <caret line="14" column="41" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3866#3887#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/plugins/maven/src/main/java/org/jetbrains/idea/maven/execution/MavenPropertiesPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13029316" vertical-offset="0" max-vertical-offset="945">
+        <state vertical-scroll-proportion="0.13029316">
           <caret line="31" column="33" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/java/openapi/src/com/intellij/openapi/module/StdModuleTypes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.048859935" vertical-offset="0" max-vertical-offset="921">
+        <state vertical-scroll-proportion="0.048859935">
           <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/lang-api/src/com/intellij/ide/util/projectWizard/AbstractModuleBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.52117264" vertical-offset="0" max-vertical-offset="921">
+        <state vertical-scroll-proportion="0.52117264">
           <caret line="56" column="28" selection-start-line="56" selection-start-column="28" selection-end-line="56" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/lang-api/src/com/intellij/ide/util/projectWizard/ModuleBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08143322" vertical-offset="0" max-vertical-offset="4785">
+        <state vertical-scroll-proportion="0.08143322">
           <caret line="55" column="58" selection-start-line="55" selection-start-column="58" selection-end-line="55" selection-end-column="58" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/platform-api/src/com/intellij/ide/wizard/StepAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22801302" vertical-offset="0" max-vertical-offset="921">
+        <state vertical-scroll-proportion="0.22801302">
           <caret line="32" column="14" selection-start-line="32" selection-start-column="14" selection-end-line="32" selection-end-column="14" />
           <folding />
         </state>
@@ -2248,7 +1671,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/plugins/maven/src/main/java/org/jetbrains/idea/maven/wizards/MavenModuleBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.2964169" vertical-offset="1269" max-vertical-offset="2190">
+        <state vertical-scroll-proportion="-1.2964169">
           <caret line="51" column="13" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
           <folding />
         </state>
@@ -2256,26 +1679,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/java/idea-ui/src/com/intellij/ide/projectWizard/ProjectTypeStep.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15418024" vertical-offset="3878" max-vertical-offset="8835">
+        <state vertical-scroll-proportion="0.15418024">
           <caret line="382" column="64" selection-start-line="382" selection-start-column="64" selection-end-line="382" selection-end-column="64" />
-          <folding>
-            <element signature="e#9165#9309#0" expanded="false" />
-            <element signature="e#9308#9309#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/java/idea-ui/src/com/intellij/ide/projectWizard/NewProjectWizard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13029316" vertical-offset="0" max-vertical-offset="921">
+        <state vertical-scroll-proportion="0.13029316">
           <caret line="32" column="51" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/java/idea-ui/src/com/intellij/ide/util/newProjectWizard/AbstractProjectWizard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36590663" vertical-offset="2153" max-vertical-offset="3825">
+        <state vertical-scroll-proportion="0.36590663">
           <caret line="213" column="21" selection-start-line="213" selection-start-column="21" selection-end-line="213" selection-end-column="21" />
           <folding />
         </state>
@@ -2283,7 +1701,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/lang-api/src/com/intellij/ide/util/projectWizard/ModuleWizardStep.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40716612" vertical-offset="0" max-vertical-offset="921">
+        <state vertical-scroll-proportion="0.40716612">
           <caret line="50" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
           <folding />
         </state>
@@ -2291,39 +1709,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/java/idea-ui/src/com/intellij/ide/actions/NewProjectAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11400651" vertical-offset="0" max-vertical-offset="921">
+        <state vertical-scroll-proportion="0.11400651">
           <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.11111" vertical-offset="1275" max-vertical-offset="2610">
+        <state vertical-scroll-proportion="-16.11111">
           <caret line="119" column="39" selection-start-line="119" selection-start-column="39" selection-end-line="119" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3164#3165#0" expanded="true" />
-            <element signature="e#3223#3224#0" expanded="true" />
-            <element signature="e#6742#6743#0" expanded="true" />
-            <element signature="e#6810#6811#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingModuleBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3248" max-vertical-offset="5640">
+        <state vertical-scroll-proportion="0.0">
           <caret line="279" column="0" selection-start-line="279" selection-start-column="0" selection-end-line="279" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3767#3786#0" expanded="true" />
-            <element signature="e#4462#5019#0" expanded="true" />
-            <element signature="e#5018#5019#0" expanded="true" />
-            <element signature="e#5874#5875#0" expanded="true" />
-            <element signature="e#5936#5937#0" expanded="true" />
-            <element signature="e#10287#10306#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2334,21 +1735,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1839" max-vertical-offset="2790">
+        <state vertical-scroll-proportion="0.0">
           <caret line="135" column="5" selection-start-line="135" selection-start-column="5" selection-end-line="135" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#7448#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#2541#2557#0" expanded="true" />
-            <element signature="e#2635#2651#0" expanded="true" />
-            <element signature="e#4656#4672#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/AbstractProjectAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
+        <state vertical-scroll-proportion="0.0">
           <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
           <folding />
         </state>
@@ -2356,96 +1750,269 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/ResetConfigurationAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
+        <state vertical-scroll-proportion="0.0">
           <caret line="22" column="41" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.333333" vertical-offset="0" max-vertical-offset="2745">
-          <caret line="15" column="67" selection-start-line="15" selection-start-column="67" selection-end-line="15" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3225">
-          <caret line="13" column="119" selection-start-line="13" selection-start-column="119" selection-end-line="13" selection-end-column="119" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1125" max-vertical-offset="6975">
-          <caret line="87" column="108" selection-start-line="87" selection-start-column="108" selection-end-line="87" selection-end-column="108" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StopConnectionAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
+        <state vertical-scroll-proportion="0.0">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartDebugConnectionAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
-          <caret line="37" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunServerConnectionAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1560">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/RemoveServerConfigurationAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+        <state vertical-scroll-proportion="0.40716612">
           <caret line="33" column="74" selection-start-line="33" selection-start-column="74" selection-end-line="33" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-25.481482" vertical-offset="332" max-vertical-offset="17400">
-          <caret line="155" column="82" selection-start-line="155" selection-start-column="82" selection-end-line="155" selection-end-column="82" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/ForceDeployToServerAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
+        <state vertical-scroll-proportion="0.08143322">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/DeployToServerAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1425">
+        <state vertical-scroll-proportion="0.3583062">
           <caret line="42" column="81" selection-start-line="42" selection-start-column="81" selection-end-line="42" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/VerifyConfigurationAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3583062" vertical-offset="0" max-vertical-offset="3315">
+        <state vertical-scroll-proportion="0.3583062">
           <caret line="50" column="93" selection-start-line="50" selection-start-column="93" selection-end-line="50" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11784512">
+          <caret line="7" column="63" selection-start-line="7" selection-start-column="63" selection-end-line="7" selection-end-column="63" />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39087948">
+          <caret line="24" column="63" selection-start-line="24" selection-start-column="63" selection-end-line="24" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/lib/jdom.jar!/org/jdom/Element.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3325893">
+          <caret line="409" column="18" selection-start-line="409" selection-start-column="18" selection-end-line="409" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="119" column="50" selection-start-line="119" selection-start-column="50" selection-end-line="119" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.666667">
+          <caret line="252" column="110" selection-start-line="252" selection-start-column="110" selection-end-line="252" selection-end-column="110" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/ImportFromServerAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/core-impl/src/com/intellij/openapi/progress/impl/CoreProgressManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="562" column="0" selection-start-line="562" selection-start-column="0" selection-end-line="562" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#20598#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#3982#3983#0" expanded="false" />
+            <element signature="e#4027#4028#0" expanded="false" />
+            <element signature="e#4370#4371#0" expanded="false" />
+            <element signature="e#4417#4418#0" expanded="false" />
+            <element signature="e#4478#4479#0" expanded="false" />
+            <element signature="e#4533#4534#0" expanded="false" />
+            <element signature="e#4593#4594#0" expanded="false" />
+            <element signature="e#4647#4648#0" expanded="false" />
+            <element signature="e#5729#5730#0" expanded="false" />
+            <element signature="e#5773#5774#0" expanded="false" />
+            <element signature="e#8324#8325#0" expanded="false" />
+            <element signature="e#8355#8356#0" expanded="false" />
+            <element signature="e#9748#9749#0" expanded="false" />
+            <element signature="e#9779#9780#0" expanded="false" />
+            <element signature="e#12642#12643#0" expanded="false" />
+            <element signature="e#12687#12688#0" expanded="false" />
+            <element signature="e#12870#12871#0" expanded="false" />
+            <element signature="e#12916#12917#0" expanded="false" />
+            <element signature="e#13383#13384#0" expanded="false" />
+            <element signature="e#13491#13492#0" expanded="false" />
+            <element signature="e#14000#14001#0" expanded="false" />
+            <element signature="e#14060#14061#0" expanded="false" />
+            <element signature="e#18884#18885#0" expanded="false" />
+            <element signature="e#18943#18944#0" expanded="false" />
+            <element signature="e#19598#19599#0" expanded="false" />
+            <element signature="e#19625#19626#0" expanded="false" />
+            <element signature="e#19667#19668#0" expanded="false" />
+            <element signature="e#19694#19695#0" expanded="false" />
+            <element signature="e#19937#19938#0" expanded="false" />
+            <element signature="e#19978#19979#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerTreeSelectionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#750#751#0" expanded="false" />
+            <element signature="e#780#781#0" expanded="false" />
+            <element signature="e#824#825#0" expanded="false" />
+            <element signature="e#856#857#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../intellij-ce/intellij-community/platform/platform-impl/src/com/intellij/openapi/actionSystem/impl/ActionManagerImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="488" column="0" selection-start-line="488" selection-start-column="0" selection-end-line="488" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#56913#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#17639#17640#0" expanded="false" />
+            <element signature="e#17683#17684#0" expanded="false" />
+            <element signature="e#17756#17757#0" expanded="false" />
+            <element signature="e#17803#17804#0" expanded="false" />
+            <element signature="e#17895#17896#0" expanded="false" />
+            <element signature="e#17938#17939#0" expanded="false" />
+            <element signature="e#18022#18023#0" expanded="false" />
+            <element signature="e#18068#18069#0" expanded="false" />
+            <element signature="e#21623#21624#0" expanded="false" />
+            <element signature="e#21692#21693#0" expanded="false" />
+            <element signature="e#21972#21973#0" expanded="false" />
+            <element signature="e#22012#22013#0" expanded="false" />
+            <element signature="e#43131#43132#0" expanded="false" />
+            <element signature="e#43163#43164#0" expanded="false" />
+            <element signature="e#43344#43345#0" expanded="false" />
+            <element signature="e#43410#43411#0" expanded="false" />
+            <element signature="e#43791#43792#0" expanded="false" />
+            <element signature="e#43819#43820#0" expanded="false" />
+            <element signature="e#44554#44555#0" expanded="false" />
+            <element signature="e#44589#44590#0" expanded="false" />
+            <element signature="e#44657#44658#0" expanded="false" />
+            <element signature="e#44697#44698#0" expanded="false" />
+            <element signature="e#46038#46039#0" expanded="false" />
+            <element signature="e#46079#46080#0" expanded="false" />
+            <element signature="e#46336#46337#0" expanded="false" />
+            <element signature="e#46386#46387#0" expanded="false" />
+            <element signature="e#46477#46478#0" expanded="false" />
+            <element signature="e#46521#46522#0" expanded="false" />
+            <element signature="e#48603#48604#0" expanded="false" />
+            <element signature="e#48643#48644#0" expanded="false" />
+            <element signature="e#48701#48702#0" expanded="false" />
+            <element signature="e#48741#48742#0" expanded="false" />
+            <element signature="e#51660#51661#0" expanded="false" />
+            <element signature="e#51746#51747#0" expanded="false" />
+            <element signature="e#54839#54840#0" expanded="false" />
+            <element signature="e#54894#54895#0" expanded="false" />
+            <element signature="e#54956#54957#0" expanded="false" />
+            <element signature="e#54999#55000#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="59" column="78" selection-start-line="59" selection-start-column="78" selection-end-line="59" selection-end-column="78" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#8449#8450#0" expanded="false" />
+            <element signature="e#8483#8484#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#7860#7861#0" expanded="false" />
+            <element signature="e#7933#7934#0" expanded="false" />
+            <element signature="e#35234#35235#0" expanded="false" />
+            <element signature="e#35335#35336#0" expanded="false" />
+            <element signature="e#62298#62299#0" expanded="false" />
+            <element signature="e#62355#62356#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunConnectionAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1187#1188#0" expanded="false" />
+            <element signature="e#1238#1239#0" expanded="false" />
+            <element signature="e#1342#1343#0" expanded="false" />
+            <element signature="e#1385#1386#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="144" column="42" selection-start-line="144" selection-start-column="20" selection-end-line="144" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="165" column="0" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#11174#11175#0" expanded="false" />
+            <element signature="e#11258#11259#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartDebugConnectionAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.189747">
+          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
           <folding />
         </state>
       </provider>

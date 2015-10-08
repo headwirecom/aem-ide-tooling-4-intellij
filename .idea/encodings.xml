@@ -17,10 +17,6 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerNodeDescriptor.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.form" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenArchetypesStep.form" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenArchetypesStep.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenModuleWizardStep.form" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/MavenModuleWizardStep.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.form" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources/images/sling.gif" charset="UTF-8" />
   </component>

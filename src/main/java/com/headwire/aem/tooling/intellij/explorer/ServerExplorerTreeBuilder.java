@@ -15,7 +15,7 @@
  */
 package com.headwire.aem.tooling.intellij.explorer;
 
-import com.headwire.aem.tooling.intellij.action.StartRunServerConnectionAction;
+import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
 import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.intellij.ide.util.treeView.*;
@@ -44,7 +44,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
     private final Project myProject;
     private ServerConfigurationManager myConfig;
     private ExpandedStateUpdater myExpansionListener;
-    private StartRunServerConnectionAction checkAction;
+    private StartRunConnectionAction checkAction;
 
     public ServerExplorerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel) {
         super(tree, treeModel, new ServerExplorerTreeStructure(project), IndexComparator.INSTANCE);
@@ -58,7 +58,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
         getTree().getModel().addTreeModelListener(new ChangeListener());
 
         ActionManager actionManager = ActionManager.getInstance();
-        checkAction = (StartRunServerConnectionAction) actionManager.getAction("AEM.Check.Action");
+        checkAction = (StartRunConnectionAction) actionManager.getAction("AEM.Check.Action");
     }
 
 

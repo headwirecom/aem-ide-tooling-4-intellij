@@ -37,6 +37,7 @@ public class ServerConfiguration
     public static final int DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS = 15;
     public static final PublishType DEFAULT_PUBLISH_TYPE = PublishType.automaticallyOnChange;
     public static final InstallationType DEFAULT_INSTALL_TYPE = InstallationType.installViaBundleUpload;
+    public static final DefaultMode DEFAULT_MODE = DefaultMode.none;
     public static final ServerStatus DEFAULT_SERVER_STATUS = ServerStatus.notConnected;
     public static final SynchronizationStatus DEFAULT_SERVER_SYNCHRONIZATION_STATUS = SynchronizationStatus.notChecked;
     public static final LogFilter DEFAULT_LOG_FILTER = LogFilter.error;
@@ -102,6 +103,8 @@ public class ServerConfiguration
 
     public enum LogFilter {debug, info, warning, error};
 
+    public enum DefaultMode {none, run, debug};
+
     private String name = "";
     private String host = "";
     private String description = "";
@@ -114,7 +117,7 @@ public class ServerConfiguration
     private int stopConnectionTimeout = DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS;
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
     private InstallationType installationType = DEFAULT_INSTALL_TYPE;
-    private boolean defaultConfiguration = false;
+    private DefaultMode defaultMode = DEFAULT_MODE;
     private boolean buildWithMaven = true;
     private LogFilter logFilter = DEFAULT_LOG_FILTER;
 
@@ -142,7 +145,7 @@ public class ServerConfiguration
         name = source.name;
         host = source.host;
         description = source.description;
-        defaultConfiguration = source.defaultConfiguration;
+        defaultMode = source.defaultMode;
         buildWithMaven = source.buildWithMaven;
         connectionPort = source.connectionPort;
         connectionDebugPort = source.connectionDebugPort;
@@ -308,12 +311,12 @@ public class ServerConfiguration
         this.logFilter = logFilter;
     }
 
-    public boolean isDefault() {
-        return defaultConfiguration;
+    public DefaultMode getDefaultMode() {
+        return defaultMode;
     }
 
-    public void setDefault(boolean defaultConfiguration) {
-        this.defaultConfiguration = defaultConfiguration;
+    public void setDefaultMode(DefaultMode defaultMode) {
+        this.defaultMode = defaultMode;
     }
 
     public boolean isBuildWithMaven() {
