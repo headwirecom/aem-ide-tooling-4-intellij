@@ -21,15 +21,15 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by schaefa on 6/12/15.
  */
-public class StartRunServerConnectionAction extends AbstractProjectAction {
+public class StartRunConnectionAction extends AbstractProjectAction {
 
-    public StartRunServerConnectionAction() {
+    public StartRunConnectionAction() {
         super("check.configuration.action");
     }
 
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
-        doCheck(project, dataContext);
+        doRun(project, dataContext);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class StartRunServerConnectionAction extends AbstractProjectAction {
         return connectionManager != null && connectionManager.isConnectionNotInUse();
     }
 
-    public void doCheck(final Project project, final DataContext dataContext) {
+    public void doRun(final Project project, final DataContext dataContext) {
         final ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
         final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         final String title = AEMBundle.message("check.configuration.action.text");

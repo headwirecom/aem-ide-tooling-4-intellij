@@ -8,6 +8,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.DefaultMode;
+
 public class ServerConfigurationDialog
     extends DialogWrapper
 {
@@ -29,8 +34,9 @@ public class ServerConfigurationDialog
     private JButton installButton;
     private JTextField name;
     private JTextField description;
-    private JCheckBox defaultConfiguration;
     private JCheckBox buildWithMaven;
+    private JCheckBox defaultDebugConfiguration;
+    private JCheckBox defaultRunConfiguration;
 
     private ServerConfiguration serverConfiguration;
 
@@ -51,6 +57,27 @@ public class ServerConfigurationDialog
         setModal(true);
         setUpDialog(serverConfiguration == null ? getConfiguration() : serverConfiguration);
         init();
+        // Implement the toggle if one is selected while the other is selected
+        defaultRunConfiguration.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    if (defaultRunConfiguration.isSelected()) {
+                        defaultDebugConfiguration.setSelected(false);
+                    }
+                }
+            }
+        );
+        defaultDebugConfiguration.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    if(defaultDebugConfiguration.isSelected()) {
+                        defaultRunConfiguration.setSelected(false);
+                    }
+                }
+            }
+        );
     }
 
     public ServerConfiguration getConfiguration() {
@@ -59,7 +86,13 @@ public class ServerConfigurationDialog
         ret.setName(name.getText());
         ret.setHost(host.getText());
         ret.setDescription(description.getText());
-        ret.setDefault(defaultConfiguration.isSelected());
+        DefaultMode defaultMode = DefaultMode.none;
+        if(defaultRunConfiguration.isSelected()) {
+            defaultMode = DefaultMode.run;
+        } else if(defaultDebugConfiguration.isSelected()) {
+            defaultMode = DefaultMode.debug;
+        }
+        ret.setDefaultMode(defaultMode);
         ret.setBuildWithMaven(buildWithMaven.isSelected());
         ret.setConnectionPort(UIUtil.obtainInteger(connectionPort, 0));
         ret.setConnectionDebugPort(UIUtil.obtainInteger(connectionDebugPort, 0));
@@ -97,7 +130,14 @@ public class ServerConfigurationDialog
             name.setText(serverConfiguration.getName());
             host.setText(serverConfiguration.getHost());
             description.setText(serverConfiguration.getDescription());
-            defaultConfiguration.setSelected(serverConfiguration.isDefault());
+            switch (configuration.getDefaultMode()) {
+                case run:
+                    defaultRunConfiguration.setSelected(true);
+                    break;
+                case debug:
+                    defaultDebugConfiguration.setSelected(true);
+                    break;
+            }
             buildWithMaven.setSelected(serverConfiguration.isBuildWithMaven());
             connectionPort.setText(serverConfiguration.getConnectionPort() + "");
             connectionDebugPort.setText(serverConfiguration.getConnectionDebugPort() + "");

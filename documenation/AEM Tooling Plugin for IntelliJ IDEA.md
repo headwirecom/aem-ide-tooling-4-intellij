@@ -2,7 +2,7 @@
 
 ####Introduction
 
-This is a plugin for IntelliJ IDEA version 14 and up that enables the user to develop, deploy and debug applications on a remote AEM Server. It is modeled after the Eclipse plugin but works slightly different due to the different philosophy behind IDEA.
+This is a plugin for IntelliJ IDEA version 14 and up that enables the user to develop, deploy and debug applications on a remote Sling or AEM Server. It is modeled after the Eclipse plugin but works slightly different due to the different philosophy behind IntelliJ IDEA.
 
 #### Prerequisites
 
@@ -12,7 +12,7 @@ This Plugin has a few requirements that must be met in order to work. Many of th
 2. Content Modules must be a **Content Package**
 3. Java Modules must be a **OSGi Bundle**
 4. Content Modules must provide a **Filter** (filter.xml) and a **jcr_root** folder
-5. OSGi Bundles must be built outside the Plugin before they can be deployed. 
+5. OSGi Bundles must be built with Maven (within or outside of the Plugin) before they can be deployed.
 6. Parent Folders outside the filter.xml filters must either have a content configuration file (.content.xml) or must already exist on the server.
 
 #### Installation
@@ -35,7 +35,7 @@ The plugin is distributed as ZIP file and can be installed into IntelliJ quite e
 
 ![IntelliJ with installed AEM Tooling Plugin](./img/1.3.IntelliJ.Preferences.Review.Plugin.png)
 
-This concludes the initial setup for any project that do **not** have any OSGi services with **annotations**. In order to support the following external plugin must be installed as well:
+This concludes the initial setup for any project that do **not** have any OSGi services with **annotations**. In order to support the OSGi Annotations this external plugin must be installed as well:
 
 1) Open the IntelliJ Preferences again, go to Plugins 
 
@@ -59,9 +59,12 @@ The **Felix OSGi Annotation Processor** is hooking into the compilation process 
 
 **Attention**: this plugin can only work with a **Maven** based project as it requires some information that are otherwise not attainable. 
 
-**Note**: there is a checkbox called **Default** below the Connection name and description. If checked the plugin will do the **check connection** right when IntelliJ is started to that user can start working on that project right away. Keep in mind that the **AEM Server** must be started at that time otherwise the check will fail and must be done manually later.  
+**Note**: there is a checkbox called **Default** below the Connection name and description. If checked the plugin will do the **Connect in Run Mode** right when IntelliJ is started to that user can start working on that project right away. Keep in mind that the **Sling or AEM Server** must be started at that time otherwise the connection will fail and must be executed manually later. 
 
-To deploy and debug the remote AEM server the plugin needs to know which sever to connect to, user and password etc. For that the user needs to create at least one **Server Configuration**. It is possible to have multiple server configurations and to deploy to each of them separately.
+To deploy and debug the remote AEM server the plugin needs to know which sever to connect to, user and password etc. For that the user needs to create at least one **Server Configuration**. It is possible to have multiple server configurations and to deploy to each of them separately even though only one at a given time.
+
+**Note**: keep in mind that Server Configurations are **per Project** and Server Configurations must be created for new Projects. 
+
 A Server Configuration is created by clicking on the plus (+) icon. After the creation the Server Configuration can be edited by the edit icon (3rd from the left). Configuration are only created / stored when the configuration is valid and finished by clicking on the **Ok** button. Otherwise the changes are discarded. So here we go:
 
 1) Open the Plugin by clicking on its Icon (if not already opened)  
@@ -79,9 +82,9 @@ A Server Configuration is created by clicking on the plus (+) icon. After the cr
 3) Enter the necessary info for the host  
 
 ![Enter Host Informations](./img/2.3.1.Plugin.Edit.Server.Configuration.png)
-**Note**: Default means that if the plugin is opened this server configuration will be automatically checked and selected. There is only one server configuration allowed to be default.  
+**Note**: Default means that if the plugin is opened this server configuration will be automatically connected in run mode. There is only one server configuration allowed to be default.  
 **Note**: Build with Maven is a flag that enables (default) or disabled the automatic Maven Build when an OSGi Bundle is deployed. This feature is making sure that the latest changes are deployed rather than the last, external built archive.
-**Attention**: For unknown reasons the first Maven Build is failing as it cannot find the **Run** message window. Any subsequent build seems to work just fine and so the plugin will display an alert asking the user to redo a deployment.  
+**Attention**: For unknown reasons the first Maven Build is failing as it cannot find its **Run** message window. Any subsequent build seems to work just fine and so the plugin will display an alert asking the user to redo a deployment.  
 
 4) Edit the timeouts (not supported yet)  
 
@@ -107,11 +110,11 @@ A Server Configuration is created by clicking on the plus (+) icon. After the cr
 
 In order to prevent issues the Plugin has a Verification action that can be used to make sure the Project is compatible with the Plugin prerequisites. Press the Verification Icon and the system will go through the modules and check if they pass the requirements. If there is an issue an alert will be shown indicating the problem and the module in question is marked as **failed**.
 
-##### Reset Configuration
+##### Purge Local Plugin Data Cache
 
 In order to speed up deployment the plugin keeps the last modification timestamp stored locally both in memory as well as on the file system. With that any file that has **not changed** since the last deployment is not deploy again.  
-With the **Reset Configuration** the user can wipe these cached modification timestamps and make sure the project is deployed from scratch. This is especially important if the project is deployed onto multiple servers.  
-Another way to accomplish a full deployment without dropping the cached modification timestamps is to use **force deploy**. Keep in mind though that the **Reset** is clearing of all cached timestamps whereas the **Forced Deploy** is only temporary ignoring them.
+With the **Purge Local Plugin Data Cache** the user can wipe these cached modification timestamps and make sure the project is deployed from scratch. This is especially important if the project is deployed onto multiple servers.  
+Another way to accomplish a full deployment without dropping the cached modification timestamps is to use **force deploy**. Keep in mind though that the **Purge** is clearing of all cached timestamps whereas the **Forced Deploy** is only temporary ignoring them.
 
 ##### Global Plugin Configuration
 
@@ -121,9 +124,9 @@ The **Deploy Delay** is a property that if set to a positive number will delay a
 
 ![Plugin Preferences](./img/7.1.Plugin.Preferences.png)
 
-#### Run against AEM Server
+#### Run against AEM / Sling Server
 
-**Attention**: in order to work on a Server Configuration you need to have one selected and this one is then use to connect to. Beside the Debug Connection which is established a physical socket connection all actions are executed against the current selected configuration aka server on a temporary connection. That said in order to prevent deployment to different servers if there is a connection to a  server then you can only work against this server. You need to **stop that connection** in order to work with another server. This is similar to the concept of TCP vs UDP. One creates a session whereas the other are stateless connections for the time of the operation. Starting the connection is Run Mode is just making sure that for the time the Run Mode is established any work will be done against that connection.
+**Attention**: in order to work on a Server Configuration you need to have one selected and this one is then use to connect to. Beside the Debug Connection which is established a physical socket connection all actions are executed against the current selected configuration aka server on a temporary connection. That said in order to prevent accidental deployment to different servers if there is a connection to a  server then you can only work against this server. You have to **stop that connection** in order to work with another server. Starting the connection is Run Mode is just making sure that for the time the Run Mode is established any work will be done against that and only that server.
 
 **Note**: Selecting the Server Configuration or the Module is the same in this context. 
 
@@ -143,13 +146,14 @@ Then you will see the Configuration and its Modules together with their states:
 **Attention**: OSGi Modules are deployed as a JAR file and so the Maven module has to be built beforehand. Afterwards the JAR file can be deployed as OSGi Module to the AEM OSGi container.  
 **Attention**: if the **Build with Maven** flag is disabled the plugin will deploy the last built archive which might not contain the latest changes.  
 
-There are two ways to deploy the modules:  
-1) Deploy the OSGi Modules and **any changed** resource files  
-2) Force Deploy the OSGi Modules and **all** resource files
+There are three ways to deploy the modules:  
+1) Deploy the OSGi Module (will always deploy all files)
+2) Deploy any **any changed** content files  
+3) Force Deploy **all changed** content files
 
 The deployment of the resource files can take some time depending on the number of changed files. After an initial deployment the deployment should be much quicker as only the changed resources are deployed which normally only happen when files are changed outside of IntelliJ IDEA.
 
-The **forced** deployed will take its time as all resource files are deployed. This option should only be used when the project is out of sync with the server but it's execution can be limited to a selected module.
+The **forced** deployment will take its time as all resource files are deployed. This option should only be used when the project is out of sync with the server but it's execution can be limited to a selected module.
 
 This are the icon to deploy the modules:
 
@@ -163,7 +167,7 @@ If a Module is selected inside the Server Configuration Tree then only **this** 
 
 #### Manage Modules
 
-Modules can be **excluded** from the **Deployment** so that the resource files or OSGi packages are not synced with / deployed on the server. Any excluded files can be included again.
+Modules can be **excluded** from the **Deployment** so that the content files or OSGi packages are not synced with / deployed on the server. Any excluded files can be included again.
 
 To bring up the build click on the **Manage Build Configuration** icon:
 
@@ -199,7 +203,7 @@ In this example 30303 is the **Debug Port** and can be adjusted to your needs as
 
 Keep in mind that **server=y** means the AEM Server is the target of the debug connection and must not be changed.
 
-After the AEM Server is up you can connect from the plugin.
+After the AEM Server is up and running (it is probably best to wait until the login page shows up) and then you can connect from the plugin.
 
 #### Setting up a New Maven Project Manually
 
@@ -319,7 +323,7 @@ In order to create a new project these are the steps to be done:
 
 **Attention**: The Artifact Name on the top is the same as the property with the same name below. It is used to fill in rest of the properties so that all required properties are fill when this field is entered. In order to prevent that you can uncheck the **Do Fill In** checkbox on the side.
 After you entered the artifact name you can still go to any property and change it's value but as long as **Do Fill In** is checked any changes to the Artifact Name text field will reset any changes.
-**Attention**: even though the Artifact Name is the same as the **artifactName** property below the plugin will take the value of the property in the list below. The **Artifact Name** field is only there for convenience.
+**Attention**: even though the Artifact Name is the same as the **artifactName** property below the plugin will take the value of the property in the list below. The **Artifact Name** field is only there for **convenience**.
 
 5) Add the Project Settings and Finish it
 
@@ -355,7 +359,7 @@ The password in the Server Configuration is left empty and will only show dots f
 
 ##### Connection
 
-If the Server is checked (to see if the modules / resources are up to date) the connection will close. That said in order to prevent accidental switches between servers the connection must be closed even if the connection was just used to check. After the connection is closed the user can check, connect or deploy to another server.
+If the Server is connected to in run mode (to see if the modules / resources are up to date) the physical connection will close. That said in order to prevent accidental switches between servers the connection must be stopped even if the connection is not used anymore. After the connection is stopped the user can check, connect or deploy to another server by starting this connection in **run mode**.
 
 ##### Deployment
 
@@ -363,7 +367,7 @@ The plugin will not check OSGi dependencies and successful activation of modules
 
 It is **recommended** to make a full deployment of the project at the beginning of major changes including pulling changes from GIT to ensure that everything is properly deployed. Afterwards Resources, OSGi Modules and classes can be deployed incrementally.
 
-For the Content there is a problem where the Jackrabbit client code cannot handle parent folders of filtered files which are not part of the filter and do not contain a content configuration file (.content.xml) or do not exist on the server. For example the filter has an entry **/apps/test/components** and there is a parent folder called **/apps/test** and it neither contains a .content.xml file nor does it exist on the server.  
+For the Content there is a problem where the Jackrabbit client code cannot handle parent folders of filtered files which are outside the filter and do not contain a content configuration file (.content.xml) or do not exist on the server. For example the filter has an entry **/apps/test/components** and there is a parent folder called **/apps/test** and it neither contains a .content.xml file nor does it exist on the server.  
 
 There are two ways to fix them. Either create a .content.xml file or deploy the content outside of the plugin first to the server manually so that the folder already exists when the content is deployed.
 
@@ -375,13 +379,13 @@ These are steps to troubleshoot deployments:
 
 1. Verify the Project
 2. Fetch any changes from VCS
-3. Reset Configuration and Deploy or Force Deploy
-4. Build and Deploy the Project either manually or via Maven (with Profiles)
+3. Purge Plugin Cache Data and Deploy or Force Deploy
+4. Build and Deploy the Project either manually or via Maven (with Profiles) outside the Plugin
 
 ###### Hot Swap
 
 When the plugin is connected in **Debug Mode** to the remote AEM Server a class can be hot swapped if there were only changes made to **method bodies**. Hot Swap will fail if there are any changes made to the class (adding methods, adding members, changing method signatures etc). If the incremental build is enabled the HotSwapping is done whenever a Java file is saved.
 
-Because the Hot Swap is done automatically class changes will cause an error during deployment. Therefore regular development should be done with the Debug Connection closed / stopped.
+Because the Hot Swap is done automatically class changes will cause an error during development if there the Connection is started in Debug Mode. Therefore regular development should be done with the Debug Connection stopped.
 
-**Attention**: HotSwap will replace class code **in memory only** meaning that a restart of the AEM Server will wipe any changes. It is necessary to deploy OSGi modules as soon as possible to avoid erratic changes.
+**Attention**: HotSwap will replace class code **in memory only** meaning that a restart of the AEM Server will wipe any changes. It is necessary to deploy OSGi modules as soon as possible to avoid erratic behavior.

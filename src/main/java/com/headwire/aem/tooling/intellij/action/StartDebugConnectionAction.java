@@ -22,12 +22,16 @@ public class StartDebugConnectionAction
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager connectionManager = getConnectionManager(project);
         if(connectionManager != null) {
-            RunManagerEx runManager = RunManagerEx.getInstanceEx(project);
-            if(runManager != null) {
-                connectionManager.connectInDebugMode(runManager);
-            } else {
-                //AS TODO: Create Alert to show that problems
-            }
+            doDebug(project, connectionManager);
+        }
+    }
+
+    public void doDebug(Project project, ServerConnectionManager connectionManager) {
+        RunManagerEx runManager = RunManagerEx.getInstanceEx(project);
+        if(runManager != null) {
+            connectionManager.connectInDebugMode(runManager);
+        } else {
+            //AS TODO: Create Alert to show that problems
         }
     }
 

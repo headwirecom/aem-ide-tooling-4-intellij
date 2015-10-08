@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.DefaultMode;
 /**
  * The Server Configuration Manager responsible for Loading & Saving the Server Configurations into the Workspace File
  * inside the IDEA folder (.idea/workspace.xml) and to provide the configurations to the plugin.
@@ -53,7 +54,9 @@ public class ServerConfigurationManager
     public static final String STOP_CONNECTION_TIMEOUT = "stopConnectionTimeout";
     public static final String PUBLISH_TYPE = "publishType";
     public static final String INSTALLATION_TYPE = "installationType";
+    //AS TODO: 'default' is just here to be backwards compatible -> delete later
     public static final String DEFAULT = "default";
+    public static final String DEFAULT_CONFIGURATION = "defaultConfiguration";
     public static final String BUILD_WITH_MAVEN = "buildWithMaven";
     public static final String ARTIFACT_ID = "artifactId";
     public static final String SYMBOLIC_NAME = "symbolicName";
@@ -208,7 +211,7 @@ public class ServerConfigurationManager
             childNode.setAttribute(STOP_CONNECTION_TIMEOUT, serverConfiguration.getStopConnectionTimeoutInSeconds() + "");
             childNode.setAttribute(PUBLISH_TYPE, serverConfiguration.getPublishType() + "");
             childNode.setAttribute(INSTALLATION_TYPE, serverConfiguration.getInstallationType() + "");
-            childNode.setAttribute(DEFAULT, serverConfiguration.isDefault() + "");
+            childNode.setAttribute(DEFAULT_CONFIGURATION, serverConfiguration.getDefaultMode() + "");
             childNode.setAttribute(BUILD_WITH_MAVEN, serverConfiguration.isBuildWithMaven() + "");
             childNode.setAttribute(LOG_FILTER, serverConfiguration.getLogFilter() + "");
             int j = 0;
@@ -245,19 +248,26 @@ public class ServerConfigurationManager
             serverConfiguration.setStopConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue(STOP_CONNECTION_TIMEOUT), -1));
             serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue(PUBLISH_TYPE), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
             serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue(INSTALLATION_TYPE), ServerConfiguration.DEFAULT_INSTALL_TYPE));
-            boolean defaultConfiguration = new Boolean(child.getAttributeValue(DEFAULT, "false"));
             serverConfiguration.setConfigurationChangeListener(configurationChangeListener);
-            if(defaultConfiguration) {
+            DefaultMode defaultMode = Util.convertToEnum(child.getAttributeValue(DEFAULT_CONFIGURATION), ServerConfiguration.DEFAULT_MODE);
+            //AS TODO: This is only necessary for backward compatibility for previous versions -> remove later
+            if(defaultMode == ServerConfiguration.DEFAULT_MODE) {
+                String oldDefaultValue = child.getAttributeValue(DEFAULT);
+                if ("true".equalsIgnoreCase(oldDefaultValue)) {
+                    defaultMode = DefaultMode.run;
+                }
+            }
+            if(defaultMode != DefaultMode.none) {
                 // Check if no other configuration is already the default
                 for(ServerConfiguration serverConfiguration1 : serverConfigurationList) {
-                    if(serverConfiguration1.isDefault()) {
+                    if(serverConfiguration1.getDefaultMode() != DefaultMode.none) {
                         messageManager.sendErrorNotification("server.configuration.multiple.default", serverConfiguration.getName(), serverConfiguration1.getName());
-                        defaultConfiguration = false;
+                        defaultMode = DefaultMode.none;
                         break;
                     }
                 }
             }
-            serverConfiguration.setDefault(defaultConfiguration);
+            serverConfiguration.setDefaultMode(defaultMode);
             serverConfiguration.setBuildWithMaven(new Boolean(child.getAttributeValue(BUILD_WITH_MAVEN, "true")));
             serverConfiguration.setLogFilter(Util.convertToEnum(child.getAttributeValue(LOG_FILTER), ServerConfiguration.DEFAULT_LOG_FILTER));
             for(Element element: child.getChildren()) {

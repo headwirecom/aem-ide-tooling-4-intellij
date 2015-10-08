@@ -1,6 +1,7 @@
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.action.StartRunServerConnectionAction;
+import com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction;
+import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
@@ -148,15 +149,23 @@ public class ContentResourceChangeListener
                                     DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
                                     Object target = childNode.getUserObject();
                                     if (target instanceof SlingServerNodeDescriptor) {
+                                        ActionManager actionManager = ActionManager.getInstance();
                                         SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
-                                        if (descriptor.getTarget().isDefault()) {
-                                            serverTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
-                                            // Not call the check module method
-                                            ActionManager actionManager = ActionManager.getInstance();
-                                            StartRunServerConnectionAction checkAction = (StartRunServerConnectionAction) actionManager.getAction("AEM.Check.Action");
-                                            if (checkAction != null) {
-                                                checkAction.doCheck(myProject, SimpleDataContext.EMPTY_CONTEXT);
-                                            }
+                                        switch (descriptor.getTarget().getDefaultMode()) {
+                                            case run:
+                                                serverTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
+                                                StartRunConnectionAction runAction = (StartRunConnectionAction) actionManager.getAction("AEM.Check.Action");
+                                                if (runAction != null) {
+                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT);
+                                                }
+                                                break;
+                                            case debug:
+                                                serverTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
+                                                StartDebugConnectionAction debugAction = (StartDebugConnectionAction) actionManager.getAction("AEM.Start.Debug.Action");
+                                                if (debugAction != null) {
+                                                    debugAction.doDebug(myProject, serverConnectionManager);
+                                                }
+                                                break;
                                         }
                                     }
                                 }

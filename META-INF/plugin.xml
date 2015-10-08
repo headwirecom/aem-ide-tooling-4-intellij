@@ -140,7 +140,7 @@
                 class="com.headwire.aem.tooling.intellij.action.BuildConfigurationAction"
                 icon="AllIcons.Actions.Module"/>
         <action id="AEM.Check.Action"
-                class="com.headwire.aem.tooling.intellij.action.StartRunServerConnectionAction"
+                class="com.headwire.aem.tooling.intellij.action.StartRunConnectionAction"
                 icon="AllIcons.General.Run"/>
         <action id="AEM.Start.Debug.Action"
                 class="com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction"
