@@ -14,6 +14,7 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -121,16 +122,25 @@ public class ConsoleLogToolWindowFactory
         }
 
         @Override
+        public void update(AnActionEvent e) {
+            ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+            ServerConfiguration serverConfiguration = selectionHandler == null ? null : selectionHandler.getCurrentConfiguration();
+            e.getPresentation().setEnabled(project != null && serverConfiguration != null);
+        }
+
+        @Override
         public void actionPerformed(AnActionEvent e) {
             ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
             ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
             ServerConfigurationManager configurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
             if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-                ConsoleLogSettingsDialog dialog = new ConsoleLogSettingsDialog(project, serverConfiguration);
-                if(dialog.showAndGet()) {
-                    // Modules might have changed and so update the tree
-                    configurationManager.updateServerConfiguration(serverConfiguration);
+                if(serverConfiguration != null) {
+                    ConsoleLogSettingsDialog dialog = new ConsoleLogSettingsDialog(project, serverConfiguration);
+                    if (dialog.showAndGet()) {
+                        // Modules might have changed and so update the tree
+                        configurationManager.updateServerConfiguration(serverConfiguration);
+                    }
                 }
             }
         }

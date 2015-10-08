@@ -16,7 +16,6 @@
     <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
     <orderEntry type="library" name="org.osgi:org.osgi.compendium:4.3.1" level="project" />
     <orderEntry type="library" name="commons-io:commons-io:2.4" level="project" />
-    <orderEntry type="library" name="Maven: org.json:json:20090211" level="project" />
     <orderEntry type="library" name="Maven: javax.jcr:jcr:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-api:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-core:2.4.0" level="project" />
@@ -375,5 +374,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.json:json:20140107" level="project" />
   </component>
 </module>
