@@ -10,7 +10,7 @@
 
     <change-notes><![CDATA[
       <ul>
-        <li>0.6 Beta 2: Fixed an issue with the Console Log Settings to being disabled if no configuration is selected.
+        <li>0.6 Beta 3: Fixed an issue with the Console Log Settings to being disabled if no configuration is selected.
                         Fixed issues with Windows paths.
         </li>
         <li>0.6 Beta 2: Checking a Selected Configuration is renamed to Run as it indicates a persistence which is
