@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
@@ -23,6 +24,45 @@ public class Util {
 
     public static final Key<Long> MODIFICATION_DATE_KEY = Key.create("modification date");
 
+    public static enum FolderLocation{start, middle, end, same, nowhere}
+
+    // This is only used to test different style folder separators
+    private static char folderSeparator = File.separatorChar;
+
+    public static boolean pathEndsWithFolder(String path, String folder) {
+        return pathContainsFolder(path, folder) == FolderLocation.end;
+    }
+
+    public static FolderLocation pathContainsFolder(String path, String folder) {
+        FolderLocation ret = FolderLocation.nowhere;
+        if(path != null && folder != null) {
+            int index = path.indexOf(folder);
+            if (index >= 0) {
+                if (index == 0) {
+                    // Relative path start starts with the folder. If path longer than folder check if next character is file path separator
+                    if(path.length() > folder.length()) {
+                        ret = FolderLocation.start;
+                    } else {
+                        ret = FolderLocation.same;
+                    }
+                } else if(index == path.length() - folder.length()) {
+                    // Folder is at the end of the path and path is longer as folder
+                    if(path.charAt(index - 1) == folderSeparator) {
+                        ret = FolderLocation.end;
+                    }
+                } else {
+                    // Folder is in the middle somewhere
+                    if(
+                        path.charAt(index - 1) == folderSeparator
+                        && path.charAt(index + folder.length()) == folderSeparator
+                    ) {
+                        ret = FolderLocation.middle;
+                    }
+                }
+            }
+        }
+        return ret;
+    }
 
     public static int convertToInt(String value, int defaultValue) {
         int ret = defaultValue;

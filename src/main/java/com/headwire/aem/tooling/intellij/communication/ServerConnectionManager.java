@@ -87,7 +87,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
-import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
+//import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
+import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
  * Handles the Server Connections for the Plugin, its state and flags
@@ -1218,7 +1219,10 @@ public class ServerConnectionManager
 //        for(MavenResource sourcePath: sourcePathList) {
 //            String basePath = sourcePath.getDirectory();
         for(String basePath: contentDirectoryPaths) {
-            if(basePath.endsWith(JCR_ROOT_PATH_INDICATOR) && (filePath == null || filePath.startsWith(basePath))) {
+            messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
+            //AS TODO: Paths from Windows have backlashes instead of forward slashes
+            if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (filePath == null || filePath.startsWith(basePath))) {
+//            if(basePath.endsWith(JCR_ROOT_PATH_INDICATOR) && (filePath == null || filePath.startsWith(basePath))) {
                 ret.add(basePath);
                 break;
             }

@@ -10,6 +10,7 @@ import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -41,6 +42,9 @@ public class SlingServerExplorer
     extends SimpleToolWindowPanel
     implements DataProvider, Disposable
 {
+
+    private Logger logger = Logger.getInstance(this.getClass());
+
     private Project myProject;
     private Tree myTree;
     private ServerConnectionManager serverConnectionManager;
@@ -50,6 +54,8 @@ public class SlingServerExplorer
 
     public SlingServerExplorer(final Project project) {
         super(true, true);
+        logger.info("Info message for SSE");
+        logger.debug("Debug message for SSE");
         myProject = project;
         myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
 

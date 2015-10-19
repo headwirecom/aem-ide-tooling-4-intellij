@@ -37,7 +37,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
         if(serverConnectionManager.isConfigurationSelected()) {
             // Now check if a file is selected
             VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
-            if(virtualFiles.length == 0) {
+            if(virtualFiles == null || virtualFiles.length == 0) {
                 ret = true;
             } else if(virtualFiles.length == 1) {
                 // We only support the Import from one file

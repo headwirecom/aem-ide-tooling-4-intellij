@@ -10,7 +10,7 @@ public class Constants {
     public static final String CONTENT_FILE_NAME = ".content.xml";
     public static final String VAULT_FILTER_FILE_NAME = "filter.xml";
 
-    public static final String JCR_ROOT_PATH_INDICATOR = "/" + JCR_ROOT_FOLDER_NAME;
+//    public static final String JCR_ROOT_PATH_INDICATOR = "/" + JCR_ROOT_FOLDER_NAME;
 
     // Component Ids for Status Messages
     public static final int SERVER_CONNECTION_MANAGER = 10;

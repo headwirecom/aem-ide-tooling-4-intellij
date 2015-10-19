@@ -42,7 +42,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.headwire.aem.tooling.intellij.util.Constants.CONTENT_FILE_NAME;
-import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
+//import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
 
 /**
  * The <tt>ResourceChangeCommandFactory</tt> creates new {@link # Command commands} correspoding to resource addition,

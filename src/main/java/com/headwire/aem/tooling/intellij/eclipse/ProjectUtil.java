@@ -22,9 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 import static com.headwire.aem.tooling.intellij.util.Constants.META_INF_FOLDER_NAME;
 import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE_NAME;
-import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
+//import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
 
 /**
  * Created by schaefa on 5/13/15.
@@ -215,7 +216,8 @@ public class ProjectUtil {
         // Look for Content Folder
         File contentFolder = null;
         for(String sourceFolder : project.getSourceFolderList()) {
-            if(sourceFolder.endsWith(JCR_ROOT_PATH_INDICATOR)) {
+            if(Util.pathEndsWithFolder(sourceFolder, JCR_ROOT_FOLDER_NAME)) {
+//            if(sourceFolder.endsWith(JCR_ROOT_PATH_INDICATOR)) {
                 File folder = new File(sourceFolder);
                 if(folder.exists() && folder.isDirectory()) {
                     contentFolder = folder;

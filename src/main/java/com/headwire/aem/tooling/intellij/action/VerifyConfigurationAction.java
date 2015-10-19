@@ -108,7 +108,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                                 List<String> resourceList = serverConnectionManager.findContentResources(module);
                                 if (resourceList.isEmpty()) {
                                     ret = false;
-                                    exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.not.", module.getName());
+                                    exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.not.found", module.getName());
                                     module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
                                     if (exitNow == Messages.CANCEL) {
                                         return false;

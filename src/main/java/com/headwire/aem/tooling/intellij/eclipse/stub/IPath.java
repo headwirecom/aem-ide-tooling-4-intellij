@@ -18,12 +18,17 @@ public class IPath {
     private File file;
     private List<String> segments;
 
+    private boolean windows;
+
     public IPath(@NotNull File file) {
         this.file = file;
     }
 
     public IPath(@NotNull String filePath) {
-        if(filePath.startsWith("/")) {
+        windows = filePath.contains("\\");
+        if((windows && (filePath.contains(":\\") || filePath.startsWith("\\")))
+            || filePath.startsWith("/")
+        ) {
             this.file = new File(filePath);
         } else {
             this.relativePath = filePath;
@@ -100,7 +105,16 @@ public class IPath {
     private List<String> getSegments() {
         if(segments == null) {
             //AS TODO: Handle Windows Paths
-            String[] tokens = (relativePath == null ? file.getPath() : relativePath).split("/");
+            // If Windows then remove Drive letter
+            String path = relativePath;
+            if(path != null && windows && relativePath.contains(":\\")) {
+                path = path.substring(3);
+                if(!path.startsWith("\\")) {
+                    path = "\\" + path;
+                }
+                path = path.replaceAll("\\\\", "/");
+            }
+            String[] tokens = (path == null ? file.getPath() : path).split("/");
             List<String> ret = new ArrayList<String>(Arrays.asList(tokens));
             Iterator<String> i = ret.iterator();
             while(i.hasNext()) {
@@ -119,9 +133,18 @@ public class IPath {
         if(file != null) {
             ret = new IPath(file.getParentFile());
         } else {
-            String cleanPath = relativePath.endsWith("/") ?
-                (relativePath.length() > 1 ? relativePath.substring(0, relativePath.length() - 1) : "") :
-                relativePath;
+            // If Windows then remove Drive letter
+            String path = relativePath;
+            if(path != null && windows && relativePath.contains(":\\")) {
+                path = path.substring(3);
+                if(!path.startsWith("\\")) {
+                    path = "\\" + path;
+                }
+                path = path.replaceAll("\\\\", "/");
+            }
+            String cleanPath = path.endsWith("/") ?
+                (path.length() > 1 ? path.substring(0, path.length() - 1) : "") :
+                path;
             int index = cleanPath.lastIndexOf("/");
             String newPath = index >= 0 ?
                 (index == 0 ? "" : cleanPath.substring(0, index)) :
@@ -140,4 +163,5 @@ public class IPath {
     public boolean isEmpty() {
         return makeAbsolute().toFile().listFiles().length == 0;
     }
+
 }

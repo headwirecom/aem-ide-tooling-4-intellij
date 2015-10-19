@@ -2,7 +2,10 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileSystem;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,6 +18,8 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Modul
  */
 public class IProject {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private Project project;
     private Module module;
 
@@ -24,7 +29,17 @@ public class IProject {
     }
 
     public IFolder getFolder(IPath path) {
-        VirtualFile file = module.getProject().getBaseDir().getFileSystem().findFileByPath(path.toOSString());
+        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = com.intellij.openapi.components.ServiceManager.getService(
+            project, com.headwire.aem.tooling.intellij.communication.MessageManager.class
+        );
+        messageManager.sendDebugNotification("Given Path: '" + path + "'");
+
+        String filePath = path.toOSString();
+
+        messageManager.sendDebugNotification("Retrieved OS String: '" + filePath + "'");
+
+        VirtualFileSystem vfs = module.getProject().getBaseDir().getFileSystem();
+        VirtualFile file = vfs.findFileByPath(path.toOSString());
         return new IFolder(module, file);
     }
 
@@ -41,7 +56,8 @@ public class IProject {
     public IResource findMember(IPath path) {
         String filePath = path.toOSString();
         VirtualFile file;
-        if(filePath.startsWith("/")) {
+        //AS TODO: What is the proper handling here (for Windows that is)?
+        if(filePath.startsWith("/") || filePath.contains(":\\")) {
             file = module.getProject().getBaseDir().getFileSystem().findFileByPath(filePath);
         } else {
             file = module.getProject().getBaseDir().findFileByRelativePath(filePath);

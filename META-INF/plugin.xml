@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.6-BETA-2</version>
+    <version>0.6-BETA-3</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,8 +10,12 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.6 Beta 2: Fixed an issue with the Console Log Settings to being disabled if no configuration is selected.
+                        Fixed issues with Windows paths.
+        </li>
         <li>0.6 Beta 2: Checking a Selected Configuration is renamed to Run as it indicates a persistence which is
                         what it actually does. Also renamed the Reset Current Configuration to Purge Plugin Cache Data.
+                        Fixed a bad Message Property Name.
         </li>
         <li>0.6 Beta 1: Added the support to create new Projects through Maven Archetypes (AEM or Sling). The Builder
                         is geared towards that and only shows the available Archetypes and let the user set the
