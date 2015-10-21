@@ -25,6 +25,8 @@ public class IFolder extends IResource {
     }
 
     public IResource findMember(String member) {
+        // IntelliJ is expected forward slashes
+        member = member.replace("\\", "/");
         VirtualFile memberFile = virtualFile.findChild(member);
         if(memberFile == null) {
             memberFile = virtualFile.findFileByRelativePath(member);

@@ -754,7 +754,7 @@ public class ServerConnectionManager
                         try {
                             Command<?> command = addFileCommand(repository, module, changedResource, force);
                             if(command != null) {
-                                long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList);
+                                long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList, force);
                                 lastModificationTimestamp = Math.max(parentLastModificationTimestamp, lastModificationTimestamp);
                                 allResourcesUpdatedList.add(changedResource.getPath());
 
@@ -766,7 +766,7 @@ public class ServerConnectionManager
                                 Util.setModificationStamp(changedResource);
                                 lastModificationTimestamp = Math.max(changedResource.getTimeStamp(), lastModificationTimestamp);
                             } else {
-                                // We do not update the file but we need to find the last mdoification timestamp
+                                // We do not update the file but we need to find the last modification timestamp
                                 // We need to obtain the command to see if it is deployed
                                 command = addFileCommand(repository, module, changedResource, true);
                                 if(command != null) {
@@ -967,7 +967,8 @@ public class ServerConnectionManager
                                 basePath,
                                 file,
                                 repository,
-                                handledPaths
+                                handledPaths,
+                                false
                             );
                             execute(command);
                             // Add a property that can be used later to avoid a re-sync if not needed
@@ -1012,7 +1013,8 @@ public class ServerConnectionManager
         String basePath,
         VirtualFile file,
         Repository repository,
-        Set<String> handledPaths
+        Set<String> handledPaths,
+        boolean force
     )
         throws CoreException, SerializationException, IOException {
 
@@ -1043,11 +1045,11 @@ public class ServerConnectionManager
 //        for (IModuleResource maybeParent : allResources) {
 //            if (maybeParent.getModuleRelativePath().equals(parentPath)) {
         // handle the parent's parent first, if needed
-        long lastParentModificationTimestamp = ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths);
+        long lastParentModificationTimestamp = ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths, force);
 
         try {
             // create this resource
-            Command command = addFileCommand(repository, module, parentFile, false);
+            Command command = addFileCommand(repository, module, parentFile, force);
             execute(command);
         } catch(CoreException e) {
             Status status = e.getStatus();

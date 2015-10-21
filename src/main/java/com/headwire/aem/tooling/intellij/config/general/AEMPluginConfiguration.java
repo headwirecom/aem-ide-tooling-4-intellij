@@ -20,7 +20,7 @@ import javax.swing.*;
 @State(
         name = AEMPluginConfigurationDialog.COMPONENT_NAME,
         storages = {
-                @Storage(id = "other", file = "aemPluginConfigurations.config")
+                @Storage(id = "other", file = "$APP_CONFIG$/aemPluginConfigurations.config")
         }
 )
 public class AEMPluginConfiguration

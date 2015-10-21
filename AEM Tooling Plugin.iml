@@ -11,7 +11,7 @@
       <excludeFolder url="file://$MODULE_DIR$/eclipse.aem.tooling.generatedd.test.project" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intellij" />
     </content>
-    <orderEntry type="jdk" jdkName="IntelliJ IDEA IU-141.2735.5" jdkType="IDEA JDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
     <orderEntry type="library" name="org.osgi:org.osgi.compendium:4.3.1" level="project" />
@@ -31,6 +31,7 @@
       <library>
         <CLASSES>
           <root url="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven-server-api.jar!/" />
+          <root url="jar://C:/Program Files (x86)/JetBrains/IntelliJ IDEA Community Edition 14.1.5/plugins/maven/lib/maven-server-api.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -40,6 +41,7 @@
       <library>
         <CLASSES>
           <root url="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven.jar!/" />
+          <root url="jar://C:/Program Files (x86)/JetBrains/IntelliJ IDEA Community Edition 14.1.5/plugins/maven/lib/maven.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
@@ -369,6 +371,7 @@
       <library>
         <CLASSES>
           <root url="jar:///Applications/IntelliJ IDEA 14 CE.app/Contents/plugins/maven/lib/maven3-server-lib/archetype-common-2.2.jar!/" />
+          <root url="jar://C:/Program Files (x86)/JetBrains/IntelliJ IDEA Community Edition 14.1.5/plugins/maven/lib/maven3-server-lib/archetype-common-2.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

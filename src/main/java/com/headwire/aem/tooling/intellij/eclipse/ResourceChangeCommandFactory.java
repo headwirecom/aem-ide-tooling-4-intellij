@@ -534,7 +534,12 @@ public class ResourceChangeCommandFactory {
             IPath extraChildResourcePath = extraChildResource.getFullPath()
                 .makeRelativeTo(syncDirectory.getFullPath()).makeAbsolute();
             String path2 = serializationManager.getRepositoryPath(extraChildResourcePath.toPortableString());
-            int length = syncDirectory.getFullPath().toFile().getPath().length();
+            // The Serialization Manager might add a slash at the front of the drive letter
+            if(path2.contains(":/") && path2.startsWith("/")) {
+                path2 = path2.substring(1);
+            }
+            String path3 = syncDirectory.getFullPath().toPortableString();
+            int length = path3.length();
             String path = path2.substring(length);
             //AS TODO: Not sure why now we suddenly have empty paths but lets fix it here dirty
             if(!path.equals("") && !path.equals(resourceProxy.getPath())) {
