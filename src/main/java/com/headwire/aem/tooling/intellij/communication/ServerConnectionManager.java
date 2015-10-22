@@ -964,11 +964,12 @@ public class ServerConnectionManager
                             Set<String> handledPaths = new HashSet<String>();
                             ensureParentIsPublished(
                                 currentModule,
-                                basePath,
+                                //AS Make sure the basepath is in forward slash notation
+                                basePath.replace("\\", "/"),
                                 file,
                                 repository,
                                 handledPaths,
-                                false
+                                true
                             );
                             execute(command);
                             // Add a property that can be used later to avoid a re-sync if not needed
@@ -1214,6 +1215,7 @@ public class ServerConnectionManager
     }
 
     public List<String> findContentResources(Module module, String filePath) {
+//        filePath = filePath == null ? null : filePath.replace("\\", "/");
         List<String> ret = new ArrayList<String>();
         ModuleProject moduleProject = module.getModuleProject();
         List<String> contentDirectoryPaths = moduleProject.getContentDirectoryPaths();
@@ -1221,9 +1223,13 @@ public class ServerConnectionManager
 //        for(MavenResource sourcePath: sourcePathList) {
 //            String basePath = sourcePath.getDirectory();
         for(String basePath: contentDirectoryPaths) {
+//            basePath = basePath.replace("\\", "/");
             messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
             //AS TODO: Paths from Windows have backlashes instead of forward slashes
-            if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (filePath == null || filePath.startsWith(basePath))) {
+            //AS TODO: It is possible that certain files are in forward slashes even on Windows
+            String myFilePath = filePath == null ? null : filePath.replace("\\", "/");
+            String myBasePath = basePath == null ? null : basePath.replace("\\", "/");
+            if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (myFilePath == null || myFilePath.startsWith(myBasePath))) {
 //            if(basePath.endsWith(JCR_ROOT_PATH_INDICATOR) && (filePath == null || filePath.startsWith(basePath))) {
                 ret.add(basePath);
                 break;
