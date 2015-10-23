@@ -2,6 +2,10 @@
 
 #### Updates:
 
+**0.6 Beta 3**: Fixed an issue with the Console Log Settings to being disabled if no configuration is selected.
+Fixed issues with Windows paths. Fixed an issue with Force Deploy doesn't apply to parent folders.
+Fixed an issue with Windows paths and File Changes.
+
 **0.6 Beta 2**: Checking a Selected Configuration is renamed to **Run** as it indicates a persistence of the connection
 and even this isn't the case it is persistent for deployments.
 Also renamed the Reset Current Configuration to **Purge Plugin Cache Data**.
