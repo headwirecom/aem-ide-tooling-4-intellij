@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="org.apache.sling.ide.artifacts-1.0.7-SNAPSHOT">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.artifacts-1.0.7-SNAPSHOT.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

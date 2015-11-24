@@ -163,7 +163,8 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                     FilterResult filterResult = null;
                     if(filter != null) {
                         // Check if the Resource is part of the Filter
-                        filterResult = filter.filter(rootDirectory, relativeChildPath);
+//                        filterResult = filter.filter(rootDirectory, relativeChildPath);
+                        filterResult = filter.filter(relativeChildPath);
                     }
                     // We don't need to check anything if it is part of one of the filter entries
                     if(filterResult != FilterResult.ALLOW) {
@@ -181,7 +182,8 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                                 // First check if there are only folders as children and if all of them are inside the filters
                                 boolean isGood = true;
                                 for(VirtualFile grandChild: child.getChildren()) {
-                                    filterResult = filter.filter(rootDirectory, relativeChildPath + "/" + grandChild.getName());
+//                                    filterResult = filter.filter(rootDirectory, relativeChildPath + "/" + grandChild.getName());
+                                    filterResult = filter.filter(relativeChildPath + "/" + grandChild.getName());
                                     if(filterResult != FilterResult.ALLOW) {
                                         isGood = false;
                                         break;

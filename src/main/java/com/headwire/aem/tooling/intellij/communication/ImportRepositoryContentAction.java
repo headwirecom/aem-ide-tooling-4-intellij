@@ -1,32 +1,28 @@
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
-import com.headwire.aem.tooling.intellij.eclipse.ResourceAndInfo;
-import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
-import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
-import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IProgressMonitor;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IResourceVisitor;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
-import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
-import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
-import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
-import com.intellij.notification.NotificationType;
-import com.intellij.openapi.components.ServiceManager;
+/*
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.io.IOUtils;
-import org.apache.jackrabbit.vault.util.Text;
+import org.apache.jackrabbit.util.Text;
+import org.apache.sling.ide.eclipse.core.ProjectUtil;
+import org.apache.sling.ide.eclipse.core.ResourceUtil;
+import org.apache.sling.ide.eclipse.core.ServerUtil;
+import org.apache.sling.ide.eclipse.core.internal.ResourceAndInfo;
+import org.apache.sling.ide.eclipse.core.internal.ResourceChangeCommandFactory;
+import org.apache.sling.ide.eclipse.core.progress.ProgressUtils;
 import org.apache.sling.ide.filter.Filter;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.FilterResult;
 import org.apache.sling.ide.filter.IgnoredResources;
-import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
 import org.apache.sling.ide.log.Logger;
 import org.apache.sling.ide.serialization.SerializationData;
 import org.apache.sling.ide.serialization.SerializationDataBuilder;
@@ -39,25 +35,25 @@ import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.RepositoryException;
 import org.apache.sling.ide.transport.ResourceProxy;
 import org.apache.sling.ide.transport.Result;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.server.core.IServer;
+*/
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
-
-/**
- * Created by schaefa on 6/17/15.
- */
-public class ImportRepositoryContentManager {
-
+/** AS This is just here to have a comparison with the code in the Eclipse UI project **/
+public class ImportRepositoryContentAction {
+/*
     private final IServer server;
     private final IPath projectRelativePath;
     private final IProject project;
@@ -74,13 +70,13 @@ public class ImportRepositoryContentManager {
     private Set<IResource> currentResources;
     private IPath repositoryImportRoot;
 
-    /**
+    / **
      * @param server
      * @param projectRelativePath
      * @param project
      * @throws SerializationException
-     */
-    public ImportRepositoryContentManager(IServer server, IPath projectRelativePath, IProject project,
+     * /
+    public ImportRepositoryContentAction(IServer server, IPath projectRelativePath, IProject project,
                                          SerializationManager serializationManager) throws SerializationException {
         this.logger = Activator.getDefault().getPluginLogger();
         this.server = server;
@@ -91,90 +87,73 @@ public class ImportRepositoryContentManager {
         this.currentResources = new HashSet<IResource>();
     }
 
-    public void doImport(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException,
+    public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException,
         SerializationException, CoreException {
 
-//        // TODO: We should try to make this give 'nice' progress feedback (aka here's what I'm processing)
-//        monitor.beginTask("Repository import", IProgressMonitor.UNKNOWN);
+        // TODO: We should try to make this give 'nice' progress feedback (aka here's what I'm processing)
+        monitor.beginTask("Repository import", IProgressMonitor.UNKNOWN);
 
-//        this.monitor = monitor;
+        this.monitor = monitor;
 
-        MessageManager messageManager = ServiceManager.getService(project.getModule().getProject(), MessageManager.class);
-        repository = ServerUtil.getConnectedRepository(server, monitor, messageManager);
-        if(repository != null) {
-            File syncDirectory = ProjectUtil.getSyncDirectoryFile(project);
-            this.builder = serializationManager.newBuilder(
-                repository, syncDirectory
-            );
+        repository = ServerUtil.getConnectedRepository(server, monitor);
 
-            SerializationKindManager skm;
+        this.builder = serializationManager.newBuilder(
+            repository, ProjectUtil.getSyncDirectoryFile(project));
 
-            try {
-                skm = new SerializationKindManager();
-                skm.init(repository);
-            } catch(RepositoryException e1) {
-                throw new InvocationTargetException(e1);
-            }
+        SerializationKindManager skm;
 
-            filter = ProjectUtil.loadFilter(project);
-
-            //        ProgressUtils.advance(monitor, 1);
-
-            try {
-
-                contentSyncRootDir = ProjectUtil.getSyncDirectory(project);
-                //AS TODO: The Repository Import Root needs to be a path that points from the /jcr_root to the folder where the import started with.
-                //            repositoryImportRoot = projectRelativePath
-                //                .makeRelativeTo(contentSyncRootDir.getProjectRelativePath())
-                //                .makeAbsolute();
-
-                contentSyncRoot = ProjectUtil.getSyncDirectoryFullPath(project).toFile();
-
-                String relativeFromSyncRoot = projectRelativePath.toOSString();
-                int index = relativeFromSyncRoot.indexOf("/" + JCR_ROOT_FOLDER_NAME + "/");
-                relativeFromSyncRoot = relativeFromSyncRoot.substring(index + ("/" + JCR_ROOT_FOLDER_NAME + "/").length());
-                repositoryImportRoot = new IPath(
-                    new IPath(contentSyncRoot),
-                    relativeFromSyncRoot
-                );
-
-
-                readVltIgnoresNotUnderImportRoot(contentSyncRootDir, repositoryImportRoot);
-
-                //            ProgressUtils.advance(monitor, 1);
-
-                Activator
-                    .getDefault()
-                    .getPluginLogger()
-                    .trace("Starting import; repository start point is {0}, workspace start point is {1}",
-                        repositoryImportRoot, projectRelativePath);
-
-                recordNotIgnoredResources();
-
-                //            ProgressUtils.advance(monitor, 1);
-
-                String contentPath = repositoryImportRoot.toPortableString();
-                if(!contentPath.startsWith("/")) {
-                    contentPath = "/" + contentPath;
-                }
-                crawlChildrenAndImport(contentPath);
-
-                removeNotIgnoredAndNotUpdatedResources(new NullProgressMonitor());
-
-                //            ProgressUtils.advance(monitor, 1);
-
-                //        } catch (OperationCanceledException e) {
-                //            throw e;
-            } catch(Exception e) {
-                throw new InvocationTargetException(e);
-            } finally {
-                if(builder != null) {
-                    builder.destroy();
-                    builder = null;
-                }
-                monitor.done();
-            }
+        try {
+            skm = new SerializationKindManager();
+            skm.init(repository);
+        } catch (RepositoryException e1) {
+            throw new InvocationTargetException(e1);
         }
+
+        filter = ProjectUtil.loadFilter(project);
+
+        ProgressUtils.advance(monitor, 1);
+
+        try {
+
+            contentSyncRootDir = ProjectUtil.getSyncDirectory(project);
+            repositoryImportRoot = projectRelativePath
+                .makeRelativeTo(contentSyncRootDir.getProjectRelativePath())
+                .makeAbsolute();
+
+            contentSyncRoot = ProjectUtil.getSyncDirectoryFullPath(project).toFile();
+
+            readVltIgnoresNotUnderImportRoot(contentSyncRootDir, repositoryImportRoot);
+
+            ProgressUtils.advance(monitor, 1);
+
+            Activator
+                .getDefault()
+                .getPluginLogger()
+                .trace("Starting import; repository start point is {0}, workspace start point is {1}",
+                    repositoryImportRoot, projectRelativePath);
+
+            recordNotIgnoredResources();
+
+            ProgressUtils.advance(monitor, 1);
+
+            crawlChildrenAndImport(repositoryImportRoot.toPortableString());
+
+            removeNotIgnoredAndNotUpdatedResources(new NullProgressMonitor());
+
+            ProgressUtils.advance(monitor, 1);
+
+        } catch (OperationCanceledException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InvocationTargetException(e);
+        } finally {
+            if (builder!=null) {
+                builder.destroy();
+                builder = null;
+            }
+            monitor.done();
+        }
+
     }
 
     private void readVltIgnoresNotUnderImportRoot(IFolder syncDir, IPath repositoryImportRoot) throws IOException,
@@ -182,12 +161,8 @@ public class ImportRepositoryContentManager {
 
         IFolder current = syncDir;
         for (int i = 0; i < repositoryImportRoot.segmentCount(); i++) {
-            IPath projectRelative = current.getProjectRelativePath();
-            IPath syncDirProjectRelative = syncDir.getProjectRelativePath();
-            IPath syncDirRelative = projectRelative.makeRelativeTo(syncDirProjectRelative);
-            IPath repoPath = syncDirRelative.makeAbsolute();
-//            IPath repoPath = current.getProjectRelativePath().makeRelativeTo(syncDir.getProjectRelativePath())
-//                .makeAbsolute();
+            IPath repoPath = current.getProjectRelativePath().makeRelativeTo(syncDir.getProjectRelativePath())
+                .makeAbsolute();
             parseIgnoreFiles(current, repoPath.toPortableString());
             current = (IFolder) current.findMember(repositoryImportRoot.segment(i));
         }
@@ -206,36 +181,33 @@ public class ImportRepositoryContentManager {
 
             @Override
             public boolean visit(IResource resource) throws CoreException {
-//
-//                try {
-//                    ResourceAndInfo rai = rccf.buildResourceAndInfo(resource, repository);
-//
-//                    if (rai == null) {
-//                        // can be a prerequisite
-//                        return true;
-//                    }
-//
-//                    String repositoryPath = rai.getResource().getPath();
-//
-////                    FilterResult filterResult = filter.filter(contentSyncRoot, repositoryPath);
-////AS TODO: This is an adjustment to the 1.0.9 codebase
-//                    FilterResult filterResult = filter.filter(repositoryPath);
-//
-//                    if (ignoredResources.isIgnored(repositoryPath)) {
-//                        return false;
-//                    }
-//
-//                    if (filterResult == FilterResult.ALLOW) {
-//                        currentResources.add(resource);
-//                        return true;
-//                    }
-//
-//                    return false;
-//                } catch (IOException e) {
-//                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-//                        "Failed reading current project's resources", e));
-//                }
-                throw new UnsupportedOperationException("This method needs to be implemented first");
+
+                try {
+                    ResourceAndInfo rai = rccf.buildResourceAndInfo(resource, repository);
+
+                    if (rai == null) {
+                        // can be a prerequisite
+                        return true;
+                    }
+
+                    String repositoryPath = rai.getResource().getPath();
+
+                    FilterResult filterResult = filter.filter(repositoryPath);
+
+                    if (ignoredResources.isIgnored(repositoryPath)) {
+                        return false;
+                    }
+
+                    if (filterResult == FilterResult.ALLOW) {
+                        currentResources.add(resource);
+                        return true;
+                    }
+
+                    return false;
+                } catch (IOException e) {
+                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                        "Failed reading current project's resources", e));
+                }
             }
         });
 
@@ -255,15 +227,15 @@ public class ImportRepositoryContentManager {
 
     }
 
-    /**
+    / **
      * Crawls the repository and recursively imports founds resources
      * @param path the current path to import from
-//     * @param tracer
-//     * @throws JSONException
+     * @param tracer
+     * @throws JSONException
      * @throws RepositoryException
      * @throws CoreException
      * @throws IOException
-     */
+     * /
     // TODO: This probably should be pushed into the service layer
     private void crawlChildrenAndImport(String path)
         throws RepositoryException, CoreException, IOException, SerializationException {
@@ -355,7 +327,7 @@ public class ImportRepositoryContentManager {
             logger.trace("No serialization data found for {0}", resource.getPath());
         }
 
-//        ProgressUtils.advance(monitor, 1);
+        ProgressUtils.advance(monitor, 1);
 
         for (ResourceProxy child : resourceChildren) {
 
@@ -364,8 +336,6 @@ public class ImportRepositoryContentManager {
             }
 
             if (filter != null) {
-//                FilterResult filterResult = filter.filter(contentSyncRoot, child.getPath());
-//AS TODO: This is an adjustment to the 1.0.9 codebase
                 FilterResult filterResult = filter.filter(child.getPath());
                 if (filterResult == FilterResult.DENY) {
                     continue;
@@ -376,7 +346,7 @@ public class ImportRepositoryContentManager {
         }
     }
 
-    /**
+    / **
      * Returns the path for serializing the nt:resource data of a nt:file node
      *
      * <p>
@@ -387,7 +357,7 @@ public class ImportRepositoryContentManager {
      * @param resource The resource
      * @param serializationFolderPath the folder where the serialization data should be stored
      * @return the path for the plain file node
-     */
+     * /
     private IPath getPathForPlainFileNode(ResourceProxy resource, IPath serializationFolderPath) {
 
         // TODO - can we just use the serializationFolderPath ?
@@ -430,7 +400,7 @@ public class ImportRepositoryContentManager {
             logger.trace("Creating folder {0}", destinationFolder.getFullPath());
 
             createParents(destinationFolder.getParent());
-            destinationFolder.create(true, true, null /* TODO progress monitor */);
+            destinationFolder.create(true, true, null / * TODO progress monitor * /);
         }
 
         destinationFolder.setSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP,
@@ -441,12 +411,12 @@ public class ImportRepositoryContentManager {
         return destinationFolder;
     }
 
-    private void createParents(IResource container) throws CoreException {
+    private void createParents(IContainer container) throws CoreException {
         if (container.exists() || container.getType() != IResource.FOLDER) {
             return;
         }
 
-        createParents((IFolder) container.getParent());
+        createParents(container.getParent());
         createFolder(container.getProject(), container.getProjectRelativePath());
     }
 
@@ -463,15 +433,15 @@ public class ImportRepositoryContentManager {
             throw new IllegalArgumentException("node must not be null");
         }
 
-        IFile destinationFile = project.getFile(path.toOSString());
+        IFile destinationFile = project.getFile(path);
 
         logger.trace("Writing content file at {0}", path);
 
         if (destinationFile.exists()) {
-            /* TODO progress monitor */
+            / * TODO progress monitor * /
             destinationFile.setContents(new ByteArrayInputStream(node), IResource.KEEP_HISTORY, null);
         } else {
-            /* TODO progress monitor */
+            / * TODO progress monitor * /
             if (!destinationFile.getParent().exists()) {
                 createParents(destinationFile.getParent());
             }
@@ -483,5 +453,5 @@ public class ImportRepositoryContentManager {
         destinationFile.setSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP,
             destinationFile.getModificationStamp());
     }
-
+*/
 }

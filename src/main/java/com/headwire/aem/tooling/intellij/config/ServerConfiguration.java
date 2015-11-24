@@ -1,11 +1,13 @@
 package com.headwire.aem.tooling.intellij.config;
 
+import com.headwire.aem.tooling.intellij.io.SlingProject4IntelliJ;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.ide.filter.Filter;
+import org.apache.sling.ide.io.SlingProject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -403,6 +405,7 @@ public class ServerConfiguration
         private boolean partOfBuild = true;
         private long lastModificationTimestamp;
         private transient Project project;
+        private transient SlingProject slingProject;
         private transient ModuleProject moduleProject;
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
         private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
@@ -483,6 +486,10 @@ public class ServerConfiguration
             return project;
         }
 
+        public SlingProject getSlingProject() {
+            return slingProject;
+        }
+
         public ModuleProject getModuleProject() {
             return moduleProject;
         }
@@ -542,6 +549,7 @@ public class ServerConfiguration
                     setStatus(SynchronizationStatus.notChecked);
                 }
                 if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
+                this.slingProject = new SlingProject4IntelliJ(this);
                 ret = true;
             }
             return ret;

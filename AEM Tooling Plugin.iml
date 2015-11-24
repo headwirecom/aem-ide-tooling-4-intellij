@@ -22,8 +22,6 @@
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-jcr-commons:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-spi-commons:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-spi:2.4.0" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide.impl-resource-1.0.7-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide.artifacts-1.0.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.0.0" level="project" />
     <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault.rcp:3.0.0" level="project" />
     <orderEntry type="library" name="org.slf4j:slf4j-simple:1.5.8" level="project" />
@@ -378,5 +376,9 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="org.json:json:20140107" level="project" />
+    <orderEntry type="library" name="org.apache.sling.ide.api-1.0.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.apache.sling.ide.artifacts-1.0.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.apache.sling.ide.impl-resource-1.0.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.apache.sling.ide.impl-vlt-1.0.9-SNAPSHOT" level="project" />
   </component>
 </module>

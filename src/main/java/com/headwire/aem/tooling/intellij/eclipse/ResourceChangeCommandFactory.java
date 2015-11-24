@@ -63,242 +63,242 @@ public class ResourceChangeCommandFactory {
         this.serializationManager = serializationManager;
     }
 
-    public Command<?> newCommandForAddedOrUpdated(Repository repository, IResource addedOrUpdated, boolean forceDeploy) throws CoreException {
-        try {
-            return addFileCommand(repository, addedOrUpdated, forceDeploy);
-        } catch (IOException e) {
-            throw new CoreException(
-                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed updating " + addedOrUpdated, e)
-            );
-        }
-    }
+//    public Command<?> newCommandForAddedOrUpdated(Repository repository, IResource addedOrUpdated, boolean forceDeploy) throws CoreException {
+//        try {
+//            return addFileCommand(repository, addedOrUpdated, forceDeploy);
+//        } catch (IOException e) {
+//            throw new CoreException(
+//                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed updating " + addedOrUpdated, e)
+//            );
+//        }
+//    }
 
-    private Command<?> addFileCommand(Repository repository, IResource resource, boolean forceDeploy) throws CoreException, IOException {
-
-        ResourceAndInfo rai = buildResourceAndInfo(resource, repository, forceDeploy);
-
-        if (rai == null) {
-            return null;
-        }
-
-        if (rai.isOnlyWhenMissing()) {
-            return repository.newAddOrUpdateNodeCommand(rai.getInfo(), rai.getResource(),
-                Repository.CommandExecutionFlag.CREATE_ONLY_WHEN_MISSING);
-        }
-
-        return repository.newAddOrUpdateNodeCommand(rai.getInfo(), rai.getResource());
-    }
-
-    /**
-     * Convenience method which builds a <tt>ResourceAndInfo</tt> info for a specific <tt>IResource</tt>
-     *
-     * @param resource the resource to process
-     * @param repository the repository, used to extract serialization information for different resource types
-     * @return the build object, or null if one could not be built
-     * @throws CoreException
-     * @throws java.io.IOException
-     */
-    public ResourceAndInfo buildResourceAndInfo(IResource resource, Repository repository) throws CoreException,
-        IOException {
-        return buildResourceAndInfo(resource, repository, false);
-    }
-
-    /**
-     * Convenience method which builds a <tt>ResourceAndInfo</tt> info for a specific <tt>IResource</tt>
-     *
-     * @param resource the resource to process
-     * @param repository the repository, used to extract serialization information for different resource types
-     * @return the build object, or null if one could not be built
-     * @throws CoreException
-     * @throws java.io.IOException
-     */
-    public ResourceAndInfo buildResourceAndInfo(IResource resource, Repository repository, boolean forceDeploy) throws CoreException,
-        IOException {
-        if (ignoredFileNames.contains(resource.getName())) {
-            return null;
-        }
-
-        if(!forceDeploy) {
-            Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
-            Long resourceModificationTimeStamp = resource.getModificationStamp();
-
-            if(modificationTimestamp != null && modificationTimestamp >= resourceModificationTimeStamp) {
-                Activator.getDefault().getPluginLogger()
-                    .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
-                        resource, modificationTimestamp, resourceModificationTimeStamp);
-                return null;
-            }
-        }
-
-//AS TODO: Not sure what this means in IntelliJ
-//        if (resource.isTeamPrivateMember(IResource.CHECK_ANCESTORS)) {
-//            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
+//    private Command<?> addFileCommand(Repository repository, IResource resource, boolean forceDeploy) throws CoreException, IOException {
+//
+//        ResourceAndInfo rai = buildResourceAndInfo(resource, repository, forceDeploy);
+//
+//        if (rai == null) {
 //            return null;
 //        }
-
-        FileInfo info = createFileInfo(resource);
-        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
-
-        File syncDirectoryAsFile = ProjectUtil.getSyncDirectoryFullPath(resource.getProject()).toFile();
-        IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
-
-        ServerConfiguration.Module module = resource.getModule();
-        Filter filter = ProjectUtil.loadFilter(module);
-        // Verify the Filter File
-        //AS NOTE: We cannot allow to have the filter file to be empty otherwise it is possible to delete protected
-        //AS NOTE: nodes like /etc/clientlibs.
-        if(filter == null) {
-            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
-            messageManager.showAlertWithArguments("server.configuration.filter.file.not.found", module.getName());
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
-        }
-
-        ResourceProxy resourceProxy = null;
-
-        if (serializationManager.isSerializationFile(resource.getLocation().toOSString())) {
-            InputStream contents = null;
-            try {
-                IFile file = (IFile) resource;
-                contents = file.getContents();
-                String resourceLocation = file.getFullPath().makeRelativeTo(syncDirectory.getFullPath())
-                    .toPortableString();
-                resourceProxy = serializationManager.readSerializationData(resourceLocation, contents);
-                normaliseResourceChildren(file, resourceProxy, syncDirectory, repository);
-
-
-                // TODO - not sure if this 100% correct, but we definitely should not refer to the FileInfo as the
-                // .serialization file, since for nt:file/nt:resource nodes this will overwrite the file contents
-                String primaryType = (String) resourceProxy.getProperties().get(Repository.JCR_PRIMARY_TYPE);
-                if (Repository.NT_FILE.equals(primaryType)) {
-                    // TODO move logic to serializationManager
-                    File locationFile = new File(info.getLocation());
-                    String locationFileParent = locationFile.getParent();
-                    int endIndex = locationFileParent.length() - ".dir".length();
-                    File actualFile = new File(locationFileParent.substring(0, endIndex));
-                    String newLocation = actualFile.getAbsolutePath();
-                    String newName = actualFile.getName();
-                    String newRelativeLocation = actualFile.getAbsolutePath().substring(
-                        syncDirectoryAsFile.getAbsolutePath().length());
-                    info = new FileInfo(newLocation, newRelativeLocation, newName);
-
-                    Activator.getDefault().getPluginLogger()
-                        .trace("Adjusted original location from {0} to {1}", resourceLocation, newLocation);
-
-                }
-
-            } catch (IOException e) {
-//AS TODO: Add logging
-//                Status s = new Status(Status.WARNING, Activator.PLUGIN_ID, "Failed reading file at "
-//                    + resource.getFullPath(), e);
-//                StatusManager.getManager().handle(s, StatusManager.LOG | StatusManager.SHOW);
-                return null;
-            } finally {
-                IOUtils.closeQuietly(contents);
-            }
-        } else {
-            //AS TODO: Start the handling of .content.xml sub folder content. This can happen when there are images etc
-            //AS TODO: that belong to a jcr:content node and therefore do not fit into the .content.xml file
-            //AS TODO: Not sure how this is done in Eclipse of if Eclipse just ignores it
-
-            // If the path of a resource contains or ends with _jcr_content then we do not handle it as it should
-            // be done by the corresponding .content.xml file
-            String filePath = resource.getVirtualFile().getPath();
-            if((filePath.indexOf("/_jcr_content/") > 0 || filePath.endsWith("/_jcr_content")) && !(filePath.contains(("/_jcr_content/renditions")))) {
-                return null;
-            }
-
-            //AS TODO: Done with the special _jcr_content folder handling
-
-            // TODO - move logic to serializationManager
-            // possible .dir serialization holder
-            if (resource.getType() == IResource.FOLDER && resource.getName().endsWith(".dir")) {
-                IFolder folder = (IFolder) resource;
-                IResource contentXml = folder.findMember(CONTENT_FILE_NAME);
-                // .dir serialization holder ; nothing to process here, the .content.xml will trigger the actual work
-                if (contentXml != null && contentXml.exists()
-                    && serializationManager.isSerializationFile(contentXml.getLocation().toOSString())) {
-                    return null;
-                }
-            }
-
-            resourceProxy = buildResourceProxyForPlainFileOrFolder(resource, syncDirectory, repository);
-        }
-
-        FilterResult filterResult = getFilterResult(resource, resourceProxy, filter);
-
-        switch (filterResult) {
-
-            case ALLOW:
-                return new ResourceAndInfo(resourceProxy, info);
-            case PREREQUISITE:
-                // never try to 'create' the root node, we assume it exists
-                if (!resourceProxy.getPath().equals("/")) {
-                    //AS TODO: This does not work with 6.0 -> Try to set the primary type explicit if found for folders
-                    if(resourceProxy.getChildren().size() > 0) {
-                        return new ResourceAndInfo(resourceProxy, null, true);
-                    } else {
-                        // we don't explicitly set the primary type, which will allow the the repository to choose the best
-                        // suited one ( typically nt:unstructured )
-                        return new ResourceAndInfo(new ResourceProxy(resourceProxy.getPath()), null, true);
-                    }
-                }
-            case DENY: // falls through
-            default:
-                return null;
-        }
-    }
-
-    private FileInfo createFileInfo(IResource resource) throws CoreException {
-
-        if (resource.getType() != IResource.FILE) {
-            return null;
-        }
-
-        IProject project = resource.getProject();
-
-        IFolder syncFolder = project.getFolder(ProjectUtil.getSyncDirectoryValue(project));
-
-        IPath relativePath = resource.getFullPath().makeRelativeTo(syncFolder.getFullPath());
-
-        FileInfo info = new FileInfo(resource.getLocation().toOSString(), relativePath.toOSString(), resource.getName());
-
-        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
-
-        return info;
-    }
-
-    /**
-     * Gets the filter result for a resource/resource proxy combination
-     *
-     * <p>
-     * The resourceProxy may be null, typically when a resource is already deleted.
-     *
-     * <p>
-     * The filter may be null, in which case all combinations are included in the filed, i.e. allowed.
-     *
-     * @param resource the resource to filter for, must not be <code>null</code>
-     * @param resourceProxy the resource proxy to filter for, possibly <code>null</code>
-     * @param filter the filter to use, possibly <tt>null</tt>
-     * @return the filtering result, never <code>null</code>
-     */
-    private FilterResult getFilterResult(IResource resource, ResourceProxy resourceProxy, Filter filter) {
-
-        if (filter == null) {
-            return FilterResult.ALLOW;
-        }
-
-        File contentSyncRoot = ProjectUtil.getSyncDirectoryFile(resource.getProject());
-
-        String repositoryPath = resourceProxy != null ? resourceProxy.getPath() : getRepositoryPathForDeletedResource(
-            resource, contentSyncRoot);
-
-        FilterResult filterResult = filter.filter(ProjectUtil.getSyncDirectoryFile(resource.getProject()),
-            repositoryPath);
-
-        Activator.getDefault().getPluginLogger().trace("Filter result for {0} for {1}", repositoryPath, filterResult);
-
-        return filterResult;
-    }
+//
+//        if (rai.isOnlyWhenMissing()) {
+//            return repository.newAddOrUpdateNodeCommand(rai.getInfo(), rai.getResource(),
+//                Repository.CommandExecutionFlag.CREATE_ONLY_WHEN_MISSING);
+//        }
+//
+//        return repository.newAddOrUpdateNodeCommand(rai.getInfo(), rai.getResource());
+//    }
+//
+//    /**
+//     * Convenience method which builds a <tt>ResourceAndInfo</tt> info for a specific <tt>IResource</tt>
+//     *
+//     * @param resource the resource to process
+//     * @param repository the repository, used to extract serialization information for different resource types
+//     * @return the build object, or null if one could not be built
+//     * @throws CoreException
+//     * @throws java.io.IOException
+//     */
+//    public ResourceAndInfo buildResourceAndInfo(IResource resource, Repository repository) throws CoreException,
+//        IOException {
+//        return buildResourceAndInfo(resource, repository, false);
+//    }
+//
+//    /**
+//     * Convenience method which builds a <tt>ResourceAndInfo</tt> info for a specific <tt>IResource</tt>
+//     *
+//     * @param resource the resource to process
+//     * @param repository the repository, used to extract serialization information for different resource types
+//     * @return the build object, or null if one could not be built
+//     * @throws CoreException
+//     * @throws java.io.IOException
+//     */
+//    public ResourceAndInfo buildResourceAndInfo(IResource resource, Repository repository, boolean forceDeploy) throws CoreException,
+//        IOException {
+//        if (ignoredFileNames.contains(resource.getName())) {
+//            return null;
+//        }
+//
+//        if(!forceDeploy) {
+//            Long modificationTimestamp = (Long) resource.getSessionProperty(ResourceUtil.QN_IMPORT_MODIFICATION_TIMESTAMP);
+//            Long resourceModificationTimeStamp = resource.getModificationStamp();
+//
+//            if(modificationTimestamp != null && modificationTimestamp >= resourceModificationTimeStamp) {
+//                Activator.getDefault().getPluginLogger()
+//                    .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
+//                        resource, modificationTimestamp, resourceModificationTimeStamp);
+//                return null;
+//            }
+//        }
+//
+////AS TODO: Not sure what this means in IntelliJ
+////        if (resource.isTeamPrivateMember(IResource.CHECK_ANCESTORS)) {
+////            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
+////            return null;
+////        }
+//
+//        FileInfo info = createFileInfo(resource);
+//        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
+//
+//        File syncDirectoryAsFile = ProjectUtil.getSyncDirectoryFullPath(resource.getProject()).toFile();
+//        IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
+//
+//        ServerConfiguration.Module module = resource.getModule();
+//        Filter filter = ProjectUtil.loadFilter(module);
+//        // Verify the Filter File
+//        //AS NOTE: We cannot allow to have the filter file to be empty otherwise it is possible to delete protected
+//        //AS NOTE: nodes like /etc/clientlibs.
+//        if(filter == null) {
+//            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
+//            messageManager.showAlertWithArguments("server.configuration.filter.file.not.found", module.getName());
+//            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
+//        }
+//
+//        ResourceProxy resourceProxy = null;
+//
+//        if (serializationManager.isSerializationFile(resource.getLocation().toOSString())) {
+//            InputStream contents = null;
+//            try {
+//                IFile file = (IFile) resource;
+//                contents = file.getContents();
+//                String resourceLocation = file.getFullPath().makeRelativeTo(syncDirectory.getFullPath())
+//                    .toPortableString();
+//                resourceProxy = serializationManager.readSerializationData(resourceLocation, contents);
+//                normaliseResourceChildren(file, resourceProxy, syncDirectory, repository);
+//
+//
+//                // TODO - not sure if this 100% correct, but we definitely should not refer to the FileInfo as the
+//                // .serialization file, since for nt:file/nt:resource nodes this will overwrite the file contents
+//                String primaryType = (String) resourceProxy.getProperties().get(Repository.JCR_PRIMARY_TYPE);
+//                if (Repository.NT_FILE.equals(primaryType)) {
+//                    // TODO move logic to serializationManager
+//                    File locationFile = new File(info.getLocation());
+//                    String locationFileParent = locationFile.getParent();
+//                    int endIndex = locationFileParent.length() - ".dir".length();
+//                    File actualFile = new File(locationFileParent.substring(0, endIndex));
+//                    String newLocation = actualFile.getAbsolutePath();
+//                    String newName = actualFile.getName();
+//                    String newRelativeLocation = actualFile.getAbsolutePath().substring(
+//                        syncDirectoryAsFile.getAbsolutePath().length());
+//                    info = new FileInfo(newLocation, newRelativeLocation, newName);
+//
+//                    Activator.getDefault().getPluginLogger()
+//                        .trace("Adjusted original location from {0} to {1}", resourceLocation, newLocation);
+//
+//                }
+//
+//            } catch (IOException e) {
+////AS TODO: Add logging
+////                Status s = new Status(Status.WARNING, Activator.PLUGIN_ID, "Failed reading file at "
+////                    + resource.getFullPath(), e);
+////                StatusManager.getManager().handle(s, StatusManager.LOG | StatusManager.SHOW);
+//                return null;
+//            } finally {
+//                IOUtils.closeQuietly(contents);
+//            }
+//        } else {
+//            //AS TODO: Start the handling of .content.xml sub folder content. This can happen when there are images etc
+//            //AS TODO: that belong to a jcr:content node and therefore do not fit into the .content.xml file
+//            //AS TODO: Not sure how this is done in Eclipse of if Eclipse just ignores it
+//
+//            // If the path of a resource contains or ends with _jcr_content then we do not handle it as it should
+//            // be done by the corresponding .content.xml file
+//            String filePath = resource.getVirtualFile().getPath();
+//            if((filePath.indexOf("/_jcr_content/") > 0 || filePath.endsWith("/_jcr_content")) && !(filePath.contains(("/_jcr_content/renditions")))) {
+//                return null;
+//            }
+//
+//            //AS TODO: Done with the special _jcr_content folder handling
+//
+//            // TODO - move logic to serializationManager
+//            // possible .dir serialization holder
+//            if (resource.getType() == IResource.FOLDER && resource.getName().endsWith(".dir")) {
+//                IFolder folder = (IFolder) resource;
+//                IResource contentXml = folder.findMember(CONTENT_FILE_NAME);
+//                // .dir serialization holder ; nothing to process here, the .content.xml will trigger the actual work
+//                if (contentXml != null && contentXml.exists()
+//                    && serializationManager.isSerializationFile(contentXml.getLocation().toOSString())) {
+//                    return null;
+//                }
+//            }
+//
+//            resourceProxy = buildResourceProxyForPlainFileOrFolder(resource, syncDirectory, repository);
+//        }
+//
+//        FilterResult filterResult = getFilterResult(resource, resourceProxy, filter);
+//
+//        switch (filterResult) {
+//
+//            case ALLOW:
+//                return new ResourceAndInfo(resourceProxy, info);
+//            case PREREQUISITE:
+//                // never try to 'create' the root node, we assume it exists
+//                if (!resourceProxy.getPath().equals("/")) {
+//                    //AS TODO: This does not work with 6.0 -> Try to set the primary type explicit if found for folders
+//                    if(resourceProxy.getChildren().size() > 0) {
+//                        return new ResourceAndInfo(resourceProxy, null, true);
+//                    } else {
+//                        // we don't explicitly set the primary type, which will allow the the repository to choose the best
+//                        // suited one ( typically nt:unstructured )
+//                        return new ResourceAndInfo(new ResourceProxy(resourceProxy.getPath()), null, true);
+//                    }
+//                }
+//            case DENY: // falls through
+//            default:
+//                return null;
+//        }
+//    }
+//
+//    private FileInfo createFileInfo(IResource resource) throws CoreException {
+//
+//        if (resource.getType() != IResource.FILE) {
+//            return null;
+//        }
+//
+//        IProject project = resource.getProject();
+//
+//        IFolder syncFolder = project.getFolder(ProjectUtil.getSyncDirectoryValue(project));
+//
+//        IPath relativePath = resource.getFullPath().makeRelativeTo(syncFolder.getFullPath());
+//
+//        FileInfo info = new FileInfo(resource.getLocation().toOSString(), relativePath.toOSString(), resource.getName());
+//
+//        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
+//
+//        return info;
+//    }
+//
+//    /**
+//     * Gets the filter result for a resource/resource proxy combination
+//     *
+//     * <p>
+//     * The resourceProxy may be null, typically when a resource is already deleted.
+//     *
+//     * <p>
+//     * The filter may be null, in which case all combinations are included in the filed, i.e. allowed.
+//     *
+//     * @param resource the resource to filter for, must not be <code>null</code>
+//     * @param resourceProxy the resource proxy to filter for, possibly <code>null</code>
+//     * @param filter the filter to use, possibly <tt>null</tt>
+//     * @return the filtering result, never <code>null</code>
+//     */
+//    private FilterResult getFilterResult(IResource resource, ResourceProxy resourceProxy, Filter filter) {
+//
+//        if (filter == null) {
+//            return FilterResult.ALLOW;
+//        }
+//
+//        File contentSyncRoot = ProjectUtil.getSyncDirectoryFile(resource.getProject());
+//
+//        String repositoryPath = resourceProxy != null ? resourceProxy.getPath() : getRepositoryPathForDeletedResource(
+//            resource, contentSyncRoot);
+//
+//        FilterResult filterResult = filter.filter(ProjectUtil.getSyncDirectoryFile(resource.getProject()),
+//            repositoryPath);
+//
+//        Activator.getDefault().getPluginLogger().trace("Filter result for {0} for {1}", repositoryPath, filterResult);
+//
+//        return filterResult;
+//    }
 
     private String getRepositoryPathForDeletedResource(IResource resource, File contentSyncRoot) {
         IFolder syncFolder = ProjectUtil.getSyncDirectory(resource.getProject());
@@ -566,85 +566,85 @@ public class ResourceChangeCommandFactory {
         return Arrays.asList((String[]) mixinTypesProp);
     }
 
-    public Command<?> newCommandForRemovedResources(Repository repository, IResource removed) throws CoreException {
+//    public Command<?> newCommandForRemovedResources(Repository repository, IResource removed) throws CoreException {
+//
+//        try {
+//            return removeFileCommand(repository, removed);
+//        } catch (IOException e) {
+//            throw new CoreException(
+//                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed removing" + removed, e)
+//            );
+//        }
+//    }
 
-        try {
-            return removeFileCommand(repository, removed);
-        } catch (IOException e) {
-            throw new CoreException(
-                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed removing" + removed, e)
-            );
-        }
-    }
-
-    private Command<?> removeFileCommand(Repository repository, IResource resource) throws CoreException, IOException {
-
-        if (resource.isTeamPrivateMember(IResource.CHECK_ANCESTORS)) {
-            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
-            return null;
-        }
-
-        if (ignoredFileNames.contains(resource.getName())) {
-            return null;
-        }
-
-        IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
-
-//        Filter filter = ProjectUtil.loadFilter(syncDirectory.getProject());
-        ServerConfiguration.Module module = resource.getModule();
-        Filter filter = ProjectUtil.loadFilter(module);
-        // Verify the Filter File
-        if(filter == null) {
-            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
-            messageManager.showAlert("server.configuration.filter.file.not.found", module.getName());
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
-        }
-
-        FilterResult filterResult = getFilterResult(resource, null, filter);
-        if (filterResult == FilterResult.DENY || filterResult == FilterResult.PREREQUISITE) {
-            return null;
-        }
-
-        String resourceLocation = getRepositoryPathForDeletedResource(resource,
-            ProjectUtil.getSyncDirectoryFile(resource.getProject()));
-
-        // verify whether a resource being deleted does not signal that the content structure
-        // was rearranged under a covering parent aggregate
-        IPath serializationFilePath = Path.fromOSString(serializationManager.getSerializationFilePath(resourceLocation,
-            SerializationKind.FOLDER));
-
-        ResourceProxy coveringParentData = findSerializationDataFromCoveringParent(resource, syncDirectory,
-            resourceLocation, serializationFilePath);
-        if (coveringParentData != null) {
-            Activator
-                .getDefault()
-                .getPluginLogger()
-                .trace("Found covering resource data ( repository path = {0} ) for resource at {1},  skipping deletion and performing an update instead",
-                    coveringParentData.getPath(), resource.getFullPath());
-            FileInfo info = createFileInfo(resource);
-            return repository.newAddOrUpdateNodeCommand(info, coveringParentData);
-        }
-
-        return repository.newDeleteNodeCommand(serializationManager.getRepositoryPath(resourceLocation));
-    }
-
-    public Command<Void> newReorderChildNodesCommand(Repository repository, IResource res) throws CoreException {
-
-        try {
-            ResourceAndInfo rai = buildResourceAndInfo(res, repository);
-
-            if (rai == null || rai.isOnlyWhenMissing()) {
-                return null;
-            }
-
-            return repository.newReorderChildNodesCommand(rai.getResource());
-        } catch (IOException e) {
-            throw new CoreException(
-//                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed reordering child nodes for "
-//                + res, e)
-                "Failed reordering child nodes for: " + res,
-                e
-            );
-        }
-    }
+//    private Command<?> removeFileCommand(Repository repository, IResource resource) throws CoreException, IOException {
+//
+//        if (resource.isTeamPrivateMember(IResource.CHECK_ANCESTORS)) {
+//            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
+//            return null;
+//        }
+//
+//        if (ignoredFileNames.contains(resource.getName())) {
+//            return null;
+//        }
+//
+//        IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
+//
+////        Filter filter = ProjectUtil.loadFilter(syncDirectory.getProject());
+//        ServerConfiguration.Module module = resource.getModule();
+//        Filter filter = ProjectUtil.loadFilter(module);
+//        // Verify the Filter File
+//        if(filter == null) {
+//            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
+//            messageManager.showAlert("server.configuration.filter.file.not.found", module.getName());
+//            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
+//        }
+//
+//        FilterResult filterResult = getFilterResult(resource, null, filter);
+//        if (filterResult == FilterResult.DENY || filterResult == FilterResult.PREREQUISITE) {
+//            return null;
+//        }
+//
+//        String resourceLocation = getRepositoryPathForDeletedResource(resource,
+//            ProjectUtil.getSyncDirectoryFile(resource.getProject()));
+//
+//        // verify whether a resource being deleted does not signal that the content structure
+//        // was rearranged under a covering parent aggregate
+//        IPath serializationFilePath = Path.fromOSString(serializationManager.getSerializationFilePath(resourceLocation,
+//            SerializationKind.FOLDER));
+//
+//        ResourceProxy coveringParentData = findSerializationDataFromCoveringParent(resource, syncDirectory,
+//            resourceLocation, serializationFilePath);
+//        if (coveringParentData != null) {
+//            Activator
+//                .getDefault()
+//                .getPluginLogger()
+//                .trace("Found covering resource data ( repository path = {0} ) for resource at {1},  skipping deletion and performing an update instead",
+//                    coveringParentData.getPath(), resource.getFullPath());
+//            FileInfo info = createFileInfo(resource);
+//            return repository.newAddOrUpdateNodeCommand(info, coveringParentData);
+//        }
+//
+//        return repository.newDeleteNodeCommand(serializationManager.getRepositoryPath(resourceLocation));
+//    }
+//
+//    public Command<Void> newReorderChildNodesCommand(Repository repository, IResource res) throws CoreException {
+//
+//        try {
+//            ResourceAndInfo rai = buildResourceAndInfo(res, repository);
+//
+//            if (rai == null || rai.isOnlyWhenMissing()) {
+//                return null;
+//            }
+//
+//            return repository.newReorderChildNodesCommand(rai.getResource());
+//        } catch (IOException e) {
+//            throw new CoreException(
+////                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed reordering child nodes for "
+////                + res, e)
+//                "Failed reordering child nodes for: " + res,
+//                e
+//            );
+//        }
+//    }
 }

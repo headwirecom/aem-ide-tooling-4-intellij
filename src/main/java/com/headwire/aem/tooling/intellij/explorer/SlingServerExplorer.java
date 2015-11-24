@@ -5,6 +5,7 @@ import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
+import com.headwire.aem.tooling.intellij.io.ServiceProvider4IntelliJ;
 import com.intellij.execution.ExecutionAdapter;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.configurations.RunProfile;
@@ -25,6 +26,8 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
+import org.apache.sling.ide.io.ServiceFactory;
+import org.apache.sling.ide.io.ServiceProvider;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -123,6 +126,8 @@ public class SlingServerExplorer
                 messageManager.sendDebugNotification("Container Remove Event: " + containerEvent);
             }
         });
+        // Set the Service Provider instance for IntelliJ
+        ServiceFactory.setServiceProvider(new ServiceProvider4IntelliJ());
     }
 
     public void dispose() {

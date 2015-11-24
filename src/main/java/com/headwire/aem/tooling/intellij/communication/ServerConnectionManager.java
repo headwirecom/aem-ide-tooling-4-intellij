@@ -16,6 +16,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
 import com.headwire.aem.tooling.intellij.util.Constants;
@@ -51,6 +52,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
+import org.apache.sling.ide.io.ConnectorException;
+import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
+import org.apache.sling.ide.io.SlingResource;
 import org.apache.sling.ide.log.Logger;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.apache.sling.ide.osgi.OsgiClientException;
@@ -115,7 +119,7 @@ public class ServerConnectionManager
     private ServerTreeSelectionHandler selectionHandler;
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
-    private ResourceChangeCommandFactory commandFactory;
+    private NewResourceChangeCommandFactory commandFactory;
 
     private static boolean firstRun = true;
 
@@ -123,7 +127,7 @@ public class ServerConnectionManager
         super(project);
         messageManager = ServiceManager.getService(myProject, MessageManager.class);
         serverConfigurationManager = ServiceManager.getService(myProject, ServerConfigurationManager.class);
-        commandFactory = new ResourceChangeCommandFactory(ServiceManager.getService(SerializationManager.class));
+        commandFactory = new NewResourceChangeCommandFactory(ServiceManager.getService(SerializationManager.class));
     }
 
     public void init(@NotNull ServerTreeSelectionHandler serverTreeSelectionHandler) {
@@ -777,16 +781,16 @@ public class ServerConnectionManager
                                     lastModificationTimestamp = Math.max(lastModificationTimestamp, timestamp);
                                 }
                             }
-                        } catch(CoreException e) {
-                            Status status = e.getStatus();
-                            if(status != null) {
-                                // The Core Exception is used to end the processing of publishing a file. In case of an error it will stop the entire processing
+                        } catch(ConnectorException e) {
+                            if(e.getId()  != ConnectorException.UNKNOWN) {
+                                // The Connector Exception is used to end the processing of publishing a file. In case of an error it will stop the entire processing
                                 // and in case of a warning it will proceed
-                                NotificationType type = status.getStatus() == IStatus.ERROR ? NotificationType.ERROR : NotificationType.WARNING;
-                                messageManager.showAlert(type, AEMBundle.message("aem.explorer.deploy.exception.title"), status.getMessage());
-                                if(type == NotificationType.ERROR) {
+                                NotificationType type = e.getId() < 0 ? NotificationType.ERROR : NotificationType.WARNING;
+                                messageManager.showAlert(type, AEMBundle.message("aem.explorer.deploy.exception.title"), e.getMessage());
+                                if(e.getId() < 0) {
                                     return;
                                 }
+                                throw e;
                             } else {
                                 messageManager.showAlert(NotificationType.ERROR, AEMBundle.message("aem.explorer.deploy.exception.title"), e.getCause().getMessage());
                                 return;
@@ -812,9 +816,10 @@ public class ServerConnectionManager
                     messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
                 }
             }
-        } catch(CoreException e) {
+        } catch(ConnectorException e) {
             messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
+            throw new RuntimeException(e);
         } catch(SerializationException e) {
             messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", module, e);
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
@@ -978,7 +983,7 @@ public class ServerConnectionManager
                         } else {
                             messageManager.sendInfoNotification("server.update.file.change.failed", path, currentModule);
                         }
-                    } catch(CoreException e) {
+                    } catch(ConnectorException e) {
                         e.printStackTrace();
                     } catch(SerializationException e) {
                         e.printStackTrace();
@@ -1017,14 +1022,10 @@ public class ServerConnectionManager
         Set<String> handledPaths,
         boolean force
     )
-        throws CoreException, SerializationException, IOException {
+        throws ConnectorException, SerializationException, IOException {
 
         long ret = -1;
         Logger logger = Activator.getDefault().getPluginLogger();
-
-//        IPath currentPath = moduleResource.getModuleRelativePath();
-//
-//        logger.trace("Ensuring that parent of path {0} is published", currentPath);
 
         VirtualFile parentFile = file.getParent();
         messageManager.sendDebugNotification("Check Parent File: " + parentFile);
@@ -1034,41 +1035,34 @@ public class ServerConnectionManager
             return ret;
         }
 
-//        IPath parentPath = currentPath.removeLastSegments(1);
-//        String parentPath = relativePath.substring(relativePath.lastIndexOf("/"));
-
         // already published by us, a parent of another resource that was published in this execution
         if (handledPaths.contains(parentFile.getPath())) {
             logger.trace("Parent path {0} was already handled, skipping", parentFile.getPath());
             return ret;
         }
 
-//        for (IModuleResource maybeParent : allResources) {
-//            if (maybeParent.getModuleRelativePath().equals(parentPath)) {
         // handle the parent's parent first, if needed
         long lastParentModificationTimestamp = ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths, force);
 
+        Command command = null;
         try {
             // create this resource
-            Command command = addFileCommand(repository, module, parentFile, force);
+            command = addFileCommand(repository, module, parentFile, force);
             execute(command);
-        } catch(CoreException e) {
-            Status status = e.getStatus();
-            if(status != null) {
-                throw new CoreException(
-                    new Status(
-                        status.getStatus(), status.getComponentId(), status.getActionId(),
-                        AEMBundle.message(
-                            ( status.getActionId() == Constants.COMMAND_EXECUTION_FAILURE ?
-                                "aem.explorer.deploy.create.parent.failed.message" :
-                                "aem.explorer.deploy.create.parent.unsuccessful.message" ),
-                            status.getMessage(), e.getCause().getMessage()),
-                        e
-                    )
+        } catch(ConnectorException e) {
+            ConnectorException rethrow = e;
+            if(e.getId() != ConnectorException.UNKNOWN) {
+                rethrow = new ConnectorException(
+                    AEMBundle.message(
+                        (e.getId() == Constants.COMMAND_EXECUTION_FAILURE ?
+                            "aem.explorer.deploy.create.parent.failed.message" :
+                            "aem.explorer.deploy.create.parent.unsuccessful.message" ),
+                        e.getMessage(),
+                        e.getCause().getMessage()),
+                    e
                 );
-            } else {
-                throw e;
             }
+            throw rethrow;
         }
 
         // save the modification timestamp to avoid a redeploy if nothing has changed
@@ -1077,44 +1071,33 @@ public class ServerConnectionManager
         handledPaths.add(parentFile.getPath());
         logger.trace("Ensured that resource at path {0} is published", parentFile.getPath());
         return Math.max(lastParentModificationTimestamp, parentFile.getTimeStamp());
-//            }
-//        }
-//
-//        throw new IllegalArgumentException("Resource at " + moduleResource.getModuleRelativePath()
-//            + " has parent path " + parentPath + " but no resource with that path is in the module's resources.");
-
     }
 
     private Command<?> addFileCommand(
         Repository repository, Module module, VirtualFile file, boolean forceDeploy
     ) throws
-        CoreException,
-        SerializationException, IOException {
-
-//        IResource res = getResource(resource);
-//
-//        if (res == null) {
-//            return null;
-//        }
-
-//        return commandFactory.newCommandForAddedOrUpdated(repository, res);
-        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
+        ConnectorException,
+        SerializationException, IOException
+    {
+        SlingResource resource = new SlingResource4IntelliJ(module.getSlingProject(), file);
+//        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
         return commandFactory.newCommandForAddedOrUpdated(repository, resource, forceDeploy);
     }
 
-    private Command<?> addFileCommand(Repository repository, IModuleResource resource) throws CoreException,
-        SerializationException, IOException {
+//AS TODO: In the IntelliJ plugin this isn't used -> check if used in the Sling Project and fix it
+//    private Command<?> addFileCommand(Repository repository, IModuleResource resource) throws CoreException,
+//        SerializationException, IOException {
+//
+//        IResource res = getResource(resource);
+//
+//        if (res == null) {
+//            return null;
+//        }
+//
+//        return commandFactory.newCommandForAddedOrUpdated(repository, res, false);
+//    }
 
-        IResource res = getResource(resource);
-
-        if (res == null) {
-            return null;
-        }
-
-        return commandFactory.newCommandForAddedOrUpdated(repository, res, false);
-    }
-
-    private Command<?> reorderChildNodesCommand(Repository repository, Module module, VirtualFile file) throws CoreException,
+    private Command<?> reorderChildNodesCommand(Repository repository, Module module, VirtualFile file) throws ConnectorException,
         SerializationException, IOException {
 
 //        IResource res = getResource(resource);
@@ -1122,22 +1105,25 @@ public class ServerConnectionManager
 //        if (res == null) {
 //            return null;
 //        }
+//
+//        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
 
-        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
+        SlingResource resource = new SlingResource4IntelliJ(module.getSlingProject(), file);
         return commandFactory.newReorderChildNodesCommand(repository, resource);
     }
 
-    private Command<?> reorderChildNodesCommand(Repository repository, IModuleResource resource) throws CoreException,
-        SerializationException, IOException {
-
-        IResource res = getResource(resource);
-
-        if (res == null) {
-            return null;
-        }
-
-        return commandFactory.newReorderChildNodesCommand(repository, res);
-    }
+//AS TODO: In the IntelliJ plugin this isn't used -> check if used in the Sling Project and fix it
+//    private Command<?> reorderChildNodesCommand(Repository repository, IModuleResource resource) throws CoreException,
+//        SerializationException, IOException {
+//
+//        IResource res = getResource(resource);
+//
+//        if (res == null) {
+//            return null;
+//        }
+//
+//        return commandFactory.newReorderChildNodesCommand(repository, res);
+//    }
 
     private IResource getResource(IModuleResource resource) {
 
@@ -1161,7 +1147,7 @@ public class ServerConnectionManager
 //        Repository repository, IModuleResource resource
         Repository repository, Module module, VirtualFile file
     )
-        throws SerializationException, IOException, CoreException {
+        throws SerializationException, IOException, ConnectorException {
 
 //        IResource deletedResource = getResource(resource);
 //
@@ -1169,11 +1155,12 @@ public class ServerConnectionManager
 //            return null;
 //        }
 
-        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
+//        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
+        SlingResource resource = new SlingResource4IntelliJ(module.getSlingProject(), file);
         return commandFactory.newCommandForRemovedResources(repository, resource);
     }
 
-    private void execute(Command<?> command) throws CoreException {
+    private void execute(Command<?> command) throws ConnectorException {
         if (command == null) {
             return;
         }
@@ -1186,21 +1173,16 @@ public class ServerConnectionManager
                 // Got the Repository Exception form the call
                 Throwable cause = e.getCause();
                 if(cause != null) {
-                    throw new CoreException(
-                        new Status(
-                            Status.ERROR, Constants.SERVER_CONNECTION_MANAGER, Constants.COMMAND_EXECUTION_FAILURE,
-                            command.getPath(),
-                            e
-                        )
+                    throw new ConnectorException(
+                        Constants.COMMAND_EXECUTION_FAILURE,
+                        command.getPath(),
+                        e
                     );
                 }
             }
-            throw new CoreException(
-                new Status(
-                    Status.ERROR, Constants.SERVER_CONNECTION_MANAGER, Constants.COMMAND_EXECUTION_UNSUCCESSFUL,
-                    AEMBundle.message("aem.explorer.deploy.command.execution.unsuccessful.message", command.getPath()),
-                    null
-                )
+            throw new ConnectorException(
+                Constants.COMMAND_EXECUTION_UNSUCCESSFUL,
+                AEMBundle.message("aem.explorer.deploy.command.execution.unsuccessful.message", command.getPath())
             );
         }
     }
