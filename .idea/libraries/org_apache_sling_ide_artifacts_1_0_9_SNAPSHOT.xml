@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="org.apache.sling.ide.artifacts-1.0.9-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/artifacts/target/org.apache.sling.ide.artifacts-1.0.9-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../sling-git-fork/sling/artifacts/src" />
+    </SOURCES>
+  </library>
+</component>
