@@ -2,6 +2,12 @@
 
 #### Updates:
 
+**Git Cleanup**: I did a few changes to the Git Repo to remove some files under .idea that were user specific noteably
+**dictionaires**, **uiDesigner.xml** and **workspace.xml**. An update might remove your local file and so place make
+a copy beforehand. If there is any issues of files that are missing please let me know.
+In order to make the compilation works you need to have a few Maven files in your local respository. Have a look into
+**.idea/libraries** and all XML files that start with **Maven__** have to be available in local Maven repo.
+
 **0.6.4-SNAPSHOT**: Adjusted the Version to a Maven pattern to go along the Sling project.
 Started to incorporate the Sling Project project to test and verify the IDE independent Sling Connector.
 The implementation of the Sling Connector API can be found under com.headwire.aem.tooling.intellij.io.
