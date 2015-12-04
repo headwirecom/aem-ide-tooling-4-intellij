@@ -4,7 +4,6 @@ import com.headwire.aem.tooling.intellij.config.ModuleProject;
 import com.headwire.aem.tooling.intellij.config.ModuleProjectFactory;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
-import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
 import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
@@ -12,9 +11,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IModuleResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
-import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
@@ -91,7 +88,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
-//import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
