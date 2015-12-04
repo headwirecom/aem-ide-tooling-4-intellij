@@ -2,6 +2,12 @@
 
 #### Updates:
 
+**0.6.4-SNAPSHOT**: Adjusted the Version to a Maven pattern to go along the Sling project.
+Started to incorporate the Sling Project project to test and verify the IDE independent Sling Connector.
+The implementation of the Sling Connector API can be found under com.headwire.aem.tooling.intellij.io.
+Most of the code that uses the Sling Connector can be found in the class
+com.headwire.aem.tooling.intellij.io.ServerConnectionManager. 
+
 **0.6 Beta 3**: Fixed an issue with the Console Log Settings to being disabled if no configuration is selected.
 Fixed issues with Windows paths. Fixed an issue with Force Deploy doesn't apply to parent folders.
 Fixed an issue with Windows paths and File Changes.
