@@ -114,7 +114,6 @@ public class SlingProject4IntelliJ
                 Util.setModificationStamp(filterFile);
             } catch (IOException e) {
                 throw new ConnectorException(
-//                    "Failed loading filter file for project " + project.getName()
                     "Failed loading filter file for module " + module
                         + " from location " + filterFile,
                     e

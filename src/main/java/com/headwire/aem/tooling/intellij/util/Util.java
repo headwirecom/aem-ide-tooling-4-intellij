@@ -95,7 +95,7 @@ public class Util {
         }
         if(name != null) {
             try {
-                ret = (T) T.valueOf(defaultValue.getClass(), name);
+                ret = (T) defaultValue.valueOf(defaultValue.getClass(), name);
             } catch(IllegalArgumentException e) {
                 // Enum was not found so use the default value instead
             }

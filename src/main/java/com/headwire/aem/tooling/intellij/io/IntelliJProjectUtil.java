@@ -13,6 +13,7 @@ import java.io.IOException;
 /**
  * Created by schaefa on 11/16/15.
  */
+@Deprecated
 public class IntelliJProjectUtil
     implements ProjectUtil
 {

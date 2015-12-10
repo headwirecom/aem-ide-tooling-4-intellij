@@ -14,9 +14,4 @@ public class ServiceProvider4IntelliJ
     public PluginLogger createPluginLogger() {
         return new IntelliJPluginLogger();
     }
-
-    @Override
-    public ProjectUtil createProjectUtil() {
-        return new IntelliJProjectUtil();
-    }
 }

@@ -1,17 +1,18 @@
 package com.headwire.aem.tooling.intellij.io;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.components.ApplicationComponent;
-import org.apache.sling.ide.log.Logger;
+import org.apache.sling.ide.io.PluginLogger;
 
 /**
  * Created by schaefa on 5/14/15.
  */
 public class IntelliJPluginLogger
     extends ApplicationComponent.Adapter
-    implements org.apache.sling.ide.io.PluginLogger
+    implements PluginLogger
 {
-    private com.intellij.openapi.diagnostic.Logger delegate;
+    private Logger delegate;
 
     public IntelliJPluginLogger() {
         delegate = PluginManager.getLogger();

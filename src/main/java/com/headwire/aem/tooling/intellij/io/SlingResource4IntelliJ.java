@@ -1,7 +1,10 @@
 package com.headwire.aem.tooling.intellij.io;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
+import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.io.ConnectorException;
 import org.apache.sling.ide.io.SlingProject;
 import org.apache.sling.ide.io.SlingResource;
@@ -24,7 +27,7 @@ public class SlingResource4IntelliJ
 
     private SlingProject project;
     private VirtualFile file;
-    // If there is no local file avaialble the resource still could exist on the Sling Server
+    // If there is no local file available the resource still could exist on the Sling Server
     private String resourcePath;
 
     public SlingResource4IntelliJ(SlingProject project, VirtualFile file) {
@@ -52,7 +55,13 @@ public class SlingResource4IntelliJ
 
     @Override
     public boolean isModified() {
-        return false;
+        boolean ret = true;
+        if(file != null) {
+            Long modificationTimestamp = Util.getModificationStamp(file);
+            Long fileModificationTimestamp = file.getModificationStamp();
+            ret = modificationTimestamp < fileModificationTimestamp;
+        }
+        return ret;
     }
 
     @Override
@@ -222,6 +231,21 @@ public class SlingResource4IntelliJ
     @Override
     public void accept(SlingResourceVisitor visitor, int depth, int memberFlags) throws ConnectorException {
 
+    }
+
+    @Override
+    public SlingResource getSyncDirectory() {
+        return getProject().getSyncDirectory();
+    }
+
+    @Override
+    public SlingResource getResourceFromPath(String resourcePath) {
+        return new SlingResource4IntelliJ(project, resourcePath);
+    }
+
+    @Override
+    public Filter loadFilter() throws ConnectorException {
+        return getProject().loadFilter();
     }
 
     @Override
