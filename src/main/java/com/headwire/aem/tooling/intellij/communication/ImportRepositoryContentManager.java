@@ -206,36 +206,36 @@ public class ImportRepositoryContentManager {
 
             @Override
             public boolean visit(IResource resource) throws CoreException {
-//
-//                try {
-//                    ResourceAndInfo rai = rccf.buildResourceAndInfo(resource, repository);
-//
-//                    if (rai == null) {
-//                        // can be a prerequisite
-//                        return true;
-//                    }
-//
-//                    String repositoryPath = rai.getResource().getPath();
-//
-////                    FilterResult filterResult = filter.filter(contentSyncRoot, repositoryPath);
-////AS TODO: This is an adjustment to the 1.0.9 codebase
-//                    FilterResult filterResult = filter.filter(repositoryPath);
-//
-//                    if (ignoredResources.isIgnored(repositoryPath)) {
-//                        return false;
-//                    }
-//
-//                    if (filterResult == FilterResult.ALLOW) {
-//                        currentResources.add(resource);
-//                        return true;
-//                    }
-//
-//                    return false;
-//                } catch (IOException e) {
-//                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-//                        "Failed reading current project's resources", e));
-//                }
-                throw new UnsupportedOperationException("This method needs to be implemented first");
+
+                try {
+                    ResourceAndInfo rai = rccf.buildResourceAndInfo(resource, repository);
+
+                    if (rai == null) {
+                        // can be a prerequisite
+                        return true;
+                    }
+
+                    String repositoryPath = rai.getResource().getPath();
+
+//                    FilterResult filterResult = filter.filter(contentSyncRoot, repositoryPath);
+//AS TODO: This is an adjustment to the 1.0.9 codebase
+                    FilterResult filterResult = filter.filter(repositoryPath);
+
+                    if (ignoredResources.isIgnored(repositoryPath)) {
+                        return false;
+                    }
+
+                    if (filterResult == FilterResult.ALLOW) {
+                        currentResources.add(resource);
+                        return true;
+                    }
+
+                    return false;
+                } catch (IOException e) {
+                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                        "Failed reading current project's resources", e));
+                }
+//                throw new UnsupportedOperationException("This method needs to be implemented first");
             }
         });
 

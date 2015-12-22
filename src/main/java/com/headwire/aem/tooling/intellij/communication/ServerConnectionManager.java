@@ -4,14 +4,19 @@ import com.headwire.aem.tooling.intellij.config.ModuleProject;
 import com.headwire.aem.tooling.intellij.config.ModuleProjectFactory;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
+
+//AS TODO: We should use Eclipse Stuff here -> find a way to make this IDE independent
 import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IModuleResource;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
+
+//import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
+//import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
+//import com.headwire.aem.tooling.intellij.eclipse.stub.IModuleResource;
+//import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
+//AS TODO: We should use Eclipse Stuff here -> find a way to make this IDE independent
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
+
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
@@ -429,22 +434,22 @@ public class ServerConnectionManager
         return ret;
     }
 
-    @Nullable
-    public static void disconnectRepository(@NotNull ServerConfiguration serverConfiguration, @NotNull MessageManager messageManager) {
-//        messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
-        try {
-            ServerUtil.stopRepository(new IServer(serverConfiguration), new NullProgressMonitor());
-        } catch(CoreException e) {
-            messageManager.sendDebugNotification("Failed to disconnect: " + e.getMessage());
-//            // Show Alert and exit
-//            //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
-//            if(e.getCause().getClass() == IllegalArgumentException.class) {
-//                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository.refused", serverConfiguration.getName());
-//            } else {
-//                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
-//            }
-        }
-    }
+//    @Nullable
+//    public static void disconnectRepository(@NotNull ServerConfiguration serverConfiguration, @NotNull MessageManager messageManager) {
+////        messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+//        try {
+//            ServerUtil.stopRepository(new IServer(serverConfiguration), new NullProgressMonitor());
+//        } catch(CoreException e) {
+//            messageManager.sendDebugNotification("Failed to disconnect: " + e.getMessage());
+////            // Show Alert and exit
+////            //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
+////            if(e.getCause().getClass() == IllegalArgumentException.class) {
+////                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository.refused", serverConfiguration.getName());
+////            } else {
+////                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
+////            }
+//        }
+//    }
 
     public static List<ResourceProxy> getChildrenNodes(Repository repository, String path) {
         List<ResourceProxy> ret = new ArrayList<ResourceProxy>();
@@ -1121,23 +1126,23 @@ public class ServerConnectionManager
 //        return commandFactory.newReorderChildNodesCommand(repository, res);
 //    }
 
-    private IResource getResource(IModuleResource resource) {
-
-        IResource file = (IFile) resource.getAdapter(IFile.class);
-        if (file == null) {
-            file = (IFolder) resource.getAdapter(IFolder.class);
-        }
-
-        if (file == null) {
-            // Usually happens on server startup, it seems to be safe to ignore for now
-            Activator.getDefault().getPluginLogger()
-                .trace("Got null {0} and {1} for {2}", IFile.class.getSimpleName(),
-                    IFolder.class.getSimpleName(), resource);
-            return null;
-        }
-
-        return file;
-    }
+//    private IResource getResource(IModuleResource resource) {
+//
+//        IResource file = (IFile) resource.getAdapter(IFile.class);
+//        if (file == null) {
+//            file = (IFolder) resource.getAdapter(IFolder.class);
+//        }
+//
+//        if (file == null) {
+//            // Usually happens on server startup, it seems to be safe to ignore for now
+//            Activator.getDefault().getPluginLogger()
+//                .trace("Got null {0} and {1} for {2}", IFile.class.getSimpleName(),
+//                    IFolder.class.getSimpleName(), resource);
+//            return null;
+//        }
+//
+//        return file;
+//    }
 
     private Command<?> removeFileCommand(
 //        Repository repository, IModuleResource resource
