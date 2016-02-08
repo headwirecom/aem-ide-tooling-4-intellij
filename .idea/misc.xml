@@ -14,6 +14,7 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
+        <option value="$PROJECT_DIR$/../sling-git-fork/sling/api-test/pom.xml" />
         <option value="$PROJECT_DIR$/../sling-git-fork/sling/api/pom.xml" />
       </list>
     </option>

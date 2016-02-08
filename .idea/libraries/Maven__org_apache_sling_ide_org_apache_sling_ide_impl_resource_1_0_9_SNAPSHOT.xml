@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.sling.ide:org.apache.sling.ide.impl-resource:1.0.9-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/ide/org.apache.sling.ide.impl-resource/1.0.9-SNAPSHOT/org.apache.sling.ide.impl-resource-1.0.9-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/ide/org.apache.sling.ide.impl-resource/1.0.9-SNAPSHOT/org.apache.sling.ide.impl-resource-1.0.9-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/ide/org.apache.sling.ide.impl-resource/1.0.9-SNAPSHOT/org.apache.sling.ide.impl-resource-1.0.9-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

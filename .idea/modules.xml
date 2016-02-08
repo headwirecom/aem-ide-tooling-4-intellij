@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AEM Tooling Plugin.iml" filepath="$PROJECT_DIR$/AEM Tooling Plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/../sling-git-fork/sling/api/api.iml" filepath="$PROJECT_DIR$/../sling-git-fork/sling/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sling-git-fork/sling/api-test/org.apache.sling.ide.api-test.iml" filepath="$PROJECT_DIR$/../sling-git-fork/sling/api-test/org.apache.sling.ide.api-test.iml" />
     </modules>
   </component>
 </project>

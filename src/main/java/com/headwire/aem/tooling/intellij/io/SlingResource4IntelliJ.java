@@ -109,7 +109,7 @@ public class SlingResource4IntelliJ
                     ret = "/" + ret;
                 }
             } else {
-                throw new IllegalArgumentException("Resource Path: '" + ret + "' doest start with Sync Path: '" + syncDirectoryPath + "'");
+                throw new IllegalArgumentException("Resource Path: '" + ret + "' doest not start with Sync Path: '" + syncDirectoryPath + "'");
             }
             if(!raw) {
                 //AS TODO: Adjust this for Windows -> apply raw
