@@ -60,9 +60,9 @@ public class SlingServerExplorer
         logger.info("Info message for SSE");
         logger.debug("Debug message for SSE");
         myProject = project;
-        myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
+        myConfig = project.getComponent(ServerConfigurationManager.class);
 
-        ServerTreeManager serverTreeManager = ServiceManager.getService(project, ServerTreeManager.class);
+        ServerTreeManager serverTreeManager = project.getComponent(ServerTreeManager.class);
         if(serverTreeManager == null) {
             messageManager.showAlert("Failure", "Failure to find Server Tree Manager");
         }
@@ -72,7 +72,7 @@ public class SlingServerExplorer
         ToolTipManager.sharedInstance().registerComponent(myTree);
         final MessageBus bus = myProject.getMessageBus();
         myConn = bus.connect();
-        messageManager = ServiceManager.getService(myProject, MessageManager.class);
+        messageManager = myProject.getComponent(MessageManager.class);
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
         // and when it is taken down even when not started or stopped through the Plugin
         myConn.subscribe(

@@ -70,7 +70,7 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
 
     @Override
     public Object[] getChildElements(Object element) {
-        final ServerConfigurationManager configuration = ServiceManager.getService(myProject, ServerConfigurationManager.class);
+        final ServerConfigurationManager configuration = myProject.getComponent(ServerConfigurationManager.class);
         if(element == myRoot) {
             if(!configuration.isInitialized()) {
                 return new Object[]{AEMBundle.message("tree.builder.configurations.loading.name")};

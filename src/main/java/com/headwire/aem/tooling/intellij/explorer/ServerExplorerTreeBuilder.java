@@ -50,7 +50,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
         super(tree, treeModel, new ServerExplorerTreeStructure(project), IndexComparator.INSTANCE);
         myProject = project;
         myConfigurationListener = new ConfigurationListenerImpl();
-        myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
+        myConfig = project.getComponent(ServerConfigurationManager.class);
         myExpansionListener = new ExpandedStateUpdater();
         tree.addTreeExpansionListener(myExpansionListener);
         initRootNode();

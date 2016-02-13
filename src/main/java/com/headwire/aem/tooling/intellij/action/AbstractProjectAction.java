@@ -53,7 +53,7 @@ public abstract class AbstractProjectAction
 
     @NotNull
     protected MessageManager getMessageManager(@NotNull Project project) {
-        return ServiceManager.getService(project, MessageManager.class);
+        return project.getComponent(MessageManager.class);
     }
 
     protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext);
@@ -61,14 +61,14 @@ public abstract class AbstractProjectAction
     protected abstract boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext);
 
     protected ServerTreeSelectionHandler getSelectionHandler(@Nullable Project project) {
-        return project == null ? null : ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+        return project == null ? null : project.getComponent(ServerTreeSelectionHandler.class);
     }
 
     protected ServerConnectionManager getConnectionManager(@Nullable Project project) {
-        return project == null ? null : ServiceManager.getService(project, ServerConnectionManager.class);
+        return project == null ? null : project.getComponent(ServerConnectionManager.class);
     }
 
     protected ServerConfigurationManager getConfigurationManager(@Nullable Project project) {
-        return project == null ? null : ServiceManager.getService(project, ServerConfigurationManager.class);
+        return project == null ? null : project.getComponent(ServerConfigurationManager.class);
     }
 }

@@ -23,8 +23,8 @@ public class BuildConfigurationAction
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        ServerConfigurationManager configurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
+        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConfigurationManager configurationManager = project.getComponent(ServerConfigurationManager.class);
         if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             BuildSelectionDialog dialog = new BuildSelectionDialog(project, serverConfiguration);
@@ -37,7 +37,7 @@ public class BuildConfigurationAction
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 }

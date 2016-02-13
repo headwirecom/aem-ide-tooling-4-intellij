@@ -123,16 +123,16 @@ public class ConsoleLogToolWindowFactory
 
         @Override
         public void update(AnActionEvent e) {
-            ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+            ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
             ServerConfiguration serverConfiguration = selectionHandler == null ? null : selectionHandler.getCurrentConfiguration();
             e.getPresentation().setEnabled(project != null && serverConfiguration != null);
         }
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
-            ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-            ServerConfigurationManager configurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
+            ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
+            ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+            ServerConfigurationManager configurationManager = project.getComponent(ServerConfigurationManager.class);
             if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                 if(serverConfiguration != null) {

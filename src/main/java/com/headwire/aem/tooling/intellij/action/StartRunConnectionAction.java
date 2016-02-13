@@ -39,8 +39,8 @@ public class StartRunConnectionAction extends AbstractProjectAction {
     }
 
     public void doRun(final Project project, final DataContext dataContext) {
-        final ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
-        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        final ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
+        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         final String title = AEMBundle.message("check.configuration.action.text");
         final String description = AEMBundle.message("check.configuration.action.description");
 

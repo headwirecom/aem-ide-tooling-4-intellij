@@ -23,7 +23,7 @@ public class AEMActionGroup extends DefaultActionGroup implements DumbAware {
         boolean ret = false;
         Project project = e.getProject();
         if(project != null) {
-            final ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+            final ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
             ret = selectionHandler.getCurrentConfiguration() != null;
         }
         return ret;

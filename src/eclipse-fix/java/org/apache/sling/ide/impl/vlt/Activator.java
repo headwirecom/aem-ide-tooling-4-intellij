@@ -1,5 +1,6 @@
 package org.apache.sling.ide.impl.vlt;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import org.apache.sling.ide.log.Logger;
 
@@ -18,6 +19,6 @@ public class Activator {
     }
 
     public Logger getPluginLogger() {
-        return ServiceManager.getService(Logger.class);
+        return ApplicationManager.getApplication().getComponent(Logger.class);
     }
 }

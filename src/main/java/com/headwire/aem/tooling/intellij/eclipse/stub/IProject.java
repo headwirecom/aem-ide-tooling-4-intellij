@@ -29,8 +29,8 @@ public class IProject {
     }
 
     public IFolder getFolder(IPath path) {
-        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = com.intellij.openapi.components.ServiceManager.getService(
-            project, com.headwire.aem.tooling.intellij.communication.MessageManager.class
+        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = project.getComponent(
+            com.headwire.aem.tooling.intellij.communication.MessageManager.class
         );
         messageManager.sendDebugNotification("Given Path: '" + path + "'");
 

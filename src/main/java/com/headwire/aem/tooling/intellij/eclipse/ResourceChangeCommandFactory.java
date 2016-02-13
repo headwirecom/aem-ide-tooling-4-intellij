@@ -154,7 +154,7 @@ public class ResourceChangeCommandFactory {
         //AS NOTE: We cannot allow to have the filter file to be empty otherwise it is possible to delete protected
         //AS NOTE: nodes like /etc/clientlibs.
         if(filter == null) {
-            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
+            MessageManager messageManager = module.getProject().getComponent(MessageManager.class);
             messageManager.showAlertWithArguments("server.configuration.filter.file.not.found", module.getName());
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
         }
@@ -600,7 +600,7 @@ public class ResourceChangeCommandFactory {
         Filter filter = ProjectUtil.loadFilter(module);
         // Verify the Filter File
         if(filter == null) {
-            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
+            MessageManager messageManager = module.getProject().getComponent(MessageManager.class);
             messageManager.showAlert("server.configuration.filter.file.not.found", module.getName());
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
         }

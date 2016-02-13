@@ -86,6 +86,8 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -126,9 +128,15 @@ public class ServerConnectionManager
 
     public ServerConnectionManager(@NotNull Project project) {
         super(project);
-        messageManager = ServiceManager.getService(myProject, MessageManager.class);
-        serverConfigurationManager = ServiceManager.getService(myProject, ServerConfigurationManager.class);
-        commandFactory = new NewResourceChangeCommandFactory(ServiceManager.getService(SerializationManager.class));
+//        messageManager = ServiceManager.getService(myProject, MessageManager.class);
+        messageManager = myProject.getComponent(MessageManager.class);
+//            ServiceManager.getService(myProject, MessageManager.class);
+//        serverConfigurationManager = ServiceManager.getService(myProject, ServerConfigurationManager.class);
+        serverConfigurationManager = myProject.getComponent(ServerConfigurationManager.class);
+        commandFactory = new NewResourceChangeCommandFactory(
+//            ServiceManager.getService(SerializationManager.class)
+            myProject.getComponent(SerializationManager.class)
+        );
     }
 
     public void init(@NotNull ServerTreeSelectionHandler serverTreeSelectionHandler) {
@@ -306,8 +314,9 @@ public class ServerConnectionManager
     }
 
     public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration) {
-        MavenProjectsManager mavenProjectsManager = ServiceManager.getService(myProject, MavenProjectsManager.class);
-        List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
+//        MavenProjectsManager mavenProjectsManager = ServiceManager.getService(myProject, MavenProjectsManager.class);
+        MavenProjectsManager mavenProjectsManager = myProject.getComponent(MavenProjectsManager.class);
+//        List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
 
         List<ModuleProject> moduleProjects = ModuleProjectFactory.getProjectModules(myProject);
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
@@ -344,7 +353,8 @@ public class ServerConnectionManager
             try {
                 OsgiClient osgiClient = obtainSGiClient();
 //                EmbeddedArtifactLocator artifactLocator = OSGiFactory.getArtifactLocator();
-                EmbeddedArtifactLocator artifactLocator = ServiceManager.getService(EmbeddedArtifactLocator.class);
+//                EmbeddedArtifactLocator artifactLocator = ServiceManager.getService(EmbeddedArtifactLocator.class);
+                EmbeddedArtifactLocator artifactLocator = myProject.getComponent(EmbeddedArtifactLocator.class);
                 Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 
                 messageManager.sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
@@ -882,13 +892,21 @@ public class ServerConnectionManager
         return ret;
     }
 
-    private void getChangedResourceList(VirtualFile resourceFile, List<VirtualFile> changedResources) {
-        if(!resourceFile.isDirectory()) {
-            changedResources.add(resourceFile);
-        } else {
-            for(VirtualFile child : resourceFile.getChildren()) {
-                getChangedResourceList(child, changedResources);
+    /**
+     * Builds up the list of resource files recursively of the given resource
+     *
+     * @param resource The resource we start with. If it is a directory we call this method with that directory
+     * @param resourceList The list we add all resource files. At the end this list contains all files inside
+     *                     the original resource.
+     */
+    private void getChangedResourceList(VirtualFile resource, List<VirtualFile> resourceList) {
+        if(resource.isDirectory()) {
+            List<VirtualFile> children = Arrays.asList(resource.getChildren());
+            for(VirtualFile child : children) {
+                getChangedResourceList(child, resourceList);
             }
+        } else {
+            resourceList.add(resource);
         }
     }
 

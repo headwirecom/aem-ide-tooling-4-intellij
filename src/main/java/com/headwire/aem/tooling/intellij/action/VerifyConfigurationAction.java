@@ -47,7 +47,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConnectionInUse();
     }
 
@@ -55,7 +55,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
         int exitNow = Messages.OK;
         boolean ret = true;
         ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         MessageManager messageManager = getMessageManager(project);
         ServerConfigurationManager serverConfigurationManager = getConfigurationManager(project);
         if(selectionHandler != null && serverConnectionManager != null && messageManager != null) {

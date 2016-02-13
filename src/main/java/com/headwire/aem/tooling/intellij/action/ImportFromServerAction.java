@@ -33,7 +33,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
     @Override
     public boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         boolean ret = false;
-        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         if(serverConnectionManager.isConfigurationSelected()) {
             // Now check if a file is selected
             VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
@@ -65,9 +65,9 @@ public class ImportFromServerAction extends AbstractProjectAction {
         }
     }
 
-    private void doImport(Project project, final VirtualFile file) {
-        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        final ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+    private void doImport(final Project project, final VirtualFile file) {
+        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        final ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
         if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
             return;
         }
@@ -122,7 +122,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
                                         }
                                         IPath projectRelativePath = new IPath(relativePath);
                                         IProject iProject = new IProject(currentModule);
-                                        SerializationManager serializationManager = ServiceManager.getService(SerializationManager.class);
+                                        SerializationManager serializationManager = project.getComponent(SerializationManager.class);
 
 
                                         try {

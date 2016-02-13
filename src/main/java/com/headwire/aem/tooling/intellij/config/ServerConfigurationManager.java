@@ -81,7 +81,7 @@ public class ServerConfigurationManager
 
     public ServerConfigurationManager(final Project project) {
         super(project);
-        messageManager = ServiceManager.getService(project, MessageManager.class);
+        messageManager = project.getComponent(MessageManager.class);
     }
 
     public ServerConfiguration[] getServerConfigurations() {

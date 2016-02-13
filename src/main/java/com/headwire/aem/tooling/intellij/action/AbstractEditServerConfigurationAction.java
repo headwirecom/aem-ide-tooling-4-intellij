@@ -38,7 +38,8 @@ public abstract class AbstractEditServerConfigurationAction
                 isOk = true;
                 ServerConfigurationDialog dialog = new ServerConfigurationDialog(project, source);
                 if(dialog.showAndGet()) {
-                    final ServerConfigurationManager configuration = ServiceManager.getService(project, ServerConfigurationManager.class);
+//                    final ServerConfigurationManager configuration = ServiceManager.getService(project, ServerConfigurationManager.class);
+                    final ServerConfigurationManager configuration = project.getComponent(ServerConfigurationManager.class);
                     // Check if there is not a name collision due to changed name
                     ServerConfiguration target = dialog.getConfiguration();
                     if(source != null && !source.getName().equals(target.getName())) {

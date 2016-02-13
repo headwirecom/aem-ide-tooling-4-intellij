@@ -23,6 +23,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="api" />
         <module name="org.apache.sling.ide.impl-vlt-test" />
       </profile>
       <profile default="false" name="Annotation profile for org.apache.sling.ide.api-test" enabled="true">
@@ -32,16 +33,9 @@
         <processorPath useClasspath="true" />
         <module name="org.apache.sling.ide.api-test" />
       </profile>
-      <profile default="false" name="Annotation profile for api" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="api" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="api" target="1.6" />
+      <module name="api" target="1.5" />
       <module name="org.apache.sling.ide.api" target="1.6" />
       <module name="org.apache.sling.ide.api-test" target="1.6" />
       <module name="org.apache.sling.ide.artifacts" target="1.6" />

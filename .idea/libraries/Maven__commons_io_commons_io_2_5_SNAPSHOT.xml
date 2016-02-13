@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: commons-io:commons-io:2.5-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/commons-io/commons-io/2.5-SNAPSHOT/commons-io-2.5-20151119.212356-154.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/commons-io/commons-io/2.5-SNAPSHOT/commons-io-2.5-20151119.212356-154-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/commons-io/commons-io/2.5-SNAPSHOT/commons-io-2.5-20151119.212356-154-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -56,8 +56,8 @@ public class ContentResourceChangeListener
 
     public ContentResourceChangeListener(@NotNull Project project) {
         super(project);
-        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        pluginConfiguration = ServiceManager.getService(AEMPluginConfiguration.class);
+        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        pluginConfiguration = project.getComponent(AEMPluginConfiguration.class);
         this.serverConnectionManager = serverConnectionManager;
         this.project = project;
 
@@ -136,7 +136,7 @@ public class ContentResourceChangeListener
             new Runnable() {
                 @Override
                 public void run() {
-                    ServerTreeManager serverTreeManager = ServiceManager.getService(myProject, ServerTreeManager.class);
+                    ServerTreeManager serverTreeManager = myProject.getComponent(ServerTreeManager.class);
                     if(serverTreeManager != null) {
                         // At the end of the Tool Window is created we run the Check if a project is marked as Default
                         Object modelRoot = serverTreeManager.getTree().getModel().getRoot();
@@ -262,7 +262,7 @@ public class ContentResourceChangeListener
                         }
                     );
                 } else {
-                    MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
+                    MessageManager messageManager = project.getComponent(MessageManager.class);
                     if(messageManager != null) {
                         messageManager.sendErrorNotification(
                             "server.update.file.change.with.error",

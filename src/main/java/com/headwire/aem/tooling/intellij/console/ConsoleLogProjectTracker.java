@@ -76,7 +76,7 @@ public class ConsoleLogProjectTracker
     }
 
     protected void printNotification(Notification notification) {
-        ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, ServerTreeSelectionHandler.class);
+        ServerTreeSelectionHandler selectionHandler = myProject.getComponent(ServerTreeSelectionHandler.class);
         if(selectionHandler != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;

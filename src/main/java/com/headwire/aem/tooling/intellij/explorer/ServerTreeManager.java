@@ -77,17 +77,17 @@ public class ServerTreeManager
 
     public ServerTreeManager(@NotNull Project project) {
         super(project);
-        final MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
+        final MessageManager messageManager = project.getComponent(MessageManager.class);
         final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
         tree = new Tree(model);
         tree.setRootVisible(true);
         tree.setShowsRootHandles(true);
         tree.setCellRenderer(new NodeRenderer());
-        ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+        ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
         selectionHandler.init(tree);
-        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         serverConnectionManager.init(selectionHandler);
-        myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
+        myConfig = project.getComponent(ServerConfigurationManager.class);
 //        serverConnectionManager = new ServerConnectionManager(project, selectionHandler);
         myBuilder = new ServerExplorerTreeBuilder(project, tree, model);
         TreeUtil.installActions(tree);

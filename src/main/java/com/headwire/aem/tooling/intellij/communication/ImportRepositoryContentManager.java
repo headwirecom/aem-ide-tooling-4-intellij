@@ -99,7 +99,7 @@ public class ImportRepositoryContentManager {
 
 //        this.monitor = monitor;
 
-        MessageManager messageManager = ServiceManager.getService(project.getModule().getProject(), MessageManager.class);
+        MessageManager messageManager = project.getModule().getProject().getComponent(MessageManager.class);
         repository = ServerUtil.getConnectedRepository(server, monitor, messageManager);
         if(repository != null) {
             File syncDirectory = ProjectUtil.getSyncDirectoryFile(project);
