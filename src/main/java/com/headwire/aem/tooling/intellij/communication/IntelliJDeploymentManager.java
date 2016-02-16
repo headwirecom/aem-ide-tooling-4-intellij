@@ -31,17 +31,17 @@ import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_N
  * Created by schaefa on 2/13/16.
  */
 public class IntelliJDeploymentManager
-    extends AbstractDeploymentManager
+    extends AbstractDeploymentManager<Module, Project, VirtualFile>
 {
 
-    public static class IntelliJFileWrapper
-        extends FileWrapper<VirtualFile>
+    public class IntelliJFileWrapper
+        extends FileWrapper
     {
         public IntelliJFileWrapper(VirtualFile file) {
             super(file);
         }
 
-        public FileWrapper<VirtualFile> getParent() {
+        public FileWrapper getParent() {
             return new IntelliJFileWrapper(getFile().getParent());
         }
 
@@ -60,13 +60,91 @@ public class IntelliJDeploymentManager
         public long getTimestamp() {
             return getFile().getTimeStamp();
         }
+
+        @Override
+        public void getChangedResourceList(List<FileWrapper> resourceList) {
+            VirtualFile rawResource = getFile();
+            getChangedResourceList(rawResource, resourceList);
+        }
+
+        void getChangedResourceList(VirtualFile resource, List<FileWrapper> resourceList) {
+            if(resource.isDirectory()) {
+                List<VirtualFile> children = Arrays.asList(resource.getChildren());
+                for(VirtualFile child : children) {
+                    getChangedResourceList(child, resourceList);
+                }
+            } else {
+                resourceList.add(new IntelliJFileWrapper(resource));
+            }
+        }
     }
 
-    public static class IntelliJModuleWrapper
-        extends ModuleWrapper<Module, Project>
+    public class IntelliJModuleWrapper
+        extends ModuleWrapper
     {
         public IntelliJModuleWrapper(Module module, Project project) {
             super(module, new ProjectWrapper(project));
+        }
+
+        public Repository obtainRepository() {
+            return ServerUtil.getConnectedRepository(
+                new IServer(getModule().getParent()), new NullProgressMonitor(), messageManager
+            );
+        }
+
+        public void updateModuleStatus(SynchronizationStatus synchronizationStatus) {
+            Module rawModule = getModule();
+            if(rawModule != null) {
+                ServerConfiguration.SynchronizationStatus status;
+                switch(synchronizationStatus) {
+                    case updating:
+                        status = ServerConfiguration.SynchronizationStatus.updating;
+                        break;
+                    case upToDate:
+                        status = ServerConfiguration.SynchronizationStatus.upToDate;
+                        break;
+                    case failed:
+                        status = ServerConfiguration.SynchronizationStatus.failed;
+                        break;
+                    default:
+                        status = ServerConfiguration.SynchronizationStatus.unsupported;
+                }
+                rawModule.setStatus(status);
+                serverConfigurationManager.updateServerConfiguration(rawModule.getParent());
+            }
+        }
+
+        public List<String> findContentResources(String filePath) {
+            List<String> ret = new ArrayList<String>();
+            ModuleProject moduleProject = getModule().getModuleProject();
+            List<String> contentDirectoryPaths = moduleProject.getContentDirectoryPaths();
+            for(String basePath: contentDirectoryPaths) {
+                messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
+                //AS TODO: Paths from Windows have backlashes instead of forward slashes
+                //AS TODO: It is possible that certain files are in forward slashes even on Windows
+                String myFilePath = filePath == null ? null : filePath.replace("\\", "/");
+                String myBasePath = basePath == null ? null : basePath.replace("\\", "/");
+                if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (myFilePath == null || myFilePath.startsWith(myBasePath))) {
+                    ret.add(basePath);
+                    break;
+                }
+            }
+            return ret;
+        }
+
+        public SlingResource obtainSlingResource(FileWrapper file) {
+            return new SlingResource4IntelliJ(getModule().getSlingProject(), file.getFile());
+        }
+
+        public FileWrapper obtainResourceFile(String resourcePath) {
+            Module rawModule = getModule();
+            VirtualFile baseFile = rawModule.getProject().getBaseDir();
+            return new IntelliJFileWrapper(baseFile.getFileSystem().findFileByPath(resourcePath));
+        }
+
+        public void setModuleLastModificationTimestamp(long timestamp) {
+            Module rawModule = getModule();
+            rawModule.setLastModificationTimestamp(timestamp);
         }
     }
 
@@ -118,97 +196,98 @@ public class IntelliJDeploymentManager
             default:
                 type = NotificationType.INFORMATION;
         }
-        messageManager.showAlert(type, title, message);
+        String myTitle = AEMBundle.message(title);
+        myTitle = myTitle.equals("") ? title : myTitle;
+        messageManager.showAlert(type, myTitle, message);
     }
 
-    @Override
-    Repository obtainRepository(ModuleWrapper module) {
-        Module rawModule = (Module) module.getModule();
-        return ServerUtil.getConnectedRepository(
-            new IServer(getModule(module).getParent()), new NullProgressMonitor(), messageManager
-        );
-    }
+//    @Override
+//    Repository obtainRepository(ModuleWrapper module) {
+//        return ServerUtil.getConnectedRepository(
+//            new IServer(module.getModule().getParent()), new NullProgressMonitor(), messageManager
+//        );
+//    }
+//
+//    private Module getModule(ModuleWrapper wrapper) {
+//        return (Module) wrapper.getModule();
+//    }
 
-    private Module getModule(ModuleWrapper wrapper) {
-        return (Module) wrapper.getModule();
-    }
+//    @Override
+//    void updateModuleStatus(ModuleWrapper module, SynchronizationStatus synchronizationStatus) {
+//        Module rawModule = module.getModule();
+//        if(rawModule != null) {
+//            ServerConfiguration.SynchronizationStatus status;
+//            switch(synchronizationStatus) {
+//                case updating:
+//                    status = ServerConfiguration.SynchronizationStatus.updating;
+//                    break;
+//                case upToDate:
+//                    status = ServerConfiguration.SynchronizationStatus.upToDate;
+//                    break;
+//                case failed:
+//                    status = ServerConfiguration.SynchronizationStatus.failed;
+//                    break;
+//                default:
+//                    status = ServerConfiguration.SynchronizationStatus.unsupported;
+//            }
+//            rawModule.setStatus(status);
+//            serverConfigurationManager.updateServerConfiguration(rawModule.getParent());
+//        }
+//    }
 
-    @Override
-    void updateModuleStatus(ModuleWrapper module, SynchronizationStatus synchronizationStatus) {
-        Module rawModule = getModule(module);
-        if(rawModule != null) {
-            ServerConfiguration.SynchronizationStatus status;
-            switch(synchronizationStatus) {
-                case updating:
-                    status = ServerConfiguration.SynchronizationStatus.updating;
-                    break;
-                case upToDate:
-                    status = ServerConfiguration.SynchronizationStatus.upToDate;
-                    break;
-                case failed:
-                    status = ServerConfiguration.SynchronizationStatus.failed;
-                    break;
-                default:
-                    status = ServerConfiguration.SynchronizationStatus.unsupported;
-            }
-            rawModule.setStatus(status);
-            serverConfigurationManager.updateServerConfiguration(rawModule.getParent());
-        }
-    }
+//    @Override
+//    List<String> findContentResources(ModuleWrapper module, String filePath) {
+//        List<String> ret = new ArrayList<String>();
+//        ModuleProject moduleProject = module.getModule().getModuleProject();
+//        List<String> contentDirectoryPaths = moduleProject.getContentDirectoryPaths();
+//        for(String basePath: contentDirectoryPaths) {
+//            messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
+//            //AS TODO: Paths from Windows have backlashes instead of forward slashes
+//            //AS TODO: It is possible that certain files are in forward slashes even on Windows
+//            String myFilePath = filePath == null ? null : filePath.replace("\\", "/");
+//            String myBasePath = basePath == null ? null : basePath.replace("\\", "/");
+//            if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (myFilePath == null || myFilePath.startsWith(myBasePath))) {
+//                ret.add(basePath);
+//                break;
+//            }
+//        }
+//        return ret;
+//    }
 
-    @Override
-    List<String> findContentResources(ModuleWrapper module, String filePath) {
-        List<String> ret = new ArrayList<String>();
-        ModuleProject moduleProject = getModule(module).getModuleProject();
-        List<String> contentDirectoryPaths = moduleProject.getContentDirectoryPaths();
-        for(String basePath: contentDirectoryPaths) {
-            messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
-            //AS TODO: Paths from Windows have backlashes instead of forward slashes
-            //AS TODO: It is possible that certain files are in forward slashes even on Windows
-            String myFilePath = filePath == null ? null : filePath.replace("\\", "/");
-            String myBasePath = basePath == null ? null : basePath.replace("\\", "/");
-            if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (myFilePath == null || myFilePath.startsWith(myBasePath))) {
-                ret.add(basePath);
-                break;
-            }
-        }
-        return ret;
-    }
+//    @Override
+//    SlingResource obtainSlingResource(ModuleWrapper moduleWrapper, FileWrapper file) {
+//        return new SlingResource4IntelliJ(moduleWrapper.getModule().getSlingProject(), file.getFile());
+//    }
 
-    @Override
-    SlingResource obtainSlingResource(ModuleWrapper moduleWrapper, FileWrapper file) {
-        return new SlingResource4IntelliJ(getModule(moduleWrapper).getSlingProject(), (VirtualFile) file.getFile());
-    }
+//    @Override
+//    FileWrapper obtainResourceFile(ModuleWrapper module, String resourcePath) {
+//        Module rawModule = module.getModule();
+//        VirtualFile baseFile = rawModule.getProject().getBaseDir();
+//        return new IntelliJFileWrapper(baseFile.getFileSystem().findFileByPath(resourcePath));
+//    }
 
-    @Override
-    FileWrapper obtainResourceFile(ModuleWrapper module, String resourcePath) {
-        Module rawModule = getModule(module);
-        VirtualFile baseFile = rawModule.getProject().getBaseDir();
-        return new IntelliJFileWrapper(baseFile.getFileSystem().findFileByPath(resourcePath));
-    }
+//    @Override
+//    void getChangedResourceList(FileWrapper resource, List<FileWrapper> resourceList) {
+//        VirtualFile rawResource = resource.getFile();
+//        getChangedResourceList(rawResource, resourceList);
+//    }
+//
+//    void getChangedResourceList(VirtualFile resource, List<FileWrapper> resourceList) {
+//        if(resource.isDirectory()) {
+//            List<VirtualFile> children = Arrays.asList(resource.getChildren());
+//            for(VirtualFile child : children) {
+//                getChangedResourceList(child, resourceList);
+//            }
+//        } else {
+//            resourceList.add(new IntelliJFileWrapper(resource));
+//        }
+//    }
 
-    @Override
-    void getChangedResourceList(FileWrapper resource, List<FileWrapper> resourceList) {
-        VirtualFile rawResource = (VirtualFile) resource.getFile();
-        getChangedResourceList(rawResource, resourceList);
-    }
-
-    void getChangedResourceList(VirtualFile resource, List<FileWrapper> resourceList) {
-        if(resource.isDirectory()) {
-            List<VirtualFile> children = Arrays.asList(resource.getChildren());
-            for(VirtualFile child : children) {
-                getChangedResourceList(child, resourceList);
-            }
-        } else {
-            resourceList.add(new IntelliJFileWrapper(resource));
-        }
-    }
-
-    @Override
-    void setModuleLastModificationTimestamp(ModuleWrapper module, long timestamp) {
-        Module rawModule = getModule(module);
-        rawModule.setLastModificationTimestamp(timestamp);
-    }
+//    @Override
+//    void setModuleLastModificationTimestamp(ModuleWrapper module, long timestamp) {
+//        Module rawModule = module.getModule();
+//        rawModule.setLastModificationTimestamp(timestamp);
+//    }
 
     @Override
     String getMessage(String messageId, Object... parameters) {

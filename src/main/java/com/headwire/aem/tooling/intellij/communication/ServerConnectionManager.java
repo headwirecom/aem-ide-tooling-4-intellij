@@ -489,7 +489,7 @@ public class ServerConnectionManager
             } else if(module.isSlingPackage()) {
                 //AS TODO: Add the synchronization of the entire module
                 deploymentManager.publishModule(
-                    new IntelliJDeploymentManager.IntelliJModuleWrapper(module, myProject),
+                    deploymentManager.new IntelliJModuleWrapper(module, myProject),
                     force
                 );
             } else {
@@ -965,23 +965,27 @@ public class ServerConnectionManager
                             case CREATED:
                                 command = deploymentManager.addFileCommand(
                                     repository,
-                                    new IntelliJModuleWrapper(currentModule, myProject),
-                                    new IntelliJFileWrapper(file),
+                                    deploymentManager.new IntelliJModuleWrapper(currentModule, myProject),
+                                    deploymentManager.new IntelliJFileWrapper(file),
                                     false
                                 );
                                 break;
                             case DELETED:
-                                command = removeFileCommand(repository, currentModule, file);
+                                command = deploymentManager.removeFileCommand(
+                                    repository,
+                                    deploymentManager.new IntelliJModuleWrapper(currentModule, myProject),
+                                    deploymentManager.new IntelliJFileWrapper(file)
+                                );
                                 break;
                         }
                         messageManager.sendDebugNotification("Got Command: " + command);
                         if(command != null) {
                             Set<String> handledPaths = new HashSet<String>();
                             deploymentManager.ensureParentIsPublished(
-                                new IntelliJModuleWrapper(currentModule, myProject),
+                                deploymentManager.new IntelliJModuleWrapper(currentModule, myProject),
                                 //AS Make sure the basepath is in forward slash notation
                                 basePath.replace("\\", "/"),
-                                new IntelliJFileWrapper(file),
+                                deploymentManager.new IntelliJFileWrapper(file),
                                 repository,
                                 handledPaths,
                                 true
@@ -1152,23 +1156,14 @@ public class ServerConnectionManager
 //
 //        return file;
 //    }
-
-    private Command<?> removeFileCommand(
-//        Repository repository, IModuleResource resource
-        Repository repository, Module module, VirtualFile file
-    )
-        throws SerializationException, IOException, ConnectorException {
-
-//        IResource deletedResource = getResource(resource);
 //
-//        if (deletedResource == null) {
-//            return null;
-//        }
-
-//        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
-        SlingResource resource = new SlingResource4IntelliJ(module.getSlingProject(), file);
-        return commandFactory.newCommandForRemovedResources(repository, resource);
-    }
+//    private Command<?> removeFileCommand(
+//        Repository repository, Module module, VirtualFile file
+//    )
+//        throws SerializationException, IOException, ConnectorException {
+//        SlingResource resource = new SlingResource4IntelliJ(module.getSlingProject(), file);
+//        return commandFactory.newCommandForRemovedResources(repository, resource);
+//    }
 //
 //    private void execute(Command<?> command) throws ConnectorException {
 //        if (command == null) {

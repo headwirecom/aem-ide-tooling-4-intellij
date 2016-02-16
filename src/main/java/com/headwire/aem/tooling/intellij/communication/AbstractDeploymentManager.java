@@ -1,5 +1,8 @@
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
+import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.io.ConnectorException;
 import org.apache.sling.ide.io.ExceptionConstants;
 import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
@@ -20,49 +23,61 @@ import java.util.Set;
  * This class contains all the generic code that is common to all plugins
  * dealing with the deployment of a module to Sling
  */
-public abstract class AbstractDeploymentManager
+public abstract class AbstractDeploymentManager<M, P, F>
 {
 
-    public static class ModuleWrapper<T, P> {
-        private T module;
-        private ProjectWrapper<P> project;
+    public abstract class ModuleWrapper {
+        private M module;
+        private ProjectWrapper project;
 
-        public ModuleWrapper(T module, ProjectWrapper<P> project) {
+        public ModuleWrapper(M module, ProjectWrapper project) {
             this.module = module;
             this.project = project;
         }
 
-        public T getModule() {
+        public M getModule() {
             return module;
         }
 
         public P getProject() {
             return project.getProject();
         }
+
+        abstract public Repository obtainRepository();
+
+        abstract public void updateModuleStatus(SynchronizationStatus synchronizationStatus);
+
+        abstract public List<String> findContentResources(String filePath);
+
+        abstract public SlingResource obtainSlingResource(FileWrapper file);
+
+        abstract public FileWrapper obtainResourceFile(String resourcePath);
+
+        abstract public void setModuleLastModificationTimestamp(long timestamp);
     }
 
-    public static class ProjectWrapper<T> {
-        private T project;
-        public ProjectWrapper(T project) {
+    public class ProjectWrapper {
+        private P project;
+        public ProjectWrapper(P project) {
             this.project = project;
         }
 
-        public T getProject() {
+        public P getProject() {
             return project;
         }
     }
 
-    public static abstract class FileWrapper<T> {
-        private T file;
-        public FileWrapper(T file) {
+    public abstract class FileWrapper {
+        private F file;
+        public FileWrapper(F file) {
             this.file = file;
         }
 
-        public T getFile() {
+        public F getFile() {
             return file;
         }
 
-        abstract public FileWrapper<T> getParent();
+        abstract public FileWrapper getParent();
 
         abstract public String getPath();
 
@@ -71,7 +86,13 @@ public abstract class AbstractDeploymentManager
         abstract public long getModificationTimestamp();
 
         abstract public long getTimestamp();
+
+        abstract public void getChangedResourceList(List<FileWrapper> resourceList);
     }
+
+    abstract void sendMessage(MessageType messageType, String message, Object...parameters);
+    abstract void sendAlert(MessageType messageType, String title, String message);
+    abstract String getMessage(String messageId, Object...parameters);
 
     public enum MessageType {INFO, WARNING, ERROR, DEBUG};
     public enum SynchronizationStatus {updating, upToDate, failed}
@@ -82,25 +103,6 @@ public abstract class AbstractDeploymentManager
         commandFactory = resourceChangeCommandFactory;
     }
 
-    abstract void sendMessage(MessageType messageType, String message, Object...parameters);
-    abstract void sendAlert(MessageType messageType, String title, String message);
-
-    abstract Repository obtainRepository(ModuleWrapper module);
-    //AS TODO: The ServerConfiguration is IntelliJ Only so we need an IDE independent flag
-    abstract void updateModuleStatus(ModuleWrapper module, SynchronizationStatus synchronizationStatus);
-
-    abstract List<String> findContentResources(ModuleWrapper module, String filePath);
-
-    abstract SlingResource obtainSlingResource(ModuleWrapper moduleWrapper, FileWrapper file);
-
-    abstract FileWrapper obtainResourceFile(ModuleWrapper module, String resourcePath);
-
-    abstract void getChangedResourceList(FileWrapper resource, List<FileWrapper> resourceList);
-
-    abstract void setModuleLastModificationTimestamp(ModuleWrapper module, long timestamp);
-
-    abstract String getMessage(String messageId, Object...parameters);
-
     public void publishModule(ModuleWrapper module, boolean force) {
         Repository repository = null;
         long lastModificationTimestamp = -1;
@@ -110,17 +112,17 @@ public abstract class AbstractDeploymentManager
             sendMessage(MessageType.INFO, "aem.explorer.deploy.module.prepare", module);
         }
         try {
-            repository = obtainRepository(module);
+            repository = module.obtainRepository();
             if(repository != null) {
                 sendMessage(MessageType.DEBUG, "Got Repository: " + repository);
-                updateModuleStatus(module, SynchronizationStatus.updating);
-                List<String> resourceList = findContentResources(module, null);
+                module.updateModuleStatus(SynchronizationStatus.updating);
+                List<String> resourceList = module.findContentResources(null);
                 Set<String> allResourcesUpdatedList = new HashSet<String>();
                 for(String resource : resourceList) {
-                    FileWrapper resourceFile = obtainResourceFile(module, resource);
+                    FileWrapper resourceFile = module.obtainResourceFile(resource);
                     sendMessage(MessageType.DEBUG, "Resource File to deploy: " + resourceFile);
                     List<FileWrapper> changedResources = new ArrayList<FileWrapper>();
-                    getChangedResourceList(resourceFile, changedResources);
+                    resourceFile.getChangedResourceList(changedResources);
                     //AS TODO: Create a List of Changed Resources
                     for(FileWrapper changedResource : changedResources) {
                         try {
@@ -169,15 +171,15 @@ public abstract class AbstractDeploymentManager
                 // reorder the child nodes at the end, when all create/update/deletes have been processed
                 //AS TODO: This needs to be resolved -> done but needs to be verified
                 for(String resourcePath : allResourcesUpdatedList) {
-                    FileWrapper file = obtainResourceFile(module, resourcePath);
+                    FileWrapper file = module.obtainResourceFile(resourcePath);
                     if(file != null) {
                         execute(reorderChildNodesCommand(repository, module, file));
                     } else {
                         sendMessage(MessageType.ERROR, "aem.explorer.deploy.failed.to.reorder.missing.resource", resourcePath);
                     }
                 }
-                setModuleLastModificationTimestamp(module, lastModificationTimestamp);
-                updateModuleStatus(module, SynchronizationStatus.upToDate);
+                module.setModuleLastModificationTimestamp(lastModificationTimestamp);
+                module.updateModuleStatus(SynchronizationStatus.upToDate);
                 if(force) {
                     sendMessage(MessageType.INFO, "aem.explorer.deploy.module.by.force.success", module);
                 } else {
@@ -186,14 +188,14 @@ public abstract class AbstractDeploymentManager
             }
         } catch(ConnectorException e) {
             sendMessage(MessageType.ERROR, "aem.explorer.deploy.module.failed.client", module, e);
-            updateModuleStatus(module, SynchronizationStatus.failed);
+            module.updateModuleStatus(SynchronizationStatus.failed);
             throw new RuntimeException(e);
         } catch(SerializationException e) {
             sendMessage(MessageType.ERROR, "aem.explorer.deploy.module.failed.client", module, e);
-            updateModuleStatus(module, SynchronizationStatus.failed);
+            module.updateModuleStatus(SynchronizationStatus.failed);
         } catch(IOException e) {
             sendMessage(MessageType.ERROR, "aem.explorer.deploy.module.failed.io", module, e);
-            updateModuleStatus(module, SynchronizationStatus.failed);
+            module.updateModuleStatus(SynchronizationStatus.failed);
         }
     }
 
@@ -305,8 +307,17 @@ public abstract class AbstractDeploymentManager
         ConnectorException,
         SerializationException, IOException
     {
-        SlingResource resource = obtainSlingResource(module, file);
+        SlingResource resource = module.obtainSlingResource(file);
         return commandFactory.newCommandForAddedOrUpdated(repository, resource, forceDeploy);
+    }
+
+    protected Command<?> removeFileCommand(
+        Repository repository, ModuleWrapper module, FileWrapper file
+    ) throws
+        SerializationException, IOException, ConnectorException
+    {
+        SlingResource resource = module.obtainSlingResource(file);
+        return commandFactory.newCommandForRemovedResources(repository, resource);
     }
 
     protected Command<?> reorderChildNodesCommand(
@@ -314,7 +325,7 @@ public abstract class AbstractDeploymentManager
     ) throws ConnectorException,
         SerializationException, IOException
     {
-        SlingResource resource = obtainSlingResource(module, file);
+        SlingResource resource = module.obtainSlingResource(file);
         return commandFactory.newReorderChildNodesCommand(repository, resource);
     }
 
