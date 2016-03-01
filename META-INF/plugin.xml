@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.6.4.1-SNAPSHOT</version>
+    <version>0.6.4.2-SNAPSHOT</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,12 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.6.4.2-SNAPSHOT: The Maven Build for OSGi Bundles needs to be executed in a Dispatcher Thread
+                              but through changes in IntelliJ IDEA 15 that did not block anymore. In order
+                              to make it work this build is not building with a background task so that I can
+                              make the Caller of the Maven build wait for the Maven build to finish with a
+                              countdown latch.
+        </li>
         <li>0.6.4.1-SNAPSHOT: Added a fix to try to solve misterious failures in deploying renditions
                               files.
         </li>

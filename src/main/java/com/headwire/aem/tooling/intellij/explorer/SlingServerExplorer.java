@@ -70,51 +70,52 @@ public class SlingServerExplorer
         setToolbar(createToolbarPanel(serverTreeManager));
         setContent(ScrollPaneFactory.createScrollPane(myTree));
         ToolTipManager.sharedInstance().registerComponent(myTree);
-        final MessageBus bus = myProject.getMessageBus();
-        myConn = bus.connect();
+        RunExecutionMonitor.getInstance(project);
+//        final MessageBus bus = myProject.getMessageBus();
+//        myConn = bus.connect();
         messageManager = myProject.getComponent(MessageManager.class);
-        // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
-        // and when it is taken down even when not started or stopped through the Plugin
-        myConn.subscribe(
-            ExecutionManager.EXECUTION_TOPIC,
-            new ExecutionAdapter() {
-                @Override
-                public void processNotStarted(String executorId, @NotNull ExecutionEnvironment env) {
-                    // This is called when the Debug Session failed to start and / or connect
-                    ServerConfiguration configuration = myConfig.findServerConfigurationByName(env.getRunProfile().getName());
-                    if(configuration != null) {
-                        configuration.setServerStatus(ServerConfiguration.ServerStatus.failed);
-                        myConfig.updateServerConfiguration(configuration);
-                        //AS TODO: Update Bundle Status
-                        // Mark any Bundles inside the Tree as unknown
-                    }
-                }
-
-                @Override
-                public void processStarted(String executorId, @NotNull ExecutionEnvironment env, @NotNull ProcessHandler handler) {
-                    // This is called when the Debug Session successfully started and connected
-                    ServerConfiguration configuration = myConfig.findServerConfigurationByName(env.getRunProfile().getName());
-                    if(configuration != null) {
-                        configuration.setServerStatus(ServerConfiguration.ServerStatus.connected);
-                        myConfig.updateServerConfiguration(configuration);
-                        //AS TODO: Update Bundle Status
-                        // Now obtain the Status of the Bundles inside AEM and add as entries to the Tree underneath the Configuration Entry
-                    }
-                }
-
-                @Override
-                public void processTerminated(@NotNull RunProfile runProfile, @NotNull ProcessHandler handler) {
-                    // Called when a successful connected session is stopped
-                    ServerConfiguration configuration = myConfig.findServerConfigurationByName(runProfile.getName());
-                    if(configuration != null) {
-                        configuration.setServerStatus(ServerConfiguration.ServerStatus.disconnected);
-                        myConfig.updateServerConfiguration(configuration);
-                        //AS TODO: Update Bundle Status
-                        // Mark any Bundles inside the Tree as disconnected
-                    }
-                }
-            }
-        );
+//        // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
+//        // and when it is taken down even when not started or stopped through the Plugin
+//        myConn.subscribe(
+//            ExecutionManager.EXECUTION_TOPIC,
+//            new ExecutionAdapter() {
+//                @Override
+//                public void processNotStarted(String executorId, @NotNull ExecutionEnvironment env) {
+//                    // This is called when the Debug Session failed to start and / or connect
+//                    ServerConfiguration configuration = myConfig.findServerConfigurationByName(env.getRunProfile().getName());
+//                    if(configuration != null) {
+//                        configuration.setServerStatus(ServerConfiguration.ServerStatus.failed);
+//                        myConfig.updateServerConfiguration(configuration);
+//                        //AS TODO: Update Bundle Status
+//                        // Mark any Bundles inside the Tree as unknown
+//                    }
+//                }
+//
+//                @Override
+//                public void processStarted(String executorId, @NotNull ExecutionEnvironment env, @NotNull ProcessHandler handler) {
+//                    // This is called when the Debug Session successfully started and connected
+//                    ServerConfiguration configuration = myConfig.findServerConfigurationByName(env.getRunProfile().getName());
+//                    if(configuration != null) {
+//                        configuration.setServerStatus(ServerConfiguration.ServerStatus.connected);
+//                        myConfig.updateServerConfiguration(configuration);
+//                        //AS TODO: Update Bundle Status
+//                        // Now obtain the Status of the Bundles inside AEM and add as entries to the Tree underneath the Configuration Entry
+//                    }
+//                }
+//
+//                @Override
+//                public void processTerminated(@NotNull RunProfile runProfile, @NotNull ProcessHandler handler) {
+//                    // Called when a successful connected session is stopped
+//                    ServerConfiguration configuration = myConfig.findServerConfigurationByName(runProfile.getName());
+//                    if(configuration != null) {
+//                        configuration.setServerStatus(ServerConfiguration.ServerStatus.disconnected);
+//                        myConfig.updateServerConfiguration(configuration);
+//                        //AS TODO: Update Bundle Status
+//                        // Mark any Bundles inside the Tree as disconnected
+//                    }
+//                }
+//            }
+//        );
         myTree.addContainerListener(new ContainerListener() {
             @Override
             public void componentAdded(ContainerEvent containerEvent) {

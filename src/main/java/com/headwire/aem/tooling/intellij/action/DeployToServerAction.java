@@ -6,6 +6,7 @@ import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  * Created by schaefa on 6/13/15.
  */
 public class DeployToServerAction
-    extends AbstractProjectAction
+        extends AbstractProjectAction
 {
 
     public DeployToServerAction(@NotNull String textId) {
@@ -49,7 +50,10 @@ public class DeployToServerAction
         final String title = AEMBundle.message("deploy.configuration.action.name");
 
         ProgressManager.getInstance().run(
-            new Task.Modal(project, title, false) {
+//            new Task.Modal(project, title, false) {
+            //AS NOTE: This Task has to be backgroundable otherwise it blocks the Dispatcher Thread which in turn will
+            //AS NOTE: block the Maven Build
+            new Task.Backgroundable(project, title, false) {
                 @Nullable
                 public NotificationInfo getNotificationInfo() {
                     return new NotificationInfo("Sling", "Sling Deployment Checks", "");

@@ -1,5 +1,6 @@
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.github.rjeschke.txtmark.Run;
 import com.headwire.aem.tooling.intellij.communication.IntelliJDeploymentManager.IntelliJFileWrapper;
 import com.headwire.aem.tooling.intellij.communication.IntelliJDeploymentManager.IntelliJModuleWrapper;
 import com.headwire.aem.tooling.intellij.config.ModuleProject;
@@ -15,6 +16,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 
+import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
 import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
@@ -113,7 +115,7 @@ public class ServerConnectionManager
     private ServerTreeSelectionHandler selectionHandler;
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
-    private NewResourceChangeCommandFactory commandFactory;
+//    private NewResourceChangeCommandFactory commandFactory;
     private IntelliJDeploymentManager deploymentManager;
 
     private static boolean firstRun = true;
@@ -122,9 +124,9 @@ public class ServerConnectionManager
         super(project);
         messageManager = myProject.getComponent(MessageManager.class);
         serverConfigurationManager = myProject.getComponent(ServerConfigurationManager.class);
-        commandFactory = new NewResourceChangeCommandFactory(
-            myProject.getComponent(SerializationManager.class)
-        );
+//        commandFactory = new NewResourceChangeCommandFactory(
+//            myProject.getComponent(SerializationManager.class)
+//        );
         deploymentManager = new IntelliJDeploymentManager(project);
     }
 
@@ -290,7 +292,7 @@ public class ServerConnectionManager
      * Binding is the process of connecting the Project's Modules with the Maven Modules (its sub projects)
      *
      * @param serverConfiguration The Server Connection that is checked and bound if not already done
-     * @return True if the the connection was successfully bound otherwise flase
+     * @return True if the the connection was successfully bound otherwise false
      */
     public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
         if(!serverConfiguration.isBound()) {
@@ -660,33 +662,80 @@ public class ServerConnectionManager
                         final boolean isShown = tw != null && tw.isVisible();
                         String workingDirectory = moduleProject.getModuleDirectory();
                         MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
-                        final MavenRunnerParameters params = new MavenRunnerParameters(
-                            true,
-                            workingDirectory,
-                            goals,
-                            explicitProfiles.getEnabledProfiles(),
-                            explicitProfiles.getDisabledProfiles()
-                        );
+                        final MavenRunnerParameters params = new MavenRunnerParameters(true, workingDirectory, goals, explicitProfiles.getEnabledProfiles(), explicitProfiles.getDisabledProfiles());
+                        final Object lock = new Object();
+                        RunExecutionMonitor rem = RunExecutionMonitor.getInstance(myProject);
+                        rem.startMavenBuild();
+                        boolean isDispatcher = ApplicationManager.getApplication().isDispatchThread();
                         try {
-                            MavenRunConfigurationType.runConfiguration(module.getProject(), params, null);
-                            if (!isShown) {
-                                ApplicationManager.getApplication().invokeLater(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            tw.hide(null);
+                            ApplicationManager.getApplication().invokeLater(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            boolean isDispatcher = ApplicationManager.getApplication().isDispatchThread();
+                                            MavenRunConfigurationType.runConfiguration(module.getProject(), params, null);
+                                        } catch(RuntimeException e) {
+                                            // Ignore it
+                                            String message = e.getMessage();
                                         }
-                                    },
-                                    ModalityState.NON_MODAL
-                                    //                                    ApplicationManager.getApplication().getCurrentModalityState()
-                                );
+                                    if(isShown) {
+                                        tw.hide(null);
+                                    }
+                                }
                             }
+                            ,
+                            ModalityState.NON_MODAL
+//                                //                                    ApplicationManager.getApplication().getCurrentModalityState()
+                            );
                         } catch (IllegalStateException e) {
                             if (firstRun) {
                                 firstRun = false;
                                 messageManager.showAlert("aem.explorer.deploy.module.maven.first.run.failure");
                             }
+                        } catch(RuntimeException e) {
+                            messageManager.sendDebugNotification("Maven Build failed with an unexpectected exception");
+                            messageManager.sendUnexpectedException(e);
                         }
+                            //                        try {
+                            //                            Thread.sleep(5000);
+                            //                        } catch(InterruptedException e) {
+                            //                            e.printStackTrace();
+                            //                        }
+                            //                        switch(RunExecutionMonitor.getInstance(myProject).waitFor(true)) {
+                            //                            case done:
+                            //                                messageManager.sendDebugNotification("Maven Process Wait Successful");
+                                                            // Now we can wait for the process to end
+                                                            switch(RunExecutionMonitor.getInstance(myProject).waitFor(30)) {
+                                                                case done:
+                                                                    messageManager.sendDebugNotification("Maven Wait Successful");
+                                                                    break;
+                                                                case timedOut:
+                                                                    messageManager.sendDebugNotification("Maven Wait Timed Out");
+                                                                    break;
+                                                                case interrupted:
+                                                                    messageManager.sendDebugNotification("Maven Wait Interrupted");
+                                                                    break;
+                                                            }
+                            //                                break;
+                            //                            case timedOut:
+                            //                                messageManager.sendDebugNotification("Maven Process Wait Timed Out");
+                            //                                break;
+                            //                            case interrupted:
+                            //                                messageManager.sendDebugNotification("Maven Process Wait Interrupted");
+                            //                                break;
+                            //                        }
+                            //                        switch(rem.waitFor(30)) {
+                            //                            case done:
+                            //                                messageManager.sendDebugNotification("Maven Wait Successful");
+                            //                                break;
+                            //                            case timedOut:
+                            //                                messageManager.sendDebugNotification("Maven Wait Timed Out");
+                            //                                break;
+                            //                            case interrupted:
+                            //                                messageManager.sendDebugNotification("Maven Wait Interrupted");
+                            //                                break;
+                            //                        }
                         messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.done");
                     }
                 }
