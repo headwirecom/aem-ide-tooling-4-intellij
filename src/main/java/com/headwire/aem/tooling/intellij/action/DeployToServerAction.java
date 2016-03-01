@@ -47,7 +47,7 @@ public class DeployToServerAction
     private void doDeploy(final DataContext dataContext, final Project project, final boolean forceDeploy) {
         final ServerConnectionManager connectionManager = getConnectionManager(project);
         final ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        final String title = AEMBundle.message("deploy.configuration.action.name");
+        final String title = AEMBundle.message("deploy.configuration.action.text");
 
         ProgressManager.getInstance().run(
 //            new Task.Modal(project, title, false) {

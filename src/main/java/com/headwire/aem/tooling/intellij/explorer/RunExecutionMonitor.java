@@ -35,21 +35,25 @@ public class RunExecutionMonitor {
     private static Map<Project, RunExecutionMonitor> instances = new HashMap<Project, RunExecutionMonitor>();
 
     public static RunExecutionMonitor getInstance(@NotNull Project project) {
-        RunExecutionMonitor ret = instances.get(project);
-        if(ret == null) {
-            project.getComponent(MessageManager.class).sendDebugNotification(
-                "Create new REM for Project: " + project
-            );
-            ret = new RunExecutionMonitor(project);
-            instances.put(project, ret);
+        RunExecutionMonitor ret;
+        // Only one thread should be able to read / write on the instances map
+        synchronized(instances) {
+            ret = instances.get(project);
+            if(ret == null) {
+                project.getComponent(MessageManager.class).sendDebugNotification("Create new REM for Project: " + project);
+                ret = new RunExecutionMonitor(project);
+                instances.put(project, ret);
+            }
         }
         return ret;
     }
 
     public static void disposeInstance(@NotNull Project project) {
-        RunExecutionMonitor instance = instances.remove(project);
-        if(instance != null) {
-            instance.dispose();
+        synchronized(instances) {
+            RunExecutionMonitor instance = instances.remove(project);
+            if(instance != null) {
+                instance.dispose();
+            }
         }
     }
 
@@ -58,9 +62,8 @@ public class RunExecutionMonitor {
     Project project;
     private MessageBusConnection connection;
     private ServerConfigurationManager serverConfigurationManager;
-//    private Semaphore waitSemaphore;
-//    private volatile CountDownLatch startSignal = null;
-    private volatile CountDownLatch stopSignal = null;
+    private volatile CountDownLatch stopSignal = new CountDownLatch(1);
+    private volatile boolean intercepted = false;
 
     public RunExecutionMonitor(@NotNull Project project) {
         this.project = project;
@@ -68,8 +71,6 @@ public class RunExecutionMonitor {
     }
 
     private void init() {
-//        startSignal = new CountDownLatch(1);
-        stopSignal = new CountDownLatch(0);
         serverConfigurationManager = project.getComponent(ServerConfigurationManager.class);
         final MessageBus bus = project.getMessageBus();
         connection = bus.connect();
@@ -81,11 +82,9 @@ public class RunExecutionMonitor {
                 @Override
                 public void processStartScheduled(String executorId, ExecutionEnvironment env) {
                     if(RUN_EXECUTION.equals(executorId)) {
-                        boolean isDispatcher = ApplicationManager.getApplication().isDispatchThread();
                         project.getComponent(MessageManager.class).sendDebugNotification(
                             "Schedule Maven Run on Project: " + project
                         );
-//                        startSignal.countDown();
                     }
                 }
 
@@ -105,10 +104,7 @@ public class RunExecutionMonitor {
                         project.getComponent(MessageManager.class).sendDebugNotification(
                             "Maven Run Failed to Start on Project: " + project
                         );
-//                        startSignal = new CountDownLatch(1);
-                        if(stopSignal != null) {
-                            stopSignal.countDown();
-                        }
+                        stopSignal.countDown();
                     }
                 }
 
@@ -124,8 +120,6 @@ public class RunExecutionMonitor {
                             //AS TODO: Update Bundle Status
                             // Now obtain the Status of the Bundles inside AEM and add as entries to the Tree underneath the Configuration Entry
                         }
-                    } else {
-                        String id = executorId;
                     }
                 }
 
@@ -145,12 +139,7 @@ public class RunExecutionMonitor {
                         project.getComponent(MessageManager.class).sendDebugNotification(
                             "Finish Maven Run Ended Project: " + project
                         );
-//                        startSignal = new CountDownLatch(1);
-                        if(stopSignal != null) {
-                            stopSignal.countDown();
-                        }
-                    } else {
-                        String test = handler.toString();
+                        stopSignal.countDown();
                     }
                 }
             }
@@ -167,18 +156,40 @@ public class RunExecutionMonitor {
 
     public void startMavenBuild() {
         stopSignal = new CountDownLatch(1);
+        intercepted = false;
     }
 
-    public WaitState waitFor(int timeoutInSeconds) {
-//        project.getComponent(MessageManager.class).sendDebugNotification(
-//            "Wait for " + (start ? "Start" : "End") + " of Maven Run on Project: " + project
-//        );
+    public void cancelMavenBuild() {
+        if(stopSignal.getCount() > 0) {
+            intercepted = true;
+            stopSignal.countDown();
+        }
+    }
+
+    public WaitState waitFor() {
         try {
-//            if(start) {
-//                return startSignal.await(10, TimeUnit.SECONDS) ? WaitState.done : WaitState.timedOut;
-//            } else {
+            stopSignal.await();
+            // If intercepted then return the flag accordingly
+            return intercepted ?
+                WaitState.interrupted :
+                WaitState.done;
+        } catch(InterruptedException e) {
+            return WaitState.interrupted;
+        }
+    }
+
+    @Deprecated
+    public WaitState waitFor(int timeoutInSeconds) {
+        //AS TODO: Instead of a Timeout we should wait forever as in order for a successful deployment the Maven
+        //AX TODO: Build must end.
+        //AS TODO: We could instead have a Cancel Action button that let us terninate the Thread
+        try {
+            if(timeoutInSeconds > 0) {
                 return stopSignal.await(timeoutInSeconds, TimeUnit.SECONDS) ? WaitState.done : WaitState.timedOut;
-//            }
+            } else {
+                stopSignal.await();
+                return WaitState.done;
+            }
         } catch(InterruptedException e) {
             return WaitState.interrupted;
         }
