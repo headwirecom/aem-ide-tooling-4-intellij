@@ -7,10 +7,13 @@ import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.progress.PerformInBackgroundOption;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.Nls.Capitalization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,6 +47,10 @@ public class DeployToServerAction
         return connectionManager != null && connectionManager.isConnectionInUse();
     }
 
+    protected boolean isAsynchronous() {
+        return true;
+    }
+
     private void doDeploy(final DataContext dataContext, final Project project, final boolean forceDeploy) {
         final ServerConnectionManager connectionManager = getConnectionManager(project);
         final ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
@@ -60,47 +67,50 @@ public class DeployToServerAction
                 }
 
                 public void run(@NotNull final ProgressIndicator indicator) {
+                    indicator.setIndeterminate(false);
+                    final String description = AEMBundle.message("deploy.configuration.action.description");
+                    indicator.setText(description);
+                    indicator.setFraction(0);
                     //AS TODO: Check if there is a new version of IntelliJ CE that would allow to use
                     //AS TODO: the ProgressAdapter.
                     //AS TODO: Or create another Interface / Wrapper to make it IDE independent
-                    indicator.setIndeterminate(false);
-                    indicator.pushState();
                     ApplicationManager.getApplication().runReadAction(
                         new Runnable() {
                             public void run() {
                                 try {
-                                    final String description = AEMBundle.message("deploy.configuration.action.description");
-
-                                    indicator.setText(description);
-                                    indicator.setFraction(0.0);
-
                                     // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
                                     // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
                                     ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-                                    indicator.setFraction(0.1);
+                                    indicator.setText2("Update Status");
+                                    indicator.setFraction(0.1d);
                                     //AS TODO: this is not showing if the check is short but if it takes longer it will update
                                     connectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
-                                    indicator.setFraction(0.2);
+                                    indicator.setText2("Update Status, wait");
+                                    indicator.setFraction(0.2d);
                                     try {
                                         Thread.sleep(1000);
                                     } catch(InterruptedException e1) {
                                         e1.printStackTrace();
                                     }
-                                    indicator.setFraction(0.3);
+                                    indicator.setText2("Get Bundle Status");
+                                    indicator.setFraction(0.3d);
                                     // First Check if the Install Support Bundle is installed
                                     ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(false);
-                                    indicator.setFraction(0.5);
                                     ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
+                                    indicator.setText2("Build and Deploy " + (module != null ? "All" : "Single") + " Module");
+                                    indicator.setFraction(0.4d);
+                                    indicator.pushState();
                                     if(module != null) {
                                         // Deploy only the selected Module
-                                        connectionManager.deployModule(dataContext, module, forceDeploy);
+                                        connectionManager.deployModule(dataContext, module, forceDeploy, indicator);
                                     } else {
                                         // Deploy all Modules of the Project
-                                        connectionManager.deployModules(dataContext, forceDeploy);
+                                        connectionManager.deployModules(dataContext, forceDeploy, indicator);
                                     }
-                                    indicator.setFraction(1.0);
                                 } finally {
                                     indicator.popState();
+                                    indicator.setFraction(1.0d);
+                                    unlock(project);
                                 }
                             }
                         }

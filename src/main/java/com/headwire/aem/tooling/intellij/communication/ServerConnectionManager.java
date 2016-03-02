@@ -42,6 +42,7 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
@@ -443,21 +444,26 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public void deployModules(final DataContext dataContext, boolean force) {
+    public void deployModules(final DataContext dataContext, boolean force, ProgressIndicator indicator) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
+            indicator.setText2("Check Bindings");
             checkBinding(serverConfiguration);
             List<Module> moduleList = serverConfiguration.getModuleList();
+            double i = 0;
             for(ServerConfiguration.Module module: moduleList) {
-                deployModule(dataContext, module, force);
+                deployModule(dataContext, module, force, indicator);
+                indicator.setFraction(i / moduleList.size());
+                i += 1;
             }
         } else {
             messageManager.sendNotification("aem.explorer.deploy.modules.no.configuration.selected", NotificationType.WARNING);
         }
     }
 
-    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force) {
+    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, ProgressIndicator indicator) {
         messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+        indicator.setText2("Deploy Module: " + module.getName());
         checkBinding(module.getParent());
         if(module.isPartOfBuild()) {
             if(module.isOSGiBundle()) {
