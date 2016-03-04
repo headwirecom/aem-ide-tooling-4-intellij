@@ -81,76 +81,51 @@ public class ImportFromServerAction extends AbstractProjectAction {
                 if(contentPath != null) {
                     // This file belongs to this module so we are good to publish it
                     currentModuleLookup = module;
-//                    basePath = mavenResource.getDirectory();
-//                    messageManager.sendDebugNotification("Found File: '" + path + "' in module: '" + currentModule.getName() + "");
                     break;
                 }
             }
         }
         if(currentModuleLookup != null) {
             final ServerConfiguration.Module currentModule = currentModuleLookup;
-//            final String title = AEMBundle.message("deploy.configuration.action.name");
-//
-//            ProgressManager.getInstance().
-//                new Task.Modal(project, title, false) {
-//                    @Nullable
-//                    public NotificationInfo getNotificationInfo() {
-//                        return new NotificationInfo("Sling", "Sling Deployment Checks", "");
-//                    }
-//
-//                    public void run(@NotNull final ProgressIndicator indicator) {
-//                        //AS TODO: Check if there is a new version of IntelliJ CE that would allow to use
-//                        //AS TODO: the ProgressAdapter.
-//                        //AS TODO: Or create another Interface / Wrapper to make it IDE independent
-//                        indicator.setIndeterminate(false);
-//                        indicator.pushState();
-                        ApplicationManager.getApplication().runWriteAction(
-                            new Runnable() {
-                                public void run() {
-                                    try {
-                                        final String description = AEMBundle.message("deploy.configuration.action.description");
-
-//                                        indicator.setText(description);
-//                                        indicator.setFraction(0.0);
-
-                                        IServer server = new IServer(currentModule.getParent());
-                                        String path = file.getPath();
-                                        String modulePath = currentModule.getModuleProject().getModuleDirectory();
-                                        String relativePath = path.substring(modulePath.length());
-                                        if(relativePath.startsWith("/")) {
-                                            relativePath = relativePath.substring(1);
-                                        }
-                                        IPath projectRelativePath = new IPath(relativePath);
-                                        IProject iProject = new IProject(currentModule);
-                                        SerializationManager serializationManager = project.getComponent(SerializationManager.class);
-
-
-                                        try {
-                                            ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(
-                                                server,
-                                                projectRelativePath,
-                                                iProject,
-                                                serializationManager
-                                            );
-                                            importManager.doImport(new NullProgressMonitor());
-                                        } catch(InvocationTargetException e) {
-                                            e.printStackTrace();
-                                        } catch(InterruptedException e) {
-                                            e.printStackTrace();
-                                        } catch(SerializationException e) {
-                                            e.printStackTrace();
-                                        } catch(CoreException e) {
-                                            e.printStackTrace();
-                                        }
-                                    } finally {
-//                                        indicator.popState();
-                                    }
+                ApplicationManager.getApplication().runWriteAction(
+                    new Runnable() {
+                        public void run() {
+                            try {
+                                final String description = AEMBundle.message("deploy.configuration.action.description");
+                                IServer server = new IServer(currentModule.getParent());
+                                String path = file.getPath();
+                                String modulePath = currentModule.getModuleProject().getModuleDirectory();
+                                String relativePath = path.substring(modulePath.length());
+                                if(relativePath.startsWith("/")) {
+                                    relativePath = relativePath.substring(1);
                                 }
+                                IPath projectRelativePath = new IPath(relativePath);
+                                IProject iProject = new IProject(currentModule);
+                                SerializationManager serializationManager = project.getComponent(SerializationManager.class);
+
+
+                                try {
+                                    ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(
+                                        server,
+                                        projectRelativePath,
+                                        iProject,
+                                        serializationManager
+                                    );
+                                    importManager.doImport(new NullProgressMonitor());
+                                } catch(InvocationTargetException e) {
+                                    e.printStackTrace();
+                                } catch(InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch(SerializationException e) {
+                                    e.printStackTrace();
+                                } catch(CoreException e) {
+                                    e.printStackTrace();
+                                }
+                            } finally {
                             }
-                        );
-//                    }
-//                }
-//            );
+                        }
+                    }
+                );
         }
     }
 }

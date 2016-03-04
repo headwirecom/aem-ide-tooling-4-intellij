@@ -18,6 +18,7 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Modul
  *
  * Created by schaefa on 5/13/15.
  */
+@Deprecated
 public class IResource {
     public static final int FILE = 1;
     public static final int FOLDER = 2;

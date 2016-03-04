@@ -30,6 +30,7 @@ import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE
 /**
  * Created by schaefa on 5/13/15.
  */
+@Deprecated
 public class ProjectUtil {
 
     public static IPath getSyncDirectoryFullPath(IProject project) {

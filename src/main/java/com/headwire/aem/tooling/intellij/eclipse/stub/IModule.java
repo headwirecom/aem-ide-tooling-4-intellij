@@ -5,6 +5,7 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Modul
 /**
  * Created by schaefa on 5/14/15.
  */
+@Deprecated
 public class IModule {
 
     private Module module;

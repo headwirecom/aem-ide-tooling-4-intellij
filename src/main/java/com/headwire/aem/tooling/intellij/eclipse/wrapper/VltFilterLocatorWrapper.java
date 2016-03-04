@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Created by schaefa on 6/19/15.
  */
+@Deprecated
 public class VltFilterLocatorWrapper
     extends VltFilterLocator
     implements ApplicationComponent

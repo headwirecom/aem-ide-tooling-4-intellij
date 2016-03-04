@@ -16,6 +16,7 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Modul
 /**
  * Created by schaefa on 5/13/15.
  */
+@Deprecated
 public class IProject {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

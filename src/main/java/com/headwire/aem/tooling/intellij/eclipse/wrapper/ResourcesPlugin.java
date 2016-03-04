@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 /**
  * Created by schaefa on 5/15/15.
  */
+@Deprecated
 public class ResourcesPlugin {
     private static final Workspace WORKSPACE = new Workspace();
 

@@ -3,6 +3,7 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
 /**
  * Created by schaefa on 5/15/15.
  */
+@Deprecated
 public class IModuleResourceDelta {
     public static final int ADDED = 1;
     public static final int CHANGED = 2;

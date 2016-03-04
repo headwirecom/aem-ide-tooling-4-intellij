@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.6.4.2-SNAPSHOT</version>
+    <version>0.6.4.3-SNAPSHOT</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,11 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.6.4.3-SNAPSHOT: The build process waits until the Maven Build is done and while any action fromo
+                              the toolbar is executed the toolbar is locked / disabled. In addition the
+                              original files from the renditions are pushed to the server last so that the
+                              DAM Workflow is not interferening with the rendition nodes.
+        </li>
         <li>0.6.4.2-SNAPSHOT: The Maven Build for OSGi Bundles needs to be executed in a Dispatcher Thread
                               but through changes in IntelliJ IDEA 15 that did not block anymore. In order
                               to make it work this build is not building with a background task so that I can

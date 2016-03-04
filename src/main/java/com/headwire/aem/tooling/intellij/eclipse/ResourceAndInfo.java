@@ -24,6 +24,7 @@ import org.apache.sling.ide.transport.ResourceProxy;
  * together
  *
  */
+@Deprecated
 public class ResourceAndInfo {
     private final ResourceProxy resource;
     private final FileInfo info;

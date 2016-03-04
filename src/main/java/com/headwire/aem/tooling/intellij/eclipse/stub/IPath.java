@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by schaefa on 5/13/15.
  */
+@Deprecated
 public class IPath {
 
     private IPath base;

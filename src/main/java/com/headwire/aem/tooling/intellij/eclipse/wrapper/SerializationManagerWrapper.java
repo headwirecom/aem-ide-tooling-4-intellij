@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
 * Created by schaefa on 5/14/15.
 */
+@Deprecated
 class SerializationManagerWrapper
     extends VltSerializationManager
     implements ApplicationComponent

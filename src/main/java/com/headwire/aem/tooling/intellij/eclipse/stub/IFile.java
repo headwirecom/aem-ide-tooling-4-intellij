@@ -13,6 +13,7 @@ import java.io.InputStream;
 /**
  * Created by schaefa on 5/13/15.
  */
+@Deprecated
 public class IFile extends IResource {
 
     public IFile() {}

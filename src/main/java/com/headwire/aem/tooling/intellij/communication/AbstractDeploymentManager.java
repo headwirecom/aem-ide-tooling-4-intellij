@@ -16,6 +16,7 @@ import org.apache.sling.ide.transport.Result;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -123,8 +124,28 @@ public abstract class AbstractDeploymentManager<M, P, F>
                     sendMessage(MessageType.DEBUG, "Resource File to deploy: " + resourceFile);
                     List<FileWrapper> changedResources = new ArrayList<FileWrapper>();
                     resourceFile.getChangedResourceList(changedResources);
-                    //AS TODO: Create a List of Changed Resources
+                    //AS TODO: This is a hack to prevent the DAM Workflows to generate Renditions files before any of them a deployed to AEM. For that we just place any /renditions/original to the end of the list
+                    // Reorder the Changed Resoruces so that any /renditions/original is at the end
+                    List<FileWrapper> changedResourcesOrdered = new ArrayList<FileWrapper>(changedResources.size());
+                    Iterator<FileWrapper> i = changedResources.iterator();
+                    while(i.hasNext()) {
+                        FileWrapper fileWrapper = i.next();
+                        if(!fileWrapper.getPath().contains("/renditions/original")) {
+                            changedResourcesOrdered.add(fileWrapper);
+                            i.remove();
+                        }
+                    }
+                    i = changedResources.iterator();
+                    while(i.hasNext()) {
+                        changedResourcesOrdered.add(i.next());
+                    }
+                    changedResources = changedResourcesOrdered;
                     for(FileWrapper changedResource : changedResources) {
+                        // Brute force fix for avoiding the rendition issue
+                        String path = changedResource.getPath();
+                        if(path.contains("/renditions/") && !path.contains("/renditions/original")) {
+                            continue;
+                        }
                         try {
                             Command<?> command = addFileCommand(repository, module, changedResource, force);
                             if(command != null) {
