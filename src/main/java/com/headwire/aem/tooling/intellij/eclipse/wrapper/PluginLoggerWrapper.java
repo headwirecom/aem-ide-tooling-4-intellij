@@ -7,6 +7,7 @@ import org.apache.sling.ide.log.Logger;
 /**
  * Created by schaefa on 5/14/15.
  */
+@Deprecated
 public class PluginLoggerWrapper
     extends ApplicationComponent.Adapter
     implements Logger

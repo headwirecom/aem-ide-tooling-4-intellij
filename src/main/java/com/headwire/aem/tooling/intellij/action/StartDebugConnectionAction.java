@@ -31,7 +31,7 @@ public class StartDebugConnectionAction
         if(runManager != null) {
             connectionManager.connectInDebugMode(runManager);
         } else {
-            //AS TODO: Create Alert to show that problems
+            getMessageManager(project).showAlert("debug.configuration.action.failure");
         }
     }
 

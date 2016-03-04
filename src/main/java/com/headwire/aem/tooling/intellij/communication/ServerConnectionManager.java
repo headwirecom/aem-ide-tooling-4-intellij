@@ -1,5 +1,8 @@
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.github.rjeschke.txtmark.Run;
+import com.headwire.aem.tooling.intellij.communication.IntelliJDeploymentManager.IntelliJFileWrapper;
+import com.headwire.aem.tooling.intellij.communication.IntelliJDeploymentManager.IntelliJModuleWrapper;
 import com.headwire.aem.tooling.intellij.config.ModuleProject;
 import com.headwire.aem.tooling.intellij.config.ModuleProjectFactory;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
@@ -9,19 +12,14 @@ import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 
-//import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
-//import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
-//import com.headwire.aem.tooling.intellij.eclipse.stub.IModuleResource;
-//import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 //AS TODO: We should use Eclipse Stuff here -> find a way to make this IDE independent
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 
+import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
-import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
-import com.headwire.aem.tooling.intellij.util.Constants;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
@@ -44,7 +42,7 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
@@ -57,7 +55,6 @@ import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.io.ConnectorException;
 import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
 import org.apache.sling.ide.io.SlingResource;
-import org.apache.sling.ide.log.Logger;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.apache.sling.ide.osgi.OsgiClientException;
 import org.apache.sling.ide.serialization.SerializationException;
@@ -73,7 +70,6 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
-import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.MavenDataKeys;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
@@ -86,8 +82,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -122,21 +116,16 @@ public class ServerConnectionManager
     private ServerTreeSelectionHandler selectionHandler;
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
-    private NewResourceChangeCommandFactory commandFactory;
+//    private NewResourceChangeCommandFactory commandFactory;
+    private IntelliJDeploymentManager deploymentManager;
 
     private static boolean firstRun = true;
 
     public ServerConnectionManager(@NotNull Project project) {
         super(project);
-//        messageManager = ServiceManager.getService(myProject, MessageManager.class);
         messageManager = myProject.getComponent(MessageManager.class);
-//            ServiceManager.getService(myProject, MessageManager.class);
-//        serverConfigurationManager = ServiceManager.getService(myProject, ServerConfigurationManager.class);
         serverConfigurationManager = myProject.getComponent(ServerConfigurationManager.class);
-        commandFactory = new NewResourceChangeCommandFactory(
-//            ServiceManager.getService(SerializationManager.class)
-            myProject.getComponent(SerializationManager.class)
-        );
+        deploymentManager = new IntelliJDeploymentManager(project);
     }
 
     public void init(@NotNull ServerTreeSelectionHandler serverTreeSelectionHandler) {
@@ -148,14 +137,8 @@ public class ServerConnectionManager
     public boolean isConfigurationEditable() {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         return serverConfiguration != null &&
-//            ( CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus()) ||
               !CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus())
             ;
-    }
-
-    public boolean isConfigurationChecked() {
-        ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-        return serverConfiguration != null && CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus());
     }
 
     public boolean isConnectionInUse() {
@@ -166,7 +149,6 @@ public class ServerConnectionManager
     public boolean isConnectionIsStoppable() {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         return serverConfiguration != null &&
-//            ( CONFIGURATION_CHECKED.contains(serverConfiguration.getServerStatus()) ||
               CONFIGURATION_IN_USE.contains(serverConfiguration.getServerStatus())
             ;
     }
@@ -216,7 +198,6 @@ public class ServerConnectionManager
                         String artifactId = moduleProject.getArtifactId();
                         String version = moduleProject.getVersion();
                         version = checkBundleVersion(version);
-//                        Version localVersion = new Version(version);
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
                         if(module.isOSGiBundle()) {
                             Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
@@ -303,7 +284,7 @@ public class ServerConnectionManager
      * Binding is the process of connecting the Project's Modules with the Maven Modules (its sub projects)
      *
      * @param serverConfiguration The Server Connection that is checked and bound if not already done
-     * @return True if the the connection was successfully bound otherwise flase
+     * @return True if the the connection was successfully bound otherwise false
      */
     public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
         if(!serverConfiguration.isBound()) {
@@ -314,10 +295,6 @@ public class ServerConnectionManager
     }
 
     public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration) {
-//        MavenProjectsManager mavenProjectsManager = ServiceManager.getService(myProject, MavenProjectsManager.class);
-        MavenProjectsManager mavenProjectsManager = myProject.getComponent(MavenProjectsManager.class);
-//        List<MavenProject> mavenProjects = mavenProjectsManager.getNonIgnoredProjects();
-
         List<ModuleProject> moduleProjects = ModuleProjectFactory.getProjectModules(myProject);
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
         for(ModuleProject moduleProject : moduleProjects) {
@@ -352,8 +329,6 @@ public class ServerConnectionManager
         if(serverConfiguration != null) {
             try {
                 OsgiClient osgiClient = obtainSGiClient();
-//                EmbeddedArtifactLocator artifactLocator = OSGiFactory.getArtifactLocator();
-//                EmbeddedArtifactLocator artifactLocator = ServiceManager.getService(EmbeddedArtifactLocator.class);
                 EmbeddedArtifactLocator artifactLocator = myProject.getComponent(EmbeddedArtifactLocator.class);
                 Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 
@@ -444,23 +419,6 @@ public class ServerConnectionManager
         return ret;
     }
 
-//    @Nullable
-//    public static void disconnectRepository(@NotNull ServerConfiguration serverConfiguration, @NotNull MessageManager messageManager) {
-////        messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
-//        try {
-//            ServerUtil.stopRepository(new IServer(serverConfiguration), new NullProgressMonitor());
-//        } catch(CoreException e) {
-//            messageManager.sendDebugNotification("Failed to disconnect: " + e.getMessage());
-////            // Show Alert and exit
-////            //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
-////            if(e.getCause().getClass() == IllegalArgumentException.class) {
-////                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository.refused", serverConfiguration.getName());
-////            } else {
-////                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
-////            }
-//        }
-//    }
-
     public static List<ResourceProxy> getChildrenNodes(Repository repository, String path) {
         List<ResourceProxy> ret = new ArrayList<ResourceProxy>();
         if(path != null && path.length() > 0) {
@@ -486,28 +444,36 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public void deployModules(final DataContext dataContext, boolean force) {
+    public void deployModules(final DataContext dataContext, boolean force, ProgressIndicator indicator) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
+            indicator.setText2("Check Bindings");
             checkBinding(serverConfiguration);
             List<Module> moduleList = serverConfiguration.getModuleList();
+            double i = 0;
             for(ServerConfiguration.Module module: moduleList) {
-                deployModule(dataContext, module, force);
+                deployModule(dataContext, module, force, indicator);
+                indicator.setFraction(i / moduleList.size());
+                i += 1;
             }
         } else {
             messageManager.sendNotification("aem.explorer.deploy.modules.no.configuration.selected", NotificationType.WARNING);
         }
     }
 
-    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force) {
+    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, ProgressIndicator indicator) {
         messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+        indicator.setText2("Deploy Module: " + module.getName());
         checkBinding(module.getParent());
         if(module.isPartOfBuild()) {
             if(module.isOSGiBundle()) {
                 publishBundle(dataContext, module);
             } else if(module.isSlingPackage()) {
                 //AS TODO: Add the synchronization of the entire module
-                publishModule(module, force);
+                deploymentManager.publishModule(
+                    deploymentManager.new IntelliJModuleWrapper(module, myProject),
+                    force
+                );
             } else {
                 messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not a supported package");
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.unsupported);
@@ -590,28 +556,6 @@ public class ServerConnectionManager
         }
     }
 
-    private boolean canBeStopped(@Nullable ProcessHandler processHandler) {
-        return processHandler != null && !processHandler.isProcessTerminated()
-            && (!processHandler.isProcessTerminating()
-            || processHandler instanceof KillableProcess && ((KillableProcess) processHandler).canKillProcess());
-    }
-
-    private void markConfigurationAsSynchronized(String configurationName) {
-        ServerConfiguration configuration = serverConfigurationManager.findServerConfigurationByName(configurationName);
-        if(configuration != null) {
-            configuration.setSynchronizationStatus(ServerConfiguration.SynchronizationStatus.upToDate);
-            serverConfigurationManager.updateServerConfiguration(configuration);
-        }
-    }
-
-    private void markConfigurationAsOutDated(String configurationName) {
-        ServerConfiguration configuration = serverConfigurationManager.findServerConfigurationByName(configurationName);
-        if(configuration != null) {
-            configuration.setSynchronizationStatus(ServerConfiguration.SynchronizationStatus.outdated);
-            serverConfigurationManager.updateServerConfiguration(configuration);
-        }
-    }
-
     private void updateStatus(String configurationName, ServerConfiguration.SynchronizationStatus synchronizationStatus) {
         ServerConfiguration configuration = serverConfigurationManager.findServerConfigurationByName(configurationName);
         if(configuration != null) {
@@ -622,13 +566,6 @@ public class ServerConnectionManager
 
     public void updateServerStatus(String configurationName, ServerConfiguration.ServerStatus serverStatus) {
         ServerConfiguration configuration = serverConfigurationManager.findServerConfigurationByName(configurationName);
-        if(configuration != null) {
-            configuration.setServerStatus(serverStatus);
-            serverConfigurationManager.updateServerConfiguration(configuration);
-        }
-    }
-
-    public void updateServerStatus(ServerConfiguration configuration, ServerConfiguration.ServerStatus serverStatus) {
         if(configuration != null) {
             configuration.setServerStatus(serverStatus);
             serverConfigurationManager.updateServerConfiguration(configuration);
@@ -659,7 +596,9 @@ public class ServerConnectionManager
         if(moduleProject.isOSGiBundle()) {
             try {
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
+                boolean mavenDoneSuccessfully = true;
                 if(module.getParent().isBuildWithMaven()) {
+                    mavenDoneSuccessfully = false;
                     List<String> goals = MavenDataKeys.MAVEN_GOALS.getData(dataContext);
                     if (goals == null) {
                         goals = new ArrayList<String>();
@@ -676,48 +615,72 @@ public class ServerConnectionManager
                         final boolean isShown = tw != null && tw.isVisible();
                         String workingDirectory = moduleProject.getModuleDirectory();
                         MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
-                        final MavenRunnerParameters params = new MavenRunnerParameters(
-                            true,
-                            workingDirectory,
-                            goals,
-                            explicitProfiles.getEnabledProfiles(),
-                            explicitProfiles.getDisabledProfiles());
+                        final MavenRunnerParameters params = new MavenRunnerParameters(true, workingDirectory, goals, explicitProfiles.getEnabledProfiles(), explicitProfiles.getDisabledProfiles());
+                        // This Monitor is used to know when the Maven build is done
+                        RunExecutionMonitor rem = RunExecutionMonitor.getInstance(myProject);
+                        // We need to tell the Monitor that we are going to start a Maven Build so that the Countdown Latch
+                        // is ready
+                        rem.startMavenBuild();
                         try {
-                            MavenRunConfigurationType.runConfiguration(module.getProject(), params, null);
-                            if (!isShown) {
-                                ApplicationManager.getApplication().invokeLater(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
+                            ApplicationManager.getApplication().invokeLater(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            MavenRunConfigurationType.runConfiguration(module.getProject(), params, null);
+                                        } catch(RuntimeException e) {
+                                            // Ignore it
+                                            String message = e.getMessage();
+                                        }
+                                        if(isShown) {
                                             tw.hide(null);
                                         }
-                                    },
-                                    ModalityState.NON_MODAL
-                                    //                                    ApplicationManager.getApplication().getCurrentModalityState()
-                                );
-                            }
+                                    }
+                                },
+                                ModalityState.NON_MODAL
+                            );
                         } catch (IllegalStateException e) {
                             if (firstRun) {
                                 firstRun = false;
                                 messageManager.showAlert("aem.explorer.deploy.module.maven.first.run.failure");
                             }
+                        } catch(RuntimeException e) {
+                            messageManager.sendDebugNotification("Maven Build failed with an unexpectected exception");
+                            messageManager.sendUnexpectedException(e);
                         }
-                        messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.done");
+                        // Now we can wait for the process to end
+//                        switch(RunExecutionMonitor.getInstance(myProject).waitFor(module.getParent().getMavenBuildTimeoutInSeconds())) {
+                        switch(RunExecutionMonitor.getInstance(myProject).waitFor()) {
+                            case done:
+                                messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.done");
+                                mavenDoneSuccessfully = true;
+                                break;
+                            case timedOut:
+                                messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.timedout");
+                                messageManager.showAlert("aem.explorer.deploy.module.maven.timedout");
+                                break;
+                            case interrupted:
+                                messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.interrupted");
+                                messageManager.showAlert("aem.explorer.deploy.module.maven.interrupted");
+                                break;
+                        }
                     }
                 }
-                File buildDirectory = new File(module.getModuleProject().getBuildDirectoryPath());
-                if(buildDirectory.exists() && buildDirectory.isDirectory()) {
-                    File buildFile = new File(buildDirectory, module.getModuleProject().getBuildFileName() + ".jar");
-                    messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
-                    if(buildFile.exists()) {
-                        EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
-                        contents = bundle.openInputStream();
-                        obtainSGiClient().installBundle(contents, bundle.getName());
-                        module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
+                if(mavenDoneSuccessfully) {
+                    File buildDirectory = new File(module.getModuleProject().getBuildDirectoryPath());
+                    if(buildDirectory.exists() && buildDirectory.isDirectory()) {
+                        File buildFile = new File(buildDirectory, module.getModuleProject().getBuildFileName() + ".jar");
+                        messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
+                        if(buildFile.exists()) {
+                            EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
+                            contents = bundle.openInputStream();
+                            obtainSGiClient().installBundle(contents, bundle.getName());
+                            module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
+                        }
                     }
+                    updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
+                    messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
                 }
-                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
-                messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
             } catch(MalformedURLException e) {
                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
                 messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.bad.url", e);
@@ -740,106 +703,6 @@ public class ServerConnectionManager
 
     public enum FileChangeType {CHANGED, CREATED, DELETED, MOVED, COPIED};
 
-    public void publishModule(Module module, boolean force) {
-        Repository repository = null;
-        long lastModificationTimestamp = -1;
-        if(force) {
-            messageManager.sendInfoNotification("aem.explorer.deploy.module.by.force.prepare", module);
-        } else {
-            messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
-        }
-        try {
-            repository = ServerUtil.getConnectedRepository(
-                new IServer(module.getParent()), new NullProgressMonitor(), messageManager
-            );
-            if(repository != null) {
-                messageManager.sendDebugNotification("Got Repository: " + repository);
-                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
-                List<String> resourceList = findContentResources(module);
-                Set<String> allResourcesUpdatedList = new HashSet<String>();
-                ModuleProject moduleProject = module.getModuleProject();
-                VirtualFile baseFile = module.getProject().getBaseDir();
-                for(String resource : resourceList) {
-                    VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resource);
-                    messageManager.sendDebugNotification("Resource File to deploy: " + resourceFile);
-                    List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
-                    getChangedResourceList(resourceFile, changedResources);
-                    //AS TODO: Create a List of Changed Resources
-                    for(VirtualFile changedResource : changedResources) {
-                        try {
-                            Command<?> command = addFileCommand(repository, module, changedResource, force);
-                            if(command != null) {
-                                long parentLastModificationTimestamp = ensureParentIsPublished(module, resourceFile.getPath(), changedResource, repository, allResourcesUpdatedList, force);
-                                lastModificationTimestamp = Math.max(parentLastModificationTimestamp, lastModificationTimestamp);
-                                allResourcesUpdatedList.add(changedResource.getPath());
-
-                                messageManager.sendDebugNotification("Publish file: " + changedResource);
-                                messageManager.sendDebugNotification("Publish for module: " + module.getName());
-                                execute(command);
-
-                                // save the modification timestamp to avoid a redeploy if nothing has changed
-                                Util.setModificationStamp(changedResource);
-                                lastModificationTimestamp = Math.max(changedResource.getTimeStamp(), lastModificationTimestamp);
-                            } else {
-                                // We do not update the file but we need to find the last modification timestamp
-                                // We need to obtain the command to see if it is deployed
-                                command = addFileCommand(repository, module, changedResource, true);
-                                if(command != null) {
-                                    long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, allResourcesUpdatedList);
-                                    lastModificationTimestamp = Math.max(lastModificationTimestamp, parentLastModificationTimestamp);
-                                    allResourcesUpdatedList.add(changedResource.getPath());
-                                    long timestamp = changedResource.getTimeStamp();
-                                    lastModificationTimestamp = Math.max(lastModificationTimestamp, timestamp);
-                                }
-                            }
-                        } catch(ConnectorException e) {
-                            if(e.getId()  != ConnectorException.UNKNOWN) {
-                                // The Connector Exception is used to end the processing of publishing a file. In case of an error it will stop the entire processing
-                                // and in case of a warning it will proceed
-                                NotificationType type = e.getId() < 0 ? NotificationType.ERROR : NotificationType.WARNING;
-                                messageManager.showAlert(type, AEMBundle.message("aem.explorer.deploy.exception.title"), e.getMessage());
-                                if(e.getId() < 0) {
-                                    return;
-                                }
-                                throw e;
-                            } else {
-                                messageManager.showAlert(NotificationType.ERROR, AEMBundle.message("aem.explorer.deploy.exception.title"), e.getCause().getMessage());
-                                return;
-                            }
-                        }
-                    }
-                }
-                // reorder the child nodes at the end, when all create/update/deletes have been processed
-                //AS TODO: This needs to be resolved -> done but needs to be verified
-                for(String resourcePath : allResourcesUpdatedList) {
-                    VirtualFile file = baseFile.getFileSystem().findFileByPath(resourcePath);
-                    if(file != null) {
-                        execute(reorderChildNodesCommand(repository, module, file));
-                    } else {
-                        messageManager.sendErrorNotification("aem.explorer.deploy.failed.to.reorder.missing.resource", resourcePath);
-                    }
-                }
-                module.setLastModificationTimestamp(lastModificationTimestamp);
-                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
-                if(force) {
-                    messageManager.sendInfoNotification("aem.explorer.deploy.module.by.force.success", module);
-                } else {
-                    messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
-                }
-            }
-        } catch(ConnectorException e) {
-            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", module, e);
-            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
-            throw new RuntimeException(e);
-        } catch(SerializationException e) {
-            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", module, e);
-            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
-        } catch(IOException e) {
-            messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.io", module, e);
-            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
-        }
-    }
-
     public long getLastModificationTimestamp(Module module) {
         long ret = -1;
 
@@ -857,7 +720,8 @@ public class ServerConnectionManager
                 long fileTimestamp = Util.getModificationStamp(changedResource);
                 if(fileTimestamp > 0) {
                     ret = Math.max(ret, fileTimestamp);
-                    long parentLastModificationTimestamp = getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, allResourcesUpdatedList);
+                    long parentLastModificationTimestamp =
+                        getParentLastModificationTimestamp(module, resourceFile.getPath(), changedResource, allResourcesUpdatedList);
                     ret = Math.max(ret, parentLastModificationTimestamp);
                 }
             }
@@ -977,25 +841,34 @@ public class ServerConnectionManager
                         switch(type) {
                             case CHANGED:
                             case CREATED:
-                                command = addFileCommand(repository, currentModule, file, false);
+                                command = deploymentManager.addFileCommand(
+                                    repository,
+                                    deploymentManager.new IntelliJModuleWrapper(currentModule, myProject),
+                                    deploymentManager.new IntelliJFileWrapper(file),
+                                    false
+                                );
                                 break;
                             case DELETED:
-                                command = removeFileCommand(repository, currentModule, file);
+                                command = deploymentManager.removeFileCommand(
+                                    repository,
+                                    deploymentManager.new IntelliJModuleWrapper(currentModule, myProject),
+                                    deploymentManager.new IntelliJFileWrapper(file)
+                                );
                                 break;
                         }
                         messageManager.sendDebugNotification("Got Command: " + command);
                         if(command != null) {
                             Set<String> handledPaths = new HashSet<String>();
-                            ensureParentIsPublished(
-                                currentModule,
+                            deploymentManager.ensureParentIsPublished(
+                                deploymentManager.new IntelliJModuleWrapper(currentModule, myProject),
                                 //AS Make sure the basepath is in forward slash notation
                                 basePath.replace("\\", "/"),
-                                file,
+                                deploymentManager.new IntelliJFileWrapper(file),
                                 repository,
                                 handledPaths,
                                 true
                             );
-                            execute(command);
+                            deploymentManager.execute(command);
                             // Add a property that can be used later to avoid a re-sync if not needed
                             Util.setModificationStamp(file);
                             messageManager.sendInfoNotification("server.update.file.change.success", path);
@@ -1014,198 +887,6 @@ public class ServerConnectionManager
         }
     }
 
-    /**
-     * Ensures that the parent of this resource has been published to the repository
-     *
-     * <p>
-     * Note that the parents explicitly do not have their child nodes reordered, this will happen when they are
-     * published due to a resource change
-     * </p>
-     *
-     * AS NOTE: Taken from SlingLaunchpadBehaviour.class from Eclipse Sling IDE Project
-     *
-     * @ param moduleResource the current resource
-     * @param repository the repository to publish to
-     * @ param allResources all of the module's resources
-     * @param handledPaths the paths that have been handled already in this publish operation, but possibly not
-     *            registered as published
-     * @throws IOException
-     * @throws SerializationException
-     * @throws CoreException
-     */
-    private long ensureParentIsPublished(
-        Module module,
-        String basePath,
-        VirtualFile file,
-        Repository repository,
-        Set<String> handledPaths,
-        boolean force
-    )
-        throws ConnectorException, SerializationException, IOException {
-
-        long ret = -1;
-        Logger logger = Activator.getDefault().getPluginLogger();
-
-        VirtualFile parentFile = file.getParent();
-        messageManager.sendDebugNotification("Check Parent File: " + parentFile);
-        String parentFilePath = parentFile.getPath();
-        if(parentFilePath.equals(basePath)) {
-            logger.trace("Path {0} can not have a parent, skipping", parentFilePath);
-            return ret;
-        }
-
-        // already published by us, a parent of another resource that was published in this execution
-        if (handledPaths.contains(parentFile.getPath())) {
-            logger.trace("Parent path {0} was already handled, skipping", parentFile.getPath());
-            return ret;
-        }
-
-        // handle the parent's parent first, if needed
-        long lastParentModificationTimestamp = ensureParentIsPublished(module, basePath, parentFile, repository, handledPaths, force);
-
-        Command command = null;
-        try {
-            // create this resource
-            command = addFileCommand(repository, module, parentFile, force);
-            execute(command);
-        } catch(ConnectorException e) {
-            ConnectorException rethrow = e;
-            if(e.getId() != ConnectorException.UNKNOWN) {
-                rethrow = new ConnectorException(
-                    AEMBundle.message(
-                        (e.getId() == Constants.COMMAND_EXECUTION_FAILURE ?
-                            "aem.explorer.deploy.create.parent.failed.message" :
-                            "aem.explorer.deploy.create.parent.unsuccessful.message" ),
-                        e.getMessage(),
-                        e.getCause().getMessage()),
-                    e
-                );
-            }
-            throw rethrow;
-        }
-
-        // save the modification timestamp to avoid a redeploy if nothing has changed
-        Util.setModificationStamp(parentFile);
-
-        handledPaths.add(parentFile.getPath());
-        logger.trace("Ensured that resource at path {0} is published", parentFile.getPath());
-        return Math.max(lastParentModificationTimestamp, parentFile.getTimeStamp());
-    }
-
-    private Command<?> addFileCommand(
-        Repository repository, Module module, VirtualFile file, boolean forceDeploy
-    ) throws
-        ConnectorException,
-        SerializationException, IOException
-    {
-        SlingResource resource = new SlingResource4IntelliJ(module.getSlingProject(), file);
-//        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
-        return commandFactory.newCommandForAddedOrUpdated(repository, resource, forceDeploy);
-    }
-
-//AS TODO: In the IntelliJ plugin this isn't used -> check if used in the Sling Project and fix it
-//    private Command<?> addFileCommand(Repository repository, IModuleResource resource) throws CoreException,
-//        SerializationException, IOException {
-//
-//        IResource res = getResource(resource);
-//
-//        if (res == null) {
-//            return null;
-//        }
-//
-//        return commandFactory.newCommandForAddedOrUpdated(repository, res, false);
-//    }
-
-    private Command<?> reorderChildNodesCommand(Repository repository, Module module, VirtualFile file) throws ConnectorException,
-        SerializationException, IOException {
-
-//        IResource res = getResource(resource);
-//
-//        if (res == null) {
-//            return null;
-//        }
-//
-//        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
-
-        SlingResource resource = new SlingResource4IntelliJ(module.getSlingProject(), file);
-        return commandFactory.newReorderChildNodesCommand(repository, resource);
-    }
-
-//AS TODO: In the IntelliJ plugin this isn't used -> check if used in the Sling Project and fix it
-//    private Command<?> reorderChildNodesCommand(Repository repository, IModuleResource resource) throws CoreException,
-//        SerializationException, IOException {
-//
-//        IResource res = getResource(resource);
-//
-//        if (res == null) {
-//            return null;
-//        }
-//
-//        return commandFactory.newReorderChildNodesCommand(repository, res);
-//    }
-
-//    private IResource getResource(IModuleResource resource) {
-//
-//        IResource file = (IFile) resource.getAdapter(IFile.class);
-//        if (file == null) {
-//            file = (IFolder) resource.getAdapter(IFolder.class);
-//        }
-//
-//        if (file == null) {
-//            // Usually happens on server startup, it seems to be safe to ignore for now
-//            Activator.getDefault().getPluginLogger()
-//                .trace("Got null {0} and {1} for {2}", IFile.class.getSimpleName(),
-//                    IFolder.class.getSimpleName(), resource);
-//            return null;
-//        }
-//
-//        return file;
-//    }
-
-    private Command<?> removeFileCommand(
-//        Repository repository, IModuleResource resource
-        Repository repository, Module module, VirtualFile file
-    )
-        throws SerializationException, IOException, ConnectorException {
-
-//        IResource deletedResource = getResource(resource);
-//
-//        if (deletedResource == null) {
-//            return null;
-//        }
-
-//        IResource resource = file.isDirectory() ? new IFolder(module, file) : new IFile(module, file);
-        SlingResource resource = new SlingResource4IntelliJ(module.getSlingProject(), file);
-        return commandFactory.newCommandForRemovedResources(repository, resource);
-    }
-
-    private void execute(Command<?> command) throws ConnectorException {
-        if (command == null) {
-            return;
-        }
-        Result<?> result = command.execute();
-
-        if (!result.isSuccess()) {
-            try {
-                result.get();
-            } catch(RepositoryException e) {
-                // Got the Repository Exception form the call
-                Throwable cause = e.getCause();
-                if(cause != null) {
-                    throw new ConnectorException(
-                        Constants.COMMAND_EXECUTION_FAILURE,
-                        command.getPath(),
-                        e
-                    );
-                }
-            }
-            throw new ConnectorException(
-                Constants.COMMAND_EXECUTION_UNSUCCESSFUL,
-                AEMBundle.message("aem.explorer.deploy.command.execution.unsuccessful.message", command.getPath())
-            );
-        }
-    }
-
     public String findContentResource(Module module, String filePath) {
         List<String> resourceList = findContentResources(module, filePath);
         return resourceList.isEmpty() ? null : resourceList.get(0);
@@ -1216,22 +897,16 @@ public class ServerConnectionManager
     }
 
     public List<String> findContentResources(Module module, String filePath) {
-//        filePath = filePath == null ? null : filePath.replace("\\", "/");
         List<String> ret = new ArrayList<String>();
         ModuleProject moduleProject = module.getModuleProject();
         List<String> contentDirectoryPaths = moduleProject.getContentDirectoryPaths();
-//        List<MavenResource> sourcePathList = moduleProject.getResources();
-//        for(MavenResource sourcePath: sourcePathList) {
-//            String basePath = sourcePath.getDirectory();
         for(String basePath: contentDirectoryPaths) {
-//            basePath = basePath.replace("\\", "/");
             messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
             //AS TODO: Paths from Windows have backlashes instead of forward slashes
             //AS TODO: It is possible that certain files are in forward slashes even on Windows
             String myFilePath = filePath == null ? null : filePath.replace("\\", "/");
             String myBasePath = basePath == null ? null : basePath.replace("\\", "/");
             if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (myFilePath == null || myFilePath.startsWith(myBasePath))) {
-//            if(basePath.endsWith(JCR_ROOT_PATH_INDICATOR) && (filePath == null || filePath.startsWith(basePath))) {
                 ret.add(basePath);
                 break;
             }

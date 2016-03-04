@@ -7,6 +7,7 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
 /**
  * Translated messages.
  */
+@Deprecated
 public class Messages
 //    extends NLS
 {

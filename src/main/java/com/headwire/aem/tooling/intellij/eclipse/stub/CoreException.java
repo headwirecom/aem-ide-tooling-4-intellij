@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Created by schaefa on 5/12/15.
  */
+@Deprecated
 public class CoreException
     extends Exception
 {

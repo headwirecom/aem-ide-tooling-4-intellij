@@ -42,6 +42,9 @@ public class ServerConfiguration
     public static final DefaultMode DEFAULT_MODE = DefaultMode.none;
     public static final ServerStatus DEFAULT_SERVER_STATUS = ServerStatus.notConnected;
     public static final SynchronizationStatus DEFAULT_SERVER_SYNCHRONIZATION_STATUS = SynchronizationStatus.notChecked;
+    public static final boolean DEFAULT_BUILD_WITH_MAVEN = true;
+    @Deprecated //AS TODO: Remove later as soon as the Cancel Build Action is implemented
+    public static final int DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS = 0;
     public static final LogFilter DEFAULT_LOG_FILTER = LogFilter.error;
 
     protected static final String COMPONENT_NAME = "ServerConfiguration";
@@ -120,7 +123,9 @@ public class ServerConfiguration
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
     private InstallationType installationType = DEFAULT_INSTALL_TYPE;
     private DefaultMode defaultMode = DEFAULT_MODE;
-    private boolean buildWithMaven = true;
+    private boolean buildWithMaven = DEFAULT_BUILD_WITH_MAVEN;
+    @Deprecated //AS TODO: Remove later as soon as the Cancel Build Action is implemented
+    private int mavenBuildTimeoutInSeconds = DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS;
     private LogFilter logFilter = DEFAULT_LOG_FILTER;
 
     // Don't store Server Status as it is reset when the Configuration is loaded again
@@ -149,6 +154,7 @@ public class ServerConfiguration
         description = source.description;
         defaultMode = source.defaultMode;
         buildWithMaven = source.buildWithMaven;
+        mavenBuildTimeoutInSeconds = source.mavenBuildTimeoutInSeconds;
         connectionPort = source.connectionPort;
         connectionDebugPort = source.connectionDebugPort;
         userName = source.userName;
@@ -175,6 +181,8 @@ public class ServerConfiguration
             ret = "server.configuration.invalid.port";
         } else if(connectionDebugPort <= 0 || connectionPort == connectionDebugPort) {
             ret = "server.configuration.invalid.debug.port";
+        } else if(mavenBuildTimeoutInSeconds < 0) {
+            ret = "server.configuration.invalid.maven.build.timeout";
         } else if(StringUtils.isBlank(userName)) {
             ret = "server.configuration.missing.user.name";
         } else if(StringUtils.isBlank(contextPath)) {
@@ -327,6 +335,16 @@ public class ServerConfiguration
 
     public void setBuildWithMaven(boolean buildWithMaven) {
         this.buildWithMaven = buildWithMaven;
+    }
+
+    public int getMavenBuildTimeoutInSeconds() {
+        return mavenBuildTimeoutInSeconds;
+    }
+
+    public void setMavenBuildTimeoutInSeconds(int mavenBuildTimeoutInSeconds) {
+        this.mavenBuildTimeoutInSeconds = mavenBuildTimeoutInSeconds >= 0 ?
+            mavenBuildTimeoutInSeconds :
+            DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS;
     }
 
     public boolean isBooted() {

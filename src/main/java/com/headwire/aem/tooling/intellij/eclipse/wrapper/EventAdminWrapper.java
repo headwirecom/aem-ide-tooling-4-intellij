@@ -9,6 +9,7 @@ import org.osgi.service.event.EventAdmin;
 /**
  * Created by schaefa on 5/14/15.
  */
+@Deprecated
 public class EventAdminWrapper
     extends ApplicationComponent.Adapter
     implements EventAdmin

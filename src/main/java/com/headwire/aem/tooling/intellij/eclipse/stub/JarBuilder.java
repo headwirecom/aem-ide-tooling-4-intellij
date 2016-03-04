@@ -17,6 +17,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * Created by schaefa on 5/18/15.
  */
+@Deprecated
 public class JarBuilder {
 
     public InputStream buildJar(final IFolder sourceDir) throws CoreException {

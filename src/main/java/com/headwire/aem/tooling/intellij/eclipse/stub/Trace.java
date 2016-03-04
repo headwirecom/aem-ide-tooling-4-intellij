@@ -5,6 +5,7 @@ import java.util.Date;
 /**
  * Created by schaefa on 5/18/15.
  */
+@Deprecated
 public class Trace {
     // tracing enablement flags
     public static boolean CONFIG = false;
