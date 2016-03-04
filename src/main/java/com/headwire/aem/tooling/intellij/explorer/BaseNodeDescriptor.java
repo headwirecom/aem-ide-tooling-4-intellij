@@ -24,12 +24,12 @@ import com.intellij.ui.SimpleColoredComponent;
 import com.intellij.ui.SimpleTextAttributes;
 import org.jetbrains.annotations.NotNull;
 
-abstract class ServerNodeDescriptor
+abstract class BaseNodeDescriptor
     extends NodeDescriptor
     implements CellAppearanceEx
 {
 
-    public ServerNodeDescriptor(Project project, NodeDescriptor parentDescriptor) {
+    public BaseNodeDescriptor(Project project, NodeDescriptor parentDescriptor) {
         super(project, parentDescriptor);
     }
 

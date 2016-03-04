@@ -1,14 +1,11 @@
 package com.headwire.aem.tooling.intellij.console;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationDisplayType;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.impl.NotificationsConfigurationImpl;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Disposer;
@@ -50,7 +47,7 @@ public class ConsoleLogModel
     void addNotification(Notification notification) {
         long stamp = System.currentTimeMillis();
         if(myProject != null) {
-            ServerTreeSelectionHandler selectionHandler = myProject.getComponent(ServerTreeSelectionHandler.class);
+            SlingServerTreeSelectionHandler selectionHandler = myProject.getComponent(SlingServerTreeSelectionHandler.class);
             if(selectionHandler != null) {
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                 ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
@@ -76,12 +73,6 @@ public class ConsoleLogModel
                         break;
                 }
             }
-            //        NotificationDisplayType type = NotificationsConfigurationImpl.getSettings(notification.getGroupId()).getDisplayType();
-            //        if (notification.isImportant() || (type != NotificationDisplayType.NONE && type != NotificationDisplayType.TOOL_WINDOW)) {
-            //            synchronized (myNotifications) {
-            //                myNotifications.add(notification);
-            //            }
-            //        }
             myStamps.put(notification, stamp);
             myStatuses.put(notification, ConsoleLog.formatForLog(notification, "").status);
             setStatusMessage(notification, stamp);

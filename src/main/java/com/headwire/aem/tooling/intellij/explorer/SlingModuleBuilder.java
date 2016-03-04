@@ -60,7 +60,6 @@ import java.util.Set;
  * Created by schaefa on 7/20/15.
  */
 public class SlingModuleBuilder
-//    extends ModuleBuilder
 //AS NOTE: We extend the Maven Module Builder not because we need some of the code but rather because
 //AS NOTE: we then can use 'MavenModuleWizardStep' class instead of copying over here
     extends MavenModuleBuilder

@@ -22,15 +22,15 @@ import java.awt.Font;
 /**
  * Created by schaefa on 6/13/15.
  */
-public abstract class AbstractConfigurationNodeDescriptor<T>
-    extends ServerNodeDescriptor
+public abstract class AbstractSlingServerNodeDescriptor<T>
+    extends BaseNodeDescriptor
 {
     protected static final TextAttributes ourPostfixAttributes = new TextAttributes(new JBColor(new Color(128, 0, 0), JBColor.RED), null, null, EffectType.BOXED, Font.PLAIN);
 
     protected final T myTarget;
     protected CompositeAppearance myHighlightedText;
 
-    public AbstractConfigurationNodeDescriptor(final Project project, final NodeDescriptor parentDescriptor, final T target) {
+    public AbstractSlingServerNodeDescriptor(final Project project, final NodeDescriptor parentDescriptor, final T target) {
         super(project, parentDescriptor);
         myTarget = target;
         myHighlightedText = new CompositeAppearance();

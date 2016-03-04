@@ -20,7 +20,6 @@ import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.ide.util.treeView.AbstractTreeStructure;
 import com.intellij.ide.util.treeView.NodeDescriptor;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.ActionCallback;
@@ -30,13 +29,13 @@ import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-final class ServerExplorerTreeStructure extends AbstractTreeStructure {
-    private static final Logger LOG = Logger.getInstance(ServerExplorerTreeStructure.class);
+final class SlingServerTreeStructure extends AbstractTreeStructure {
+    private static final Logger LOG = Logger.getInstance(SlingServerTreeStructure.class);
     private final Project myProject;
     private final Object myRoot = new Object();
     private boolean myFilteredTargets = false;
 
-    public ServerExplorerTreeStructure(final Project project) {
+    public SlingServerTreeStructure(final Project project) {
         myProject = project;
     }
 
@@ -49,11 +48,11 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
     @NotNull
     public NodeDescriptor createDescriptor(Object element, NodeDescriptor parentDescriptor) {
         if(element == myRoot) {
-            return new RootNodeDescriptor(myProject, parentDescriptor);
+            return new RootNodeDescriptorSling(myProject, parentDescriptor);
         }
 
         if(element instanceof String) {
-            return new TextInfoNodeDescriptor(myProject, parentDescriptor, (String) element);
+            return new TextInfoNodeDescriptorSling(myProject, parentDescriptor, (String) element);
         }
 
         if(element instanceof ServerConfiguration) {
@@ -122,8 +121,8 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
         return myRoot;
     }
 
-    private final class RootNodeDescriptor extends ServerNodeDescriptor {
-        public RootNodeDescriptor(Project project, NodeDescriptor parentDescriptor) {
+    private final class RootNodeDescriptorSling extends BaseNodeDescriptor {
+        public RootNodeDescriptorSling(Project project, NodeDescriptor parentDescriptor) {
             super(project, parentDescriptor);
             myName = AEMBundle.message("tree.builder.root.node.name");
         }
@@ -155,8 +154,8 @@ final class ServerExplorerTreeStructure extends AbstractTreeStructure {
         }
     }
 
-    private static final class TextInfoNodeDescriptor extends ServerNodeDescriptor {
-        public TextInfoNodeDescriptor(Project project, NodeDescriptor parentDescriptor, String text) {
+    private static final class TextInfoNodeDescriptorSling extends BaseNodeDescriptor {
+        public TextInfoNodeDescriptorSling(Project project, NodeDescriptor parentDescriptor, String text) {
             super(project, parentDescriptor);
             myName = text;
             myColor = JBColor.blue;

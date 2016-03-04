@@ -36,19 +36,9 @@ public class MessageManager
     }
 
     public void sendDebugNotification(String message) {
-//AS TODO: Find a way to switch it off when released -> Constant
-//        sendNotification("Debug Message", message, NotificationType.INFORMATION);
         logger.trace(message);
-//        ConsoleLog.addNotification(
-//            project,
-//            new DebugNotification("Debug Message", message)
-//        );
         new DebugNotification("Debug Message", message).notify(myProject);
     }
-
-//    public void sendNotification(String message, NotificationType type) {
-//        sendNotification("", message, type);
-//    }
 
     private void sendNotification(String title, String message, NotificationType type) {
         NOTIFICATION_GROUP.createNotification(
@@ -157,13 +147,6 @@ public class MessageManager
     public void showAlert(@NotNull final String title, @NotNull final String message) {
         // AS TODO: Originally the call was placed onto another Thread but it seems not to be necessary -> check and adjust
         showAlert(NotificationType.ERROR, title, message);
-//        ApplicationManager.getApplication().invokeLater(
-//            new Runnable() {
-//                public void run() {
-//                    Messages.showWarningDialog(project, message, title);
-//                }
-//            }
-//        );
     }
 
     public void showAlert(@NotNull final NotificationType type, @NotNull final String title, @NotNull final String message) {

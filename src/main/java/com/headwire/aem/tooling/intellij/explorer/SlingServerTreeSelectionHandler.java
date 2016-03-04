@@ -4,7 +4,6 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.Tree;
-import org.apache.sling.ide.osgi.OsgiClient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,13 +15,13 @@ import java.util.List;
 /**
  * Created by schaefa on 5/12/15.
  */
-public class ServerTreeSelectionHandler
+public class SlingServerTreeSelectionHandler
     extends AbstractProjectComponent
 {
 
     private Tree tree;
 
-    public ServerTreeSelectionHandler(@NotNull Project project) {
+    public SlingServerTreeSelectionHandler(@NotNull Project project) {
         super(project);
     }
 
@@ -32,27 +31,27 @@ public class ServerTreeSelectionHandler
 
     @Nullable
     public ServerConfiguration getCurrentConfiguration() {
-        final ServerNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
+        final BaseNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
         return descriptor == null ? null : descriptor.getServerConfiguration();
     }
 
     @Nullable
     public ServerConfiguration.Module getCurrentModuleConfiguration() {
-        final ServerNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
+        final BaseNodeDescriptor descriptor = getCurrentConfigurationDescriptor();
         return descriptor == null ? null : descriptor.getModuleConfiguration();
     }
 
     @Nullable
-    public ServerNodeDescriptor getCurrentConfigurationDescriptor() {
-        ServerNodeDescriptor ret = null;
+    public BaseNodeDescriptor getCurrentConfigurationDescriptor() {
+        BaseNodeDescriptor ret = null;
         if(tree != null) {
             final TreePath path = tree.getSelectionPath();
             if(path != null) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
                 while(node != null) {
                     final Object userObject = node.getUserObject();
-                    if(userObject instanceof ServerNodeDescriptor) {
-                        ret = (ServerNodeDescriptor) userObject;
+                    if(userObject instanceof BaseNodeDescriptor) {
+                        ret = (BaseNodeDescriptor) userObject;
                         break;
                     }
                     node = (DefaultMutableTreeNode) node.getParent();

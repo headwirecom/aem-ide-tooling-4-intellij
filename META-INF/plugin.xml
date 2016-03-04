@@ -68,7 +68,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder"/>
         <toolWindow id="AEM (EID)" anchor="right" icon="/images/hw.png"
-                    factoryClass="com.headwire.aem.tooling.intellij.explorer.ServersToolWindowFactory"/>
+                    factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
@@ -122,10 +122,10 @@
             <implementation-class>com.headwire.aem.tooling.intellij.communication.MessageManager</implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler</implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.ServerTreeManager</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager</implementation-class>
         </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager</implementation-class>

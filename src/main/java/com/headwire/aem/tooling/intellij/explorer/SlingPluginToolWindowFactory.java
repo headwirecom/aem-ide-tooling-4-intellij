@@ -11,13 +11,13 @@ import com.intellij.ui.content.ContentManager;
 /**
  * Created by schaefa on 3/19/15.
  */
-public class ServersToolWindowFactory
+public class SlingPluginToolWindowFactory
     implements ToolWindowFactory
 {
-    private static final Logger LOGGER = Logger.getInstance(ServersToolWindowFactory.class);
+    private static final Logger LOGGER = Logger.getInstance(SlingPluginToolWindowFactory.class);
 
     public void createToolWindowContent(final Project project, final ToolWindow toolWindow) {
-        SlingServerExplorer explorer = new SlingServerExplorer(project);
+        SlingPluginExplorer explorer = new SlingPluginExplorer(project);
         LOGGER.debug("CTWC: Explorer: '" + explorer + "'");
         final ContentManager contentManager = toolWindow.getContentManager();
         final Content content = contentManager.getFactory().createContent(explorer, null, false);

@@ -1,8 +1,5 @@
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.github.rjeschke.txtmark.Run;
-import com.headwire.aem.tooling.intellij.communication.IntelliJDeploymentManager.IntelliJFileWrapper;
-import com.headwire.aem.tooling.intellij.communication.IntelliJDeploymentManager.IntelliJModuleWrapper;
 import com.headwire.aem.tooling.intellij.config.ModuleProject;
 import com.headwire.aem.tooling.intellij.config.ModuleProjectFactory;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
@@ -17,8 +14,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 
 import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
-import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
@@ -53,12 +49,9 @@ import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.io.ConnectorException;
-import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
-import org.apache.sling.ide.io.SlingResource;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.apache.sling.ide.osgi.OsgiClientException;
 import org.apache.sling.ide.serialization.SerializationException;
-import org.apache.sling.ide.serialization.SerializationManager;
 import org.apache.sling.ide.transport.Command;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.RepositoryException;
@@ -113,7 +106,7 @@ public class ServerConnectionManager
         ServerConfiguration.ServerStatus.running
     );
 
-    private ServerTreeSelectionHandler selectionHandler;
+    private SlingServerTreeSelectionHandler selectionHandler;
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
 //    private NewResourceChangeCommandFactory commandFactory;
@@ -128,8 +121,8 @@ public class ServerConnectionManager
         deploymentManager = new IntelliJDeploymentManager(project);
     }
 
-    public void init(@NotNull ServerTreeSelectionHandler serverTreeSelectionHandler) {
-        selectionHandler = serverTreeSelectionHandler;
+    public void init(@NotNull SlingServerTreeSelectionHandler slingServerTreeSelectionHandler) {
+        selectionHandler = slingServerTreeSelectionHandler;
     }
 
     // ----- Server State Flags

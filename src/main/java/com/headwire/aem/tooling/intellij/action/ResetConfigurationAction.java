@@ -1,13 +1,10 @@
 package com.headwire.aem.tooling.intellij.action;
 
-import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
-import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +32,7 @@ public class ResetConfigurationAction extends AbstractProjectAction {
     }
 
     public void doReset(final Project project) {
-        ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
+        SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         if(selectionHandler != null && serverConnectionManager != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();

@@ -15,7 +15,6 @@ import com.intellij.openapi.actionSystem.ActionPopupMenu;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
@@ -45,13 +44,13 @@ import java.awt.event.ContainerListener;
 /**
  * Created by schaefa on 6/12/15.
  */
-public class ServerTreeManager
+public class SlingServerTreeManager
     extends AbstractProjectComponent
     implements Disposable
 {
 
     private Tree tree;
-    private ServerExplorerTreeBuilder myBuilder;
+    private SlingServerTreeBuilder myBuilder;
     private ServerConfigurationManager myConfig;
     private KeyMapListener myKeyMapListener;
 
@@ -75,7 +74,7 @@ public class ServerTreeManager
     };
 
 
-    public ServerTreeManager(@NotNull Project project) {
+    public SlingServerTreeManager(@NotNull Project project) {
         super(project);
         final MessageManager messageManager = project.getComponent(MessageManager.class);
         final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
@@ -83,13 +82,12 @@ public class ServerTreeManager
         tree.setRootVisible(true);
         tree.setShowsRootHandles(true);
         tree.setCellRenderer(new NodeRenderer());
-        ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
+        SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
         selectionHandler.init(tree);
         ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         serverConnectionManager.init(selectionHandler);
         myConfig = project.getComponent(ServerConfigurationManager.class);
-//        serverConnectionManager = new ServerConnectionManager(project, selectionHandler);
-        myBuilder = new ServerExplorerTreeBuilder(project, tree, model);
+        myBuilder = new SlingServerTreeBuilder(project, tree, model);
         TreeUtil.installActions(tree);
         new TreeSpeedSearch(tree);
         tree.addMouseListener(new PopupHandler() {
@@ -97,33 +95,7 @@ public class ServerTreeManager
                 popupInvoked(comp, x, y);
             }
         });
-//AS On the original SlingServerExplorer the runSelection() does nothing
-//        new DoubleClickListener() {
-//            @Override
-//            protected boolean onDoubleClick(MouseEvent e) {
-//                final int eventY = e.getY();
-//                final int row = tree.getClosestRowForLocation(e.getX(), eventY);
-//                if(row >= 0) {
-//                    final Rectangle bounds = tree.getRowBounds(row);
-//                    if(bounds != null && eventY > bounds.getY() && eventY < bounds.getY() + bounds.getHeight()) {
-//                        runSelection(DataManager.getInstance().getDataContext(tree));
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//        }.installOn(tree);
-//
-//        tree.registerKeyboardAction(new AbstractAction() {
-//            public void actionPerformed(ActionEvent e) {
-//                runSelection(DataManager.getInstance().getDataContext(tree));
-//            }
-//        }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), WHEN_FOCUSED);
         tree.setLineStyleAngled();
-
-//AS This needs to be done on the Tool Window
-//        setToolbar(createToolbarPanel());
-//        setContent(ScrollPaneFactory.createScrollPane(tree));
         ToolTipManager.sharedInstance().registerComponent(tree);
 
         tree.addContainerListener(new ContainerListener() {
@@ -168,23 +140,13 @@ public class ServerTreeManager
         }
         ActionManager actionManager = ActionManager.getInstance();
         DefaultActionGroup group = new DefaultActionGroup();
-//        final DefaultActionGroup group = new DefaultActionGroup();
         if(
             userObject instanceof SlingServerNodeDescriptor ||
                 userObject instanceof SlingServerModuleNodeDescriptor
             ) {
             group.add(actionManager.getAction("AEM.Connection.Popup"));
-//            group.add(new RemoveAction());
-//            group.add(new EditAction());
-//            group.add(new CheckAction());
-//            group.add(new DebugAction());
-//            group.add(new StopAction());
-//            group.add(new DeployAction());
-//            group.add(new ForceDeployAction());
-//            group.add(new BuildConfigureAction());
         } else {
             group.add(actionManager.getAction("AEM.Root.Popup"));
-//            group.add(new AddAction());
         }
         final ActionPopupMenu popupMenu = ActionManager.getInstance().createActionPopupMenu(ActionPlaces.ANT_EXPLORER_POPUP, group);
         popupMenu.getComponent().show(comp, x, y);
@@ -192,7 +154,7 @@ public class ServerTreeManager
 
     @Override
     public void dispose() {
-        final ServerExplorerTreeBuilder builder = myBuilder;
+        final SlingServerTreeBuilder builder = myBuilder;
         if(builder != null) {
             Disposer.dispose(builder);
             myBuilder = null;
@@ -277,9 +239,8 @@ public class ServerTreeManager
                                           int row,
                                           boolean hasFocus) {
             final Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-//            LOGGER.debug("Node Renderer: user object: " + userObject);
-            if(userObject instanceof ServerNodeDescriptor) {
-                final ServerNodeDescriptor descriptor = (ServerNodeDescriptor) userObject;
+            if(userObject instanceof BaseNodeDescriptor) {
+                final BaseNodeDescriptor descriptor = (BaseNodeDescriptor) userObject;
                 descriptor.customize(this);
             } else {
                 append(tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus), SimpleTextAttributes.REGULAR_ATTRIBUTES);

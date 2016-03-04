@@ -20,7 +20,6 @@ import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.intellij.ide.util.treeView.*;
 import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.util.ProgressIndicatorBase;
 import com.intellij.openapi.progress.util.ProgressIndicatorUtils;
@@ -37,7 +36,7 @@ import javax.swing.tree.TreePath;
 import java.util.ArrayList;
 import java.util.List;
 
-final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
+final class SlingServerTreeBuilder extends AbstractTreeBuilder {
 
     private static final TreePath[] EMPTY_TREE_PATH = new TreePath[0];
     private final ConfigurationListener myConfigurationListener;
@@ -46,8 +45,8 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
     private ExpandedStateUpdater myExpansionListener;
     private StartRunConnectionAction checkAction;
 
-    public ServerExplorerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel) {
-        super(tree, treeModel, new ServerExplorerTreeStructure(project), IndexComparator.INSTANCE);
+    public SlingServerTreeBuilder(Project project, JTree tree, DefaultTreeModel treeModel) {
+        super(tree, treeModel, new SlingServerTreeStructure(project), IndexComparator.INSTANCE);
         myProject = project;
         myConfigurationListener = new ConfigurationListenerImpl();
         myConfig = project.getComponent(ServerConfigurationManager.class);
@@ -79,7 +78,7 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
 
     protected boolean isAutoExpandNode(NodeDescriptor nodeDescriptor) {
         // This is what expands the tree automatically when it opens
-        return ((ServerNodeDescriptor) nodeDescriptor).isAutoExpand();
+        return ((BaseNodeDescriptor) nodeDescriptor).isAutoExpand();
     }
 
     public void setTargetsFiltered(boolean value) {
@@ -161,8 +160,8 @@ final class ServerExplorerTreeBuilder extends AbstractTreeBuilder {
             final Object lastPathComponent = path.getLastPathComponent();
             if(lastPathComponent != null) {
                 final Object element = ui.getElementFor(lastPathComponent);
-                if(element instanceof ServerNodeDescriptor) {
-//          ((ServerNodeDescriptor)element).setShouldExpand(shouldExpand);
+                if(element instanceof BaseNodeDescriptor) {
+//          ((BaseNodeDescriptor)element).setShouldExpand(shouldExpand);
                 }
             }
         }

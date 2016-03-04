@@ -1,9 +1,8 @@
 package com.headwire.aem.tooling.intellij.action;
 
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 
@@ -23,7 +22,7 @@ public class AEMActionGroup extends DefaultActionGroup implements DumbAware {
         boolean ret = false;
         Project project = e.getProject();
         if(project != null) {
-            final ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
+            final SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
             ret = selectionHandler.getCurrentConfiguration() != null;
         }
         return ret;

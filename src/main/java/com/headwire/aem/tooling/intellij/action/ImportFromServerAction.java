@@ -8,12 +8,11 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
@@ -67,7 +66,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
 
     private void doImport(final Project project, final VirtualFile file) {
         final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
-        final ServerTreeSelectionHandler selectionHandler = project.getComponent(ServerTreeSelectionHandler.class);
+        final SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
         if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
             return;
         }

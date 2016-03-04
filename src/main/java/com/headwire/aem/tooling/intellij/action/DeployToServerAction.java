@@ -2,18 +2,14 @@ package com.headwire.aem.tooling.intellij.action;
 
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.progress.PerformInBackgroundOption;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.Nls.Capitalization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,11 +49,10 @@ public class DeployToServerAction
 
     private void doDeploy(final DataContext dataContext, final Project project, final boolean forceDeploy) {
         final ServerConnectionManager connectionManager = getConnectionManager(project);
-        final ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
+        final SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         final String title = AEMBundle.message("deploy.configuration.action.text");
 
         ProgressManager.getInstance().run(
-//            new Task.Modal(project, title, false) {
             //AS NOTE: This Task has to be backgroundable otherwise it blocks the Dispatcher Thread which in turn will
             //AS NOTE: block the Maven Build
             new Task.Backgroundable(project, title, false) {
@@ -71,9 +66,6 @@ public class DeployToServerAction
                     final String description = AEMBundle.message("deploy.configuration.action.description");
                     indicator.setText(description);
                     indicator.setFraction(0);
-                    //AS TODO: Check if there is a new version of IntelliJ CE that would allow to use
-                    //AS TODO: the ProgressAdapter.
-                    //AS TODO: Or create another Interface / Wrapper to make it IDE independent
                     ApplicationManager.getApplication().runReadAction(
                         new Runnable() {
                             public void run() {

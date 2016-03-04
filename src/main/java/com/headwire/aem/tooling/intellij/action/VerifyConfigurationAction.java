@@ -5,17 +5,12 @@ import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
-import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
-import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.Constants;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataContextWrapper;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -54,7 +49,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
     public boolean doVerify(final Project project, final DataContext dataContext) {
         int exitNow = Messages.OK;
         boolean ret = true;
-        ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
+        SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         MessageManager messageManager = getMessageManager(project);
         ServerConfigurationManager serverConfigurationManager = getConfigurationManager(project);
@@ -163,7 +158,6 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                     FilterResult filterResult = null;
                     if(filter != null) {
                         // Check if the Resource is part of the Filter
-//                        filterResult = filter.filter(rootDirectory, relativeChildPath);
                         filterResult = filter.filter(relativeChildPath);
                     }
                     // We don't need to check anything if it is part of one of the filter entries
@@ -182,7 +176,6 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                                 // First check if there are only folders as children and if all of them are inside the filters
                                 boolean isGood = true;
                                 for(VirtualFile grandChild: child.getChildren()) {
-//                                    filterResult = filter.filter(rootDirectory, relativeChildPath + "/" + grandChild.getName());
                                     filterResult = filter.filter(relativeChildPath + "/" + grandChild.getName());
                                     if(filterResult != FilterResult.ALLOW) {
                                         isGood = false;

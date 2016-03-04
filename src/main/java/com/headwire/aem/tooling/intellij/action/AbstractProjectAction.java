@@ -3,7 +3,7 @@ package com.headwire.aem.tooling.intellij.action;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -26,8 +26,6 @@ public abstract class AbstractProjectAction
 {
     /** Map that contains the Toolbar Locks per Project **/
     private static Map<Project, Boolean> lockMap = new HashMap<Project, Boolean>();
-
-    private MessageManager messageManager;
 
     public AbstractProjectAction(@NotNull String textId) {
         super(
@@ -108,8 +106,8 @@ public abstract class AbstractProjectAction
         lockMap.put(project, false);
     }
 
-    protected ServerTreeSelectionHandler getSelectionHandler(@Nullable Project project) {
-        return project == null ? null : project.getComponent(ServerTreeSelectionHandler.class);
+    protected SlingServerTreeSelectionHandler getSelectionHandler(@Nullable Project project) {
+        return project == null ? null : project.getComponent(SlingServerTreeSelectionHandler.class);
     }
 
     protected ServerConnectionManager getConnectionManager(@Nullable Project project) {

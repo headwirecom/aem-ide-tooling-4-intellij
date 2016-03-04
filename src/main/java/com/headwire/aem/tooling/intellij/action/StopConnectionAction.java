@@ -1,7 +1,6 @@
 package com.headwire.aem.tooling.intellij.action;
 
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
