@@ -3,17 +3,11 @@
     <properties maven-id="org.osgi:org.osgi.compendium:4.3.1" />
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/org.osgi.compendium-4.3.1-sources.jar!/" />
     </SOURCES>
   </library>
