@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by schaefa on 12/28/15.
+ * Created by Andreas Schaefer (Headwire.com) on 12/28/15.
  */
 public class MockModuleContext
     implements ModuleContext

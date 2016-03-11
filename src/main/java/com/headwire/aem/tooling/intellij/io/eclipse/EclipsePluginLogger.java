@@ -23,7 +23,7 @@ import com.intellij.ide.plugins.PluginManager;
 import org.apache.sling.ide.io.PluginLogger;
 
 /**
- * Created by schaefa on 12/22/15.
+ * Created by Andreas Schaefer (Headwire.com) on 12/22/15.
  */
 public class EclipsePluginLogger
     implements PluginLogger

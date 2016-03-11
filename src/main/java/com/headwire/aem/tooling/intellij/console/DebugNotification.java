@@ -23,7 +23,7 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 
 /**
- * Created by schaefa on 7/1/15.
+ * Created by Andreas Schaefer (Headwire.com) on 7/1/15.
  */
 public class DebugNotification
     extends Notification

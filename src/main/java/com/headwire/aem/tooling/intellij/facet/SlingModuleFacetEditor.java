@@ -43,7 +43,7 @@ import javax.swing.event.ChangeListener;
 import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE_NAME;
 
 /**
- * Created by schaefa on 3/4/16.
+ * Created by Andreas Schaefer (Headwire.com) on 3/4/16.
  */
 public class SlingModuleFacetEditor
     extends FacetEditorTab

@@ -76,7 +76,7 @@ import java.util.Set;
  * This Module Builder is making sure the Sling / AEM Archetypes are provides and gives the user
  * the appropriate choices. It will then hand it over to Maven to finish the Setup.
  *
- * Created by schaefa on 7/20/15.
+ * Created by Andreas Schaefer (Headwire.com) on 7/20/15.
  */
 public class SlingModuleBuilder
 //AS NOTE: We extend the Maven Module Builder not because we need some of the code but rather because

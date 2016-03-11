@@ -44,7 +44,7 @@ import java.io.InputStream;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
- * Created by schaefa on 11/16/15.
+ * Created by Andreas Schaefer (Headwire.com) on 11/16/15.
  */
 public class SlingProject4Eclipse
     implements SlingProject

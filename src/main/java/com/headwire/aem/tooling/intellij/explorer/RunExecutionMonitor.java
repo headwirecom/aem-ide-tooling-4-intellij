@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  * This class listens to Background Process Execution Events
  * and lets another thread wait for its completion.
  *
- * Created by schaefa on 2/18/16.
+ * Created by Andreas Schaefer (Headwire.com) on 2/18/16.
  */
 public class RunExecutionMonitor {
 

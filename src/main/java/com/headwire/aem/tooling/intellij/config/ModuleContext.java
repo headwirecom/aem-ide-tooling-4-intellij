@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * Created by schaefa on 7/2/15.
+ * Created by Andreas Schaefer (Headwire.com) on 7/2/15.
  */
 public interface ModuleContext {
 

@@ -51,7 +51,7 @@ import java.awt.event.ContainerListener;
  * 2) Sling Server Tree (list of servers and the state of the project moodules on there)
  * 3) Sling Server Configuration (persistet configuration of remote AEM / Sling Servers)
  *
- * Created by schaefa on 3/19/15.
+ * Created by Andreas Schaefer (Headwire.com) on 3/19/15.
  */
 public class SlingPluginExplorer
     extends SimpleToolWindowPanel

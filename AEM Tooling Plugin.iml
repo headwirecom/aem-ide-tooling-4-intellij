@@ -376,9 +376,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="org.json:json:20140107" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide.api-1.0.9-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide.artifacts-1.0.9-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide.impl-resource-1.0.9-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide.impl-vlt-1.0.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Apache-Sling-IDE-1.0.9" level="project" />
   </component>
 </module>

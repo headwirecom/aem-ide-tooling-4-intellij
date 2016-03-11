@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by schaefa on 5/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/13/15.
  */
 @Deprecated
 public class IPath {

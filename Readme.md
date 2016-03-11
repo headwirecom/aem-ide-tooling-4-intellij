@@ -1,18 +1,45 @@
 ### AEM Tooling for IntelliJ IDE Plugin
 
+#### Relese:
+
+Can be found on our [Wiki Page](https://github.com/headwirecom/aem-ide-tooling-4-intellij/wiki)
+
+
+#### Current Branch:
+
+The latest code can  be found in the **release/0.6.4-SNAPSHOT** branch.
+
 #### Updates:
 
-**Git Cleanup**: I did a few changes to the Git Repo to remove some files under .idea that were user specific noteably
-**dictionaires**, **uiDesigner.xml** and **workspace.xml**. An update might remove your local file and so place make
-a copy beforehand. If there is any issues of files that are missing please let me know.
-In order to make the compilation works you need to have a few Maven files in your local respository. Have a look into
-**.idea/libraries** and all XML files that start with **Maven__** have to be available in local Maven repo.
+**0.6.4.6-SNAPSHOT**: Fixed an issue with the entire Module build which led to deadlocks. Also removed some
+                      debug statements that could disable the Plugin. For now the usage of non-Maven based
+                      project is discouraged as IntelliJ has no concept of a ZIP file based module.
 
-**0.6.4-SNAPSHOT**: Adjusted the Version to a Maven pattern to go along the Sling project.
-Started to incorporate the Sling Project project to test and verify the IDE independent Sling Connector.
-The implementation of the Sling Connector API can be found under com.headwire.aem.tooling.intellij.io.
-Most of the code that uses the Sling Connector can be found in the class
-com.headwire.aem.tooling.intellij.io.ServerConnectionManager.
+**0.6.4.5-SNAPSHOT**: Non-Maven OSGi modules should build now. There is a fix for any OSGi module as the
+                      deployment of Maven OSGi modules failed silently to deploy. This is fixed and if the
+                      build file is not present an alert is shown.
+                      There is also a fix for Maven modules where the Module Name and the Maven Artifact Id
+                      did not match as it is now looking at the parent folder to find a match.
+
+**0.6.4.4-SNAPSHOT**: Added support for non-Maven based project. In order to support these types of projects
+                      you need to use two facets. For OSGi modules you need to use the "Osmorc" plugin
+                      to setup the OSGi Facet and for Content Modules you need to setup the Sling Content
+                      Facet and specify the Content and META-INF root folder.
+                      For now only the IntelliJ Plugin Osmorc is supported for non-Maven OSGi bundles.
+
+**0.6.4.3-SNAPSHOT**: This release makes the deployment wait until the Maven Build for OSGi bundles is over.
+                      In addition the toolbar is locked while any action is executed so that background tasks
+                      like the Maven Build cannot be intercepted. Finally the build also addresses an issue
+                      with AEM DAM Workflows could interfere with deployments of DAM Assets. The plugin will
+                      place the push of the /renditions/original nodes to the end.
+
+**0.6.4.2-SNAPSHOT**: This release contains a fix for the Maven Build execution for OSGi Bundles. Now the build
+                      is executed in the background and the action waits until it is finished before installing
+                      the OSGi Bundle in AEM.
+
+**0.6.4.1-SNAPSHOT**: This releases contains the refactored Resource Change Command Factory which is made
+IDE independent. The UI and handling did not change. This release also contains a fix for mysterious failures to
+upload Renditions files.
 
 **0.6 Beta 3**: Fixed an issue with the Console Log Settings to being disabled if no configuration is selected.
 Fixed issues with Windows paths. Fixed an issue with Force Deploy doesn't apply to parent folders.
@@ -43,6 +70,6 @@ This projects creates an IntelliJ IDE plugin for version 14 and up providing the
 
 Please have a look at the AEM Tooling Plugin for IntelliJ IDEA documentation that you can find the the **documentation** folder right here. It will explain how to install the Plugin and for OSGi deployment the Felix SCR Annotation plugin as well as using the plugin.
 
-#### Notes
+### Notes
 
 This README uses Google Analytics for tracking site visits using: [![Analytics](https://ga-beacon.appspot.com/UA-72395016-3/headwirecom/aem-ide-tooling-4-intellij/readme)](https://github.com/igrigorik/ga-beacon)

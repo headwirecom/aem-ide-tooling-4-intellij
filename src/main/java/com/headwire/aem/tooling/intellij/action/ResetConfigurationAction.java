@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * Created by schaefa on 6/12/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
  */
 public class ResetConfigurationAction extends AbstractProjectAction {
 

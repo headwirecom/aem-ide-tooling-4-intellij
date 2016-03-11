@@ -30,7 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- * Created by schaefa on 11/16/15.
+ * Created by Andreas Schaefer (Headwire.com) on 11/16/15.
  */
 @Deprecated
 public class IntelliJProjectUtil

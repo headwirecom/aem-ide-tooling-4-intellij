@@ -3,8 +3,10 @@
     <properties maven-id="com.ibm.icu:icu4j:55.1" />
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/icu4j-55.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/icu4j-55.1.jar!/" />
     </CLASSES>
     <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/icu4j-55.1-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/icu4j-55.1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />

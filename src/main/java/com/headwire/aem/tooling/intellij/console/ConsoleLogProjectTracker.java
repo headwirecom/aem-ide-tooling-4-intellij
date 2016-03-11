@@ -44,7 +44,7 @@ import static com.headwire.aem.tooling.intellij.console.ConsoleLog.DEFAULT_CATEG
 import static com.headwire.aem.tooling.intellij.console.ConsoleLog.LOG_REQUESTOR;
 
 /**
- * Created by schaefa on 7/3/15.
+ * Created by Andreas Schaefer (Headwire.com) on 7/3/15.
  */
 public class ConsoleLogProjectTracker
     extends AbstractProjectComponent

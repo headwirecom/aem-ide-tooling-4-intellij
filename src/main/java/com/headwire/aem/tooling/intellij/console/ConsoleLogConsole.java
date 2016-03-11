@@ -74,7 +74,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by schaefa on 5/6/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/6/15.
  */
 public class ConsoleLogConsole {
     private final NotNullLazyValue<Editor> myLogEditor = new NotNullLazyValue<Editor>() {

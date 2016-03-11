@@ -23,7 +23,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by schaefa on 3/19/15.
+ * Created by Andreas Schaefer (Headwire.com) on 3/19/15.
  */
 public class AEMToolingPluginConfiguration {
 

@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by schaefa on 7/2/15.
+ * Created by Andreas Schaefer (Headwire.com) on 7/2/15.
  */
 public class ModuleProjectFactory {
 

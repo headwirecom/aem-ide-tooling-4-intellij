@@ -43,7 +43,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by schaefa on 6/12/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
  */
 public class VerifyConfigurationAction extends AbstractProjectAction {
 
