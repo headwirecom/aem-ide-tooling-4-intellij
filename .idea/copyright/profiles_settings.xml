@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="">
+    <module2copyright>
+      <element module="Headwire Code" copyright="Apache Open Source License 2.0" />
+    </module2copyright>
+  </settings>
 </component>

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Headwire Code" pattern="*.java||file[AEM Tooling Plugin]:src/main/java//*||file[AEM Tooling Plugin]:src/main/resources//*" />
+</component>
