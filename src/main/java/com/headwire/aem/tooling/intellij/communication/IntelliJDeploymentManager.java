@@ -1,6 +1,6 @@
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ModuleProject;
+import com.headwire.aem.tooling.intellij.config.ModuleContext;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
@@ -20,7 +20,6 @@ import org.apache.sling.ide.serialization.SerializationManager;
 import org.apache.sling.ide.transport.Repository;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -116,8 +115,8 @@ public class IntelliJDeploymentManager
 
         public List<String> findContentResources(String filePath) {
             List<String> ret = new ArrayList<String>();
-            ModuleProject moduleProject = getModule().getModuleProject();
-            List<String> contentDirectoryPaths = moduleProject.getContentDirectoryPaths();
+            ModuleContext moduleContext = getModule().getModuleContext();
+            List<String> contentDirectoryPaths = moduleContext.getContentDirectoryPaths();
             for(String basePath: contentDirectoryPaths) {
                 messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
                 //AS TODO: Paths from Windows have backlashes instead of forward slashes

@@ -1,6 +1,6 @@
 package com.headwire.aem.tooling.intellij.io;
 
-import com.headwire.aem.tooling.intellij.config.ModuleProject;
+import com.headwire.aem.tooling.intellij.config.ModuleContext;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.project.Project;
@@ -35,7 +35,7 @@ public class SlingProject4IntelliJ
         this.module = module;
         Project project = module.getProject();
         VirtualFileSystem vfs = project.getBaseDir().getFileSystem();
-        for(String path: module.getModuleProject().getContentDirectoryPaths()) {
+        for(String path: module.getModuleContext().getContentDirectoryPaths()) {
             if(Util.pathEndsWithFolder(path, JCR_ROOT_FOLDER_NAME)) {
                 File folder = new File(path);
                 if(folder.exists() && folder.isDirectory()) {
@@ -81,8 +81,8 @@ public class SlingProject4IntelliJ
             VirtualFile metaInfFolder = module.getMetaInfFolder();
             if(metaInfFolder == null) {
                 // Now go through the Maven Resource folder and check
-                ModuleProject moduleProject = module.getModuleProject();
-                for(String contentPath: moduleProject.getContentDirectoryPaths()) {
+                ModuleContext moduleContext = module.getModuleContext();
+                for(String contentPath: moduleContext.getContentDirectoryPaths()) {
                     if(contentPath.endsWith("/" + META_INF_FOLDER_NAME)) {
                         metaInfFolder = module.getProject().getBaseDir().getFileSystem().findFileByPath(contentPath);
                         module.setMetaInfFolder(metaInfFolder);
@@ -91,8 +91,8 @@ public class SlingProject4IntelliJ
             }
             if(metaInfFolder == null) {
                 // Lastly we check if we can find the folder somewhere in the maven project file system
-                ModuleProject moduleProject = module.getModuleProject();
-                VirtualFile test = module.getProject().getBaseDir().getFileSystem().findFileByPath(moduleProject.getModuleDirectory());
+                ModuleContext moduleContext = module.getModuleContext();
+                VirtualFile test = module.getProject().getBaseDir().getFileSystem().findFileByPath(moduleContext.getModuleDirectory());
                 metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
                 module.setMetaInfFolder(metaInfFolder);
             }

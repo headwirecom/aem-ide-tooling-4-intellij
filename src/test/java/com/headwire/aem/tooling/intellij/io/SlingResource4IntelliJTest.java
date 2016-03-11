@@ -1,8 +1,8 @@
 package com.headwire.aem.tooling.intellij.io;
 
-import com.headwire.aem.tooling.intellij.config.ModuleProject;
+import com.headwire.aem.tooling.intellij.config.ModuleContext;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.mock.MockModuleProject;
+import com.headwire.aem.tooling.intellij.mock.MockModuleContext;
 import com.headwire.aem.tooling.intellij.mock.MockProject;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.mock.MockVirtualFile;
@@ -37,15 +37,14 @@ public class SlingResource4IntelliJTest {
         String artifactId = "myArtifact";
         String groupId = "myGroupId";
         ServerConfiguration serverConfiguration = new ServerConfiguration();
-        module = new ServerConfiguration.Module( serverConfiguration, artifactId, groupId + "." + artifactId, true, 0 );
+        module = new ServerConfiguration.Module( serverConfiguration, groupId + "." + artifactId, true, 0 );
         VirtualFile syncFolder = new MockVirtualFile(true, "baseDir");
         Project mockProject = new MockProject()
             .setBaseDir(syncFolder);
-        ModuleProject mockModuleProject = new MockModuleProject()
-            .setArtifactId(artifactId)
-            .setGroupId(groupId)
+        ModuleContext mockModuleContext = new MockModuleContext()
+            .setSymbolicName(groupId + "." + artifactId)
             .setContentDirectoryPaths(Arrays.asList("/baseDir/" + JCR_ROOT_FOLDER_NAME));
-        module.rebind(mockProject, mockModuleProject);
+        module.rebind(mockProject, mockModuleContext);
     }
 
     @Test
@@ -61,8 +60,6 @@ public class SlingResource4IntelliJTest {
         assertThat("Resource isn't a file", slingResource.isFile(), is(Boolean.TRUE));
         assertThat("Resource is a folder but should be file", slingResource.isFolder(), is(Boolean.FALSE));
         LOGGER.info("Resource Path: '{}'", slingResource.getLocalPath());
-//        long mod = virtualFile.getModificationStamp();
-//        LOGGER.info("Virtual File Mod: '{}'", mod);
         LOGGER.info("Sync Directory: '{}'", slingProject.getSyncDirectory());
         SlingResource slingResourceChild = new SlingResource4IntelliJ(slingProject, "/a/b/c.txt");
         assertThat("Obtained Resource doesn't match", slingResource.getResourceFromPath("/a/b/c.txt"), equalTo(slingResourceChild));

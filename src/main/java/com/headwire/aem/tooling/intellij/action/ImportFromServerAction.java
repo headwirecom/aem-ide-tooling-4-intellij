@@ -93,7 +93,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
                                 final String description = AEMBundle.message("deploy.configuration.action.description");
                                 IServer server = new IServer(currentModule.getParent());
                                 String path = file.getPath();
-                                String modulePath = currentModule.getModuleProject().getModuleDirectory();
+                                String modulePath = currentModule.getModuleContext().getModuleDirectory();
                                 String relativePath = path.substring(modulePath.length());
                                 if(relativePath.startsWith("/")) {
                                     relativePath = relativePath.substring(1);

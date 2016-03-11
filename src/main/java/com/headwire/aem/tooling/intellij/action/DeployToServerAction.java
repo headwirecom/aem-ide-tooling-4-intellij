@@ -13,6 +13,10 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Created by schaefa on 6/13/15.
  */
@@ -62,51 +66,44 @@ public class DeployToServerAction
                 }
 
                 public void run(@NotNull final ProgressIndicator indicator) {
-                    indicator.setIndeterminate(false);
-                    final String description = AEMBundle.message("deploy.configuration.action.description");
-                    indicator.setText(description);
-                    indicator.setFraction(0);
-                    ApplicationManager.getApplication().runReadAction(
-                        new Runnable() {
-                            public void run() {
-                                try {
-                                    // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
-                                    // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
-                                    ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-                                    indicator.setText2("Update Status");
-                                    indicator.setFraction(0.1d);
-                                    //AS TODO: this is not showing if the check is short but if it takes longer it will update
-                                    connectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
-                                    indicator.setText2("Update Status, wait");
-                                    indicator.setFraction(0.2d);
-                                    try {
-                                        Thread.sleep(1000);
-                                    } catch(InterruptedException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                    indicator.setText2("Get Bundle Status");
-                                    indicator.setFraction(0.3d);
-                                    // First Check if the Install Support Bundle is installed
-                                    ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(false);
-                                    ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
-                                    indicator.setText2("Build and Deploy " + (module != null ? "All" : "Single") + " Module");
-                                    indicator.setFraction(0.4d);
-                                    indicator.pushState();
-                                    if(module != null) {
-                                        // Deploy only the selected Module
-                                        connectionManager.deployModule(dataContext, module, forceDeploy, indicator);
-                                    } else {
-                                        // Deploy all Modules of the Project
-                                        connectionManager.deployModules(dataContext, forceDeploy, indicator);
-                                    }
-                                } finally {
-                                    indicator.popState();
-                                    indicator.setFraction(1.0d);
-                                    unlock(project);
-                                }
-                            }
+                    try {
+                        indicator.setIndeterminate(false);
+                        final String description = AEMBundle.message("deploy.configuration.action.description");
+                        indicator.setText(description);
+                        indicator.setFraction(0);
+                        // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
+                        // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
+                        ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                        indicator.setText2("Update Status");
+                        indicator.setFraction(0.1d);
+                        //AS TODO: this is not showing if the check is short but if it takes longer it will update
+                        connectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
+                        indicator.setText2("Update Status, wait");
+                        indicator.setFraction(0.2d);
+                        try {
+                            Thread.sleep(1000);
+                        } catch(InterruptedException e1) {
+                            e1.printStackTrace();
                         }
-                    );
+                        indicator.setText2("Get Bundle Status");
+                        indicator.setFraction(0.3d);
+                        // First Check if the Install Support Bundle is installed
+                        ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(false);
+                        ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
+                        indicator.setText2("Build and Deploy " + (module != null ? "All" : "Single") + " Module");
+                        indicator.setFraction(0.4d);
+                        indicator.pushState();
+                        if(module != null) {
+                            // Deploy only the selected Module
+                            connectionManager.deployModule(dataContext, module, forceDeploy, indicator);
+                        } else {
+                            // Deploy all Modules of the Project
+                            connectionManager.deployModules(dataContext, forceDeploy, indicator);
+                        }
+                    } finally {
+                        getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
+                        unlock(project);
+                    }
                 }
             }
         );

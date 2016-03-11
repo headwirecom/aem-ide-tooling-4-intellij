@@ -1,23 +1,15 @@
 package com.headwire.aem.tooling.intellij.io.eclipse;
 
-import com.headwire.aem.tooling.intellij.config.ModuleProject;
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.Path;
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
-import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
-import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
 import com.headwire.aem.tooling.intellij.eclipse.wrapper.ResourcesPlugin;
-import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
 import com.headwire.aem.tooling.intellij.util.Util;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileSystem;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
@@ -31,8 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
-import static com.headwire.aem.tooling.intellij.util.Constants.META_INF_FOLDER_NAME;
-import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE_NAME;
 
 /**
  * Created by schaefa on 11/16/15.

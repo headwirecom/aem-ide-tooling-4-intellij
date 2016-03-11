@@ -48,7 +48,7 @@ public class IProject {
 
     public List<String> getSourceFolderList() {
         List<String> ret = new ArrayList<String>();
-        for(String path: module.getModuleProject().getContentDirectoryPaths()) {
+        for(String path: module.getModuleContext().getContentDirectoryPaths()) {
             ret.add(path);
         }
         return ret;

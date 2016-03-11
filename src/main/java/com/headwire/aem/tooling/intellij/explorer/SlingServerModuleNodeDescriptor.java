@@ -28,7 +28,7 @@ final class SlingServerModuleNodeDescriptor
         final Color color = UIUtil.getLabelForeground();
         TextAttributes nameAttributes = new TextAttributes(color, null, null, EffectType.BOXED, Font.PLAIN);
 
-        myHighlightedText.getEnding().addText(myTarget.getArtifactId() + ", version: " + myTarget.getVersion(), nameAttributes);
+        myHighlightedText.getEnding().addText(myTarget.getSymbolicName(), nameAttributes);
         if(myTarget.getStatus() != null) {
             myHighlightedText.getEnding().addText(" (" + myTarget.getStatus().getName() + ')', ourPostfixAttributes);
         }

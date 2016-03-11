@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by schaefa on 5/14/15.
@@ -37,6 +38,7 @@ public class MessageManager
 
     public void sendDebugNotification(String message) {
         logger.trace(message);
+        java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, message);
         new DebugNotification("Debug Message", message).notify(myProject);
     }
 

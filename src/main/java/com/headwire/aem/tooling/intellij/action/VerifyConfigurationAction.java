@@ -47,11 +47,11 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
     }
 
     public boolean doVerify(final Project project, final DataContext dataContext) {
-        int exitNow = Messages.OK;
+        MessageManager messageManager = getMessageManager(project);
         boolean ret = true;
+        int exitNow = Messages.OK;
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
-        MessageManager messageManager = getMessageManager(project);
         ServerConfigurationManager serverConfigurationManager = getConfigurationManager(project);
         if(selectionHandler != null && serverConnectionManager != null && messageManager != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
@@ -59,17 +59,23 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                 try {
                     messageManager.sendInfoNotification("server.configuration.start.verification", source.getName());
                     // Before we can verify we need to ensure the Configuration is properly bound to Maven
-                    List<ServerConfiguration.Module> unboundModules = serverConnectionManager.bindModules(source);
-                    if (!unboundModules.isEmpty()) {
+                    List<ServerConfiguration.Module> unboundModules = null;
+                    try {
+                        unboundModules = serverConnectionManager.bindModules(source);
+                    } catch(IllegalArgumentException e) {
+                        messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.verification.failed.due.to.bind.exception", source.getName(), e.getMessage());
+                        return false;
+                    }
+                    if(unboundModules != null && !unboundModules.isEmpty()) {
                         ret = false;
-                        for (ServerConfiguration.Module module : unboundModules) {
+                        for(ServerConfiguration.Module module : unboundModules) {
                             exitNow = messageManager.showAlertWithOptions(NotificationType.WARNING, "server.configuration.unresolved.module", module.getName());
-                            if (exitNow == 1) {
+                            if(exitNow == 1) {
                                 source.removeModule(module);
-                                if (serverConfigurationManager != null) {
+                                if(serverConfigurationManager != null) {
                                     serverConfigurationManager.updateServerConfiguration(source);
                                 }
-                            } else if (exitNow == Messages.CANCEL) {
+                            } else if(exitNow == Messages.CANCEL) {
                                 return false;
                             }
                         }
@@ -77,46 +83,46 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                     // Verify each Module to see if all prerequisites are met
                     Repository repository = ServerConnectionManager.obtainRepository(source, messageManager);
                     if(repository != null) {
-                        for(ServerConfiguration.Module module: source.getModuleList()) {
-                            if (module.isSlingPackage()) {
+                        for(ServerConfiguration.Module module : source.getModuleList()) {
+                            if(module.isSlingPackage()) {
                                 // Check if the Filter is available for Content Modules
                                 Filter filter = null;
                                 try {
                                     filter = ProjectUtil.loadFilter(module);
-                                    if (filter == null) {
+                                    if(filter == null) {
                                         ret = false;
                                         exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.not.found", module.getName());
                                         module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                        if (exitNow == Messages.CANCEL) {
+                                        if(exitNow == Messages.CANCEL) {
                                             return false;
                                         }
                                     }
-                                } catch (CoreException e) {
+                                } catch(CoreException e) {
                                     ret = false;
                                     exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.failure", module.getName(), e.getMessage());
                                     module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                    if (exitNow == Messages.CANCEL) {
+                                    if(exitNow == Messages.CANCEL) {
                                         return false;
                                     }
                                 }
                                 // Check if the Content Modules have a Content Resource
                                 List<String> resourceList = serverConnectionManager.findContentResources(module);
-                                if (resourceList.isEmpty()) {
+                                if(resourceList.isEmpty()) {
                                     ret = false;
                                     exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.not.found", module.getName());
                                     module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                    if (exitNow == Messages.CANCEL) {
+                                    if(exitNow == Messages.CANCEL) {
                                         return false;
                                     }
                                 }
                                 // Check if Content Module Folders all have a .content.xml
                                 Object temp = dataContext.getData(VERIFY_CONTENT_WITH_WARNINGS);
                                 boolean verifyWithWarnings = !(temp instanceof Boolean) || ((Boolean) temp);
-                                if (verifyWithWarnings && filter != null) {
+                                if(verifyWithWarnings && filter != null) {
                                     // Get the Content Root /jcr_root)
-                                    for (String contentPath : resourceList) {
+                                    for(String contentPath : resourceList) {
                                         VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(contentPath);
-                                        if (rootFile != null) {
+                                        if(rootFile != null) {
                                             // Loop over all folders and check if .content.xml file is there
                                             Result childResult = checkFolderContent(repository, messageManager, serverConnectionManager, module, null, rootFile, filter);
                                             if(childResult.isCancelled) {

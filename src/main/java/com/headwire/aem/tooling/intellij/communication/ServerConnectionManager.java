@@ -1,6 +1,6 @@
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ModuleProject;
+import com.headwire.aem.tooling.intellij.config.ModuleContext;
 import com.headwire.aem.tooling.intellij.config.ModuleProjectFactory;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
@@ -37,6 +37,10 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.compiler.CompileContext;
+import com.intellij.openapi.compiler.CompileScope;
+import com.intellij.openapi.compiler.CompileStatusNotification;
+import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
@@ -44,6 +48,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowId;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.packaging.impl.compiler.ArtifactCompileScope;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
@@ -75,11 +80,14 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
@@ -185,17 +193,17 @@ public class ServerConnectionManager
             if(module.isPartOfBuild()) {
                 // Check Binding
                 if(checkBinding(module.getParent())) {
-                    ModuleProject moduleProject = module.getModuleProject();
-                    if(moduleProject != null) {
-                        String moduleName = moduleProject.getName();
-                        String artifactId = moduleProject.getArtifactId();
-                        String version = moduleProject.getVersion();
+                    ModuleContext moduleContext = module.getModuleContext();
+                    if(moduleContext != null) {
+                        String moduleName = moduleContext.getName();
+                        String symbolicName = moduleContext.getSymbolicName();
+                        String version = moduleContext.getVersion();
                         version = checkBundleVersion(version);
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
                         if(module.isOSGiBundle()) {
                             Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
                             Version localVersion = new Version(version);
-                            messageManager.sendDebugNotification("Check OSGi Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
+                            messageManager.sendDebugNotification("Check OSGi Module: '" + moduleName + "', symbolic name: '" + symbolicName + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
                             boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
                             Object state = BundleStateHelper.getBundleState(module);
                             messageManager.sendDebugNotification("Bundle State of Module: '" + module.getName() + "', state: '" + state + "'");
@@ -288,24 +296,24 @@ public class ServerConnectionManager
     }
 
     public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration) {
-        List<ModuleProject> moduleProjects = ModuleProjectFactory.getProjectModules(myProject);
+        List<ModuleContext> moduleContexts = ModuleProjectFactory.getProjectModules(myProject, serverConfiguration);
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
-        for(ModuleProject moduleProject : moduleProjects) {
-            String moduleName = moduleProject.getName();
-            String artifactId = moduleProject.getArtifactId();
-            String version = moduleProject.getVersion();
+        for(ModuleContext moduleContext : moduleContexts) {
+            String moduleName = moduleContext.getName();
+            String symbolicName = moduleContext.getSymbolicName();
+            String version = moduleContext.getVersion();
             // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
-            messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', artifact id: '" + artifactId + "', version: '" + version + "'");
+            messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', symbolic name: '" + symbolicName + "', version: '" + version + "'");
             // Ignore the Unnamed Projects
             if(moduleName == null) {
                 continue;
             }
-            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleProject));
+            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleContext));
             if(module == null) {
-                module = serverConfiguration.addModule(myProject, moduleProject);
+                module = serverConfiguration.addModule(myProject, moduleContext);
             } else if(!module.isBound()) {
                 // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-                module.rebind(myProject, moduleProject);
+                module.rebind(myProject, moduleContext);
                 moduleList.remove(module);
             } else {
                 moduleList.remove(module);
@@ -585,19 +593,23 @@ public class ServerConnectionManager
         messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
         InputStream contents = null;
         // Check if this is a OSGi Bundle
-        final ModuleProject moduleProject = module.getModuleProject();
-        if(moduleProject.isOSGiBundle()) {
+        final ModuleContext moduleContext = module.getModuleContext();
+        if(moduleContext.isOSGiBundle()) {
             try {
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
-                boolean mavenDoneSuccessfully = true;
-                if(module.getParent().isBuildWithMaven()) {
-                    mavenDoneSuccessfully = false;
+                boolean localBuildDoneSuccessfully = true;
+                //AS TODO: This should be isBuildLocally instead as we can now build both with Maven or Locally if Facet is specified
+                if(module.getParent().isBuildWithMaven() && module.getModuleContext().isMavenBased()) {
+                    //AS TODO: Here we check if a Facet is present and if not if it is a Maven project and if both fail show an Alert
+//                    SlingModuleFacet facet = SlingModuleFacet.getFacetByModule(module.getModuleContext());
+                    localBuildDoneSuccessfully = false;
                     List<String> goals = MavenDataKeys.MAVEN_GOALS.getData(dataContext);
                     if (goals == null) {
                         goals = new ArrayList<String>();
                     }
                     if (goals.isEmpty()) {
-                        goals.add("package");
+//                        goals.add("package");
+                        goals.add("install");
                     }
                     messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.goals", goals);
                     final MavenProjectsManager projectsManager = MavenActionUtil.getProjectsManager(dataContext);
@@ -606,7 +618,7 @@ public class ServerConnectionManager
                     } else {
                         final ToolWindow tw = ToolWindowManager.getInstance(module.getProject()).getToolWindow(ToolWindowId.RUN);
                         final boolean isShown = tw != null && tw.isVisible();
-                        String workingDirectory = moduleProject.getModuleDirectory();
+                        String workingDirectory = moduleContext.getModuleDirectory();
                         MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
                         final MavenRunnerParameters params = new MavenRunnerParameters(true, workingDirectory, goals, explicitProfiles.getEnabledProfiles(), explicitProfiles.getDisabledProfiles());
                         // This Monitor is used to know when the Maven build is done
@@ -646,7 +658,7 @@ public class ServerConnectionManager
                         switch(RunExecutionMonitor.getInstance(myProject).waitFor()) {
                             case done:
                                 messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.done");
-                                mavenDoneSuccessfully = true;
+                                localBuildDoneSuccessfully = true;
                                 break;
                             case timedOut:
                                 messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.timedout");
@@ -658,17 +670,46 @@ public class ServerConnectionManager
                                 break;
                         }
                     }
+                } else if(!module.getModuleContext().isMavenBased()) {
+                    // Compile the IntelliJ way
+                    final CompilerManager compilerManager = CompilerManager.getInstance(myProject);
+                    final CompileScope moduleScope = compilerManager.createModuleCompileScope(module.getModuleContext().getModule(), true);
+//                    final CompileScope compileScope = ArtifactCompileScope.createScopeWithArtifacts(moduleScope, Collections.singletonList(myArtifact));
+                    final CountDownLatch waiter = new CountDownLatch(1);
+                    final AtomicBoolean checker = new AtomicBoolean(false);
+                    ApplicationManager.getApplication().invokeLater(
+                        new Runnable() {
+                            public void run() {
+                                compilerManager.make(
+                                    moduleScope,
+                                    new CompileStatusNotification() {
+                                        public void finished(boolean aborted, int errors, int warnings, CompileContext compileContext) {
+                                            checker.set(!aborted && errors == 0);
+                                            waiter.countDown();
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    );
+                    try {
+                        waiter.await();
+                    } catch(InterruptedException e) {
+                        //AS TODO: Show Info Notification and Alert
+                    }
                 }
-                if(mavenDoneSuccessfully) {
-                    File buildDirectory = new File(module.getModuleProject().getBuildDirectoryPath());
+                if(localBuildDoneSuccessfully) {
+                    File buildDirectory = new File(module.getModuleContext().getBuildDirectoryPath());
                     if(buildDirectory.exists() && buildDirectory.isDirectory()) {
-                        File buildFile = new File(buildDirectory, module.getModuleProject().getBuildFileName() + ".jar");
+                        File buildFile = new File(buildDirectory, module.getModuleContext().getBuildFileName());
                         messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
                         if(buildFile.exists()) {
                             EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
                             contents = bundle.openInputStream();
                             obtainSGiClient().installBundle(contents, bundle.getName());
                             module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
+                        } else {
+                            messageManager.showAlertWithArguments("aem.explorer.deploy.module.maven.missing.build.file", buildFile.getAbsolutePath());
                         }
                     }
                     updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
@@ -701,7 +742,7 @@ public class ServerConnectionManager
 
         List<String> resourceList = findContentResources(module);
         Set<String> allResourcesUpdatedList = new HashSet<String>();
-        ModuleProject moduleProject = module.getModuleProject();
+        ModuleContext moduleContext = module.getModuleContext();
         VirtualFile baseFile = module.getProject().getBaseDir();
         for(String resource: resourceList) {
             VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resource);
@@ -799,14 +840,12 @@ public class ServerConnectionManager
                     } else if(module.isOSGiBundle()) {
                         // Here we are not interested in a source file but rather in the Artifact. If it is the artifact then
                         // we mark the module as outdated
-                        ModuleProject moduleProject = module.getModuleProject();
-                        if(filePath.startsWith(moduleProject.getBuildDirectoryPath())) {
+                        ModuleContext moduleContext = module.getModuleContext();
+                        if(filePath.startsWith(moduleContext.getBuildDirectoryPath())) {
                             // Check if it is the build file
                             String fileName = fileChange.getFile().getName();
-                            String artifactId = moduleProject.getArtifactId();
-                            String version = moduleProject.getVersion();
-                            //AS TODO: Can't we use the getBuildFileName() (aka MavenProject.getFinalName())
-                            if(fileName.equals(artifactId + "-" + version + ".jar")) {
+                            String buildFileName = moduleContext.getBuildFileName();
+                            if(fileName.equals(buildFileName)) {
                                 messageManager.sendInfoNotification("server.update.file.change.prepare", filePath, fileChange.getFileChangeType());
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.outdated);
                             }
@@ -891,8 +930,8 @@ public class ServerConnectionManager
 
     public List<String> findContentResources(Module module, String filePath) {
         List<String> ret = new ArrayList<String>();
-        ModuleProject moduleProject = module.getModuleProject();
-        List<String> contentDirectoryPaths = moduleProject.getContentDirectoryPaths();
+        ModuleContext moduleContext = module.getModuleContext();
+        List<String> contentDirectoryPaths = moduleContext.getContentDirectoryPaths();
         for(String basePath: contentDirectoryPaths) {
             messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
             //AS TODO: Paths from Windows have backlashes instead of forward slashes

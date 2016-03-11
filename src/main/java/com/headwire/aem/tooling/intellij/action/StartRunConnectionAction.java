@@ -52,10 +52,12 @@ public class StartRunConnectionAction extends AbstractProjectAction {
         VerifyConfigurationAction verifyConfigurationAction = (VerifyConfigurationAction) actionManager.getAction("AEM.Verify.Configuration.Action");
         boolean verifiedOk = true;
         if(verifyConfigurationAction != null) {
-            verifiedOk = verifyConfigurationAction.doVerify(
-                project,
-                SimpleDataContext.getSimpleContext(VerifyConfigurationAction.VERIFY_CONTENT_WITH_WARNINGS, false, dataContext)
-            );
+            try {
+                verifiedOk = verifyConfigurationAction.doVerify(project, SimpleDataContext.getSimpleContext(VerifyConfigurationAction.VERIFY_CONTENT_WITH_WARNINGS, false, dataContext));
+            } catch(Exception e) {
+                // Catch and report unexpected exception as debug message to keep it going
+                getMessageManager(project).sendDebugNotification("Verification failed due to unexpected exception: " + e);
+            }
         }
         if(verifiedOk) {
             ProgressManager.getInstance().run(
@@ -120,6 +122,9 @@ public class StartRunConnectionAction extends AbstractProjectAction {
                     }
                 }
             );
+        } else {
+            // If verification failed we need to unlock here
+            unlock(project);
         }
     }
 }

@@ -47,9 +47,9 @@ public class ResetConfigurationAction extends AbstractProjectAction {
                         // Check if the Content Modules have a Content Resource
                         List<String> resourceList = serverConnectionManager.findContentResources(module);
                         for(String contentPath: resourceList) {
-                            VirtualFile mavenResourceDirectory = project.getBaseDir().getFileSystem().findFileByPath(contentPath);
-                            if(mavenResourceDirectory != null) {
-                                Util.resetModificationStamp(mavenResourceDirectory, true);
+                            VirtualFile contentResourceDirectory = project.getBaseDir().getFileSystem().findFileByPath(contentPath);
+                            if(contentResourceDirectory != null) {
+                                Util.resetModificationStamp(contentResourceDirectory, true);
                             }
                         }
                         getMessageManager(project).sendInfoNotification("action.reset.configuration.end", module.getName());

@@ -394,10 +394,10 @@ public class ServerConfiguration
         return ret;
     }
 
-    public Module addModule(Project project, ModuleProject moduleProject) {
+    public Module addModule(Project project, ModuleContext moduleContext) {
         Module ret = obtainModuleBySymbolicName(name);
         if(ret == null) {
-            ret = new Module(this, project, moduleProject);
+            ret = new Module(this, project, moduleContext);
             moduleList.add(ret);
         }
         return ret;
@@ -416,40 +416,47 @@ public class ServerConfiguration
         return ret;
     }
 
+    public void unBind() {
+        bound = false;
+        for(Module module: moduleList) {
+            module.unBind();
+        }
+    }
+
     public static class Module {
         private ServerConfiguration parent;
-        private String artifactId;
+//        private String artifactId;
         private String symbolicName;
         private boolean partOfBuild = true;
         private long lastModificationTimestamp;
         private transient Project project;
         private transient SlingProject slingProject;
-        private transient ModuleProject moduleProject;
+        private transient ModuleContext moduleContext;
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
         private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
         private transient VirtualFile metaInfFolder;
         private transient VirtualFile filterFile;
         private transient Filter filter;
 
-        public Module(@NotNull ServerConfiguration parent, @NotNull String artifactId, @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
+        public Module(@NotNull ServerConfiguration parent, /* @NotNull String artifactId,*/ @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
             this.parent = parent;
-            this.artifactId = artifactId;
+//            this.artifactId = artifactId;
             this.symbolicName = symbolicName;
             setPartOfBuild(partOfBuild);
             this.lastModificationTimestamp = lastModificationTimestamp;
             this.configurationChangeListener = parent.configurationChangeListener;
         }
 
-        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull ModuleProject moduleProject) {
+        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull ModuleContext moduleContext) {
             this.parent = parent;
-            this.artifactId = moduleProject.getArtifactId();
-            this.symbolicName = getSymbolicName(moduleProject);
+//            this.artifactId = moduleContext.getArtifactId();
+            this.symbolicName = getSymbolicName(moduleContext);
             this.configurationChangeListener = parent.configurationChangeListener;
-            rebind(project, moduleProject);
+            rebind(project, moduleContext);
         }
 
-        public static String getSymbolicName(ModuleProject project) {
-            return project.getGroupId() + "." + project.getArtifactId();
+        public static String getSymbolicName(ModuleContext project) {
+            return project.getSymbolicName();
         }
 
         public boolean isPartOfBuild() {
@@ -479,7 +486,7 @@ public class ServerConfiguration
         }
 
         public String getName() {
-            return project == null ? "No Project" : moduleProject.getName();
+            return project == null ? "No Project" : moduleContext.getName();
         }
 
         public long getLastModificationTimestamp() {
@@ -492,12 +499,8 @@ public class ServerConfiguration
             }
         }
 
-        public String getArtifactId() {
-            return artifactId;
-        }
-
         public String getVersion() {
-            return project == null ? "No Project" : moduleProject.getVersion();
+            return project == null ? "No Project" : moduleContext.getVersion();
         }
 
         public Project getProject() {
@@ -508,8 +511,8 @@ public class ServerConfiguration
             return slingProject;
         }
 
-        public ModuleProject getModuleProject() {
-            return moduleProject;
+        public ModuleContext getModuleContext() {
+            return moduleContext;
         }
 
         public SynchronizationStatus getStatus() {
@@ -541,26 +544,30 @@ public class ServerConfiguration
         }
 
         public boolean isOSGiBundle() {
-            return project != null && moduleProject.isOSGiBundle();
+            return project != null && moduleContext.isOSGiBundle();
         }
 
         public boolean isSlingPackage() {
-            return project != null && moduleProject.isContent();
+            return project != null && moduleContext.isContent();
         }
 
         public boolean isBound() {
-            return moduleProject != null;
+            return moduleContext != null;
         }
 
-        public boolean rebind(@NotNull Project project, @NotNull ModuleProject moduleProject) {
+        public void unBind() {
+            moduleContext = null;
+        }
+
+        public boolean rebind(@NotNull Project project, @NotNull ModuleContext moduleContext) {
             boolean ret = false;
             parent.bound = true;
             // Check if the Symbolic Name match
-            String symbolicName = getSymbolicName(moduleProject);
+            String symbolicName = getSymbolicName(moduleContext);
             if(this.symbolicName.equals(symbolicName)) {
                 this.project = project;
-                this.moduleProject = moduleProject;
-                this.artifactId = moduleProject.getArtifactId();
+                this.moduleContext = moduleContext;
+//                this.artifactId = moduleContext.getArtifactId();
                 if(!isOSGiBundle() && !isSlingPackage()) {
                     setStatus(SynchronizationStatus.unsupported);
                 } else {
@@ -569,6 +576,13 @@ public class ServerConfiguration
                 if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
                 this.slingProject = new SlingProject4IntelliJ(this);
                 ret = true;
+            }
+            String metaInfPath = moduleContext.getMetaInfPath();
+            if(metaInfPath != null) {
+                VirtualFile metaInfFolder = project.getBaseDir().getFileSystem().findFileByPath(metaInfPath);
+                if(metaInfFolder != null) {
+                    setMetaInfFolder(metaInfFolder);
+                }
             }
             return ret;
         }
@@ -583,7 +597,7 @@ public class ServerConfiguration
         @Override
         public String toString() {
             return "Module: " +
-                "artifactId = '" + artifactId + '\'' +
+                "symbolic name = '" + symbolicName + '\'' +
                 ", last modification timestamp = " + lastModificationTimestamp +
                 ", part of build = " + partOfBuild +
                 "";

@@ -1,6 +1,8 @@
 package com.headwire.aem.tooling.intellij.mock;
 
-import com.headwire.aem.tooling.intellij.config.ModuleProject;
+import com.headwire.aem.tooling.intellij.config.ModuleContext;
+import com.intellij.openapi.module.Module;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,13 +10,12 @@ import java.util.List;
 /**
  * Created by schaefa on 12/28/15.
  */
-public class MockModuleProject
-    implements ModuleProject
+public class MockModuleContext
+    implements ModuleContext
 {
     public enum Type{ OSGI, Content, Other };
 
-    private String groupId = "testGroup";
-    private String artifactId = "testArtifact";
+    private String symbolicName = "testGroup.testArtifact";
     private String version = "1.0";
     private String name = "testName";
     private String buildFileName = "testBuildFileName";
@@ -22,15 +23,15 @@ public class MockModuleProject
     private String buildDirectoryPath = "/build";
     private String moduleDirectoryPath = "/src";
     private List<String> contentDirectoryPaths = Arrays.asList();
+    private String metainfPath = "";
 
     @Override
-    public String getGroupId() {
-        return groupId;
+    public void init(@NotNull Object payload) {
     }
 
     @Override
-    public String getArtifactId() {
-        return artifactId;
+    public String getSymbolicName() {
+        return symbolicName;
     }
 
     @Override
@@ -73,48 +74,63 @@ public class MockModuleProject
         return contentDirectoryPaths;
     }
 
-    public MockModuleProject setGroupId(String groupId) {
-        this.groupId = groupId;
+    @Override
+    public String getMetaInfPath() {
+        return metainfPath;
+    }
+
+    public MockModuleContext setSymbolicName(String symbolicName) {
+        this.symbolicName = symbolicName;
         return this;
     }
 
-    public MockModuleProject setArtifactId(String artifactId) {
-        this.artifactId = artifactId;
-        return this;
-    }
-
-    public MockModuleProject setVersion(String version) {
+    public MockModuleContext setVersion(String version) {
         this.version = version;
         return this;
     }
 
-    public MockModuleProject setName(String name) {
+    public MockModuleContext setName(String name) {
         this.name = name;
         return this;
     }
 
-    public MockModuleProject setBuildFileName(String buildFileName) {
+    public MockModuleContext setBuildFileName(String buildFileName) {
         this.buildFileName = buildFileName;
         return this;
     }
 
-    public MockModuleProject setType(Type type) {
+    public MockModuleContext setType(Type type) {
         this.type = type;
         return this;
     }
 
-    public MockModuleProject setBuildDirectoryPath(String buildDirectoryPath) {
+    public MockModuleContext setBuildDirectoryPath(String buildDirectoryPath) {
         this.buildDirectoryPath = buildDirectoryPath;
         return this;
     }
 
-    public MockModuleProject setModuleDirectoryPath(String moduleDirectoryPath) {
+    public MockModuleContext setModuleDirectoryPath(String moduleDirectoryPath) {
         this.moduleDirectoryPath = moduleDirectoryPath;
         return this;
     }
 
-    public MockModuleProject setContentDirectoryPaths(List<String> contentDirectoryPaths) {
+    public MockModuleContext setContentDirectoryPaths(List<String> contentDirectoryPaths) {
         this.contentDirectoryPaths = contentDirectoryPaths;
         return this;
+    }
+
+    public MockModuleContext setMetainfPath(String metainfPath) {
+        this.metainfPath = metainfPath;
+        return this;
+    }
+
+    @Override
+    public boolean isMavenBased() {
+        return false;
+    }
+
+    @Override
+    public Module getModule() {
+        return null;
     }
 }

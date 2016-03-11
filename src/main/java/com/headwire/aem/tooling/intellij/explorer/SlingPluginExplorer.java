@@ -72,7 +72,8 @@ public class SlingPluginExplorer
 
             @Override
             public void componentRemoved(ContainerEvent containerEvent) {
-                messageManager.sendDebugNotification("Container Remove Event: " + containerEvent);
+                //AS TODO: Cannot send a Debug Notification as the Project is torn down
+//                messageManager.sendDebugNotification("Container Remove Event: " + containerEvent);
             }
         });
         // Set the Service Provider instance for IntelliJ
@@ -80,7 +81,9 @@ public class SlingPluginExplorer
     }
 
     public void dispose() {
-        RunExecutionMonitor.disposeInstance(project);
+        if(project != null) {
+            RunExecutionMonitor.disposeInstance(project);
+        }
         project = null;
     }
 

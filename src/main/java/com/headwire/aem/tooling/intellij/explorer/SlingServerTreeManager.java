@@ -106,7 +106,8 @@ public class SlingServerTreeManager
 
             @Override
             public void componentRemoved(ContainerEvent containerEvent) {
-                messageManager.sendDebugNotification("Container Event: " + containerEvent);
+                //AS TODO: Cannot send a Debug Notification as the Project is torn down
+//                messageManager.sendDebugNotification("Container Event: " + containerEvent);
             }
         });
         DomManager.getDomManager(project).addDomEventListener(new DomEventListener() {
