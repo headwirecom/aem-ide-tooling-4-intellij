@@ -76,6 +76,10 @@ public class IntelliJDeploymentManager
                 resourceList.add(new IntelliJFileWrapper(resource));
             }
         }
+
+        public String toString() {
+            return "File Wrapper for: " + getPath();
+        }
     }
 
     public class IntelliJModuleWrapper

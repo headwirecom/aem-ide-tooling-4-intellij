@@ -380,18 +380,5 @@
     <orderEntry type="library" name="org.apache.sling.ide.artifacts-1.0.9-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.apache.sling.ide.impl-resource-1.0.9-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.apache.sling.ide.impl-vlt-1.0.9-SNAPSHOT" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/lib/osmorc/lib" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/lib/osmorc/lib" />
-        </SOURCES>
-        <jarDirectory url="file://$MODULE_DIR$/lib/osmorc/lib" recursive="false" />
-        <jarDirectory url="file://$MODULE_DIR$/lib/osmorc/lib" recursive="false" type="SOURCES" />
-      </library>
-    </orderEntry>
   </component>
 </module>

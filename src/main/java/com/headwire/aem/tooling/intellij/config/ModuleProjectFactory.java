@@ -2,15 +2,15 @@ package com.headwire.aem.tooling.intellij.config;
 
 import com.headwire.aem.tooling.intellij.facet.SlingModuleExtensionProperties.ModuleType;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacet;
+import com.intellij.facet.Facet;
+import com.intellij.facet.FacetManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.maven.model.MavenId;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
-import org.osmorc.facet.OsmorcFacet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +39,6 @@ public class ModuleProjectFactory {
             ModuleContext moduleContext = null;
             for(MavenProject mavenProject : mavenProjects) {
                 if(!"pom".equalsIgnoreCase(mavenProject.getPackaging())) {
-                    // This is only going to fly if the module and artifact id match but that does not have to be the case
-//                    MavenId id = mavenProject.getMavenId();
-//                    if(id.getArtifactId().equals(module.getName())) {
-//                        moduleContext = create(mavenProject);
-//                        break;
-//                    }
                     // Use the Parent of the Module and Maven Pom File as they should be in the same folder
                     //AS TODO: We might want to check if one is the child folder of the other instead being in the same
                     VirtualFile moduleFolder = module.getModuleFile().getParent();
@@ -66,11 +60,13 @@ public class ModuleProjectFactory {
                                 //AS TODO: Warn about the miss configuration but proceed
                             }
                             // Maven Module found but it is excluded from the build so see if there is an OSGi facet setup
-                            OsmorcFacet osgiFacet = OsmorcFacet.getInstance(module);
-                            if(osgiFacet != null) {
-                                moduleContext = create(module);
-                            } else {
-                                //AS TODO: Show an alert that there is no OSGi Configuration and make the build fail
+                            Facet[] facets = FacetManager.getInstance(module).getAllFacets();
+                            for(Facet facet: facets) {
+                                if(facet.getClass().getName().endsWith("OsmorcFacet")) {
+                                    moduleContext = create(module);
+                                } else {
+                                    //AS TODO: Show an alert that there is no OSGi Configuration and make the build fail
+                                }
                             }
                         }
                     }
