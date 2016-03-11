@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="Apache-Sling-IDE-1.0.9">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.api-1.0.9-SNAPSHOT.jar!/" />
       <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/artifacts/target/org.apache.sling.ide.artifacts-1.0.9-SNAPSHOT.jar!/" />
       <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/impl-resource/target/org.apache.sling.ide.impl-resource-1.0.9-SNAPSHOT.jar!/" />
       <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/impl-vlt/target/org.apache.sling.ide.impl-vlt-1.0.9-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/api/target/org.apache.sling.ide.api-1.0.9-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
