@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Created by schaefa on 4/30/15.
+ * Created by Andreas Schaefer (Headwire.com) on 4/30/15.
  */
 public class Util {
 

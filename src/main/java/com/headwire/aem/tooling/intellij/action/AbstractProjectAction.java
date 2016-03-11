@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 /**
- * Created by schaefa on 6/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/13/15.
  */
 public abstract class AbstractProjectAction
     extends AnAction

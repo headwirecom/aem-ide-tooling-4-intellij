@@ -26,7 +26,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 
 /**
- * Created by schaefa on 5/14/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
  */
 @Deprecated
 public class EventAdminWrapper

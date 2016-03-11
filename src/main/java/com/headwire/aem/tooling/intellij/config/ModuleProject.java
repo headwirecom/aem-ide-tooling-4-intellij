@@ -24,7 +24,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import java.util.List;
 
 /**
- * Created by schaefa on 7/2/15.
+ * Created by Andreas Schaefer (Headwire.com) on 7/2/15.
  */
 public interface ModuleProject {
     /** @return Group Name of the Artifact **/

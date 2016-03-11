@@ -22,7 +22,7 @@ package com.headwire.aem.tooling.intellij.eclipse;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
 
 /**
- * Created by schaefa on 5/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/13/15.
  */
 @Deprecated
 public class Path {

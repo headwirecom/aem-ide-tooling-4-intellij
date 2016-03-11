@@ -30,7 +30,7 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Created by schaefa on 6/26/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/26/15.
  */
 public class BuildConfigurationAction
     extends AbstractProjectAction

@@ -24,7 +24,7 @@ import com.intellij.openapi.components.ServiceManager;
 import org.apache.sling.ide.log.Logger;
 
 /**
- * Created by schaefa on 5/15/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/15/15.
  */
 public class Activator {
 

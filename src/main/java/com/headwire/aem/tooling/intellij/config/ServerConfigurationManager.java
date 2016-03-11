@@ -46,7 +46,7 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Defau
  * The Server Configuration Manager responsible for Loading & Saving the Server Configurations into the Workspace File
  * inside the IDEA folder (.idea/workspace.xml) and to provide the configurations to the plugin.
  *
- * Created by schaefa on 3/19/15.
+ * Created by Andreas Schaefer (Headwire.com) on 3/19/15.
  */
 @State(
     name = ServerConfiguration.COMPONENT_NAME,

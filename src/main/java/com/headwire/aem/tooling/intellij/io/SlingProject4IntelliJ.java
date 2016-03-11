@@ -42,7 +42,7 @@ import static com.headwire.aem.tooling.intellij.util.Constants.META_INF_FOLDER_N
 import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE_NAME;
 
 /**
- * Created by schaefa on 11/16/15.
+ * Created by Andreas Schaefer (Headwire.com) on 11/16/15.
  */
 public class SlingProject4IntelliJ
     implements SlingProject

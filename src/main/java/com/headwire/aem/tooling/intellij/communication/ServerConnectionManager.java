@@ -113,7 +113,7 @@ import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_N
 /**
  * Handles the Server Connections for the Plugin, its state and flags
  *
- * Created by schaefa on 5/21/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/21/15.
  */
 public class ServerConnectionManager
     extends AbstractProjectComponent

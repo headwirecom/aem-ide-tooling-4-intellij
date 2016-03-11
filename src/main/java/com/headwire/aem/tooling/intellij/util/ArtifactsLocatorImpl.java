@@ -26,7 +26,7 @@ import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
 import java.net.URL;
 
 /**
- * Created by schaefa on 5/5/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/5/15.
  */
 public class ArtifactsLocatorImpl
     extends ApplicationComponent.Adapter

@@ -60,7 +60,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.event.AncestorEvent;
 
 /**
- * Created by schaefa on 5/7/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/7/15.
  */
 public class ConsoleLogToolWindowFactory
     implements ToolWindowFactory, DumbAware

@@ -37,7 +37,7 @@ import java.util.List;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
- * Created by schaefa on 11/15/15.
+ * Created by Andreas Schaefer (Headwire.com) on 11/15/15.
  */
 public class SlingResource4IntelliJ
     implements SlingResource

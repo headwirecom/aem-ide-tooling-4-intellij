@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * This test here is to verify that the "eclipse-fix" is working in IntelliJ using the
  *
- * Created by schaefa on 4/28/15.
+ * Created by Andreas Schaefer (Headwire.com) on 4/28/15.
  */
 public class ActivatorTest {
 

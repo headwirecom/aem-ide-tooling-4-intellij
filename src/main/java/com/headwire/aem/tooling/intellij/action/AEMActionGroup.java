@@ -27,7 +27,7 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 
 /**
- * Created by schaefa on 6/18/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/18/15.
  */
 public class AEMActionGroup extends DefaultActionGroup implements DumbAware {
     @Override

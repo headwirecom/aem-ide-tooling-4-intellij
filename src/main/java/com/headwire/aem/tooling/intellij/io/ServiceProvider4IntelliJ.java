@@ -25,7 +25,7 @@ import org.apache.sling.ide.io.ServiceProvider;
 import org.apache.sling.ide.serialization.SerializationManager;
 
 /**
- * Created by schaefa on 11/16/15.
+ * Created by Andreas Schaefer (Headwire.com) on 11/16/15.
  */
 public class ServiceProvider4IntelliJ
     implements ServiceProvider

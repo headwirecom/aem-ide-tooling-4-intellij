@@ -23,7 +23,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.intellij.openapi.vfs.VirtualFile;
 
 /**
- * Created by schaefa on 6/23/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/23/15.
  */
 public class FileChange {
     private VirtualFile file;

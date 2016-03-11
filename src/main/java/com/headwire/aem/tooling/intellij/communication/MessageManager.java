@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by schaefa on 5/14/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
  */
 public class MessageManager
     extends AbstractProjectComponent

@@ -47,7 +47,7 @@ import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE
 //import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
 
 /**
- * Created by schaefa on 5/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/13/15.
  */
 @Deprecated
 public class ProjectUtil {

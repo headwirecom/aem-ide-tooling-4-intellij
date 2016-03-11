@@ -60,7 +60,7 @@ import static com.headwire.aem.tooling.intellij.communication.ServerConnectionMa
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
- * Created by schaefa on 5/12/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/12/15.
  */
 public class ContentResourceChangeListener
     extends AbstractProjectComponent

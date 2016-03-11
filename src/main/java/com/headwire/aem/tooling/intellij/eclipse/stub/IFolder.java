@@ -29,7 +29,7 @@ import java.io.IOException;
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 
 /**
- * Created by schaefa on 5/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/13/15.
  */
 @Deprecated
 public class IFolder extends IResource {
