@@ -22,8 +22,9 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 
 /**
- * Created by schaefa on 5/14/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
  */
+@Deprecated
 public class IModule {
 
     private Module module;

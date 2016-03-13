@@ -20,7 +20,7 @@
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
 /**
- * Created by schaefa on 6/18/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/18/15.
  * <p/>
  * This interface is implemented by objects that visit resource trees.
  * <p>
@@ -42,6 +42,7 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
  *
  * @see IResource#accept(IResourceVisitor)
  */
+@Deprecated
 public interface IResourceVisitor {
     /**
      * Visits the given resource.

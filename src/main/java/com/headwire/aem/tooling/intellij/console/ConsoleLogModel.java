@@ -20,14 +20,11 @@
 package com.headwire.aem.tooling.intellij.console;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationDisplayType;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.impl.NotificationsConfigurationImpl;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Disposer;
@@ -47,7 +44,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Created by schaefa on 5/6/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/6/15.
  */
 public class ConsoleLogModel
     implements Disposable
@@ -68,36 +65,38 @@ public class ConsoleLogModel
 
     void addNotification(Notification notification) {
         long stamp = System.currentTimeMillis();
-        ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, ServerTreeSelectionHandler.class);
-        if(selectionHandler != null) {
-            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
-            switch (logFilter) {
-                case debug:
-                    add(notification);
-                    break;
-                case info:
-                    if(!(notification instanceof DebugNotification)) { add(notification); }
-                    break;
-                case warning:
-                    if(notification.getType() != NotificationType.INFORMATION) { add(notification); }
-                    break;
-                case error:
-                default:
-                    if(notification.getType() == NotificationType.ERROR) { add(notification); }
-                    break;
+        if(myProject != null) {
+            SlingServerTreeSelectionHandler selectionHandler = myProject.getComponent(SlingServerTreeSelectionHandler.class);
+            if(selectionHandler != null) {
+                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
+                switch(logFilter) {
+                    case debug:
+                        add(notification);
+                        break;
+                    case info:
+                        if(!(notification instanceof DebugNotification)) {
+                            add(notification);
+                        }
+                        break;
+                    case warning:
+                        if(notification.getType() != NotificationType.INFORMATION) {
+                            add(notification);
+                        }
+                        break;
+                    case error:
+                    default:
+                        if(notification.getType() == NotificationType.ERROR) {
+                            add(notification);
+                        }
+                        break;
+                }
             }
+            myStamps.put(notification, stamp);
+            myStatuses.put(notification, ConsoleLog.formatForLog(notification, "").status);
+            setStatusMessage(notification, stamp);
+            fireModelChanged();
         }
-//        NotificationDisplayType type = NotificationsConfigurationImpl.getSettings(notification.getGroupId()).getDisplayType();
-//        if (notification.isImportant() || (type != NotificationDisplayType.NONE && type != NotificationDisplayType.TOOL_WINDOW)) {
-//            synchronized (myNotifications) {
-//                myNotifications.add(notification);
-//            }
-//        }
-        myStamps.put(notification, stamp);
-        myStatuses.put(notification, ConsoleLog.formatForLog(notification, "").status);
-        setStatusMessage(notification, stamp);
-        fireModelChanged();
     }
 
     private void add(Notification notification) {

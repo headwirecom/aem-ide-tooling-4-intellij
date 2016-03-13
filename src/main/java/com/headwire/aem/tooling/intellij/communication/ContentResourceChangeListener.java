@@ -19,21 +19,25 @@
 
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.action.NullProgressIndicator;
 import com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction;
 import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeManager;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
 import com.intellij.codeInsight.CodeSmellInfo;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.progress.ProcessCanceledException;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressIndicatorProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.vcs.CodeSmellDetector;
@@ -60,7 +64,7 @@ import static com.headwire.aem.tooling.intellij.communication.ServerConnectionMa
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
- * Created by schaefa on 5/12/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/12/15.
  */
 public class ContentResourceChangeListener
     extends AbstractProjectComponent
@@ -75,8 +79,8 @@ public class ContentResourceChangeListener
 
     public ContentResourceChangeListener(@NotNull Project project) {
         super(project);
-        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        pluginConfiguration = ServiceManager.getService(AEMPluginConfiguration.class);
+        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        pluginConfiguration = project.getComponent(AEMPluginConfiguration.class);
         this.serverConnectionManager = serverConnectionManager;
         this.project = project;
 
@@ -155,10 +159,10 @@ public class ContentResourceChangeListener
             new Runnable() {
                 @Override
                 public void run() {
-                    ServerTreeManager serverTreeManager = ServiceManager.getService(myProject, ServerTreeManager.class);
-                    if(serverTreeManager != null) {
+                    SlingServerTreeManager slingServerTreeManager = myProject.getComponent(SlingServerTreeManager.class);
+                    if(slingServerTreeManager != null) {
                         // At the end of the Tool Window is created we run the Check if a project is marked as Default
-                        Object modelRoot = serverTreeManager.getTree().getModel().getRoot();
+                        Object modelRoot = slingServerTreeManager.getTree().getModel().getRoot();
                         if (modelRoot instanceof DefaultMutableTreeNode) {
                             DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) modelRoot;
                             Enumeration e = rootNode.children();
@@ -172,14 +176,14 @@ public class ContentResourceChangeListener
                                         SlingServerNodeDescriptor descriptor = (SlingServerNodeDescriptor) target;
                                         switch (descriptor.getTarget().getDefaultMode()) {
                                             case run:
-                                                serverTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
+                                                slingServerTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                                 StartRunConnectionAction runAction = (StartRunConnectionAction) actionManager.getAction("AEM.Check.Action");
                                                 if (runAction != null) {
-                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT);
+                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new NullProgressIndicator());
                                                 }
                                                 break;
                                             case debug:
-                                                serverTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
+                                                slingServerTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                                 StartDebugConnectionAction debugAction = (StartDebugConnectionAction) actionManager.getAction("AEM.Start.Debug.Action");
                                                 if (debugAction != null) {
                                                     debugAction.doDebug(myProject, serverConnectionManager);
@@ -281,7 +285,7 @@ public class ContentResourceChangeListener
                         }
                     );
                 } else {
-                    MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
+                    MessageManager messageManager = project.getComponent(MessageManager.class);
                     if(messageManager != null) {
                         messageManager.sendErrorNotification(
                             "server.update.file.change.with.error",

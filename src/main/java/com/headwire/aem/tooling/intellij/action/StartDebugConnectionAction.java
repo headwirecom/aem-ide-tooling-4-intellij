@@ -22,12 +22,13 @@ package com.headwire.aem.tooling.intellij.action;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Created by schaefa on 6/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/13/15.
  */
 public class StartDebugConnectionAction
     extends AbstractProjectAction
@@ -38,7 +39,7 @@ public class StartDebugConnectionAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
         ServerConnectionManager connectionManager = getConnectionManager(project);
         if(connectionManager != null) {
             doDebug(project, connectionManager);
@@ -50,7 +51,7 @@ public class StartDebugConnectionAction
         if(runManager != null) {
             connectionManager.connectInDebugMode(runManager);
         } else {
-            //AS TODO: Create Alert to show that problems
+            getMessageManager(project).showAlert("debug.configuration.action.failure");
         }
     }
 

@@ -26,8 +26,9 @@ import org.apache.sling.ide.impl.vlt.filter.VltFilterLocator;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Created by schaefa on 6/19/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/19/15.
  */
+@Deprecated
 public class VltFilterLocatorWrapper
     extends VltFilterLocator
     implements ApplicationComponent

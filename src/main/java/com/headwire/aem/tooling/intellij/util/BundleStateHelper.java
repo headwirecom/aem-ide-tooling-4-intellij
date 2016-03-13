@@ -39,7 +39,7 @@ import java.text.MessageFormat;
 import java.util.jar.Manifest;
 
 /**
- * Created by schaefa on 5/12/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/12/15.
  */
 public class BundleStateHelper {
 

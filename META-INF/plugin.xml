@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.6-BETA-3</version>
+    <version>0.6.4.6-SNAPSHOT</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,39 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.6.4.6-SNAPSHOT: Fixed an issue with the entire Module build which lead to deadlocks. Also removed some
+                              debug statements that could disable the Plugin. For now the usage of non-Maven based
+                              project is discouraged as IntelliJ has no concept of a ZIP file based module.
+        </li>
+        <li>0.6.4.5-SNAPSHOT: Non-Maven OSGi modules should build now. There is a fix for any OSGi module as the
+                              deployment of Maven OSGi modules failed silently to deploy. This is fixed and if the
+                              build file is not present an alert is shown.
+                              There is also a fix for Maven modules where the Module Name and the Maven Artifact Id
+                              did nto match as it is now looking at the parent folder to find a match.
+        </li>
+        <li>0.6.4.4-SNAPSHOT: Added support for non-Maven based project. In order to support these types of projects
+                              you need to use two facets. For OSGi modules you need to use the "Osmorc" plugin
+                              to setup the OSGi Facet and for Content Modules you need to setup the Sling Content
+                              Facet and specify the Content and META-INF root folder.
+        </li>
+        <li>0.6.4.3-SNAPSHOT: The build process waits until the Maven Build is done and while any action fromo
+                              the toolbar is executed the toolbar is locked / disabled. In addition the
+                              original files from the renditions are pushed to the server last so that the
+                              DAM Workflow is not interferening with the rendition nodes.
+        </li>
+        <li>0.6.4.2-SNAPSHOT: The Maven Build for OSGi Bundles needs to be executed in a Dispatcher Thread
+                              but through changes in IntelliJ IDEA 15 that did not block anymore. In order
+                              to make it work this build is not building with a background task so that I can
+                              make the Caller of the Maven build wait for the Maven build to finish with a
+                              countdown latch.
+        </li>
+        <li>0.6.4.1-SNAPSHOT: Added a fix to try to solve mysterious failures in deploying renditions
+                              files.
+        </li>
+        <li>0.6.4-SNAPSHOT: Adjusted the Version to a Maven pattern to go along the Sling project.
+                            Started to incorporate the Sling Project project to test and verify the
+                            IDE independent Sling Connector.
+        </li>
         <li>0.6 Beta 3: Fixed an issue with the Console Log Settings to being disabled if no configuration is selected.
                         Fixed issues with Windows paths. Fixed an issue with Force Deploy doesn't apply to parent folders.
                         Fixed an issue with Windows paths and File Changes.
@@ -49,11 +82,12 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder"/>
-        <toolWindow id="AEM" anchor="right" icon="/images/hw.png"
-                    factoryClass="com.headwire.aem.tooling.intellij.explorer.ServersToolWindowFactory"/>
+        <toolWindow id="AEM (EID)" anchor="right" icon="/images/hw.png"
+                    factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
+        <facetType implementation="com.headwire.aem.tooling.intellij.facet.SlingModuleFacetType"/>
     </extensions>
 
     <application-components>
@@ -104,10 +138,10 @@
             <implementation-class>com.headwire.aem.tooling.intellij.communication.MessageManager</implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler</implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.ServerTreeManager</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager</implementation-class>
         </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager</implementation-class>
@@ -127,8 +161,7 @@
         <!-- Add your actions here -->
         <action id="AEM.Add.Action"
                 class="com.headwire.aem.tooling.intellij.action.AddServerConfigurationAction"
-                icon="AllIcons.General.Add"
-                />
+                icon="AllIcons.General.Add"/>
         <action id="AEM.Edit.Action"
                 class="com.headwire.aem.tooling.intellij.action.EditServerConfigurationAction"
                 icon="AllIcons.Actions.EditSource"/>
@@ -201,7 +234,7 @@
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM"
+               text="AEM (EID)"
                popup="true"
                icon="/images/hw.png"
         >

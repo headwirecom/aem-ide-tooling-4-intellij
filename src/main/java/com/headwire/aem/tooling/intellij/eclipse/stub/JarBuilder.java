@@ -34,8 +34,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Created by schaefa on 5/18/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/18/15.
  */
+@Deprecated
 public class JarBuilder {
 
     public InputStream buildJar(final IFolder sourceDir) throws CoreException {

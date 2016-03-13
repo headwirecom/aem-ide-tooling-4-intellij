@@ -11,6 +11,13 @@
     <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="CA96FC27612F7E33AFC88BDE0DC27209" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../sling-git-fork/sling/api/pom.xml" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />

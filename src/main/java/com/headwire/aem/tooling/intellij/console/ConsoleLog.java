@@ -19,38 +19,28 @@
 
 package com.headwire.aem.tooling.intellij.console;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
 import com.intellij.execution.filters.HyperlinkInfo;
 import com.intellij.notification.EventLogCategory;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
-import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.notification.NotificationsAdapter;
-import com.intellij.notification.impl.NotificationsConfigurationImpl;
 import com.intellij.notification.impl.NotificationsManagerImpl;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.RangeMarker;
 import com.intellij.openapi.editor.impl.DocumentImpl;
 import com.intellij.openapi.editor.markup.RangeHighlighter;
-import com.intellij.openapi.project.DumbAwareRunnable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.ShutDownTracker;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.Trinity;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.wm.IdeFrame;
-import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.WindowManager;
@@ -75,13 +65,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by schaefa on 5/6/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/6/15.
  */
 public class ConsoleLog
     extends ApplicationComponent.Adapter
 {
     public static final String LOG_REQUESTOR = "Internal log requestor";
-    //    public static final String LOG_TOOL_WINDOW_ID = "Event Log";
     public static final String HELP_ID = "reference.toolwindows.event.log";
     private static final String A_CLOSING = "</a>";
     private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]*>");

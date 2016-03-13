@@ -22,28 +22,23 @@ package com.headwire.aem.tooling.intellij.console;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
-import com.headwire.aem.tooling.intellij.ui.BuildSelectionDialog;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.ui.ConsoleLogSettingsDialog;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.actions.ContextHelpAction;
-import com.intellij.notification.impl.NotificationsConfigurable;
 import com.intellij.notification.impl.NotificationsConfigurationImpl;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.ToggleAction;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actions.ScrollToTheEndToolbarAction;
 import com.intellij.openapi.editor.actions.ToggleUseSoftWrapsToolbarAction;
 import com.intellij.openapi.editor.impl.softwrap.SoftWrapAppliancePlaces;
-import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
@@ -60,7 +55,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.event.AncestorEvent;
 
 /**
- * Created by schaefa on 5/7/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/7/15.
  */
 public class ConsoleLogToolWindowFactory
     implements ToolWindowFactory, DumbAware
@@ -96,10 +91,7 @@ public class ConsoleLogToolWindowFactory
         panel.setToolbar(toolbar.getComponent());
 
         Content content = ContentFactory.SERVICE.getInstance().createContent(panel, title, false);
-//AS TODO: Adding another Panel to the View is just creating a new Panel, Content and then add it to the Content Manager
-//        Content content2 = ContentFactory.SERVICE.getInstance().createContent(panel, "Another Way to Paradise", false);
         contentManager.addContent(content);
-//        contentManager.addContent(content2);
         contentManager.setSelectedContent(content);
     }
 
@@ -142,16 +134,16 @@ public class ConsoleLogToolWindowFactory
 
         @Override
         public void update(AnActionEvent e) {
-            ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+            SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
             ServerConfiguration serverConfiguration = selectionHandler == null ? null : selectionHandler.getCurrentConfiguration();
             e.getPresentation().setEnabled(project != null && serverConfiguration != null);
         }
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
-            ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-            ServerConfigurationManager configurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
+            SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
+            ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+            ServerConfigurationManager configurationManager = project.getComponent(ServerConfigurationManager.class);
             if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                 if(serverConfiguration != null) {

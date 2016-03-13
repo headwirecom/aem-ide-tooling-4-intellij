@@ -26,8 +26,9 @@ import org.jetbrains.annotations.NotNull;
 import org.osgi.service.event.EventAdmin;
 
 /**
- * Created by schaefa on 5/14/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
  */
+@Deprecated
 public class OsgiClientFactoryWrapper
     extends HttpOsgiClientFactory
     implements ApplicationComponent

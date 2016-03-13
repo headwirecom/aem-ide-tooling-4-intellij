@@ -32,7 +32,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Created by schaefa on 5/1/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/1/15.
  */
 public class AEMBundle {
     public static String message(@NotNull @PropertyKey(resourceBundle = PATH_TO_BUNDLE) String key, @NotNull Object... params) {

@@ -33,8 +33,9 @@ import java.util.List;
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 
 /**
- * Created by schaefa on 5/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/13/15.
  */
+@Deprecated
 public class IProject {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -48,8 +49,8 @@ public class IProject {
     }
 
     public IFolder getFolder(IPath path) {
-        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = com.intellij.openapi.components.ServiceManager.getService(
-            project, com.headwire.aem.tooling.intellij.communication.MessageManager.class
+        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = project.getComponent(
+            com.headwire.aem.tooling.intellij.communication.MessageManager.class
         );
         messageManager.sendDebugNotification("Given Path: '" + path + "'");
 
@@ -66,7 +67,7 @@ public class IProject {
 
     public List<String> getSourceFolderList() {
         List<String> ret = new ArrayList<String>();
-        for(String path: module.getModuleProject().getContentDirectoryPaths()) {
+        for(String path: module.getModuleContext().getContentDirectoryPaths()) {
             ret.add(path);
         }
         return ret;

@@ -24,7 +24,7 @@ import com.headwire.aem.tooling.intellij.util.Util;
 import javax.swing.*;
 
 /**
- * Created by schaefa on 6/22/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/22/15.
  */
 public class UIUtil {
 

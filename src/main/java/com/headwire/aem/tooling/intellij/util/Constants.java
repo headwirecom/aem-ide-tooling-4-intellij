@@ -20,7 +20,7 @@
 package com.headwire.aem.tooling.intellij.util;
 
 /**
- * Created by schaefa on 6/24/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/24/15.
  */
 public class Constants {
 

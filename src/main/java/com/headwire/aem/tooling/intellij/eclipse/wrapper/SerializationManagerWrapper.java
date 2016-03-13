@@ -26,8 +26,9 @@ import org.apache.sling.ide.impl.vlt.serialization.VltSerializationManager;
 import org.jetbrains.annotations.NotNull;
 
 /**
-* Created by schaefa on 5/14/15.
+* Created by Andreas Schaefer (Headwire.com) on 5/14/15.
 */
+@Deprecated
 class SerializationManagerWrapper
     extends VltSerializationManager
     implements ApplicationComponent

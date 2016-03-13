@@ -20,8 +20,9 @@
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
 /**
- * Created by schaefa on 5/15/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/15/15.
  */
+@Deprecated
 public class ServerBehaviourDelegate {
     /**
      * Publish kind constant (value 0) for no change.

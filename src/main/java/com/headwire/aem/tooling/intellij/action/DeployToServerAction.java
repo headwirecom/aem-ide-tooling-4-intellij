@@ -21,7 +21,7 @@ package com.headwire.aem.tooling.intellij.action;
 
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
@@ -32,11 +32,15 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
- * Created by schaefa on 6/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/13/15.
  */
 public class DeployToServerAction
-    extends AbstractProjectAction
+        extends AbstractProjectAction
 {
 
     public DeployToServerAction(@NotNull String textId) {
@@ -52,8 +56,8 @@ public class DeployToServerAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
-        doDeploy(dataContext, project, isForced());
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+        doDeploy(dataContext, project, isForced(), indicator);
     }
 
     @Override
@@ -62,66 +66,41 @@ public class DeployToServerAction
         return connectionManager != null && connectionManager.isConnectionInUse();
     }
 
-    private void doDeploy(final DataContext dataContext, final Project project, final boolean forceDeploy) {
+    private void doDeploy(final DataContext dataContext, final Project project, final boolean forceDeploy, @NotNull final ProgressIndicator indicator) {
         final ServerConnectionManager connectionManager = getConnectionManager(project);
-        final ServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        final String title = AEMBundle.message("deploy.configuration.action.name");
-
-        ProgressManager.getInstance().run(
-            new Task.Modal(project, title, false) {
-                @Nullable
-                public NotificationInfo getNotificationInfo() {
-                    return new NotificationInfo("Sling", "Sling Deployment Checks", "");
-                }
-
-                public void run(@NotNull final ProgressIndicator indicator) {
-                    //AS TODO: Check if there is a new version of IntelliJ CE that would allow to use
-                    //AS TODO: the ProgressAdapter.
-                    //AS TODO: Or create another Interface / Wrapper to make it IDE independent
-                    indicator.setIndeterminate(false);
-                    indicator.pushState();
-                    ApplicationManager.getApplication().runReadAction(
-                        new Runnable() {
-                            public void run() {
-                                try {
-                                    final String description = AEMBundle.message("deploy.configuration.action.description");
-
-                                    indicator.setText(description);
-                                    indicator.setFraction(0.0);
-
-                                    // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
-                                    // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
-                                    ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-                                    indicator.setFraction(0.1);
-                                    //AS TODO: this is not showing if the check is short but if it takes longer it will update
-                                    connectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
-                                    indicator.setFraction(0.2);
-                                    try {
-                                        Thread.sleep(1000);
-                                    } catch(InterruptedException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                    indicator.setFraction(0.3);
-                                    // First Check if the Install Support Bundle is installed
-                                    ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(false);
-                                    indicator.setFraction(0.5);
-                                    ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
-                                    if(module != null) {
-                                        // Deploy only the selected Module
-                                        connectionManager.deployModule(dataContext, module, forceDeploy);
-                                    } else {
-                                        // Deploy all Modules of the Project
-                                        connectionManager.deployModules(dataContext, forceDeploy);
-                                    }
-                                    indicator.setFraction(1.0);
-                                } finally {
-                                    indicator.popState();
-                                }
-                            }
-                        }
-                    );
-                }
-            }
-        );
+        final SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
+        indicator.setIndeterminate(false);
+        final String description = AEMBundle.message("deploy.configuration.action.description");
+        indicator.setText(description);
+        indicator.setFraction(0);
+        // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
+        // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
+        ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+        indicator.setText2("Update Status");
+        indicator.setFraction(0.1d);
+        //AS TODO: this is not showing if the check is short but if it takes longer it will update
+        connectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
+        indicator.setText2("Update Status, wait");
+        indicator.setFraction(0.2d);
+        try {
+            Thread.sleep(1000);
+        } catch(InterruptedException e1) {
+            e1.printStackTrace();
+        }
+        indicator.setText2("Get Bundle Status");
+        indicator.setFraction(0.3d);
+        // First Check if the Install Support Bundle is installed
+        ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(false);
+        ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
+        indicator.setText2("Build and Deploy " + (module != null ? "All" : "Single") + " Module");
+        indicator.setFraction(0.4d);
+        indicator.pushState();
+        if(module != null) {
+            // Deploy only the selected Module
+            connectionManager.deployModule(dataContext, module, forceDeploy, indicator);
+        } else {
+            // Deploy all Modules of the Project
+            connectionManager.deployModules(dataContext, forceDeploy, indicator);
+        }
     }
 }

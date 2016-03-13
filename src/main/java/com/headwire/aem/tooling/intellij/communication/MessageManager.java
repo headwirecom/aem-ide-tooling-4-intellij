@@ -19,22 +19,17 @@
 
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.console.ConsoleLog;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogCategory;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory;
 import com.headwire.aem.tooling.intellij.console.DebugNotification;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.ide.plugins.PluginManager;
-import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import jetbrains.buildServer.messages.serviceMessages.Message;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.log.Logger;
@@ -44,9 +39,10 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
- * Created by schaefa on 5/14/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
  */
 public class MessageManager
     extends AbstractProjectComponent
@@ -60,19 +56,10 @@ public class MessageManager
     }
 
     public void sendDebugNotification(String message) {
-//AS TODO: Find a way to switch it off when released -> Constant
-//        sendNotification("Debug Message", message, NotificationType.INFORMATION);
         logger.trace(message);
-//        ConsoleLog.addNotification(
-//            project,
-//            new DebugNotification("Debug Message", message)
-//        );
+        java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, message);
         new DebugNotification("Debug Message", message).notify(myProject);
     }
-
-//    public void sendNotification(String message, NotificationType type) {
-//        sendNotification("", message, type);
-//    }
 
     private void sendNotification(String title, String message, NotificationType type) {
         NOTIFICATION_GROUP.createNotification(
@@ -181,13 +168,6 @@ public class MessageManager
     public void showAlert(@NotNull final String title, @NotNull final String message) {
         // AS TODO: Originally the call was placed onto another Thread but it seems not to be necessary -> check and adjust
         showAlert(NotificationType.ERROR, title, message);
-//        ApplicationManager.getApplication().invokeLater(
-//            new Runnable() {
-//                public void run() {
-//                    Messages.showWarningDialog(project, message, title);
-//                }
-//            }
-//        );
     }
 
     public void showAlert(@NotNull final NotificationType type, @NotNull final String title, @NotNull final String message) {

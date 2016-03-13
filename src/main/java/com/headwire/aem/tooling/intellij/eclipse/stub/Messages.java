@@ -20,12 +20,13 @@
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
 /**
- * Created by schaefa on 5/18/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/18/15.
  */
 //import org.eclipse.osgi.util.NLS;
 /**
  * Translated messages.
  */
+@Deprecated
 public class Messages
 //    extends NLS
 {

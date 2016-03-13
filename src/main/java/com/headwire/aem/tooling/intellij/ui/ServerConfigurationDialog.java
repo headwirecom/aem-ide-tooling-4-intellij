@@ -56,6 +56,8 @@ public class ServerConfigurationDialog
     private JCheckBox buildWithMaven;
     private JCheckBox defaultDebugConfiguration;
     private JCheckBox defaultRunConfiguration;
+    @Deprecated //AS TODO: Remove later as soon as the Cancel Build Action is implemented
+    private JTextField mavenBuildTimeoutInSeconds;
 
     private ServerConfiguration serverConfiguration;
 
@@ -113,6 +115,7 @@ public class ServerConfigurationDialog
         }
         ret.setDefaultMode(defaultMode);
         ret.setBuildWithMaven(buildWithMaven.isSelected());
+        ret.setMavenBuildTimeoutInSeconds(UIUtil.obtainInteger(mavenBuildTimeoutInSeconds, ServerConfiguration.DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS));
         ret.setConnectionPort(UIUtil.obtainInteger(connectionPort, 0));
         ret.setConnectionDebugPort(UIUtil.obtainInteger(connectionDebugPort, 0));
         ret.setUserName(connectionUserName.getText());
@@ -158,6 +161,7 @@ public class ServerConfigurationDialog
                     break;
             }
             buildWithMaven.setSelected(serverConfiguration.isBuildWithMaven());
+            mavenBuildTimeoutInSeconds.setText(serverConfiguration.getMavenBuildTimeoutInSeconds() + "");
             connectionPort.setText(serverConfiguration.getConnectionPort() + "");
             connectionDebugPort.setText(serverConfiguration.getConnectionDebugPort() + "");
             connectionUserName.setText(serverConfiguration.getUserName());

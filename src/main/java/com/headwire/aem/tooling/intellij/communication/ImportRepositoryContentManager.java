@@ -45,6 +45,7 @@ import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.FilterResult;
 import org.apache.sling.ide.filter.IgnoredResources;
+import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
 import org.apache.sling.ide.log.Logger;
 import org.apache.sling.ide.serialization.SerializationData;
 import org.apache.sling.ide.serialization.SerializationDataBuilder;
@@ -72,7 +73,7 @@ import java.util.Set;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
- * Created by schaefa on 6/17/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/17/15.
  */
 public class ImportRepositoryContentManager {
 
@@ -117,7 +118,7 @@ public class ImportRepositoryContentManager {
 
 //        this.monitor = monitor;
 
-        MessageManager messageManager = ServiceManager.getService(project.getModule().getProject(), MessageManager.class);
+        MessageManager messageManager = project.getModule().getProject().getComponent(MessageManager.class);
         repository = ServerUtil.getConnectedRepository(server, monitor, messageManager);
         if(repository != null) {
             File syncDirectory = ProjectUtil.getSyncDirectoryFile(project);
@@ -235,7 +236,9 @@ public class ImportRepositoryContentManager {
 
                     String repositoryPath = rai.getResource().getPath();
 
-                    FilterResult filterResult = filter.filter(contentSyncRoot, repositoryPath);
+//                    FilterResult filterResult = filter.filter(contentSyncRoot, repositoryPath);
+//AS TODO: This is an adjustment to the 1.0.9 codebase
+                    FilterResult filterResult = filter.filter(repositoryPath);
 
                     if (ignoredResources.isIgnored(repositoryPath)) {
                         return false;
@@ -251,6 +254,7 @@ public class ImportRepositoryContentManager {
                     throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
                         "Failed reading current project's resources", e));
                 }
+//                throw new UnsupportedOperationException("This method needs to be implemented first");
             }
         });
 
@@ -379,7 +383,9 @@ public class ImportRepositoryContentManager {
             }
 
             if (filter != null) {
-                FilterResult filterResult = filter.filter(contentSyncRoot, child.getPath());
+//                FilterResult filterResult = filter.filter(contentSyncRoot, child.getPath());
+//AS TODO: This is an adjustment to the 1.0.9 codebase
+                FilterResult filterResult = filter.filter(child.getPath());
                 if (filterResult == FilterResult.DENY) {
                     continue;
                 }

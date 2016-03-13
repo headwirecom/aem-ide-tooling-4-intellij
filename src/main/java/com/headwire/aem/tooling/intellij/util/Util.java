@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Created by schaefa on 4/30/15.
+ * Created by Andreas Schaefer (Headwire.com) on 4/30/15.
  */
 public class Util {
 
@@ -114,7 +114,7 @@ public class Util {
         }
         if(name != null) {
             try {
-                ret = (T) T.valueOf(defaultValue.getClass(), name);
+                ret = (T) defaultValue.valueOf(defaultValue.getClass(), name);
             } catch(IllegalArgumentException e) {
                 // Enum was not found so use the default value instead
             }

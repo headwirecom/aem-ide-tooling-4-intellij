@@ -22,8 +22,9 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
 import java.util.Date;
 
 /**
- * Created by schaefa on 5/18/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/18/15.
  */
+@Deprecated
 public class Trace {
     // tracing enablement flags
     public static boolean CONFIG = false;

@@ -15,16 +15,12 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
     <orderEntry type="library" name="org.osgi:org.osgi.compendium:4.3.1" level="project" />
-    <orderEntry type="library" name="commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Maven: javax.jcr:jcr:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-api:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-core:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-jcr-commons:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-spi-commons:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-spi:2.4.0" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide.impl-resource-1.0.7-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.apache.sling.ide.artifacts-1.0.7-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.0.0" level="project" />
     <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault.rcp:3.0.0" level="project" />
     <orderEntry type="library" name="org.slf4j:slf4j-simple:1.5.8" level="project" />
     <orderEntry type="module-library" scope="PROVIDED">
@@ -378,5 +374,9 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="org.json:json:20140107" level="project" />
+    <orderEntry type="library" name="Apache-Sling-IDE-1.0.9" level="project" />
+    <orderEntry type="library" name="commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault.rcp:3.0.01" level="project" />
+    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.0.0" level="project" />
   </component>
 </module>

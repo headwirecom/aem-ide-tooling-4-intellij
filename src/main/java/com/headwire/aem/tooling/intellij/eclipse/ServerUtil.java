@@ -46,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 //AS TOOD: Copy from the Eclipse Project -> Clean up
+@Deprecated
 public abstract class ServerUtil {
 
     private static final Logger LOGGER = Logger.getInstance(ServerUtil.class);

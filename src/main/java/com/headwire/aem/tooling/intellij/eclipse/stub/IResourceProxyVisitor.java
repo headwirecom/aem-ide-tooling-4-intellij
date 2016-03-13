@@ -44,6 +44,7 @@ package com.headwire.aem.tooling.intellij.eclipse.stub;
  * @see IResource#accept(IResourceVisitor)
  * @since 2.1
  */
+@Deprecated
 public interface IResourceProxyVisitor {
     /**
      * Visits the given resource.

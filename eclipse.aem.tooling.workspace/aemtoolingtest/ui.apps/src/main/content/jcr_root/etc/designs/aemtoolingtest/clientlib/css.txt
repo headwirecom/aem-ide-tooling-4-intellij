@@ -1,3 +1,0 @@
-#AS Test 123
-#base=css
-static.css
