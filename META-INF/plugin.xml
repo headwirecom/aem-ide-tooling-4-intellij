@@ -161,8 +161,7 @@
         <!-- Add your actions here -->
         <action id="AEM.Add.Action"
                 class="com.headwire.aem.tooling.intellij.action.AddServerConfigurationAction"
-                icon="AllIcons.General.Add"
-                />
+                icon="AllIcons.General.Add"/>
         <action id="AEM.Edit.Action"
                 class="com.headwire.aem.tooling.intellij.action.EditServerConfigurationAction"
                 icon="AllIcons.Actions.EditSource"/>
