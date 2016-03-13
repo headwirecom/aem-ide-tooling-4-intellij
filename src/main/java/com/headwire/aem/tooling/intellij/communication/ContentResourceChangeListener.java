@@ -19,6 +19,7 @@
 
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.action.NullProgressIndicator;
 import com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction;
 import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
@@ -29,10 +30,14 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.progress.ProcessCanceledException;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressIndicatorProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.vcs.CodeSmellDetector;
@@ -174,7 +179,7 @@ public class ContentResourceChangeListener
                                                 slingServerTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                                 StartRunConnectionAction runAction = (StartRunConnectionAction) actionManager.getAction("AEM.Check.Action");
                                                 if (runAction != null) {
-                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT);
+                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new NullProgressIndicator());
                                                 }
                                                 break;
                                             case debug:

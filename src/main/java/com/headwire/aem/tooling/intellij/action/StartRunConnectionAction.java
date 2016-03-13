@@ -46,8 +46,8 @@ public class StartRunConnectionAction extends AbstractProjectAction {
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
-        doRun(project, dataContext);
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+        doRun(project, dataContext, indicator);
     }
 
     @Override
@@ -56,11 +56,7 @@ public class StartRunConnectionAction extends AbstractProjectAction {
         return connectionManager != null && connectionManager.isConnectionNotInUse();
     }
 
-    protected boolean isAsynchronous() {
-        return true;
-    }
-
-    public void doRun(final Project project, final DataContext dataContext) {
+    public void doRun(final Project project, final DataContext dataContext, @NotNull final ProgressIndicator indicator) {
         final SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
         final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         final String title = AEMBundle.message("check.configuration.action.text");
@@ -79,15 +75,15 @@ public class StartRunConnectionAction extends AbstractProjectAction {
             }
         }
         if(verifiedOk) {
-            ProgressManager.getInstance().run(
-                // The Task is moved to the background to free up the Dispatcher Thread and the toolbar is unlock when the background task ends
-                new Task.Backgroundable(project, title, false) {
-                    @Nullable
-                    public NotificationInfo getNotificationInfo() {
-                        return new NotificationInfo("Sling", "Sling Deployment Checks", "");
-                    }
-
-                    public void run(@NotNull final ProgressIndicator indicator) {
+//            ProgressManager.getInstance().run(
+//                // The Task is moved to the background to free up the Dispatcher Thread and the toolbar is unlock when the background task ends
+//                new Task.Backgroundable(project, title, false) {
+//                    @Nullable
+//                    public NotificationInfo getNotificationInfo() {
+//                        return new NotificationInfo("Sling", "Sling Deployment Checks", "");
+//                    }
+//
+//                    public void run(@NotNull final ProgressIndicator indicator) {
                         indicator.setIndeterminate(false);
                         indicator.pushState();
                         try {
@@ -138,9 +134,9 @@ public class StartRunConnectionAction extends AbstractProjectAction {
                             indicator.popState();
                             unlock(project);
                         }
-                    }
-                }
-            );
+//                    }
+//                }
+//            );
         } else {
             // If verification failed we need to unlock here
             unlock(project);

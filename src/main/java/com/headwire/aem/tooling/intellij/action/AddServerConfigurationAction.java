@@ -20,6 +20,7 @@
 package com.headwire.aem.tooling.intellij.action;
 
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +36,7 @@ public class AddServerConfigurationAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull ProgressIndicator progressIndicator) {
         editServerConfiguration(project, null);
     }
 

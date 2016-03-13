@@ -27,6 +27,9 @@ import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.containers.HashMap;
@@ -46,12 +49,15 @@ public abstract class AbstractProjectAction
     /** Map that contains the Toolbar Locks per Project **/
     private static Map<Project, Boolean> lockMap = new HashMap<Project, Boolean>();
 
+    private String titleId;
+
     public AbstractProjectAction(@NotNull String textId) {
         super(
             AEMBundle.message(textId + ".text"),
             AEMBundle.message(textId + ".description"),
             null
         );
+        this.titleId = textId + ".text";
     }
 
     public AbstractProjectAction() {
@@ -68,15 +74,42 @@ public abstract class AbstractProjectAction
     }
 
     public void actionPerformed(AnActionEvent event) {
-        Project project = event.getProject();
-        DataContext dataContext = event.getDataContext();
+        final Project project = event.getProject();
+        final DataContext dataContext = event.getDataContext();
         if(project != null && !isLocked(project)) {
             lock(project);
-            try {
-                execute(project, dataContext);
-            } finally {
-                if(!isAsynchronous()) {
+            if(isAsynchronous()) {
+                ProgressManager.getInstance().run(new Task.Backgroundable(project, titleId) {
+                    private String taskId = "plugin.no.task.id";
+
+                    @Nullable
+                    public NotificationInfo getNotificationInfo() {
+                        return new NotificationInfo(AEMBundle.message("plugin.action.title"), getTitle(), AEMBundle.message(taskId));
+                    }
+
+                    public void run(@NotNull final ProgressIndicator indicator) {
+                        try {
+                            execute(project, dataContext, indicator);
+                        } finally {
+                            unlock(project);
+                            getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
+                        }
+                    }
+
+                    void setTaskId(String taskId) {
+                        if(taskId != null && AEMBundle.message(taskId) != null) {
+                            this.taskId = taskId;
+                        } else {
+                            this.taskId = "plugin.no.task.id";
+                        }
+                    }
+                });
+            } else {
+                try {
+                    execute(project, dataContext, new NullProgressIndicator());
+                } finally {
                     unlock(project);
+                    getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
                 }
             }
         }
@@ -87,7 +120,7 @@ public abstract class AbstractProjectAction
         return project.getComponent(MessageManager.class);
     }
 
-    protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext);
+    protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator);
 
     protected abstract boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext);
 
@@ -99,7 +132,7 @@ public abstract class AbstractProjectAction
      *         where it becomes the Action responsibility to unlock it when done.
      */
     protected boolean isAsynchronous() {
-        return false;
+        return true;
     }
 
     private synchronized boolean isLocked(Project project) {

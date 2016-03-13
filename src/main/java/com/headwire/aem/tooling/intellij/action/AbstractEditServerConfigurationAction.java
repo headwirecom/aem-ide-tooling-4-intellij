@@ -39,6 +39,11 @@ public abstract class AbstractEditServerConfigurationAction
         super(textId);
     }
 
+    @Override
+    protected boolean isAsynchronous() {
+        return false;
+    }
+
     /**
      * Adds or Edits a Server Configuration and makes sure the configuration is valid
      *
