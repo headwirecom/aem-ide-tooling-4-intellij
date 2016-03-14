@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.6.4.6-SNAPSHOT</version>
+    <version>0.6.4.7-SNAPSHOT</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,9 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.6.4.7-SNAPSHOT: All but Dialog Actions were move into the background which is done in the base
+                              class so the Actions don't need to do anything special.
+        </li>
         <li>0.6.4.6-SNAPSHOT: Fixed an issue with the entire Module build which lead to deadlocks. Also removed some
                               debug statements that could disable the Plugin. For now the usage of non-Maven based
                               project is discouraged as IntelliJ has no concept of a ZIP file based module.

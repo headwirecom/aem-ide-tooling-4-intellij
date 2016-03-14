@@ -68,7 +68,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
         if(virtualFiles != null) {
             switch(virtualFiles.length) {
@@ -91,7 +91,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
             return;
         }
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-        serverConnectionManager.checkBinding(serverConfiguration);
+        serverConnectionManager.checkBinding(serverConfiguration, new ProgressHandlerImpl("Do Import from Server"));
         List<ServerConfiguration.Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
         ServerConfiguration.Module currentModuleLookup = null;
         for(ServerConfiguration.Module module: moduleList) {

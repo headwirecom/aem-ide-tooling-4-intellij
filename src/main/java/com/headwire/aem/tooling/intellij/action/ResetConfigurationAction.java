@@ -41,8 +41,8 @@ public class ResetConfigurationAction extends AbstractProjectAction {
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
-        doReset(project);
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
+        doReset(project, progressHandler);
     }
 
     @Override
@@ -51,14 +51,14 @@ public class ResetConfigurationAction extends AbstractProjectAction {
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 
-    public void doReset(final Project project) {
+    public void doReset(final Project project, final ProgressHandler progressHandler) {
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         if(selectionHandler != null && serverConnectionManager != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
             if(source != null) {
                 // Before we can verify we need to ensure the Configuration is properly bound to Maven
-                serverConnectionManager.checkBinding(source);
+                serverConnectionManager.checkBinding(source, progressHandler);
                 // Verify each Module to see if all prerequisites are met
                 getMessageManager(project).sendInfoNotification("action.reset.configuration.begin");
                 for(ServerConfiguration.Module module: source.getModuleList()) {

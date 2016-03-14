@@ -19,6 +19,7 @@
 
 package com.headwire.aem.tooling.intellij.config;
 
+import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
@@ -100,7 +101,7 @@ public class ServerConfigurationManager
             for(ServerConfiguration serverConfiguration: serverConfigurationList) {
                 // Clear any bindings
                 serverConfiguration.unBind();
-                serverConnectionManager.bindModules(serverConfiguration);
+                serverConnectionManager.bindModules(serverConfiguration, new ProgressHandlerImpl("Update Current Server Configuration"));
             }
             ret = true;
         }

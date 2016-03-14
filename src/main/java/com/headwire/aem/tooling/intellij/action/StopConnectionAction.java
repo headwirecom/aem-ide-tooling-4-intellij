@@ -38,7 +38,7 @@ public class StopConnectionAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         ServerConnectionManager connectionManager = getConnectionManager(project);
         if(connectionManager != null) {
             connectionManager.stopDebugConnection(dataContext);

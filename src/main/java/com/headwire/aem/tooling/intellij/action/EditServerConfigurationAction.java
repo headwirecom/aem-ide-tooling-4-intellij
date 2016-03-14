@@ -39,7 +39,7 @@ public class EditServerConfigurationAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         if(selectionHandler != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();

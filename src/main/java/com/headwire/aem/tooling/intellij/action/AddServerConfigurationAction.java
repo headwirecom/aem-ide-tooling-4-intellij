@@ -36,7 +36,7 @@ public class AddServerConfigurationAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull ProgressIndicator progressIndicator) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         editServerConfiguration(project, null);
     }
 

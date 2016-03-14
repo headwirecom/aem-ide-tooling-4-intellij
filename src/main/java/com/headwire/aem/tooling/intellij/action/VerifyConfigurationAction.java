@@ -55,9 +55,9 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         DataContext wrappedDataContext = SimpleDataContext.getSimpleContext(VERIFY_CONTENT_WITH_WARNINGS, true, dataContext);
-        doVerify(project, wrappedDataContext);
+        doVerify(project, wrappedDataContext, progressHandler);
     }
 
     @Override
@@ -66,7 +66,16 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
         return serverConnectionManager != null && serverConnectionManager.isConnectionInUse();
     }
 
-    public boolean doVerify(final Project project, final DataContext dataContext) {
+    /**
+     * Verity the project setup
+     * @param project
+     * @param dataContext
+     * @param progressHandler Progress Handler
+     * @return True if the project was successfully verified
+     */
+    public boolean doVerify(final Project project, final DataContext dataContext, final ProgressHandler progressHandler) {
+        ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(1, "Verify the Project: " + project.getName());
+        progressHandlerSubTask.next("Check Environment Setup");
         MessageManager messageManager = getMessageManager(project);
         boolean ret = true;
         int exitNow = Messages.OK;
@@ -77,18 +86,22 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
             if(source != null) {
                 try {
+                    progressHandlerSubTask.next("(Re)Bind Modules");
                     messageManager.sendInfoNotification("server.configuration.start.verification", source.getName());
                     // Before we can verify we need to ensure the Configuration is properly bound to Maven
                     List<ServerConfiguration.Module> unboundModules = null;
                     try {
-                        unboundModules = serverConnectionManager.bindModules(source);
+                        unboundModules = serverConnectionManager.bindModules(source, progressHandlerSubTask);
                     } catch(IllegalArgumentException e) {
                         messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.verification.failed.due.to.bind.exception", source.getName(), e.getMessage());
                         return false;
                     }
                     if(unboundModules != null && !unboundModules.isEmpty()) {
+                        progressHandlerSubTask.next("Update Server Configuration");
                         ret = false;
+                        ProgressHandler progressHandlerSubTaskLoop = progressHandlerSubTask.startSubTasks(unboundModules.size(), "Check Server Configuration Modules");
                         for(ServerConfiguration.Module module : unboundModules) {
+                            progressHandlerSubTaskLoop.next("Update Server Configuration for Module: " + module.getName());
                             exitNow = messageManager.showAlertWithOptions(NotificationType.WARNING, "server.configuration.unresolved.module", module.getName());
                             if(exitNow == 1) {
                                 source.removeModule(module);
@@ -103,7 +116,10 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                     // Verify each Module to see if all prerequisites are met
                     Repository repository = ServerConnectionManager.obtainRepository(source, messageManager);
                     if(repository != null) {
+                        progressHandlerSubTask.next("Check Modules");
+                        ProgressHandler progressHandlerSubTaskLoop = progressHandlerSubTask.startSubTasks(2 * source.getModuleList().size(), "Check Modules");
                         for(ServerConfiguration.Module module : source.getModuleList()) {
+                            progressHandlerSubTaskLoop.next("Check Module: " + module.getName());
                             if(module.isSlingPackage()) {
                                 // Check if the Filter is available for Content Modules
                                 Filter filter = null;
@@ -139,8 +155,11 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                                 Object temp = dataContext.getData(VERIFY_CONTENT_WITH_WARNINGS);
                                 boolean verifyWithWarnings = !(temp instanceof Boolean) || ((Boolean) temp);
                                 if(verifyWithWarnings && filter != null) {
+                                    progressHandlerSubTaskLoop.next("Check Resource Files");
+                                    ProgressHandler progressHandlerSubTaskLoop2 = progressHandlerSubTaskLoop.startSubTasks(resourceList.size(), "Check Resources");
                                     // Get the Content Root /jcr_root)
                                     for(String contentPath : resourceList) {
+                                        progressHandlerSubTaskLoop2.next("Check Resource: " + contentPath);
                                         VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(contentPath);
                                         if(rootFile != null) {
                                             // Loop over all folders and check if .content.xml file is there

@@ -45,7 +45,7 @@ public class BuildConfigurationAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
         ServerConfigurationManager configurationManager = project.getComponent(ServerConfigurationManager.class);

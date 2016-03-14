@@ -19,6 +19,8 @@
 
 package com.headwire.aem.tooling.intellij.communication;
 
+import com.headwire.aem.tooling.intellij.action.ProgressHandler;
+import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.config.ModuleContext;
 import com.headwire.aem.tooling.intellij.config.ModuleProjectFactory;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
@@ -187,7 +189,7 @@ public class ServerConnectionManager
         if(serverConfiguration != null) {
             ServerConfiguration.SynchronizationStatus status = ServerConfiguration.SynchronizationStatus.upToDate;
             boolean allSynchronized = true;
-            if(checkBinding(serverConfiguration)) {
+            if(checkBinding(serverConfiguration, new ProgressHandlerImpl("Check Bindings"))) {
                 int moduleCount = serverConfiguration.getModuleList().size();
                 float steps = (float) (0.9 / moduleCount);
                 for(Module module : serverConfiguration.getModuleList()) {
@@ -211,7 +213,7 @@ public class ServerConnectionManager
         try {
             if(module.isPartOfBuild()) {
                 // Check Binding
-                if(checkBinding(module.getParent())) {
+                if(checkBinding(module.getParent(), new ProgressHandlerImpl("Check Bindings"))) {
                     ModuleContext moduleContext = module.getModuleContext();
                     if(moduleContext != null) {
                         String moduleName = moduleContext.getName();
@@ -306,18 +308,20 @@ public class ServerConnectionManager
      * @param serverConfiguration The Server Connection that is checked and bound if not already done
      * @return True if the the connection was successfully bound otherwise false
      */
-    public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
+    public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration, final ProgressHandler progressHandler) {
         if(!serverConfiguration.isBound()) {
-            List<Module> moduleList = bindModules(serverConfiguration);
+            List<Module> moduleList = bindModules(serverConfiguration, progressHandler);
             return moduleList.isEmpty();
         }
         return true;
     }
 
-    public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration) {
+    public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration, final ProgressHandler progressHandler) {
         List<ModuleContext> moduleContexts = ModuleProjectFactory.getProjectModules(myProject, serverConfiguration);
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
+        ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(moduleContexts.size(), "Bind Modules");
         for(ModuleContext moduleContext : moduleContexts) {
+            progressHandlerSubTask.next("Bind Module: " + moduleContext.getName());
             String moduleName = moduleContext.getName();
             String symbolicName = moduleContext.getSymbolicName();
             String version = moduleContext.getVersion();
@@ -464,16 +468,16 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public void deployModules(final DataContext dataContext, boolean force, ProgressIndicator indicator) {
+    public void deployModules(final DataContext dataContext, boolean force, final ProgressHandler progressHandler) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
-            indicator.setText2("Check Bindings");
-            checkBinding(serverConfiguration);
+            checkBinding(serverConfiguration, progressHandler);
             List<Module> moduleList = serverConfiguration.getModuleList();
+            ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(moduleList.size(), "Check Bindings");
             double i = 0;
             for(ServerConfiguration.Module module: moduleList) {
-                deployModule(dataContext, module, force, indicator);
-                indicator.setFraction(i / moduleList.size());
+                progressHandlerSubTask.next("Deploy Module: " + module.getName());
+                deployModule(dataContext, module, force, progressHandlerSubTask);
                 i += 1;
             }
         } else {
@@ -481,10 +485,12 @@ public class ServerConnectionManager
         }
     }
 
-    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, ProgressIndicator indicator) {
+    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, final ProgressHandler progressHandler) {
+        ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(2, "Bind Module: " + module.getName());
         messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
-        indicator.setText2("Deploy Module: " + module.getName());
-        checkBinding(module.getParent());
+        progressHandlerSubTask.next("Check Binding of Parent Module: " + module.getParent());
+        checkBinding(module.getParent(), progressHandler);
+        progressHandlerSubTask.next("Deploy Module to Server: " + module.getName());
         if(module.isPartOfBuild()) {
             if(module.isOSGiBundle()) {
                 publishBundle(dataContext, module);

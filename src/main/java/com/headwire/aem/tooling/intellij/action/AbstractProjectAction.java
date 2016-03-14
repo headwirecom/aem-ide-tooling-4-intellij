@@ -89,7 +89,7 @@ public abstract class AbstractProjectAction
 
                     public void run(@NotNull final ProgressIndicator indicator) {
                         try {
-                            execute(project, dataContext, indicator);
+                            execute(project, dataContext, new ProgressHandlerImpl(indicator, getTitle()));
                         } finally {
                             unlock(project);
                             getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
@@ -106,7 +106,7 @@ public abstract class AbstractProjectAction
                 });
             } else {
                 try {
-                    execute(project, dataContext, new NullProgressIndicator());
+                    execute(project, dataContext, null);
                 } finally {
                     unlock(project);
                     getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
@@ -120,17 +120,12 @@ public abstract class AbstractProjectAction
         return project.getComponent(MessageManager.class);
     }
 
-    protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator);
+    /** Method that provides does do the action. If the action is handled in the background the Progress Indicator is set otherwise null */
+    protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler);
 
     protected abstract boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext);
 
-    /**
-     * This method indicates if an Action is executing tasks in the background. If true then
-     * the action must unlock the toolbar when the task is done.
-     *
-     * @return True if code is executed in the background and therefore the unlock must be postponed
-     *         where it becomes the Action responsibility to unlock it when done.
-     */
+    /** @return True if the Action must be executed in the background. If so the Progress Indicator is provided otherwise it is null */
     protected boolean isAsynchronous() {
         return true;
     }

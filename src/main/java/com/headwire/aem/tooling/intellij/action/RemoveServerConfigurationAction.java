@@ -39,7 +39,7 @@ public class RemoveServerConfigurationAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         ServerConfigurationManager configurationManager = getConfigurationManager(project);
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
         if(configurationManager != null && selectionHandler != null) {
