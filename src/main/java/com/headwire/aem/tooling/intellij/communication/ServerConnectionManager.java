@@ -37,6 +37,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
@@ -145,8 +146,8 @@ public class ServerConnectionManager
 
     public ServerConnectionManager(@NotNull Project project) {
         super(project);
-        messageManager = myProject.getComponent(MessageManager.class);
-        serverConfigurationManager = myProject.getComponent(ServerConfigurationManager.class);
+        messageManager = ComponentProvider.getComponent(myProject, MessageManager.class);
+        serverConfigurationManager = ComponentProvider.getComponent(myProject, ServerConfigurationManager.class);
         deploymentManager = new IntelliJDeploymentManager(project);
     }
 
@@ -353,32 +354,34 @@ public class ServerConnectionManager
         if(serverConfiguration != null) {
             try {
                 OsgiClient osgiClient = obtainSGiClient();
-                EmbeddedArtifactLocator artifactLocator = myProject.getComponent(EmbeddedArtifactLocator.class);
-                Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
+                EmbeddedArtifactLocator artifactLocator = ComponentProvider.getComponent(myProject, EmbeddedArtifactLocator.class);
+                if(artifactLocator != null) {
+                    Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 
-                messageManager.sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
+                    messageManager.sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
 
-                final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
-                final Version embeddedVersion = new Version(supportBundle.getVersion());
+                    final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
+                    final Version embeddedVersion = new Version(supportBundle.getVersion());
 
-                if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
-                    ret = BundleStatus.outDated;
-                    if(!onlyCheck) {
-                        InputStream contents = null;
-                        try {
-                            messageManager.sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
-                            contents = supportBundle.openInputStream();
-                            osgiClient.installBundle(contents, supportBundle.getName());
-                            ret = BundleStatus.upToDate;
-                        } finally {
-                            IOUtils.closeQuietly(contents);
+                    if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
+                        ret = BundleStatus.outDated;
+                        if(!onlyCheck) {
+                            InputStream contents = null;
+                            try {
+                                messageManager.sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
+                                contents = supportBundle.openInputStream();
+                                osgiClient.installBundle(contents, supportBundle.getName());
+                                ret = BundleStatus.upToDate;
+                            } finally {
+                                IOUtils.closeQuietly(contents);
+                            }
+                            remoteVersion = embeddedVersion;
                         }
-                        remoteVersion = embeddedVersion;
+                    } else {
+                        ret = BundleStatus.upToDate;
                     }
-                } else {
-                    ret = BundleStatus.upToDate;
+                    messageManager.sendInfoNotification("aem.explorer.finished.connection.to.remote");
                 }
-                messageManager.sendInfoNotification("aem.explorer.finished.connection.to.remote");
             } catch(IOException e) {
                 messageManager.sendErrorNotification("aem.explorer.cannot.read.installation.support.bundle", serverConfiguration.getName(), e);
             } catch(OsgiClientException e) {

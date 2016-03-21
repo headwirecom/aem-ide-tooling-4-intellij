@@ -23,6 +23,7 @@ import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
@@ -94,7 +95,7 @@ public class ServerConfigurationManager
     public boolean updateCurrentServerConfiguration() {
         boolean ret = false;
         if(serverConnectionManager == null) {
-            serverConnectionManager = myProject.getComponent(ServerConnectionManager.class);
+            serverConnectionManager = ComponentProvider.getComponent(myProject, ServerConnectionManager.class);
         }
         if(serverConnectionManager != null) {
             // A Server Connection may or may not be connected so the only way to ensure a proper update is to update them all
@@ -122,7 +123,7 @@ public class ServerConfigurationManager
 
     public ServerConfigurationManager(final Project project) {
         super(project);
-        messageManager = project.getComponent(MessageManager.class);
+        messageManager = ComponentProvider.getComponent(project, MessageManager.class);
     }
 
     public ServerConfiguration[] getServerConfigurations() {

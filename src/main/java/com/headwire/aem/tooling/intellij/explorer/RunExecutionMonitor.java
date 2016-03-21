@@ -22,6 +22,7 @@ package com.headwire.aem.tooling.intellij.explorer;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.debugger.engine.RemoteDebugProcessHandler;
 import com.intellij.execution.ExecutionAdapter;
 import com.intellij.execution.ExecutionManager;
@@ -59,7 +60,7 @@ public class RunExecutionMonitor {
         synchronized(instances) {
             ret = instances.get(project);
             if(ret == null) {
-                project.getComponent(MessageManager.class).sendDebugNotification("Create new REM for Project: " + project);
+                ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification("Create new REM for Project: " + project);
                 ret = new RunExecutionMonitor(project);
                 instances.put(project, ret);
             }
@@ -90,7 +91,7 @@ public class RunExecutionMonitor {
     }
 
     private void init() {
-        serverConfigurationManager = project.getComponent(ServerConfigurationManager.class);
+        serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
         final MessageBus bus = project.getMessageBus();
         connection = bus.connect();
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
@@ -101,7 +102,7 @@ public class RunExecutionMonitor {
                 @Override
                 public void processStartScheduled(String executorId, ExecutionEnvironment env) {
                     if(RUN_EXECUTION.equals(executorId)) {
-                        project.getComponent(MessageManager.class).sendDebugNotification(
+                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
                             "Schedule Maven Run on Project: " + project
                         );
                     }
@@ -120,7 +121,7 @@ public class RunExecutionMonitor {
                             // Mark any Bundles inside the Tree as unknown
                         }
                     } else if(RUN_EXECUTION.equals(executorId)) {
-                        project.getComponent(MessageManager.class).sendDebugNotification(
+                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
                             "Maven Run Failed to Start on Project: " + project
                         );
                         stopSignal.countDown();
@@ -155,7 +156,7 @@ public class RunExecutionMonitor {
                             // Mark any Bundles inside the Tree as disconnected
                         }
                     } else if(runProfile instanceof MavenRunConfiguration) {
-                        project.getComponent(MessageManager.class).sendDebugNotification(
+                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
                             "Finish Maven Run Ended Project: " + project
                         );
                         stopSignal.countDown();

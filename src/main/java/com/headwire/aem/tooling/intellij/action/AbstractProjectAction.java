@@ -19,11 +19,13 @@
 
 package com.headwire.aem.tooling.intellij.action;
 
+import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl.CancellationException;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -48,6 +50,7 @@ public abstract class AbstractProjectAction
 {
     /** Map that contains the Toolbar Locks per Project **/
     private static Map<Project, Boolean> lockMap = new HashMap<Project, Boolean>();
+    private static ProgressHandlerImpl progressHandler;
 
     private String titleId;
 
@@ -89,10 +92,15 @@ public abstract class AbstractProjectAction
 
                     public void run(@NotNull final ProgressIndicator indicator) {
                         try {
-                            execute(project, dataContext, new ProgressHandlerImpl(indicator, getTitle()));
-                        } finally {
-                            unlock(project);
+                            progressHandler = new ProgressHandlerImpl(indicator, getTitle());
+                            execute(project, dataContext, progressHandler);
                             getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
+                        } catch(CancellationException e) {
+                            // The user cancelled the task and so we catch the exception and report is to the user
+                            getMessageManager(project).sendInfoNotification("action.cancelled", e.getMessage());
+                        } finally {
+                            progressHandler = null;
+                            unlock(project);
                         }
                     }
 
@@ -117,7 +125,7 @@ public abstract class AbstractProjectAction
 
     @NotNull
     protected MessageManager getMessageManager(@NotNull Project project) {
-        return project.getComponent(MessageManager.class);
+        return ComponentProvider.getComponent(project, MessageManager.class);
     }
 
     /** Method that provides does do the action. If the action is handled in the background the Progress Indicator is set otherwise null */
@@ -130,7 +138,7 @@ public abstract class AbstractProjectAction
         return true;
     }
 
-    private synchronized boolean isLocked(Project project) {
+    protected synchronized boolean isLocked(Project project) {
         Boolean ret = lockMap.get(project);
         return ret == null ? false : ret;
     }
@@ -144,6 +152,20 @@ public abstract class AbstractProjectAction
         lockMap.put(project, true);
     }
 
+    protected boolean isCancelable() {
+        return progressHandler != null;
+    }
+
+    protected boolean isCancelled() {
+        return progressHandler != null && progressHandler.isMarkedAsCancelled();
+    }
+
+    protected void cancel() {
+        if(progressHandler != null) {
+            progressHandler.markAsCancelled();
+        }
+    }
+
     /**
      * Unlocks the Toolbar for the given Project
      *
@@ -154,14 +176,14 @@ public abstract class AbstractProjectAction
     }
 
     protected SlingServerTreeSelectionHandler getSelectionHandler(@Nullable Project project) {
-        return project == null ? null : project.getComponent(SlingServerTreeSelectionHandler.class);
+        return project == null ? null : ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
     }
 
     protected ServerConnectionManager getConnectionManager(@Nullable Project project) {
-        return project == null ? null : project.getComponent(ServerConnectionManager.class);
+        return project == null ? null : ComponentProvider.getComponent(project, ServerConnectionManager.class);
     }
 
     protected ServerConfigurationManager getConfigurationManager(@Nullable Project project) {
-        return project == null ? null : project.getComponent(ServerConfigurationManager.class);
+        return project == null ? null : ComponentProvider.getComponent(project, ServerConfigurationManager.class);
     }
 }

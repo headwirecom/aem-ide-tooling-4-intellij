@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration.ServerStatus;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
@@ -57,8 +58,8 @@ public class StartRunConnectionAction extends AbstractProjectAction {
     }
 
     public void doRun(final Project project, final DataContext dataContext, final ProgressHandler progressHandler) {
-        final SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
-        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        final SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
+        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         if(selectionHandler != null && serverConnectionManager != null) {
             final String description = AEMBundle.message("check.configuration.action.description");
 

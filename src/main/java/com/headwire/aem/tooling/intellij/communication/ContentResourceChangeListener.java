@@ -25,6 +25,7 @@ import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.codeInsight.CodeSmellInfo;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -75,8 +76,8 @@ public class ContentResourceChangeListener
 
     public ContentResourceChangeListener(@NotNull Project project) {
         super(project);
-        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
-        pluginConfiguration = project.getComponent(AEMPluginConfiguration.class);
+        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        pluginConfiguration = ComponentProvider.getComponent(project, AEMPluginConfiguration.class);
         this.serverConnectionManager = serverConnectionManager;
         this.project = project;
 
@@ -155,7 +156,7 @@ public class ContentResourceChangeListener
             new Runnable() {
                 @Override
                 public void run() {
-                    SlingServerTreeManager slingServerTreeManager = myProject.getComponent(SlingServerTreeManager.class);
+                    SlingServerTreeManager slingServerTreeManager = ComponentProvider.getComponent(myProject, SlingServerTreeManager.class);
                     if(slingServerTreeManager != null) {
                         // At the end of the Tool Window is created we run the Check if a project is marked as Default
                         Object modelRoot = slingServerTreeManager.getTree().getModel().getRoot();
@@ -281,7 +282,7 @@ public class ContentResourceChangeListener
                         }
                     );
                 } else {
-                    MessageManager messageManager = project.getComponent(MessageManager.class);
+                    MessageManager messageManager = ComponentProvider.getComponent(project, MessageManager.class);
                     if(messageManager != null) {
                         messageManager.sendErrorNotification(
                             "server.update.file.change.with.error",

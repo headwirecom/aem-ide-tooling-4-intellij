@@ -22,6 +22,7 @@ package com.headwire.aem.tooling.intellij.action;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -47,13 +48,13 @@ public class ResetConfigurationAction extends AbstractProjectAction {
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 
     public void doReset(final Project project, final ProgressHandler progressHandler) {
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         if(selectionHandler != null && serverConnectionManager != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
             if(source != null) {

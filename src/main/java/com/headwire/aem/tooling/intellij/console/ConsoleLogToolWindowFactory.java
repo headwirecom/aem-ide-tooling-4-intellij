@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.ui.ConsoleLogSettingsDialog;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.actions.ContextHelpAction;
 import com.intellij.notification.impl.NotificationsConfigurationImpl;
@@ -134,16 +135,16 @@ public class ConsoleLogToolWindowFactory
 
         @Override
         public void update(AnActionEvent e) {
-            SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
+            SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
             ServerConfiguration serverConfiguration = selectionHandler == null ? null : selectionHandler.getCurrentConfiguration();
             e.getPresentation().setEnabled(project != null && serverConfiguration != null);
         }
 
         @Override
         public void actionPerformed(AnActionEvent e) {
-            SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
-            ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
-            ServerConfigurationManager configurationManager = project.getComponent(ServerConfigurationManager.class);
+            SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
+            ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+            ServerConfigurationManager configurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
             if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                 if(serverConfiguration != null) {

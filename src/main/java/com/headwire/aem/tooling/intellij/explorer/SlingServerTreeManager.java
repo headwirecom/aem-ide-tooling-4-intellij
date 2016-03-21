@@ -23,6 +23,7 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.ide.CommonActionsManager;
@@ -95,17 +96,17 @@ public class SlingServerTreeManager
 
     public SlingServerTreeManager(@NotNull Project project) {
         super(project);
-        final MessageManager messageManager = project.getComponent(MessageManager.class);
+        final MessageManager messageManager = ComponentProvider.getComponent(project, MessageManager.class);
         final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
         tree = new Tree(model);
         tree.setRootVisible(true);
         tree.setShowsRootHandles(true);
         tree.setCellRenderer(new NodeRenderer());
-        SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
+        SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
         selectionHandler.init(tree);
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         serverConnectionManager.init(selectionHandler);
-        myConfig = project.getComponent(ServerConfigurationManager.class);
+        myConfig = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
         myBuilder = new SlingServerTreeBuilder(project, tree, model);
         TreeUtil.installActions(tree);
         new TreeSpeedSearch(tree);

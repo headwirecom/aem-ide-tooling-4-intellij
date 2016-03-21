@@ -28,6 +28,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.project.Project;
@@ -176,11 +177,11 @@ public class IntelliJDeploymentManager
     public IntelliJDeploymentManager(@NotNull Project project) {
         super(
             new NewResourceChangeCommandFactory(
-                project.getComponent(SerializationManager.class)
+                ComponentProvider.getComponent(project, SerializationManager.class)
             )
         );
-        messageManager = project.getComponent(MessageManager.class);
-        serverConfigurationManager = project.getComponent(ServerConfigurationManager.class);
+        messageManager = ComponentProvider.getComponent(project, MessageManager.class);
+        serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
     }
 
     @Override

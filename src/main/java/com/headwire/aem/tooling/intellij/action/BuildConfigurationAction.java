@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.ui.BuildSelectionDialog;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
@@ -47,8 +48,8 @@ public class BuildConfigurationAction
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
-        ServerConfigurationManager configurationManager = project.getComponent(ServerConfigurationManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        ServerConfigurationManager configurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
         if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             BuildSelectionDialog dialog = new BuildSelectionDialog(project, serverConfiguration);
@@ -61,7 +62,7 @@ public class BuildConfigurationAction
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 }

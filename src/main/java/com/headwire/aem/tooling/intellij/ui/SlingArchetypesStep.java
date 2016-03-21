@@ -19,9 +19,8 @@
 
 package com.headwire.aem.tooling.intellij.ui;
 
-import com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder;
+import com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.wizard.CommitStepException;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.popup.ListItemDescriptorAdapter;
@@ -41,11 +40,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder.ArchetypeTemplate;
+import static com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder.ArchetypeTemplate;
 
 public class SlingArchetypesStep extends ModuleWizardStep implements Disposable {
 
@@ -55,10 +53,10 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
     private JTextArea archetypeDescriptionField;
     private JScrollPane archetypeDescriptionScrollPane;
 
-    private final SlingModuleBuilder moduleBuilder;
-    private final List<SlingModuleBuilder.ArchetypeTemplate> mavenArchetypeList;
+    private final SlingMavenModuleBuilder moduleBuilder;
+    private final List<SlingMavenModuleBuilder.ArchetypeTemplate> mavenArchetypeList;
 
-    public SlingArchetypesStep(SlingModuleBuilder builder, @NotNull List<ArchetypeTemplate> archetypeList) {
+    public SlingArchetypesStep(SlingMavenModuleBuilder builder, @NotNull List<ArchetypeTemplate> archetypeList) {
         moduleBuilder = builder;
         mavenArchetypeList = archetypeList;
         archetypeJBList.setModel(

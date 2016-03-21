@@ -21,6 +21,7 @@ package com.headwire.aem.tooling.intellij.explorer;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.ide.util.treeView.AbstractTreeStructure;
 import com.intellij.ide.util.treeView.NodeDescriptor;
 import com.intellij.openapi.diagnostic.Logger;
@@ -72,7 +73,7 @@ final class SlingServerTreeStructure extends AbstractTreeStructure {
 
     @Override
     public Object[] getChildElements(Object element) {
-        final ServerConfigurationManager configuration = myProject.getComponent(ServerConfigurationManager.class);
+        final ServerConfigurationManager configuration = ComponentProvider.getComponent(myProject, ServerConfigurationManager.class);
         if(element == myRoot) {
             if(!configuration.isInitialized()) {
                 return new Object[]{AEMBundle.message("tree.builder.configurations.loading.name")};

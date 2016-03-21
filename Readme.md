@@ -7,9 +7,14 @@ Can be found on our [Wiki Page](https://github.com/headwirecom/aem-ide-tooling-4
 
 #### Current Branch:
 
-The latest code can  be found in the **release/0.6.4-SNAPSHOT** branch.
+The latest code can  be found in the **all-action-in-the-background** branch.
 
 #### Updates:
+
+**0.6.4.7-SNAPSHOT**: All but Dialog Actions were move into the background which is done in the base
+                      class so the Actions don't need to do anything special. Added a better way to
+                      handle process indicators that also deals with no indicator and handles the nesting
+                      easier as it automates the pops.
 
 **0.6.4.6-SNAPSHOT**: Fixed an issue with the entire Module build which led to deadlocks. Also removed some
                       debug statements that could disable the Plugin. For now the usage of non-Maven based

@@ -19,6 +19,7 @@
 
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
@@ -49,7 +50,7 @@ public class IProject {
     }
 
     public IFolder getFolder(IPath path) {
-        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = project.getComponent(
+        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = ComponentProvider.getComponent(project,
             com.headwire.aem.tooling.intellij.communication.MessageManager.class
         );
         messageManager.sendDebugNotification("Given Path: '" + path + "'");

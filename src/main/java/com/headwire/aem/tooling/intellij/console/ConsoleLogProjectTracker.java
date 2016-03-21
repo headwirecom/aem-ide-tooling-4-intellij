@@ -21,6 +21,7 @@ package com.headwire.aem.tooling.intellij.console;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -90,7 +91,7 @@ public class ConsoleLogProjectTracker
     }
 
     protected void printNotification(Notification notification) {
-        SlingServerTreeSelectionHandler selectionHandler = myProject.getComponent(SlingServerTreeSelectionHandler.class);
+        SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
         if(selectionHandler != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;

@@ -29,6 +29,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
@@ -52,7 +53,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
     @Override
     public boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         boolean ret = false;
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         if(serverConnectionManager.isConfigurationSelected()) {
             // Now check if a file is selected
             VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
@@ -85,8 +86,8 @@ public class ImportFromServerAction extends AbstractProjectAction {
     }
 
     private void doImport(final Project project, final VirtualFile file) {
-        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
-        final SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
+        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        final SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
         if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
             return;
         }
@@ -120,7 +121,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
                                 }
                                 IPath projectRelativePath = new IPath(relativePath);
                                 IProject iProject = new IProject(currentModule);
-                                SerializationManager serializationManager = project.getComponent(SerializationManager.class);
+                                SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
 
 
                                 try {

@@ -59,4 +59,24 @@ public interface ProgressHandler {
     public void next(String task);
 
     public String getTitle();
+
+    /**
+     * Marks the progress to be cancelled at the next
+     * possibility.
+     */
+    public void markAsCancelled();
+
+    /** @return True if the Progress Handler is marked as cancelled */
+    public boolean isMarkedAsCancelled();
+
+    /**
+     * Marks this and any child Progress Handler as not cancelable or not
+     *
+     * @param notCancelable True marks this progress handler as not cancelable
+     *                      and False removes that.
+     */
+    public void setNotCancelable(boolean notCancelable);
+
+    /** @return True if the Progress Handler is set a not cancelable */
+    public boolean isNotCancelable();
 }

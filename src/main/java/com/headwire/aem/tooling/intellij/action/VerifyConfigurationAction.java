@@ -26,6 +26,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Constants;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -62,7 +63,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConnectionInUse();
     }
 
@@ -80,7 +81,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
         boolean ret = true;
         int exitNow = Messages.OK;
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         ServerConfigurationManager serverConfigurationManager = getConfigurationManager(project);
         if(selectionHandler != null && serverConnectionManager != null && messageManager != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();

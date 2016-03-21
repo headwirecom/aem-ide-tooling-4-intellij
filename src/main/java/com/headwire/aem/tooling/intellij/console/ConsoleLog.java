@@ -19,6 +19,7 @@
 
 package com.headwire.aem.tooling.intellij.console;
 
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.execution.filters.HyperlinkInfo;
 import com.intellij.notification.EventLogCategory;
 import com.intellij.notification.Notification;
@@ -376,7 +377,7 @@ public class ConsoleLog
     }
 
     public static ConsoleLogProjectTracker getProjectComponent(Project project) {
-        return project.getComponent(ConsoleLogProjectTracker.class);
+        return ComponentProvider.getComponent(project, ConsoleLogProjectTracker.class);
     }
 
     public static void addNotification(@NotNull Project project, @NotNull Notification notification) {
@@ -431,7 +432,7 @@ public class ConsoleLog
             if(target != null) {
                 IdeFrame frame = WindowManager.getInstance().getIdeFrame(project);
                 assert frame != null;
-                Balloon balloon = NotificationsManagerImpl.createBalloon(frame, myNotification, true, true);
+                Balloon balloon = NotificationsManagerImpl.createBalloon(frame, myNotification, true, true, null);
                 Disposer.register(project, balloon);
                 balloon.show(target, Balloon.Position.above);
             }

@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.io.ServiceProvider4IntelliJ;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -71,9 +72,9 @@ public class SlingPluginExplorer
         logger.info("Info message for SSE");
         logger.debug("Debug message for SSE");
         this.project = project;
-        serverConfigurationManager = project.getComponent(ServerConfigurationManager.class);
+        serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
 
-        SlingServerTreeManager slingServerTreeManager = project.getComponent(SlingServerTreeManager.class);
+        SlingServerTreeManager slingServerTreeManager = ComponentProvider.getComponent(project, SlingServerTreeManager.class);
         if(slingServerTreeManager == null) {
             messageManager.showAlert("Failure", "Failure to find Server Tree Manager");
         }
@@ -82,7 +83,7 @@ public class SlingPluginExplorer
         setContent(ScrollPaneFactory.createScrollPane(tree));
         ToolTipManager.sharedInstance().registerComponent(tree);
         RunExecutionMonitor.getInstance(project);
-        messageManager = this.project.getComponent(MessageManager.class);
+        messageManager = ComponentProvider.getComponent(this.project, MessageManager.class);
         tree.addContainerListener(new ContainerListener() {
             @Override
             public void componentAdded(ContainerEvent containerEvent) {
