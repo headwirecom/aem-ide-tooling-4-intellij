@@ -1,30 +1,31 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.config;
 
+import com.headwire.aem.tooling.intellij.io.SlingProject4IntelliJ;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sling.ide.filter.Filter;
+import org.apache.sling.ide.io.SlingProject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by schaefa on 3/19/15.
+ * Created by Andreas Schaefer (Headwire.com) on 3/19/15.
  */
 //@State(
 //name = "SlingServerConfiguration",
@@ -59,6 +60,9 @@ public class ServerConfiguration
     public static final DefaultMode DEFAULT_MODE = DefaultMode.none;
     public static final ServerStatus DEFAULT_SERVER_STATUS = ServerStatus.notConnected;
     public static final SynchronizationStatus DEFAULT_SERVER_SYNCHRONIZATION_STATUS = SynchronizationStatus.notChecked;
+    public static final boolean DEFAULT_BUILD_WITH_MAVEN = true;
+    @Deprecated //AS TODO: Remove later as soon as the Cancel Build Action is implemented
+    public static final int DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS = 0;
     public static final LogFilter DEFAULT_LOG_FILTER = LogFilter.error;
 
     protected static final String COMPONENT_NAME = "ServerConfiguration";
@@ -137,7 +141,9 @@ public class ServerConfiguration
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
     private InstallationType installationType = DEFAULT_INSTALL_TYPE;
     private DefaultMode defaultMode = DEFAULT_MODE;
-    private boolean buildWithMaven = true;
+    private boolean buildWithMaven = DEFAULT_BUILD_WITH_MAVEN;
+    @Deprecated //AS TODO: Remove later as soon as the Cancel Build Action is implemented
+    private int mavenBuildTimeoutInSeconds = DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS;
     private LogFilter logFilter = DEFAULT_LOG_FILTER;
 
     // Don't store Server Status as it is reset when the Configuration is loaded again
@@ -166,6 +172,7 @@ public class ServerConfiguration
         description = source.description;
         defaultMode = source.defaultMode;
         buildWithMaven = source.buildWithMaven;
+        mavenBuildTimeoutInSeconds = source.mavenBuildTimeoutInSeconds;
         connectionPort = source.connectionPort;
         connectionDebugPort = source.connectionDebugPort;
         userName = source.userName;
@@ -192,6 +199,8 @@ public class ServerConfiguration
             ret = "server.configuration.invalid.port";
         } else if(connectionDebugPort <= 0 || connectionPort == connectionDebugPort) {
             ret = "server.configuration.invalid.debug.port";
+        } else if(mavenBuildTimeoutInSeconds < 0) {
+            ret = "server.configuration.invalid.maven.build.timeout";
         } else if(StringUtils.isBlank(userName)) {
             ret = "server.configuration.missing.user.name";
         } else if(StringUtils.isBlank(contextPath)) {
@@ -346,6 +355,16 @@ public class ServerConfiguration
         this.buildWithMaven = buildWithMaven;
     }
 
+    public int getMavenBuildTimeoutInSeconds() {
+        return mavenBuildTimeoutInSeconds;
+    }
+
+    public void setMavenBuildTimeoutInSeconds(int mavenBuildTimeoutInSeconds) {
+        this.mavenBuildTimeoutInSeconds = mavenBuildTimeoutInSeconds >= 0 ?
+            mavenBuildTimeoutInSeconds :
+            DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS;
+    }
+
     public boolean isBooted() {
         return booted;
     }
@@ -393,10 +412,10 @@ public class ServerConfiguration
         return ret;
     }
 
-    public Module addModule(Project project, ModuleProject moduleProject) {
+    public Module addModule(Project project, ModuleContext moduleContext) {
         Module ret = obtainModuleBySymbolicName(name);
         if(ret == null) {
-            ret = new Module(this, project, moduleProject);
+            ret = new Module(this, project, moduleContext);
             moduleList.add(ret);
         }
         return ret;
@@ -415,39 +434,47 @@ public class ServerConfiguration
         return ret;
     }
 
+    public void unBind() {
+        bound = false;
+        for(Module module: moduleList) {
+            module.unBind();
+        }
+    }
+
     public static class Module {
         private ServerConfiguration parent;
-        private String artifactId;
+//        private String artifactId;
         private String symbolicName;
         private boolean partOfBuild = true;
         private long lastModificationTimestamp;
         private transient Project project;
-        private transient ModuleProject moduleProject;
+        private transient SlingProject slingProject;
+        private transient ModuleContext moduleContext;
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
         private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
         private transient VirtualFile metaInfFolder;
         private transient VirtualFile filterFile;
         private transient Filter filter;
 
-        public Module(@NotNull ServerConfiguration parent, @NotNull String artifactId, @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
+        public Module(@NotNull ServerConfiguration parent, /* @NotNull String artifactId,*/ @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
             this.parent = parent;
-            this.artifactId = artifactId;
+//            this.artifactId = artifactId;
             this.symbolicName = symbolicName;
             setPartOfBuild(partOfBuild);
             this.lastModificationTimestamp = lastModificationTimestamp;
             this.configurationChangeListener = parent.configurationChangeListener;
         }
 
-        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull ModuleProject moduleProject) {
+        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull ModuleContext moduleContext) {
             this.parent = parent;
-            this.artifactId = moduleProject.getArtifactId();
-            this.symbolicName = getSymbolicName(moduleProject);
+//            this.artifactId = moduleContext.getArtifactId();
+            this.symbolicName = getSymbolicName(moduleContext);
             this.configurationChangeListener = parent.configurationChangeListener;
-            rebind(project, moduleProject);
+            rebind(project, moduleContext);
         }
 
-        public static String getSymbolicName(ModuleProject project) {
-            return project.getGroupId() + "." + project.getArtifactId();
+        public static String getSymbolicName(ModuleContext project) {
+            return project.getSymbolicName();
         }
 
         public boolean isPartOfBuild() {
@@ -477,7 +504,7 @@ public class ServerConfiguration
         }
 
         public String getName() {
-            return project == null ? "No Project" : moduleProject.getName();
+            return project == null ? "No Project" : moduleContext.getName();
         }
 
         public long getLastModificationTimestamp() {
@@ -490,20 +517,20 @@ public class ServerConfiguration
             }
         }
 
-        public String getArtifactId() {
-            return artifactId;
-        }
-
         public String getVersion() {
-            return project == null ? "No Project" : moduleProject.getVersion();
+            return project == null ? "No Project" : moduleContext.getVersion();
         }
 
         public Project getProject() {
             return project;
         }
 
-        public ModuleProject getModuleProject() {
-            return moduleProject;
+        public SlingProject getSlingProject() {
+            return slingProject;
+        }
+
+        public ModuleContext getModuleContext() {
+            return moduleContext;
         }
 
         public SynchronizationStatus getStatus() {
@@ -535,33 +562,45 @@ public class ServerConfiguration
         }
 
         public boolean isOSGiBundle() {
-            return project != null && moduleProject.isOSGiBundle();
+            return project != null && moduleContext.isOSGiBundle();
         }
 
         public boolean isSlingPackage() {
-            return project != null && moduleProject.isContent();
+            return project != null && moduleContext.isContent();
         }
 
         public boolean isBound() {
-            return moduleProject != null;
+            return moduleContext != null;
         }
 
-        public boolean rebind(@NotNull Project project, @NotNull ModuleProject moduleProject) {
+        public void unBind() {
+            moduleContext = null;
+        }
+
+        public boolean rebind(@NotNull Project project, @NotNull ModuleContext moduleContext) {
             boolean ret = false;
             parent.bound = true;
             // Check if the Symbolic Name match
-            String symbolicName = getSymbolicName(moduleProject);
+            String symbolicName = getSymbolicName(moduleContext);
             if(this.symbolicName.equals(symbolicName)) {
                 this.project = project;
-                this.moduleProject = moduleProject;
-                this.artifactId = moduleProject.getArtifactId();
+                this.moduleContext = moduleContext;
+//                this.artifactId = moduleContext.getArtifactId();
                 if(!isOSGiBundle() && !isSlingPackage()) {
                     setStatus(SynchronizationStatus.unsupported);
                 } else {
                     setStatus(SynchronizationStatus.notChecked);
                 }
                 if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
+                this.slingProject = new SlingProject4IntelliJ(this);
                 ret = true;
+            }
+            String metaInfPath = moduleContext.getMetaInfPath();
+            if(metaInfPath != null) {
+                VirtualFile metaInfFolder = project.getBaseDir().getFileSystem().findFileByPath(metaInfPath);
+                if(metaInfFolder != null) {
+                    setMetaInfFolder(metaInfFolder);
+                }
             }
             return ret;
         }
@@ -576,7 +615,7 @@ public class ServerConfiguration
         @Override
         public String toString() {
             return "Module: " +
-                "artifactId = '" + artifactId + '\'' +
+                "symbolic name = '" + symbolicName + '\'' +
                 ", last modification timestamp = " + lastModificationTimestamp +
                 ", part of build = " + partOfBuild +
                 "";

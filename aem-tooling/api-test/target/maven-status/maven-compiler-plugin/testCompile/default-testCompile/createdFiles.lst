@@ -1,7 +1,0 @@
-org/apache/sling/ide/transport/FallbackNodeTypeRegistryTest.class
-org/apache/sling/ide/serialization/NodeTypeResourceBuilder.class
-org/apache/sling/ide/transport/ResourceProxyTest.class
-org/apache/sling/ide/util/PathUtilTest.class
-org/apache/sling/ide/serialization/SerializationKindManagerTest.class
-org/apache/sling/ide/serialization/StubRepository.class
-org/apache/sling/ide/filter/IgnoredResourcesTest.class

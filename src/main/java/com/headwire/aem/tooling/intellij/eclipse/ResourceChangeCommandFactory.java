@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -42,6 +41,7 @@ import org.apache.sling.ide.serialization.SerializationKind;
 import org.apache.sling.ide.serialization.SerializationKindManager;
 import org.apache.sling.ide.serialization.SerializationManager;
 import org.apache.sling.ide.transport.Command;
+import org.apache.sling.ide.transport.CommandContext;
 import org.apache.sling.ide.transport.FileInfo;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.RepositoryException;
@@ -67,7 +67,9 @@ import static com.headwire.aem.tooling.intellij.util.Constants.CONTENT_FILE_NAME
  * The <tt>ResourceChangeCommandFactory</tt> creates new {@link # Command commands} correspoding to resource addition,
  * change, or removal
  *
+ * @deprecated This class was reactivated as it is still used for Import
  */
+@Deprecated
 public class ResourceChangeCommandFactory {
 
     private final Set<String> ignoredFileNames = new HashSet<String>();
@@ -100,12 +102,15 @@ public class ResourceChangeCommandFactory {
             return null;
         }
 
+        Filter filter = ProjectUtil.loadFilter(resource.getModule());
+        CommandContext context = new CommandContext(filter);
+
         if (rai.isOnlyWhenMissing()) {
-            return repository.newAddOrUpdateNodeCommand(rai.getInfo(), rai.getResource(),
+            return repository.newAddOrUpdateNodeCommand(context, rai.getInfo(), rai.getResource(),
                 Repository.CommandExecutionFlag.CREATE_ONLY_WHEN_MISSING);
         }
 
-        return repository.newAddOrUpdateNodeCommand(rai.getInfo(), rai.getResource());
+        return repository.newAddOrUpdateNodeCommand(context, rai.getInfo(), rai.getResource());
     }
 
     /**
@@ -167,7 +172,7 @@ public class ResourceChangeCommandFactory {
         //AS NOTE: We cannot allow to have the filter file to be empty otherwise it is possible to delete protected
         //AS NOTE: nodes like /etc/clientlibs.
         if(filter == null) {
-            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
+            MessageManager messageManager = module.getProject().getComponent(MessageManager.class);
             messageManager.showAlertWithArguments("server.configuration.filter.file.not.found", module.getName());
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
         }
@@ -311,8 +316,7 @@ public class ResourceChangeCommandFactory {
         String repositoryPath = resourceProxy != null ? resourceProxy.getPath() : getRepositoryPathForDeletedResource(
             resource, contentSyncRoot);
 
-        FilterResult filterResult = filter.filter(ProjectUtil.getSyncDirectoryFile(resource.getProject()),
-            repositoryPath);
+        FilterResult filterResult = filter.filter(ProjectUtil.getSyncDirectoryFile(resource.getProject()).getPath());
 
         Activator.getDefault().getPluginLogger().trace("Filter result for {0} for {1}", repositoryPath, filterResult);
 
@@ -614,7 +618,7 @@ public class ResourceChangeCommandFactory {
         Filter filter = ProjectUtil.loadFilter(module);
         // Verify the Filter File
         if(filter == null) {
-            MessageManager messageManager = ServiceManager.getService(module.getProject(), MessageManager.class);
+            MessageManager messageManager = module.getProject().getComponent(MessageManager.class);
             messageManager.showAlert("server.configuration.filter.file.not.found", module.getName());
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
         }
@@ -641,7 +645,8 @@ public class ResourceChangeCommandFactory {
                 .trace("Found covering resource data ( repository path = {0} ) for resource at {1},  skipping deletion and performing an update instead",
                     coveringParentData.getPath(), resource.getFullPath());
             FileInfo info = createFileInfo(resource);
-            return repository.newAddOrUpdateNodeCommand(info, coveringParentData);
+            CommandContext context = new CommandContext(filter);
+            return repository.newAddOrUpdateNodeCommand(context, info, coveringParentData);
         }
 
         return repository.newDeleteNodeCommand(serializationManager.getRepositoryPath(resourceLocation));

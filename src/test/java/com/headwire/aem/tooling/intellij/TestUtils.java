@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 /**
- * Created by schaefa on 8/24/15.
+ * Created by Andreas Schaefer (Headwire.com) on 8/24/15.
  */
 public class TestUtils {
 

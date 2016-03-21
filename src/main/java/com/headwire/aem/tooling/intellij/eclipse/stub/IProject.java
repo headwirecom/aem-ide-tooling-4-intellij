@@ -1,24 +1,24 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
@@ -33,8 +33,9 @@ import java.util.List;
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 
 /**
- * Created by schaefa on 5/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/13/15.
  */
+@Deprecated
 public class IProject {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -48,8 +49,8 @@ public class IProject {
     }
 
     public IFolder getFolder(IPath path) {
-        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = com.intellij.openapi.components.ServiceManager.getService(
-            project, com.headwire.aem.tooling.intellij.communication.MessageManager.class
+        com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = ComponentProvider.getComponent(project,
+            com.headwire.aem.tooling.intellij.communication.MessageManager.class
         );
         messageManager.sendDebugNotification("Given Path: '" + path + "'");
 
@@ -66,7 +67,7 @@ public class IProject {
 
     public List<String> getSourceFolderList() {
         List<String> ret = new ArrayList<String>();
-        for(String path: module.getModuleProject().getContentDirectoryPaths()) {
+        for(String path: module.getModuleContext().getContentDirectoryPaths()) {
             ret.add(path);
         }
         return ret;

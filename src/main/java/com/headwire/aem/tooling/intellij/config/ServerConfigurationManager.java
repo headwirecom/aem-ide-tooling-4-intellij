@@ -1,26 +1,28 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.config;
 
+import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
+import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
@@ -46,7 +48,7 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Defau
  * The Server Configuration Manager responsible for Loading & Saving the Server Configurations into the Workspace File
  * inside the IDEA folder (.idea/workspace.xml) and to provide the configurations to the plugin.
  *
- * Created by schaefa on 3/19/15.
+ * Created by Andreas Schaefer (Headwire.com) on 3/19/15.
  */
 @State(
     name = ServerConfiguration.COMPONENT_NAME,
@@ -77,14 +79,34 @@ public class ServerConfigurationManager
     public static final String DEFAULT = "default";
     public static final String DEFAULT_CONFIGURATION = "defaultConfiguration";
     public static final String BUILD_WITH_MAVEN = "buildWithMaven";
+    @Deprecated
+    public static final String BUILD_WITH_MAVEN_TIMEOUT_IN_SECONDS = "buildWithMavenTimeoutInSecond";
     public static final String ARTIFACT_ID = "artifactId";
     public static final String SYMBOLIC_NAME = "symbolicName";
     public static final String PART_OF_BUILD = "partOfBuild";
     public static final String LAST_MODIFICATION_TIMESTAMP = "lastModificationTimestamp";
 
     private MessageManager messageManager;
+    private ServerConnectionManager serverConnectionManager;
     private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
     private List<ServerConfiguration> serverConfigurationList = new ArrayList<ServerConfiguration>();
+
+    public boolean updateCurrentServerConfiguration() {
+        boolean ret = false;
+        if(serverConnectionManager == null) {
+            serverConnectionManager = ComponentProvider.getComponent(myProject, ServerConnectionManager.class);
+        }
+        if(serverConnectionManager != null) {
+            // A Server Connection may or may not be connected so the only way to ensure a proper update is to update them all
+            for(ServerConfiguration serverConfiguration: serverConfigurationList) {
+                // Clear any bindings
+                serverConfiguration.unBind();
+                serverConnectionManager.bindModules(serverConfiguration, new ProgressHandlerImpl("Update Current Server Configuration"));
+            }
+            ret = true;
+        }
+        return ret;
+    }
 
     public class ConfigurationChangeListener {
         public void configurationChanged() {
@@ -100,7 +122,7 @@ public class ServerConfigurationManager
 
     public ServerConfigurationManager(final Project project) {
         super(project);
-        messageManager = ServiceManager.getService(project, MessageManager.class);
+        messageManager = ComponentProvider.getComponent(project, MessageManager.class);
     }
 
     public ServerConfiguration[] getServerConfigurations() {
@@ -232,11 +254,12 @@ public class ServerConfigurationManager
             childNode.setAttribute(INSTALLATION_TYPE, serverConfiguration.getInstallationType() + "");
             childNode.setAttribute(DEFAULT_CONFIGURATION, serverConfiguration.getDefaultMode() + "");
             childNode.setAttribute(BUILD_WITH_MAVEN, serverConfiguration.isBuildWithMaven() + "");
+            childNode.setAttribute(BUILD_WITH_MAVEN_TIMEOUT_IN_SECONDS, serverConfiguration.getMavenBuildTimeoutInSeconds() + "");
             childNode.setAttribute(LOG_FILTER, serverConfiguration.getLogFilter() + "");
             int j = 0;
             for(ServerConfiguration.Module module: serverConfiguration.getModuleList()) {
                 Element moduleChildNode = new Element("sscm-" + j++);
-                moduleChildNode.setAttribute(ARTIFACT_ID, module.getArtifactId());
+//                moduleChildNode.setAttribute(ARTIFACT_ID, module.getArtifactId());
                 moduleChildNode.setAttribute(SYMBOLIC_NAME, module.getSymbolicName());
                 moduleChildNode.setAttribute(PART_OF_BUILD, module.isPartOfBuild() + "");
                 moduleChildNode.setAttribute(LAST_MODIFICATION_TIMESTAMP, module.getLastModificationTimestamp() + "");
@@ -288,14 +311,15 @@ public class ServerConfigurationManager
             }
             serverConfiguration.setDefaultMode(defaultMode);
             serverConfiguration.setBuildWithMaven(new Boolean(child.getAttributeValue(BUILD_WITH_MAVEN, "true")));
+            serverConfiguration.setMavenBuildTimeoutInSeconds(new Integer(child.getAttributeValue(BUILD_WITH_MAVEN_TIMEOUT_IN_SECONDS, ServerConfiguration.DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS + "")));
             serverConfiguration.setLogFilter(Util.convertToEnum(child.getAttributeValue(LOG_FILTER), ServerConfiguration.DEFAULT_LOG_FILTER));
             for(Element element: child.getChildren()) {
                 try {
-                    String artifactId = element.getAttributeValue(ARTIFACT_ID, "No Artifact Id");
+//                    String artifactId = element.getAttributeValue(ARTIFACT_ID, "No Artifact Id");
                     String symbolicName = element.getAttributeValue(SYMBOLIC_NAME, "");
                     boolean isPartOfBuild = new Boolean(element.getAttributeValue(PART_OF_BUILD, "true"));
                     long lastModificationTimestamp = new Long(element.getAttributeValue(LAST_MODIFICATION_TIMESTAMP, "-1"));
-                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, artifactId, symbolicName, isPartOfBuild, lastModificationTimestamp);
+                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, symbolicName, isPartOfBuild, lastModificationTimestamp);
                     serverConfiguration.addModule(module);
                 } catch(Exception e) {
                     // Ignore any exceptions to avoid a stall configurations

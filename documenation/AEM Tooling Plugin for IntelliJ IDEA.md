@@ -1,21 +1,21 @@
 ###AEM Tooling Plugin for IntelliJ IDEA
 
-####Introduction
+####1. Introduction
 
 This is a plugin for IntelliJ IDEA version 14 and up that enables the user to develop, deploy and debug applications on a remote Sling or AEM Server. It is modeled after the Eclipse plugin but works slightly different due to the different philosophy behind IntelliJ IDEA.
 
-#### Prerequisites
+#### 2. Prerequisites
 
 This Plugin has a few requirements that must be met in order to work. Many of these requirements are coming from the Eclipse plugin and some are based on IntelliJ:
 
-1. The Project must be based on **Maven**
+1. The Project must be based on **Maven** or use the **Osmorc** plugin to define the OSGi modules through OSGi Facets and Sling Content Facet to define Content and META-INFO folder 
 2. Content Modules must be a **Content Package**
 3. Java Modules must be a **OSGi Bundle**
 4. Content Modules must provide a **Filter** (filter.xml) and a **jcr_root** folder
 5. OSGi Bundles must be built with Maven (within or outside of the Plugin) before they can be deployed.
 6. Parent Folders outside the filter.xml filters must either have a content configuration file (.content.xml) or must already exist on the server.
 
-#### Installation
+#### 3. Installation
 
 The plugin is distributed as ZIP file and can be installed into IntelliJ quite easily. These are the steps to do so:
 
@@ -35,7 +35,12 @@ The plugin is distributed as ZIP file and can be installed into IntelliJ quite e
 
 ![IntelliJ with installed AEM Tooling Plugin](./img/1.3.IntelliJ.Preferences.Review.Plugin.png)
 
-This concludes the initial setup for any project that do **not** have any OSGi services with **annotations**. In order to support the OSGi Annotations this external plugin must be installed as well:
+This concludes the initial setup for any project that does **not** have any OSGi services with **annotations**.
+
+#### 3.1. Maven OSGi Bundle Annotation Support
+
+In order to support the OSGi Annotations this external plugin must be installed as well (the reason is that the
+Maven OSGi Bundle plugin will create bind / unbind methods based on the annotations):
 
 1) Open the IntelliJ Preferences again, go to Plugins 
 
@@ -53,9 +58,12 @@ This concludes the initial setup for any project that do **not** have any OSGi s
 
 ![Accept the Restart of IntelliJ](./img/1.7.IntelliJ.Felix.Plugin.Accept.Restart.png)
 
-The **Felix OSGi Annotation Processor** is hooking into the compilation process and at the end of it it will handle the **Annotation**similar to what the Maven OSGi Bundle plugin does. So when the compilation concludes the created class has the additional methods defined like **bind...()** and **unbind...()**.
+The **Felix OSGi Annotation Processor** is hooking into the compilation process and at the end of it it will handle the
+**Annotation**similar to what the Maven OSGi Bundle plugin does. So when the compilation concludes the created class has
+the additional methods defined like **bind...()** and **unbind...()**. This is especially important to support the
+**Hot Swap** feature (runtime updated of Java code during debugging).
 
-#### Project Setup
+#### 4. Project Setup
 
 **Attention**: this plugin can only work with a **Maven** based project as it requires some information that are otherwise not attainable. 
 
@@ -341,6 +349,25 @@ Much of the Content cannot be created manually without having an existing struct
 3) Let the import run through
 
 Now verify the import and add the changes to your Version Control System (VCS).
+
+#### AEM Console
+
+The plugin features its own notification console which will only show notifications from the plugin. It is more or less a copy of the Event Log that comes standard with IntelliJ. There is one
+key difference and that is the configuration of it. Instead of the selection what component it logs it provides a list of log levels. The AEM Console can show errors, warnings, info and debug levels
+which include all the previous levels.
+
+![AEM Console Settings Dialog](./img/9.1.AEM.Console.Settings.png)
+
+**Note**: By default IntelliJ will show balloons for the messages which can be overwhelming if the log level is info or debug. In case you want to switch off the balloon messages then make sure that the
+          background of the ballon is not highlighted.
+
+###### AEM Console Balloon Message On:
+
+![AEM Console Ballon Message On](./img/9.2.AEM.Console.Toolbar.Balloon.On.png)
+
+###### AEM Console Balloon Message Off:
+
+![AEM Console Ballon Message Of](./img/9.3.AEM.Console.Toolbar.Balloon.Off.png)
 
 #### Troubleshooting
 

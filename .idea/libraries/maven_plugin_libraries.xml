@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="maven-plugin-libraries">
+    <CLASSES>
+      <root url="jar:///Applications/IntelliJ IDEA CE.app/Contents/plugins/maven/lib/maven.jar!/" />
+      <root url="jar:///Applications/IntelliJ IDEA CE.app/Contents/plugins/maven/lib/maven-server-api.jar!/" />
+      <root url="jar:///Applications/IntelliJ IDEA CE.app/Contents/plugins/maven/lib/maven3-server-lib/archetype-common-2.2.jar!/" />
+      <root url="file://$PROJECT_DIR$" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/src/eclipse-fix/java" />
+      <root url="file://$PROJECT_DIR$/src/main/java" />
+      <root url="file://$PROJECT_DIR$/src/test/java" />
+    </SOURCES>
+  </library>
+</component>

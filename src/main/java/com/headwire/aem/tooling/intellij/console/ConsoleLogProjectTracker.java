@@ -1,33 +1,32 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.console;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.notification.NotificationsAdapter;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.DumbAwareRunnable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
@@ -45,7 +44,7 @@ import static com.headwire.aem.tooling.intellij.console.ConsoleLog.DEFAULT_CATEG
 import static com.headwire.aem.tooling.intellij.console.ConsoleLog.LOG_REQUESTOR;
 
 /**
- * Created by schaefa on 7/3/15.
+ * Created by Andreas Schaefer (Headwire.com) on 7/3/15.
  */
 public class ConsoleLogProjectTracker
     extends AbstractProjectComponent
@@ -84,10 +83,6 @@ public class ConsoleLogProjectTracker
         return myProjectModel;
     }
 
-    //        @Override
-//        public void projectOpened() {
-//        }
-//
     @Override
     public void projectClosed() {
         ConsoleLog.getApplicationComponent().getModel().setStatusMessage(null, 0);
@@ -95,7 +90,7 @@ public class ConsoleLogProjectTracker
     }
 
     protected void printNotification(Notification notification) {
-        ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, ServerTreeSelectionHandler.class);
+        SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
         if(selectionHandler != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
@@ -119,9 +114,6 @@ public class ConsoleLogProjectTracker
                     }
             }
         }
-//            if(!NotificationsConfigurationImpl.getSettings(notification.getGroupId()).isShouldLog()) {
-//                return;
-//            }
         myProjectModel.addNotification(notification);
 
         ConsoleLogConsole console = getConsole(notification);
@@ -162,9 +154,6 @@ public class ConsoleLogProjectTracker
     private ConsoleLogConsole createNewContent(String name) {
         ApplicationManager.getApplication().assertIsDispatchThread();
         ConsoleLogConsole newConsole = new ConsoleLogConsole(myProjectModel);
-//AS This does the same thing as the line commented out below
-//AS TODO: This creates an endless loop
-//            getProjectComponent(myProject).initDefaultContent();
         ConsoleLogToolWindowFactory.createContent(myProject, ConsoleLog.getLogWindow(myProject), newConsole, name);
         myCategoryMap.put(name, newConsole);
 

@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -56,6 +55,8 @@ public class ServerConfigurationDialog
     private JCheckBox buildWithMaven;
     private JCheckBox defaultDebugConfiguration;
     private JCheckBox defaultRunConfiguration;
+    @Deprecated //AS TODO: Remove later as soon as the Cancel Build Action is implemented
+    private JTextField mavenBuildTimeoutInSeconds;
 
     private ServerConfiguration serverConfiguration;
 
@@ -113,6 +114,7 @@ public class ServerConfigurationDialog
         }
         ret.setDefaultMode(defaultMode);
         ret.setBuildWithMaven(buildWithMaven.isSelected());
+        ret.setMavenBuildTimeoutInSeconds(UIUtil.obtainInteger(mavenBuildTimeoutInSeconds, ServerConfiguration.DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS));
         ret.setConnectionPort(UIUtil.obtainInteger(connectionPort, 0));
         ret.setConnectionDebugPort(UIUtil.obtainInteger(connectionDebugPort, 0));
         ret.setUserName(connectionUserName.getText());
@@ -158,6 +160,7 @@ public class ServerConfigurationDialog
                     break;
             }
             buildWithMaven.setSelected(serverConfiguration.isBuildWithMaven());
+            mavenBuildTimeoutInSeconds.setText(serverConfiguration.getMavenBuildTimeoutInSeconds() + "");
             connectionPort.setText(serverConfiguration.getConnectionPort() + "");
             connectionDebugPort.setText(serverConfiguration.getConnectionDebugPort() + "");
             connectionUserName.setText(serverConfiguration.getUserName());

@@ -28,7 +28,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by schaefa on 10/15/15.
+ * Created by Andreas Schaefer (Headwire.com) on 10/15/15.
  */
 public class UtilTest {
 

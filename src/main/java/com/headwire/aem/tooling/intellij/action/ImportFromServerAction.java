@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -27,12 +26,13 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IPath;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
-import com.headwire.aem.tooling.intellij.explorer.ServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
@@ -45,14 +45,14 @@ import java.util.List;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
- * Created by schaefa on 6/18/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/18/15.
  */
 public class ImportFromServerAction extends AbstractProjectAction {
 
     @Override
     public boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         boolean ret = false;
-        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         if(serverConnectionManager.isConfigurationSelected()) {
             // Now check if a file is selected
             VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
@@ -68,7 +68,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
         if(virtualFiles != null) {
             switch(virtualFiles.length) {
@@ -84,14 +84,14 @@ public class ImportFromServerAction extends AbstractProjectAction {
         }
     }
 
-    private void doImport(Project project, final VirtualFile file) {
-        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
-        final ServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, ServerTreeSelectionHandler.class);
+    private void doImport(final Project project, final VirtualFile file) {
+        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        final SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
         if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
             return;
         }
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-        serverConnectionManager.checkBinding(serverConfiguration);
+        serverConnectionManager.checkBinding(serverConfiguration, new ProgressHandlerImpl("Do Import from Server"));
         List<ServerConfiguration.Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
         ServerConfiguration.Module currentModuleLookup = null;
         for(ServerConfiguration.Module module: moduleList) {
@@ -100,76 +100,51 @@ public class ImportFromServerAction extends AbstractProjectAction {
                 if(contentPath != null) {
                     // This file belongs to this module so we are good to publish it
                     currentModuleLookup = module;
-//                    basePath = mavenResource.getDirectory();
-//                    messageManager.sendDebugNotification("Found File: '" + path + "' in module: '" + currentModule.getName() + "");
                     break;
                 }
             }
         }
         if(currentModuleLookup != null) {
             final ServerConfiguration.Module currentModule = currentModuleLookup;
-//            final String title = AEMBundle.message("deploy.configuration.action.name");
-//
-//            ProgressManager.getInstance().
-//                new Task.Modal(project, title, false) {
-//                    @Nullable
-//                    public NotificationInfo getNotificationInfo() {
-//                        return new NotificationInfo("Sling", "Sling Deployment Checks", "");
-//                    }
-//
-//                    public void run(@NotNull final ProgressIndicator indicator) {
-//                        //AS TODO: Check if there is a new version of IntelliJ CE that would allow to use
-//                        //AS TODO: the ProgressAdapter.
-//                        //AS TODO: Or create another Interface / Wrapper to make it IDE independent
-//                        indicator.setIndeterminate(false);
-//                        indicator.pushState();
-                        ApplicationManager.getApplication().runWriteAction(
-                            new Runnable() {
-                                public void run() {
-                                    try {
-                                        final String description = AEMBundle.message("deploy.configuration.action.description");
-
-//                                        indicator.setText(description);
-//                                        indicator.setFraction(0.0);
-
-                                        IServer server = new IServer(currentModule.getParent());
-                                        String path = file.getPath();
-                                        String modulePath = currentModule.getModuleProject().getModuleDirectory();
-                                        String relativePath = path.substring(modulePath.length());
-                                        if(relativePath.startsWith("/")) {
-                                            relativePath = relativePath.substring(1);
-                                        }
-                                        IPath projectRelativePath = new IPath(relativePath);
-                                        IProject iProject = new IProject(currentModule);
-                                        SerializationManager serializationManager = ServiceManager.getService(SerializationManager.class);
-
-
-                                        try {
-                                            ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(
-                                                server,
-                                                projectRelativePath,
-                                                iProject,
-                                                serializationManager
-                                            );
-                                            importManager.doImport(new NullProgressMonitor());
-                                        } catch(InvocationTargetException e) {
-                                            e.printStackTrace();
-                                        } catch(InterruptedException e) {
-                                            e.printStackTrace();
-                                        } catch(SerializationException e) {
-                                            e.printStackTrace();
-                                        } catch(CoreException e) {
-                                            e.printStackTrace();
-                                        }
-                                    } finally {
-//                                        indicator.popState();
-                                    }
+                ApplicationManager.getApplication().runWriteAction(
+                    new Runnable() {
+                        public void run() {
+                            try {
+                                final String description = AEMBundle.message("deploy.configuration.action.description");
+                                IServer server = new IServer(currentModule.getParent());
+                                String path = file.getPath();
+                                String modulePath = currentModule.getModuleContext().getModuleDirectory();
+                                String relativePath = path.substring(modulePath.length());
+                                if(relativePath.startsWith("/")) {
+                                    relativePath = relativePath.substring(1);
                                 }
+                                IPath projectRelativePath = new IPath(relativePath);
+                                IProject iProject = new IProject(currentModule);
+                                SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
+
+
+                                try {
+                                    ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(
+                                        server,
+                                        projectRelativePath,
+                                        iProject,
+                                        serializationManager
+                                    );
+                                    importManager.doImport(new NullProgressMonitor());
+                                } catch(InvocationTargetException e) {
+                                    e.printStackTrace();
+                                } catch(InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch(SerializationException e) {
+                                    e.printStackTrace();
+                                } catch(CoreException e) {
+                                    e.printStackTrace();
+                                }
+                            } finally {
                             }
-                        );
-//                    }
-//                }
-//            );
+                        }
+                    }
+                );
         }
     }
 }

@@ -1,25 +1,24 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.eclipse;
 
-import com.headwire.aem.tooling.intellij.config.ModuleProject;
+import com.headwire.aem.tooling.intellij.config.ModuleContext;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
@@ -47,8 +46,9 @@ import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE
 //import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_PATH_INDICATOR;
 
 /**
- * Created by schaefa on 5/13/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/13/15.
  */
+@Deprecated
 public class ProjectUtil {
 
     public static IPath getSyncDirectoryFullPath(IProject project) {
@@ -90,6 +90,7 @@ public class ProjectUtil {
         if(filter != null) {
             if(Util.isOutdated(module.getFilterFile())) {
                 filter = null;
+                filterFile = null;
             }
         }
         if(filterFile == null) {
@@ -97,8 +98,8 @@ public class ProjectUtil {
             VirtualFile metaInfFolder = module.getMetaInfFolder();
             if(metaInfFolder == null) {
                 // Now go through the Maven Resource folder and check
-                ModuleProject moduleProject = module.getModuleProject();
-                for(String contentPath: moduleProject.getContentDirectoryPaths()) {
+                ModuleContext moduleContext = module.getModuleContext();
+                for(String contentPath: moduleContext.getContentDirectoryPaths()) {
                     if(contentPath.endsWith("/" + META_INF_FOLDER_NAME)) {
                         metaInfFolder = module.getProject().getBaseDir().getFileSystem().findFileByPath(contentPath);
                         module.setMetaInfFolder(metaInfFolder);
@@ -107,8 +108,8 @@ public class ProjectUtil {
             }
             if(metaInfFolder == null) {
                 // Lastly we check if we can find the folder somewhere in the maven project file system
-                ModuleProject moduleProject = module.getModuleProject();
-                VirtualFile test = module.getProject().getBaseDir().getFileSystem().findFileByPath(moduleProject.getModuleDirectory());
+                ModuleContext moduleContext = module.getModuleContext();
+                VirtualFile test = module.getProject().getBaseDir().getFileSystem().findFileByPath(moduleContext.getModuleDirectory());
                 metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
                 module.setMetaInfFolder(metaInfFolder);
             }
@@ -116,8 +117,10 @@ public class ProjectUtil {
                 // Found META-INF folder
                 // Find filter.xml file
                 filterFile = findFileOrFolder(metaInfFolder, VAULT_FILTER_FILE_NAME, false);
-                module.setFilterFile(filterFile);
-                Util.setModificationStamp(filterFile);
+                if(filterFile != null) {
+                    module.setFilterFile(filterFile);
+                    Util.setModificationStamp(filterFile);
+                }
             }
         }
         if(filter == null && filterFile != null) {
@@ -140,7 +143,8 @@ public class ProjectUtil {
         return filter;
     }
 
-    private static VirtualFile findFileOrFolder(VirtualFile rootFile, String name, boolean isFolder) {
+    //AS TODO: This should be move to a better place
+    public static VirtualFile findFileOrFolder(VirtualFile rootFile, String name, boolean isFolder) {
         VirtualFile ret = null;
         for(VirtualFile child: rootFile.getChildren()) {
             if(child.isDirectory()) {
