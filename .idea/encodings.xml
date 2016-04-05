@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$PROJECT_DIR$/aem-tooling/api" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/aem-tooling/api-test" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/aem-tooling/artifacts" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/aem-tooling/impl-resource" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/aem-tooling/impl-resource-test" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/aem-tooling/impl-vlt" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/aem-tooling/impl-vlt-test" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogCategory.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceAndInfo.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeBuilder.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerExplorerTreeStructure.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/ServerNodeDescriptor.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerModuleNodeDescriptor.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerNodeDescriptor.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.form" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.form" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources/images/sling.gif" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/api" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

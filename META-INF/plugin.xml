@@ -102,7 +102,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder"/>
-        <toolWindow id="AEM (0.6.9)" anchor="right" icon="/images/hw.png"
+        <toolWindow id="AEM (0.6.4.9)" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
@@ -269,7 +269,7 @@
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM (0.6.9)"
+               text="AEM (0.6.4.9)"
                popup="true"
                icon="/images/hw.png"
         >
