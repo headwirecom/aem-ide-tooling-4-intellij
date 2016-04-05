@@ -38,6 +38,11 @@ public class StartDebugConnectionAction
     }
 
     @Override
+    protected boolean isAsynchronous() {
+        return false;
+    }
+
+    @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         ServerConnectionManager connectionManager = getConnectionManager(project);
         if(connectionManager != null) {

@@ -56,7 +56,7 @@
         </constraints>
         <properties>
           <text value="Excluded"/>
-          <toolTipText value="A module that is not deployed to Sling"/>
+          <toolTipText value="This facet is marked as Disabled."/>
         </properties>
       </component>
       <component id="3ba87" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="metaInfPath">

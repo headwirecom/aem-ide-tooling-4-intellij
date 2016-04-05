@@ -25,7 +25,7 @@ import com.intellij.util.xmlb.annotations.Tag;
  */
 public class SlingModuleExtensionProperties {
 
-  public enum ModuleType { content, bundle, excluded };
+  public enum ModuleType { content, bundle, excluded};
 
   @Tag("source-root-path")
   public String sourceRootPath = "";

@@ -67,13 +67,13 @@ the additional methods defined like **bind...()** and **unbind...()**. This is e
 
 This plugin works both with **Maven** or with a plain IntelliJ project as long as OSGi Modules **Jar** files are created correctly. **Maven** for sure it the easiest way to handle a Sling / AEM project but that is not required anymore.
 
-**Attention**: IntelliJ has no way to generate a ZIP file based on resources so to create an Sling Package. It will deploy the content but **not create** a package. 
+**Attention**: IntelliJ has no way to generate a ZIP file based on resources so to create an Sling Package. It will deploy the content but does **not create** a package. 
 
 **Note**: there is a checkbox called **Load By Default** below the Connection name and description. If one is selected then the plugin will do the **Connect in Run or Debug Mode** right when IntelliJ is started to that user can start working on that project right away. Keep in mind that the **Sling or AEM Server** must be started at that time otherwise the connection will fail and must be executed manually later. 
 
 To deploy and debug the remote AEM server the plugin needs to know which sever to connect to, user and password etc. For that the user needs to create at least one **Server Configuration**. It is possible to have multiple server configurations and to deploy to each of them separately even though only one at a given time.
 
-**Note**: keep in mind that Server Configurations are **per Project** and Server Configurations must be created for new Projects. 
+**Note**: keep in mind that Server Configurations are **per Project** and Server Configurations must be created for each Projects independently. 
 
 A Server Configuration is created by clicking on the plus (+) icon. After the creation the Server Configuration can be edited by the edit icon (3rd from the left). Configuration are only created / stored when the configuration is valid and finished by clicking on the **Ok** button. Otherwise the changes are discarded. So here we go:
 
@@ -120,18 +120,32 @@ A Server Configuration is created by clicking on the plus (+) icon. After the cr
 
 In order to prevent issues the Plugin has a Verification action that can be used to make sure the Project is compatible with the Plugin prerequisites. Press the Verification Icon and the system will go through the modules and check if they pass the requirements. If there is an issue an alert will be shown indicating the problem and the module in question is marked as **failed**.
 
+![Verify the currently selected Server](./img/2.4.0.Plugin.Verify.Server.Configuration.png)
+
 ##### Purge Local Plugin Data Cache
 
 In order to speed up deployment the plugin keeps the last modification timestamp stored locally both in memory as well as on the file system. With that any file that has **not changed** since the last deployment is not deploy again. 
+
+![Purge Cache](./img/2.5.0.Plugin.Purge.Cache.Server.Configuration.png)
 
 **Attention**: the plugin data cache is **per project and server**. So if a server connection changes or server changes it is necessary to purge the cache to update the server correctly.
 
 With the **Purge Local Plugin Data Cache** the user can wipe these cached modification timestamps and make sure the project is deployed from scratch. This is especially important if the project is deployed onto multiple servers.  
 Another way to accomplish a full deployment without dropping the cached modification timestamps is to use **force deploy**. Keep in mind though that the **Purge** is clearing of all cached timestamps whereas the **Forced Deploy** is only temporary ignoring them.
 
+##### Edit Build Configuration
+
+Some modules might not be part of an AEM / Sling Deployment and to avoid unnecessary build and deployment modules can be excluded from the build.
+
+![Build Configuration](./img/2.6.0.Plugin.Build.Configuration.Server.Configuration.png)
+
+The dialog shows all included modules on the **right** and the excluded modules on the **left**. Move modules to the right to exclude them and to the left to include them back into the build:
+
+![Build Configuration Dialog](./img/2.6.1.Plugin.Build.Configuration.Dialog.Server.Configuration.png)
+
 ##### Global Plugin Configuration
 
-The AEM Plugin has a single property that can be configured. Opening the IntelliJ Preferences and go to the **Other Settings** and you can enable / disable the **incremental builds**. This setting will enable or disable the automatic compilation while saving a Java class file similar to Eclipse.  
+The AEM Plugin has two properties that can be configured. Opening the IntelliJ Preferences and go to the **Tools** and you can enable / disable the **incremental builds**. This setting will enable or disable the automatic compilation while saving a Java class file similar to Eclipse.  
 
 The **Deploy Delay** is a property that if set to a positive number will delay automatic deployments and queue them up. So if you change a file and have a Delay of 30 seconds then any other changed files will queue up until the 30s are over. Keep in mind that the system will queue up changes if the deployment takes some time as it is executed in the background.
 
@@ -141,18 +155,24 @@ The **Deploy Delay** is a property that if set to a positive number will delay a
 
 **Attention**: in order to work on a Server Configuration you need to have one selected and this one is then use to connect to. Beside the Debug Connection which is established a physical socket connection all actions are executed against the current selected configuration aka server on a temporary connection. That said in order to prevent accidental deployment to different servers if there is a connection to a  server then you can only work against this server. You have to **stop that connection** in order to work with another server. Starting the connection is Run Mode is just making sure that for the time the Run Mode is established any work will be done against that and only that server.
 
-**Note**: Selecting the Server Configuration or the Module is the same in this context. 
+**Note**: Selecting the Server Configuration or a Module of it is the same in this context. 
 
 Running against the currently selected AEM Server is creating or updating the project module in the server configuration, checking if the Support Bundle is installed and see if the current resources are update to date or out of date.
 If a Server Connection is marked as **default** then this will be happening automatically when the plugin is opened for the first time.
 
 In order to run you need to click on the **play** icon:
 
-![Check the currently selected Server](./img/2.4.0.Plugin.Check.Server.Configuration.png)
+![Check the currently selected Server](./img/2.7.0.Plugin.Run.Server.Configuration.png)
 
 Then you will see the Configuration and its Modules together with their states:
 
-![Checked Server Configuration](./img/2.4.1.Plugin.Check.Server.Configuration.Check.png)
+![Server Connfiguration in Run Mode](./img/2.7.1.Plugin.Run.Server.Configuration.Running.png)
+
+**Attention**: the Felix Maven Plugin might change the **Symbolic Name** of bundle if the **group id** last section matches the beginning of the **artifact id** and it will drop the duplication. The plugin will display this warning:
+
+![Symbolic Name Mismatch Warning](./img/2.7.2.Plugin.Run.Server.Configuration.Mismatch.png)
+
+If that is the case you can fix that by creating a **Sling Facet** and overwrite the Symbolic Name there.
 
 #### Deploy the Modules
 
@@ -162,37 +182,27 @@ Then you will see the Configuration and its Modules together with their states:
 There are three ways to deploy the modules:  
 1) Deploy the OSGi Module (will always deploy all files)
 2) Deploy any **any changed** content files  
-3) Force Deploy **all changed** content files
+3) Force Deploy **all** content files
 
-The deployment of the resource files can take some time depending on the number of changed files. After an initial deployment the deployment should be much quicker as only the changed resources are deployed which normally only happen when files are changed outside of IntelliJ IDEA.
+The deployment of the resource files can take some time depending on the number of changed files. After an initial deployment the deployment should be much quicker as only the changed resources are deployed.
 
 The **forced** deployment will take its time as all resource files are deployed. This option should only be used when the project is out of sync with the server but it's execution can be limited to a selected module.
 
 This are the icon to deploy the modules:
 
-![Deploy / Forced Deploy](./img/2.5.Plugin.Deploy.Module.png)
+![Deploy / Forced Deploy](./img/2.10.0.Plugin.Deploy.Server.Configuration.png)
 
-**Attention**: the **Forced Deployment** is temporary ignoring the cached timestamps. If this deployment fails all caches are still in effect.
+**Attention**: the **Forced Deployment** is temporary ignoring the cached timestamps. If this deployment fails all untouched files are still in cached.
 
 #### Deploy of Selected Module
 
 If a Module is selected inside the Server Configuration Tree then only **this** module is deployed. The same thing applies to the Context Menu (see below).
 
-#### Manage Modules
-
-Modules can be **excluded** from the **Deployment** so that the content files or OSGi packages are not synced with / deployed on the server. Any excluded files can be included again.
-
-To bring up the build click on the **Manage Build Configuration** icon:
-
-![Manage Build Configuration Icon](./img/4.1.0.Plugin.Manage.Build.Configuration..png)
-
-This will bring up a Dialog where the Modules are listed. The left side are the excluded and the right side are the included modules. In order to exclude or include a module select the module and click the appropriate button to move it to the other side:
-
-![Edit Build Configuration Dialoog](./img/4.1.1.Plugin.Manage.Build.Configuration.Edit.Dialog.png)
-
 #### Context Menu Options
 
 All of the Toolbar Actions can be executed from the Context Menu inside the plugin window. The selection depends on the current selection and its current state. The root entry (Server Configurations) will only provide **Add New Configuration** but all others will provide all the actions which some might be enabled or disabled.
+
+**Note**: the context menu is working on the selection in the tree and **not** on where you click to bring up the context menu.
 
 This is the Root Entry Context Menu:
 
@@ -217,6 +227,40 @@ In this example 30303 is the **Debug Port** and can be adjusted to your needs as
 Keep in mind that **server=y** means the AEM Server is the target of the debug connection and must not be changed.
 
 After the AEM Server is up and running (it is probably best to wait until the login page shows up) and then you can connect from the plugin.
+
+Starting a Server Connection in Debug Mode is done here:
+
+![Start in Debug Mode](./img/2.8.0.Plugin.Debug.Server.Configuration.png)
+
+**Note**: the plugin uses the IntelliJ debug connection and you can find it as in the Run Configurations of IntelliJ under the name of the server connection. You can review the settings there but any changes are whipped when the Debug Connection is started again.
+
+#### Sling Facets
+
+In order to provide support for **non-Maven** project the Sling Facets were added to the plugin.  It also enables a Maven project to override the **Symbolic Name** of a bundle in case the Felix Maven Plugin changes it.
+
+In order to add a Facet you have to open the Project Structure (normally top right), click on Facets and then click on the plus sign (+) to add a new one. Select the **Sling Module Facet**:
+
+![Add Sling Facet](./img/4.1.0.Plugin.Facet.Add.png)
+
+Then select the module it applies to and click **Ok**:
+
+![Module Seleection for Facet](./img/4.1.1.Plugin.Facet.Add.Select.Module.png)
+
+ select the appropriate module type and add its properties. This is an example configuration for a **Content Module**:
+ 
+ ![Content Module Configuration](./img/4.1.2.Plugin.Facet.Configure.Content.png)
+ 
+ A **Facet** can also be applied directly to an module. Right-click on the desired module, select **Add** and select the **Sling Module Facet**.:
+ 
+ ![Add Facet on a Module](./img/4.1.3.Plugin.Facet.Add.on.Module.png)
+ 
+ This is an example configuration for an OSGi Bundle:
+ 
+ ![Bundle Configuration](./img/4.1.4.Plugin.Facet.Configure.Bundle.png)
+ 
+ If **Ignore / is not Maven** is selected the user needs to provide the OSGi Symbolic Name, Version and Jar File Name. If not selected then only the **OSGi Symbolic Name** is required which overrides the symbolic name based on the Maven module.
+ 
+ **Note**: **Excluded** is removing the module from the Server Configuration and not just removing it from the build as the build configuration does.
 
 #### Setting up a New Maven Project Manually
 

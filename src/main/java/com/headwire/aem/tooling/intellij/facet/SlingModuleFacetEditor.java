@@ -20,7 +20,6 @@ package com.headwire.aem.tooling.intellij.facet;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
-import com.headwire.aem.tooling.intellij.facet.FacetUtil.Result;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleExtensionProperties.ModuleType;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.facet.ui.FacetEditorContext;

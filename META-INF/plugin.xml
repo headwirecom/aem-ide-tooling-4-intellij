@@ -18,6 +18,8 @@
                      for any selected Server Configuration and let it run in the Foreground to allow for user interactions.
                      Moving most of the static text into the Resource Bundle including Debug messages. Fixed an issue
                      with the Sling Module Builder which was renamed.
+                     Fixed an issue where in the latest IntelliJ the Plugin Settings will not show in the settings.
+                     Fixed an issue with the Debug Mode as it cannot run in the background.
         </li>
         <li>0.6.4.8-SNAPSHOT: Make it work with IntelliJ 2016.1.0. Added the cancel action to the toolbar
                               to stop background actions. Fixed an issue with IntelliJ 14 which failed to find
@@ -100,20 +102,27 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder"/>
-        <toolWindow id="AEM (EID)" anchor="right" icon="/images/hw.png"
+        <toolWindow id="AEM (0.6.9)" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
         <facetType implementation="com.headwire.aem.tooling.intellij.facet.SlingModuleFacetType"/>
+        <!-- Configuration must be configured now otherwise they don't show up -->
+        <applicationConfigurable
+                groupId="tools"
+                groupWeight="200"
+                instance="com.headwire.aem.tooling.intellij.config.general.AEMPluginSettings"
+                id="preferences.tools.aem.plugin"
+                displayName="AEM Plugin"
+                order="last"
+                nonDefaultProject="false"
+        />
     </extensions>
 
     <application-components>
         <!-- Add your application components here -->
         <!-- AS NOTE: Any Wrapper class (ending in Wrapper) are classes that mimic the OSGi binding of other services -->
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration</implementation-class>
-        </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog</implementation-class>
         </component>
@@ -260,7 +269,7 @@
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM (EID)"
+               text="AEM (0.6.9)"
                popup="true"
                icon="/images/hw.png"
         >

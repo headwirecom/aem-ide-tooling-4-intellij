@@ -73,6 +73,7 @@ public class AEMPluginConfiguration
     public void setDeployDelayInSeconds(int deployDelayInSeconds) {
         this.deployDelayInSeconds = deployDelayInSeconds;
     }
+
     // -------------- Configurable interface implementation --------------------------
 
     @Nls
@@ -81,7 +82,7 @@ public class AEMPluginConfiguration
     }
 
     public Icon getIcon() {
-        return IconLoader.getIcon("/images/asm.gif");
+        return IconLoader.getIcon("/images/hw.gif");
     }
 
     public String getHelpTopic() {

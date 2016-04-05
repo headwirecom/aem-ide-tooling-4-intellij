@@ -22,10 +22,7 @@ import com.headwire.aem.tooling.intellij.facet.SlingModuleExtensionProperties.Mo
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacet;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacetConfiguration;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
-import com.intellij.facet.Facet;
-import com.intellij.facet.FacetManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
