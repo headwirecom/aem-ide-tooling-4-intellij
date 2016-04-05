@@ -65,9 +65,11 @@ the additional methods defined like **bind...()** and **unbind...()**. This is e
 
 #### 4. Project Setup
 
-**Attention**: this plugin can only work with a **Maven** based project as it requires some information that are otherwise not attainable. 
+This plugin works both with **Maven** or with a plain IntelliJ project as long as OSGi Modules **Jar** files are created correctly. **Maven** for sure it the easiest way to handle a Sling / AEM project but that is not required anymore.
 
-**Note**: there is a checkbox called **Default** below the Connection name and description. If checked the plugin will do the **Connect in Run Mode** right when IntelliJ is started to that user can start working on that project right away. Keep in mind that the **Sling or AEM Server** must be started at that time otherwise the connection will fail and must be executed manually later. 
+**Attention**: IntelliJ has no way to generate a ZIP file based on resources so to create an Sling Package. It will deploy the content but **not create** a package. 
+
+**Note**: there is a checkbox called **Load By Default** below the Connection name and description. If one is selected then the plugin will do the **Connect in Run or Debug Mode** right when IntelliJ is started to that user can start working on that project right away. Keep in mind that the **Sling or AEM Server** must be started at that time otherwise the connection will fail and must be executed manually later. 
 
 To deploy and debug the remote AEM server the plugin needs to know which sever to connect to, user and password etc. For that the user needs to create at least one **Server Configuration**. It is possible to have multiple server configurations and to deploy to each of them separately even though only one at a given time.
 
@@ -120,7 +122,10 @@ In order to prevent issues the Plugin has a Verification action that can be used
 
 ##### Purge Local Plugin Data Cache
 
-In order to speed up deployment the plugin keeps the last modification timestamp stored locally both in memory as well as on the file system. With that any file that has **not changed** since the last deployment is not deploy again.  
+In order to speed up deployment the plugin keeps the last modification timestamp stored locally both in memory as well as on the file system. With that any file that has **not changed** since the last deployment is not deploy again. 
+
+**Attention**: the plugin data cache is **per project and server**. So if a server connection changes or server changes it is necessary to purge the cache to update the server correctly.
+
 With the **Purge Local Plugin Data Cache** the user can wipe these cached modification timestamps and make sure the project is deployed from scratch. This is especially important if the project is deployed onto multiple servers.  
 Another way to accomplish a full deployment without dropping the cached modification timestamps is to use **force deploy**. Keep in mind though that the **Purge** is clearing of all cached timestamps whereas the **Forced Deploy** is only temporary ignoring them.
 

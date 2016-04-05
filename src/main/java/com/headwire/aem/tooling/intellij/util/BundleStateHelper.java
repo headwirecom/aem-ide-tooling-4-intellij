@@ -117,6 +117,7 @@ public class BundleStateHelper {
 //            outputLocation = outputLocation.removeFirstSegments(1);
 //            IPath manifestFilePath = outputLocation.append("META-INF/MANIFEST.MF");
 //            IFile manifestFile = project.getVirtualFile(manifestFilePath);
+            //AS TODO: This must be the actual OSGi Bundle Symbolic Name -> Support Override
             String bundleName = module.getSymbolicName();
 //            if (manifestFile.exists()) {
 //                Manifest manifest = new Manifest(manifestFile.getContents());

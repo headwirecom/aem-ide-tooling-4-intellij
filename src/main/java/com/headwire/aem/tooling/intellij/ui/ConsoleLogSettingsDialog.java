@@ -43,7 +43,7 @@ public class ConsoleLogSettingsDialog extends DialogWrapper {
     public ConsoleLogSettingsDialog(@NotNull Project project, @NotNull ServerConfiguration serverConfiguration) {
         super(project);
 
-        setTitle(AEMBundle.message("log.configuration.dialog.title"));
+        setTitle(AEMBundle.message("dialog.log.configuration.title"));
         setModal(true);
         setUpDialog(serverConfiguration);
         init();

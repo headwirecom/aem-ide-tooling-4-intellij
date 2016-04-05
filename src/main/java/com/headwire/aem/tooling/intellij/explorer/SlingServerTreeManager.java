@@ -120,7 +120,7 @@ public class SlingServerTreeManager
         tree.addContainerListener(new ContainerListener() {
             @Override
             public void componentAdded(ContainerEvent containerEvent) {
-                messageManager.sendDebugNotification("Container Event: " + containerEvent);
+                messageManager.sendDebugNotification("debug.tree.container.listener.component.added", containerEvent);
             }
 
             @Override
@@ -204,10 +204,10 @@ public class SlingServerTreeManager
 
     public void adjustToolbar(DefaultActionGroup group) {
         AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, tree);
-        action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
+        action.getTemplatePresentation().setDescription(AEMBundle.message("action.expand.all.nodes.description"));
         group.add(action);
         action = CommonActionsManager.getInstance().createCollapseAllAction(myTreeExpander, tree);
-        action.getTemplatePresentation().setDescription(AEMBundle.message("aem.explorer.collapse.all.nodes.action.description"));
+        action.getTemplatePresentation().setDescription(AEMBundle.message("action.collapse.all.nodes.description"));
         group.add(action);
     }
 

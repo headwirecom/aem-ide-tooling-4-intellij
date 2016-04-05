@@ -31,7 +31,7 @@ public class AddServerConfigurationAction
     extends AbstractEditServerConfigurationAction
 {
     public AddServerConfigurationAction() {
-        super("add.configuration.action");
+        super("action.add.configuration");
     }
 
     @Override

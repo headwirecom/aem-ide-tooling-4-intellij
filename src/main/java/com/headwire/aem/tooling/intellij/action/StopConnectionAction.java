@@ -33,7 +33,7 @@ public class StopConnectionAction
 {
 
     public StopConnectionAction() {
-        super("stop.configuration.action");
+        super("action.stop.configuration");
     }
 
     @Override

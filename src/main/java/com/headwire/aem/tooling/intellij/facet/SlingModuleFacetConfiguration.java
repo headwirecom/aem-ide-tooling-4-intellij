@@ -77,4 +77,32 @@ public class SlingModuleFacetConfiguration implements FacetConfiguration, Persis
     public void setModuleType(ModuleType moduleType) {
         properties.moduleType = moduleType;
     }
+
+    public boolean isIgnoreMaven() { return properties.ignoreMaven; }
+
+    public void setIgnoreMaven(boolean ignoreMaven) { properties.ignoreMaven = ignoreMaven; }
+
+    public String getOsgiSymbolicName() {
+        return properties.osgiSymbolicName;
+    }
+
+    public void setOsgiSymbolicName(String osgiSymbolicName) {
+        properties.osgiSymbolicName = osgiSymbolicName;
+    }
+
+    public String getOsgiVersion() {
+        return properties.osgiVersion;
+    }
+
+    public void setOsgiVersion(String osgiVersion) {
+        properties.osgiVersion = osgiVersion;
+    }
+
+    public String getOsgiJarFileName() {
+        return properties.osgiJarFileName;
+    }
+
+    public void setOsgiJarFileName(String osgiJarFileName) {
+        properties.osgiJarFileName = osgiJarFileName;
+    }
 }

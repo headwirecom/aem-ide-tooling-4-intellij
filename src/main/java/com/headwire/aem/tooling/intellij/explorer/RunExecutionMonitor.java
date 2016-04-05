@@ -59,7 +59,7 @@ public class RunExecutionMonitor {
         synchronized(instances) {
             ret = instances.get(project);
             if(ret == null) {
-                ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification("Create new REM for Project: " + project);
+                ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification("debug.runtime.execution.manager.created", project);
                 ret = new RunExecutionMonitor(project);
                 instances.put(project, ret);
             }
@@ -102,7 +102,7 @@ public class RunExecutionMonitor {
                 public void processStartScheduled(String executorId, ExecutionEnvironment env) {
                     if(RUN_EXECUTION.equals(executorId)) {
                         ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
-                            "Schedule Maven Run on Project: " + project
+                            "debug.runtime.execution.manager.scheduled", project
                         );
                     }
                 }
@@ -121,7 +121,7 @@ public class RunExecutionMonitor {
                         }
                     } else if(RUN_EXECUTION.equals(executorId)) {
                         ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
-                            "Maven Run Failed to Start on Project: " + project
+                            "debug.runtime.execution.manager.failed.to.start", project
                         );
                         stopSignal.countDown();
                     }
@@ -156,7 +156,7 @@ public class RunExecutionMonitor {
                         }
                     } else if(runProfile instanceof MavenRunConfiguration) {
                         ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
-                            "Finish Maven Run Ended Project: " + project
+                            "debug.runtime.execution.manager.ended", project
                         );
                         stopSignal.countDown();
                     }

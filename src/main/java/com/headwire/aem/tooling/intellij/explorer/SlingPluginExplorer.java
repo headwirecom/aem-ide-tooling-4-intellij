@@ -86,7 +86,7 @@ public class SlingPluginExplorer
         tree.addContainerListener(new ContainerListener() {
             @Override
             public void componentAdded(ContainerEvent containerEvent) {
-                messageManager.sendDebugNotification("Container Added Event: " + containerEvent);
+                messageManager.sendDebugNotification("debug.tree.container.listener.component.added", containerEvent);
             }
 
             @Override

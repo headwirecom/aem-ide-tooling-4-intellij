@@ -33,6 +33,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
+import com.intellij.ui.SystemNotifications;
 import com.intellij.util.containers.HashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -86,14 +87,15 @@ public abstract class AbstractProjectAction
 
                     @Nullable
                     public NotificationInfo getNotificationInfo() {
-                        return new NotificationInfo(AEMBundle.message("plugin.action.title"), getTitle(), AEMBundle.message(taskId));
+                        return new NotificationInfo(AEMBundle.message("plugin.action.title"), AEMBundle.message(myTitle), AEMBundle.message(taskId));
                     }
 
                     public void run(@NotNull final ProgressIndicator indicator) {
                         try {
+                            getMessageManager(project).sendInfoNotification("action.start", AEMBundle.message(myTitle));
                             progressHandler = new ProgressHandlerImpl(indicator, getTitle());
                             execute(project, dataContext, progressHandler);
-                            getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
+                            getMessageManager(project).sendInfoNotification("action.end", AEMBundle.message(myTitle));
                         } catch(CancellationException e) {
                             // The user cancelled the task and so we catch the exception and report is to the user
                             getMessageManager(project).sendInfoNotification("action.cancelled", e.getMessage());
@@ -116,7 +118,6 @@ public abstract class AbstractProjectAction
                     execute(project, dataContext, null);
                 } finally {
                     unlock(project);
-                    getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
                 }
             }
         }

@@ -18,9 +18,7 @@
 
 package com.headwire.aem.tooling.intellij.config;
 
-import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
-import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
@@ -28,7 +26,6 @@ import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
@@ -81,31 +78,32 @@ public class ServerConfigurationManager
     public static final String BUILD_WITH_MAVEN = "buildWithMaven";
     @Deprecated
     public static final String BUILD_WITH_MAVEN_TIMEOUT_IN_SECONDS = "buildWithMavenTimeoutInSecond";
-    public static final String ARTIFACT_ID = "artifactId";
-    public static final String SYMBOLIC_NAME = "symbolicName";
+    public static final String MODULE_NAME = "moduleName";
     public static final String PART_OF_BUILD = "partOfBuild";
     public static final String LAST_MODIFICATION_TIMESTAMP = "lastModificationTimestamp";
 
     private MessageManager messageManager;
-    private ServerConnectionManager serverConnectionManager;
+//    private ServerConnectionManager serverConnectionManager;
+    private ModuleManager moduleManager;
     private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
     private List<ServerConfiguration> serverConfigurationList = new ArrayList<ServerConfiguration>();
 
+    //AS TODO: We probably don't need that return value
     public boolean updateCurrentServerConfiguration() {
-        boolean ret = false;
-        if(serverConnectionManager == null) {
-            serverConnectionManager = ComponentProvider.getComponent(myProject, ServerConnectionManager.class);
-        }
-        if(serverConnectionManager != null) {
+//        boolean ret = false;
+//        if(serverConnectionManager == null) {
+//            serverConnectionManager = ComponentProvider.getComponent(myProject, ServerConnectionManager.class);
+//        }
+//        if(serverConnectionManager != null) {
             // A Server Connection may or may not be connected so the only way to ensure a proper update is to update them all
             for(ServerConfiguration serverConfiguration: serverConfigurationList) {
                 // Clear any bindings
                 serverConfiguration.unBind();
-                serverConnectionManager.bindModules(serverConfiguration, new ProgressHandlerImpl("Update Current Server Configuration"));
+                moduleManager.getUnifiedModules(serverConfiguration);
             }
-            ret = true;
-        }
-        return ret;
+//            ret = true;
+//        }
+        return true;
     }
 
     public class ConfigurationChangeListener {
@@ -123,6 +121,7 @@ public class ServerConfigurationManager
     public ServerConfigurationManager(final Project project) {
         super(project);
         messageManager = ComponentProvider.getComponent(project, MessageManager.class);
+        moduleManager = ComponentProvider.getComponent(project, ModuleManager.class);
     }
 
     public ServerConfiguration[] getServerConfigurations() {
@@ -259,8 +258,7 @@ public class ServerConfigurationManager
             int j = 0;
             for(ServerConfiguration.Module module: serverConfiguration.getModuleList()) {
                 Element moduleChildNode = new Element("sscm-" + j++);
-//                moduleChildNode.setAttribute(ARTIFACT_ID, module.getArtifactId());
-                moduleChildNode.setAttribute(SYMBOLIC_NAME, module.getSymbolicName());
+                moduleChildNode.setAttribute(MODULE_NAME, module.getName());
                 moduleChildNode.setAttribute(PART_OF_BUILD, module.isPartOfBuild() + "");
                 moduleChildNode.setAttribute(LAST_MODIFICATION_TIMESTAMP, module.getLastModificationTimestamp() + "");
                 childNode.addContent(moduleChildNode);
@@ -315,11 +313,10 @@ public class ServerConfigurationManager
             serverConfiguration.setLogFilter(Util.convertToEnum(child.getAttributeValue(LOG_FILTER), ServerConfiguration.DEFAULT_LOG_FILTER));
             for(Element element: child.getChildren()) {
                 try {
-//                    String artifactId = element.getAttributeValue(ARTIFACT_ID, "No Artifact Id");
-                    String symbolicName = element.getAttributeValue(SYMBOLIC_NAME, "");
+                    String moduleName = element.getAttributeValue(MODULE_NAME, "");
                     boolean isPartOfBuild = new Boolean(element.getAttributeValue(PART_OF_BUILD, "true"));
                     long lastModificationTimestamp = new Long(element.getAttributeValue(LAST_MODIFICATION_TIMESTAMP, "-1"));
-                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, symbolicName, isPartOfBuild, lastModificationTimestamp);
+                    ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, moduleName, isPartOfBuild, lastModificationTimestamp);
                     serverConfiguration.addModule(module);
                 } catch(Exception e) {
                     // Ignore any exceptions to avoid a stall configurations

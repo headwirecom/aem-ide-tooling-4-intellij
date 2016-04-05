@@ -66,14 +66,14 @@ public abstract class AbstractEditServerConfigurationAction
                         if(other != null) {
                             // Collision found -> alert and retry
                             isOk = false;
-                            getMessageManager(project).sendErrorNotification("aem.explorer.cannot.change.configuration", target.getName());
+                            getMessageManager(project).sendErrorNotification("server.configuration.cannot.change.configuration", target.getName());
                         }
                     } else {
                         // Verity Content
                         String message = target.verify();
                         if(message != null) {
                             isOk = false;
-                            getMessageManager(project).sendErrorNotification("aem.explorer.server.configuration.invalid", AEMBundle.message(message));
+                            getMessageManager(project).sendErrorNotification("server.configuration.configuration.invalid", AEMBundle.message(message));
                         }
                     }
                     if(isOk) {

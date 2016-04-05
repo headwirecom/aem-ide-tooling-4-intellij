@@ -34,29 +34,21 @@ import java.util.ResourceBundle;
  * Created by Andreas Schaefer (Headwire.com) on 5/1/15.
  */
 public class AEMBundle {
+
     public static String message(@NotNull @PropertyKey(resourceBundle = PATH_TO_BUNDLE) String key, @NotNull Object... params) {
         String message = CommonBundle.messageOrDefault(getBundle(), key, "", params);
         return message;
     }
 
-//    public static Properties loadProperties(String path) {
-//        Reference<ResourceBundle> referenceBundle = propertiesBundleMap.get(path);
-//        ResourceBundle bundle = com.intellij.reference.SoftReference.dereference(referenceBundle);
-//        if(bundle == null) {
-//            bundle = ResourceBundle.getBundle(path);
-//            referenceBundle = new SoftReference<ResourceBundle>(bundle);
-//            propertiesBundleMap.put(path, referenceBundle);
-//        }
-//        Properties ret = new Properties();
-//        if(bundle != null) {
-//            for(String key: bundle.keySet()) {
-//                ret.setProperty(key, bundle.getString(key));
-//            }
-//        }
-//        return ret;
-//    }
-//
-//    private static Map<String, Reference<ResourceBundle>> propertiesBundleMap = new HashMap<String, Reference<ResourceBundle>>();
+    public static String messageOrKey(@NotNull @PropertyKey(resourceBundle = PATH_TO_BUNDLE) String key, @NotNull Object... params) {
+        String message = messageOrDefault(key, key, params);
+        return message;
+    }
+
+    public static String messageOrDefault(@NotNull @PropertyKey(resourceBundle = PATH_TO_BUNDLE) String key, @NotNull String defaultValue, @NotNull Object... params) {
+        String message = CommonBundle.messageOrDefault(getBundle(), key, defaultValue, params);
+        return message;
+    }
 
     private static Reference<ResourceBundle> ourBundle;
     @NonNls

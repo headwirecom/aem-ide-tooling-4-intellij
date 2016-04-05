@@ -62,12 +62,6 @@ public class ServerConfigurationDialog
 
     public ServerConfigurationDialog(@Nullable Project project) {
         this(project, null);
-//        super(project);
-//
-//        setTitle("Create Server Connection Properties");
-//        setModal(true);
-//        setUpDialog(null);
-//        init();
     }
 
     public ServerConfigurationDialog(@Nullable Project project, @Nullable ServerConfiguration serverConfiguration) {
@@ -195,18 +189,6 @@ public class ServerConfigurationDialog
         }
     }
 
-//
-//    private void onCancel() {
-//// add your code here if necessary
-//        dispose();
-//    }
-
-//    public static void main(String[] args) {
-//        ServerConfigurationDialog dialog = new ServerConfigurationDialog();
-//        dialog.pack();
-////        dialog.setVisible(true);
-//        System.exit(0);
-//    }
 
     @Nullable
     @Override

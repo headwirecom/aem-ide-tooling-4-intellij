@@ -34,7 +34,7 @@ public class RemoveServerConfigurationAction
 {
 
     public RemoveServerConfigurationAction() {
-        super("remove.configuration.action");
+        super("action.remove.configuration");
     }
 
     @Override

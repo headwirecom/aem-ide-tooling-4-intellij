@@ -29,6 +29,10 @@ import com.intellij.openapi.project.Project;
  */
 public class ComponentProvider {
 
+    public static <T> T getComponent(Class<T> clazz) {
+        return getComponent(null, clazz);
+    }
+
     public static <T> T getComponent(Project project, Class<T> clazz) {
         T ret = null;
         if(project != null) {

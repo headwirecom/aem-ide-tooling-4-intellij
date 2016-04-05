@@ -55,9 +55,14 @@ public class MessageManager
     }
 
     public void sendDebugNotification(String message) {
-        logger.trace(message);
-        java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, message);
-        new DebugNotification("Debug Message", message).notify(myProject);
+        sendDebugNotification(message, new Object[] {});
+    }
+
+    public void sendDebugNotification(String message, Object...params) {
+        String aMessage = AEMBundle.messageOrKey(message, params);
+        logger.trace(aMessage);
+        java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, aMessage);
+        new DebugNotification("Debug Message", aMessage).notify(myProject);
     }
 
     private void sendNotification(String title, String message, NotificationType type) {

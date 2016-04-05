@@ -27,9 +27,11 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Constants;
+import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
@@ -42,6 +44,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
@@ -50,20 +54,45 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
 
     public static final String VERIFY_CONTENT_WITH_WARNINGS = "VerifyContentWithWarnings";
 
+    private volatile CountDownLatch stopSignal = new CountDownLatch(1);
+
     public VerifyConfigurationAction() {
-        super("verify.configuration.action");
+        super("action.verify.configuration");
+    }
+
+    @Override
+    protected boolean isAsynchronous() {
+        return false;
     }
 
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         DataContext wrappedDataContext = SimpleDataContext.getSimpleContext(VERIFY_CONTENT_WITH_WARNINGS, true, dataContext);
-        doVerify(project, wrappedDataContext, progressHandler);
+        boolean verificationSuccessful = doVerify(project, wrappedDataContext, progressHandler);
+        // Notification are added
+        if(ApplicationManager.getApplication().isDispatchThread()) {
+            getMessageManager(project).showAlertWithArguments(
+                NotificationType.INFORMATION,
+                verificationSuccessful ?
+                    "server.configuration.verification.successful" :
+                    "server.configuration.verification.failed"
+            );
+        } else {
+            getMessageManager(project).sendNotification(
+                verificationSuccessful ?
+                    "server.configuration.verification.successful" :
+                    "server.configuration.verification.failed"
+                ,
+                NotificationType.INFORMATION
+            );
+        }
     }
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
-        return serverConnectionManager != null && serverConnectionManager.isConnectionInUse();
+        // A user should be able to verify the project without connecting to it as it is done already
+        return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 
     /**
@@ -74,8 +103,11 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
      * @return True if the project was successfully verified
      */
     public boolean doVerify(final Project project, final DataContext dataContext, final ProgressHandler progressHandler) {
-        ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(1, "Verify the Project: " + project.getName());
-        progressHandlerSubTask.next("Check Environment Setup");
+        ProgressHandler progressHandlerSubTask =
+            progressHandler == null ?
+                new EmptyProgresssHandler() :
+                progressHandler.startSubTasks(1, "progress.verify.project", project.getName());
+        progressHandlerSubTask.next("progress.verify.check.environment");
         MessageManager messageManager = getMessageManager(project);
         boolean ret = true;
         int exitNow = Messages.OK;
@@ -86,22 +118,22 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
             if(source != null) {
                 try {
-                    progressHandlerSubTask.next("(Re)Bind Modules");
+                    progressHandlerSubTask.next("progress.verify.rebind.module");
                     messageManager.sendInfoNotification("server.configuration.start.verification", source.getName());
                     // Before we can verify we need to ensure the Configuration is properly bound to Maven
                     List<ServerConfiguration.Module> unboundModules = null;
                     try {
-                        unboundModules = serverConnectionManager.bindModules(source, progressHandlerSubTask);
+                        unboundModules = serverConnectionManager.findUnboundModules(source);
                     } catch(IllegalArgumentException e) {
                         messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.verification.failed.due.to.bind.exception", source.getName(), e.getMessage());
                         return false;
                     }
                     if(unboundModules != null && !unboundModules.isEmpty()) {
-                        progressHandlerSubTask.next("Update Server Configuration");
+                        progressHandlerSubTask.next("progress.verify.update.server.configuration");
                         ret = false;
                         ProgressHandler progressHandlerSubTaskLoop = progressHandlerSubTask.startSubTasks(unboundModules.size(), "Check Server Configuration Modules");
                         for(ServerConfiguration.Module module : unboundModules) {
-                            progressHandlerSubTaskLoop.next("Update Server Configuration for Module: " + module.getName());
+                            progressHandlerSubTaskLoop.next("progress.veriy.update.server.configuration", module.getName());
                             exitNow = messageManager.showAlertWithOptions(NotificationType.WARNING, "server.configuration.unresolved.module", module.getName());
                             if(exitNow == 1) {
                                 source.removeModule(module);
@@ -116,10 +148,10 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                     // Verify each Module to see if all prerequisites are met
                     Repository repository = ServerConnectionManager.obtainRepository(source, messageManager);
                     if(repository != null) {
-                        progressHandlerSubTask.next("Check Modules");
-                        ProgressHandler progressHandlerSubTaskLoop = progressHandlerSubTask.startSubTasks(2 * source.getModuleList().size(), "Check Modules");
+                        progressHandlerSubTask.next("progress.verify.check.modules");
+                        ProgressHandler progressHandlerSubTaskLoop = progressHandlerSubTask.startSubTasks(2 * source.getModuleList().size(), "progress.verify.check.modules");
                         for(ServerConfiguration.Module module : source.getModuleList()) {
-                            progressHandlerSubTaskLoop.next("Check Module: " + module.getName());
+                            progressHandlerSubTaskLoop.next("progress.verify.check.module", module.getName());
                             if(module.isSlingPackage()) {
                                 // Check if the Filter is available for Content Modules
                                 Filter filter = null;
@@ -155,11 +187,11 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                                 Object temp = dataContext.getData(VERIFY_CONTENT_WITH_WARNINGS);
                                 boolean verifyWithWarnings = !(temp instanceof Boolean) || ((Boolean) temp);
                                 if(verifyWithWarnings && filter != null) {
-                                    progressHandlerSubTaskLoop.next("Check Resource Files");
+                                    progressHandlerSubTaskLoop.next("progress.verify.check.resource.files");
                                     ProgressHandler progressHandlerSubTaskLoop2 = progressHandlerSubTaskLoop.startSubTasks(resourceList.size(), "Check Resources");
                                     // Get the Content Root /jcr_root)
                                     for(String contentPath : resourceList) {
-                                        progressHandlerSubTaskLoop2.next("Check Resource: " + contentPath);
+                                        progressHandlerSubTaskLoop2.next("progress.verify.check.resource.files", contentPath);
                                         VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(contentPath);
                                         if(rootFile != null) {
                                             // Loop over all folders and check if .content.xml file is there
@@ -177,6 +209,8 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                     } else {
                         ret = false;
                     }
+                } catch(RuntimeException e) {
+                    messageManager.sendUnexpectedException(e);
                 } finally {
                     messageManager.sendInfoNotification("server.configuration.end.verification", source.getName());
                 }
@@ -278,6 +312,52 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
         public Result failed() {
             isOk = false;
             return this;
+        }
+    }
+
+    public static class EmptyProgresssHandler
+        implements ProgressHandler {
+
+        @Override
+        public ProgressHandler startSubTasks(int Steps, String title) {
+            return new EmptyProgresssHandler();
+        }
+
+        @Override
+        public ProgressHandler startSubTasks(int Steps, String title, String... params) {
+            return new EmptyProgresssHandler();
+        }
+
+        @Override
+        public void next(String task) {
+        }
+
+        @Override
+        public void next(String task, String... params) {
+
+        }
+
+        @Override
+        public String getTitle() {
+            return "Empty";
+        }
+
+        @Override
+        public void markAsCancelled() {
+        }
+
+        @Override
+        public boolean isMarkedAsCancelled() {
+            return false;
+        }
+
+        @Override
+        public void setNotCancelable(boolean notCancelable) {
+        }
+
+        @Override
+        public boolean isNotCancelable() {
+            return false;
         }
     }
 }

@@ -34,7 +34,7 @@ public class EditServerConfigurationAction
 {
 
     public EditServerConfigurationAction() {
-        super("edit.configuration.action");
+        super("action.edit.configuration");
     }
 
     @Override

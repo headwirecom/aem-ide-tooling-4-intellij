@@ -204,7 +204,7 @@ public class IResource {
      */
     public IPath getProjectRelativePath() {
         IPath ret = null;
-        String projectBasePath = module.getModuleContext().getModuleDirectory();
+        String projectBasePath = module.getUnifiedModule().getModuleDirectory();
         String filePath = virtualFile == null ? file.getPath() : virtualFile.getPath();
         if(filePath.startsWith(projectBasePath)) {
             String relativePath = filePath.substring(projectBasePath.length());

@@ -431,7 +431,7 @@ public class ConsoleLog
             if(target != null) {
                 IdeFrame frame = WindowManager.getInstance().getIdeFrame(project);
                 assert frame != null;
-                Balloon balloon = NotificationsManagerImpl.createBalloon(frame, myNotification, true, true, null);
+                Balloon balloon = NotificationsManagerImpl.createBalloon(frame, myNotification, true, true);
                 Disposer.register(project, balloon);
                 balloon.show(target, Balloon.Position.above);
             }

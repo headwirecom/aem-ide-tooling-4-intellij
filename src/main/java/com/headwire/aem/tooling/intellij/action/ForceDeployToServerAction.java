@@ -25,7 +25,7 @@ public class ForceDeployToServerAction
     extends DeployToServerAction
 {
     public ForceDeployToServerAction() {
-        super("force.deploy.configuration.action");
+        super("action.force.deploy.configuration");
     }
 
     protected boolean isForced() {

@@ -21,8 +21,7 @@ package com.headwire.aem.tooling.intellij.config;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleExtensionProperties.ModuleType;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacet;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacetConfiguration;
-import com.intellij.facet.Facet;
-import com.intellij.facet.FacetManager;
+import com.intellij.openapi.compiler.CompilerPaths;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.CompilerProjectExtension;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -30,68 +29,85 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.maven.model.MavenResource;
 import org.jetbrains.idea.maven.project.MavenProject;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class represents a Module inside an IntelliJ project. It
+ * is either based on a Maven Project (module) or an IntelliJ Module
+ * with a Sling Facet.
+ *
  * Created by Andreas Schaefer (Headwire.com) on 7/2/15.
  */
-public class ModuleContextImpl
-    implements ModuleContext
+public class UnifiedModuleImpl
+    implements UnifiedModule
 {
     public static final String NO_OSGI_BUNDLE = "No OSGi Bundle";
 
-    private MavenProject mavenProject;
+    MavenProject mavenProject;
 
     private Module module;
     private SlingModuleFacetConfiguration slingConfiguration;
-    private Object osgiConfiguration;
 
+    /** @deprecated This should be managed by the Module Manager **/
+    private List<ServerConfiguration.Module> serverConfigurationModulList = new ArrayList<ServerConfiguration.Module>();
 
-    public ModuleContextImpl(@NotNull MavenProject mavenProject) {
-        init(mavenProject);
+    public UnifiedModuleImpl(@NotNull MavenProject mavenProject, @NotNull Module module) {
+        init(mavenProject, module);
     }
 
-    public ModuleContextImpl(@NotNull Module module) {
-        init(module);
+    public UnifiedModuleImpl(@NotNull Module module) {
+        init(null, module);
     }
 
-    public void init(@NotNull Object payload) {
-        if(payload instanceof  MavenProject) {
-            this.mavenProject = (MavenProject) payload;
-            this.module = null;
-            this.slingConfiguration = null;
-            this.osgiConfiguration = null;
-        } else if(payload instanceof Module) {
-            this.module = (Module) payload;
-            this.mavenProject = null;
-            SlingModuleFacet slingModuleFacet = SlingModuleFacet.getFacetByModule(module);
-            if(slingModuleFacet == null) {
-                throw new IllegalArgumentException("Module: '" + module.getName() + "' is not a Sling Module");
-            }
+    public void init(MavenProject mavenProject, @NotNull Module module) {
+        this.mavenProject = mavenProject;
+        this.module = module;
+        this.slingConfiguration = null;
+        SlingModuleFacet slingModuleFacet = SlingModuleFacet.getFacetByModule(module);
+        if(slingModuleFacet != null) {
             slingConfiguration = slingModuleFacet.getConfiguration();
-            // Ignore OSGi Configurations if not marked as such
-            if(slingConfiguration.getModuleType() == ModuleType.bundle) {
-                FacetManager facetManager = module.getComponent(FacetManager.class);
-                if(facetManager != null) {
-                    Facet[] facets = facetManager.getAllFacets();
-                    Facet osmorcFacet = null;
-                    for(Facet facet: facets) {
-                        if(facet.getClass().getName().endsWith("OsmorcFacet")) {
-                            osmorcFacet = facet;
-                            break;
-                        }
-                    }
-                    if(osmorcFacet == null) {
-                        throw new IllegalArgumentException("Module: '" + module.getName() + "' is not an OSGi Module");
-                    } else {
-                        osgiConfiguration = osmorcFacet.getConfiguration();
-                    }
-                }
+        }
+    }
+
+    @Override
+    public boolean containsServerConfigurationModule(@NotNull ServerConfiguration.Module module) {
+        return serverConfigurationModulList.contains(module);
+    }
+
+    @Override
+    public boolean addServerConfigurationModule(@NotNull ServerConfiguration.Module module) {
+        boolean ret = containsServerConfigurationModule(module);
+        if(!ret) {
+            serverConfigurationModulList.add(module);
+        }
+        return !ret;
+    }
+
+    @Override
+    public boolean removeServerConfigurationModule(@NotNull ServerConfiguration.Module module) {
+        boolean ret = containsServerConfigurationModule(module);
+        if(ret) {
+            serverConfigurationModulList.remove(module);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<ServerConfiguration.Module> getSererConfigurationModuleList() {
+        return serverConfigurationModulList;
+    }
+
+    @Override
+    public ServerConfiguration.Module getServerConfigurationModule(@NotNull ServerConfiguration serverConfiguration) {
+        ServerConfiguration.Module ret = null;
+        for(ServerConfiguration.Module module: serverConfigurationModulList) {
+            if(serverConfiguration == module.getParent()) {
+                ret = module;
+                break;
             }
         }
+        return ret;
     }
 
     public boolean isMavenBased() {
@@ -100,50 +116,35 @@ public class ModuleContextImpl
 
     @Override
     public String getSymbolicName() {
-        if(mavenProject != null) {
-            return mavenProject.getMavenId().getGroupId() + "." + mavenProject.getMavenId().getArtifactId();
-        } else {
-            return osgiConfiguration != null ?
-                getValue(osgiConfiguration, "getBundleSymbolicName") :
-                // In order to find the module we need to provide a symbolic name
-                module.getName();
-            //            NO_OSGI_BUNDLE;
+        String ret = "";
+        if(slingConfiguration != null) {
+            ret = slingConfiguration.getOsgiSymbolicName();
         }
+        if(ret.length() == 0 && mavenProject != null) {
+            ret = mavenProject.getMavenId().getGroupId() + "." + mavenProject.getMavenId().getArtifactId();
+        }
+        return ret.length() == 0 ? NO_OSGI_BUNDLE : ret;
     }
 
-    private String getValue(Object instance, String methodName) {
+    @Override
+    public String getVersion() {
         String ret = "";
-        try {
-            Method method = instance.getClass().getMethod(methodName);
-            ret =  "" + method.invoke(instance);
-        } catch(NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch(IllegalAccessException e) {
-            e.printStackTrace();
-        } catch(InvocationTargetException e) {
-            e.printStackTrace();
+        if(slingConfiguration != null) {
+            ret = slingConfiguration.getOsgiVersion();
+        }
+        if(ret.length() == 0 && mavenProject != null) {
+            ret = mavenProject.getMavenId().getVersion();
         }
         return ret;
     }
 
     @Override
-    public String getVersion() {
-        if(mavenProject != null) {
-            return mavenProject.getMavenId().getVersion();
-        } else {
-            return osgiConfiguration != null ?
-                getValue(osgiConfiguration, "getBundleVersion") :
-                NO_OSGI_BUNDLE;
-        }
-    }
-
-    @Override
     public String getName() {
-        if(mavenProject != null) {
-            return mavenProject.getName();
-        } else {
+//        if(mavenProject != null) {
+//            return mavenProject.getName();
+//        } else {
             return module.getName();
-        }
+//        }
     }
 
     @Override
@@ -152,9 +153,7 @@ public class ModuleContextImpl
             //AS TODO: Make sure this is true
             return mavenProject.getFinalName() + ".jar";
         } else {
-            return osgiConfiguration != null ?
-                getValue(osgiConfiguration, "getJarFileName") :
-                NO_OSGI_BUNDLE;
+            return slingConfiguration.getOsgiJarFileName();
         }
     }
 
@@ -163,7 +162,7 @@ public class ModuleContextImpl
         if(mavenProject != null) {
             return mavenProject.getPackaging().equalsIgnoreCase("bundle");
         } else {
-            return osgiConfiguration != null;
+            return slingConfiguration.getModuleType() == ModuleType.bundle;
         }
     }
 
@@ -172,7 +171,7 @@ public class ModuleContextImpl
         if(mavenProject != null) {
             return mavenProject.getPackaging().equalsIgnoreCase("content-package");
         } else {
-            return osgiConfiguration == null;
+            return slingConfiguration.getModuleType() == ModuleType.content;
         }
     }
 
@@ -181,12 +180,9 @@ public class ModuleContextImpl
         if(mavenProject != null) {
             return mavenProject.getBuildDirectory();
         } else {
-            CompilerProjectExtension compilerProjectExtension = CompilerProjectExtension.getInstance(module.getProject());
-            if(compilerProjectExtension == null) {
-                throw new IllegalArgumentException("Compiler Project Extension not found for Module: '" + module.getName() + "'");
-            }
-            VirtualFile outputPath = compilerProjectExtension.getCompilerOutput();
-            return outputPath.getPath();
+            // The build file is normally placed inside the parent folder of the module output directory
+            VirtualFile moduleOutputDirectory = CompilerPaths.getModuleOutputDirectory(module, false);
+            return moduleOutputDirectory.getParent().getPath();
         }
     }
 

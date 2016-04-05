@@ -37,7 +37,7 @@ import java.util.List;
 public class ResetConfigurationAction extends AbstractProjectAction {
 
     public ResetConfigurationAction() {
-        super("reset.configuration.action");
+        super("action.reset.configuration");
     }
 
     @Override
@@ -60,10 +60,10 @@ public class ResetConfigurationAction extends AbstractProjectAction {
                 // Before we can verify we need to ensure the Configuration is properly bound to Maven
                 serverConnectionManager.checkBinding(source, progressHandler);
                 // Verify each Module to see if all prerequisites are met
-                getMessageManager(project).sendInfoNotification("action.reset.configuration.begin");
+                getMessageManager(project).sendInfoNotification("reset.configuration.begin");
                 for(ServerConfiguration.Module module: source.getModuleList()) {
                     if(module.isSlingPackage()) {
-                        getMessageManager(project).sendInfoNotification("action.reset.configuration.start", module.getName());
+                        getMessageManager(project).sendInfoNotification("reset.configuration.start", module.getName());
                         // Check if the Content Modules have a Content Resource
                         List<String> resourceList = serverConnectionManager.findContentResources(module);
                         for(String contentPath: resourceList) {
@@ -72,10 +72,10 @@ public class ResetConfigurationAction extends AbstractProjectAction {
                                 Util.resetModificationStamp(contentResourceDirectory, true);
                             }
                         }
-                        getMessageManager(project).sendInfoNotification("action.reset.configuration.end", module.getName());
+                        getMessageManager(project).sendInfoNotification("reset.configuration.end", module.getName());
                     }
                 }
-                getMessageManager(project).sendInfoNotification("action.reset.configuration.finish");
+                getMessageManager(project).sendInfoNotification("reset.configuration.finish");
             }
         }
     }
