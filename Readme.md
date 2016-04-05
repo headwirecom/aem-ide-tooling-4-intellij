@@ -7,7 +7,7 @@ Can be found on our [Wiki Page](https://github.com/headwirecom/aem-ide-tooling-4
 
 #### Current Branch:
 
-The latest code can  be found in the **module-manager-revamp** branch.
+The latest code can  be found in the **master** branch.
 
 #### Updates:
 
