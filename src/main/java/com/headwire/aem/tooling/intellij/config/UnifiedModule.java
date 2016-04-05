@@ -21,16 +21,58 @@ package com.headwire.aem.tooling.intellij.config;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.maven.project.MavenProject;
 
 import java.util.List;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 7/2/15.
  */
-public interface ModuleContext {
+public interface UnifiedModule {
 
     /** Resets the given Module to support a change in its configuration at runtime **/
-    public void init(@NotNull Object payload);
+    public void init(MavenProject mavenProject, @NotNull Module module);
+
+    /**
+     * Checks if the given Server Configuration Module is already registered
+     * @param module Module to check against
+     * @return True if already registered
+     *
+     * @deprecated This should be managed by the Module Manager
+     */
+    public boolean containsServerConfigurationModule(@NotNull ServerConfiguration.Module module);
+
+    /**
+     * Add a Server Configuation Module to the list
+     *
+     * @param module Module to be added
+     * @return True if the module was not already in the list and therefore added
+     * @deprecated This should be managed by the Module Manager
+     */
+    public boolean addServerConfigurationModule(@NotNull ServerConfiguration.Module module);
+
+    /**
+     * Remove a given Server Configuration Module if registered
+     * @param module Module to be removed
+     * @return True if the module was registered and therefore removed
+     * @deprecated This should be managed by the Module Manager
+     */
+    public boolean removeServerConfigurationModule(@NotNull ServerConfiguration.Module module);
+
+    /** @return List of currently registered Server Configuration Modules
+     * @deprecated This should be managed by the Module Manager
+     *  **/
+    public List<ServerConfiguration.Module> getSererConfigurationModuleList();
+
+    /**
+     * Obtain the Server Configuration Module based on the given Server Configuration
+     *
+     * @param serverConfiguration Server Configuration to find its Module
+     * @return Server Configuration Module that belongs to this Module Context if found otherwise null
+     *
+     * @deprecated This should be managed by the Module Manager
+     */
+    public ServerConfiguration.Module getServerConfigurationModule(@NotNull ServerConfiguration serverConfiguration);
 
     /** @return True if the Module is configured by Maven only **/
     public boolean isMavenBased();

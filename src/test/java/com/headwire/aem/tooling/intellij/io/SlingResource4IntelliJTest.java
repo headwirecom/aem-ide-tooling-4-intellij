@@ -19,9 +19,9 @@
 
 package com.headwire.aem.tooling.intellij.io;
 
-import com.headwire.aem.tooling.intellij.config.ModuleContext;
+import com.headwire.aem.tooling.intellij.config.UnifiedModule;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.mock.MockModuleContext;
+import com.headwire.aem.tooling.intellij.mock.MockUnifiedModule;
 import com.headwire.aem.tooling.intellij.mock.MockProject;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.mock.MockVirtualFile;
@@ -60,10 +60,10 @@ public class SlingResource4IntelliJTest {
         VirtualFile syncFolder = new MockVirtualFile(true, "baseDir");
         Project mockProject = new MockProject()
             .setBaseDir(syncFolder);
-        ModuleContext mockModuleContext = new MockModuleContext()
+        UnifiedModule mockUnifiedModule = new MockUnifiedModule()
             .setSymbolicName(groupId + "." + artifactId)
             .setContentDirectoryPaths(Arrays.asList("/baseDir/" + JCR_ROOT_FOLDER_NAME));
-        module.rebind(mockProject, mockModuleContext);
+        module.rebind(mockProject, mockUnifiedModule);
     }
 
     @Test

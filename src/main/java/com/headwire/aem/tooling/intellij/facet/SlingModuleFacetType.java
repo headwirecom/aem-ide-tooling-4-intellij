@@ -18,6 +18,7 @@
 
 package com.headwire.aem.tooling.intellij.facet;
 
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.facet.Facet;
 import com.intellij.facet.FacetType;
 import com.intellij.openapi.module.JavaModuleType;
@@ -33,7 +34,7 @@ import javax.swing.*;
  */
 public class SlingModuleFacetType extends FacetType<SlingModuleFacet, SlingModuleFacetConfiguration> {
     public static final String STRING_ID = "sling-module-facet";
-    public static final String SLING_MODULE_FACET = "Sling Module Facet";
+    public static final String SLING_MODULE_FACET = AEMBundle.message("facet.name");
 
     public SlingModuleFacetType() {
         super(SlingModuleFacet.ID, STRING_ID, SLING_MODULE_FACET);

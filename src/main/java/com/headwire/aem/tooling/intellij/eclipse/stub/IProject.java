@@ -52,11 +52,11 @@ public class IProject {
         com.headwire.aem.tooling.intellij.communication.MessageManager messageManager = ComponentProvider.getComponent(project,
             com.headwire.aem.tooling.intellij.communication.MessageManager.class
         );
-        messageManager.sendDebugNotification("Given Path: '" + path + "'");
+        messageManager.sendDebugNotification("debug.folder.path", path);
 
         String filePath = path.toOSString();
 
-        messageManager.sendDebugNotification("Retrieved OS String: '" + filePath + "'");
+        messageManager.sendDebugNotification("debug.folder.os.path", filePath);
 
         VirtualFileSystem vfs = module.getProject().getBaseDir().getFileSystem();
         VirtualFile file = vfs.findFileByPath(path.toOSString());
@@ -67,7 +67,7 @@ public class IProject {
 
     public List<String> getSourceFolderList() {
         List<String> ret = new ArrayList<String>();
-        for(String path: module.getModuleContext().getContentDirectoryPaths()) {
+        for(String path: module.getUnifiedModule().getContentDirectoryPaths()) {
             ret.add(path);
         }
         return ret;

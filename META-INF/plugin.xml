@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.6.4.8-SNAPSHOT</version>
+    <version>0.6.4.9</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,17 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.6.4.9: Dropped the SNAPSHOT from the version. Started to work on a better Module handling to unify
+                     all the various modules (IntelliJ Project Modules, Maven Project and Server Configuration Module).
+                     Added to support an override of the Bundle Symbolic Name as Felix is renaming them sometimes and
+                     porting all OSGi configuration for non-Maven OSGi bundles to the Facet to work with any OSGi
+                     configurations and not just Osmorc. Made the Server Configuration Verification Action available
+                     for any selected Server Configuration and let it run in the Foreground to allow for user interactions.
+                     Moving most of the static text into the Resource Bundle including Debug messages. Fixed an issue
+                     with the Sling Module Builder which was renamed.
+                     Fixed an issue where in the latest IntelliJ the Plugin Settings will not show in the settings.
+                     Fixed an issue with the Debug Mode as it cannot run in the background.
+        </li>
         <li>0.6.4.8-SNAPSHOT: Make it work with IntelliJ 2016.1.0. Added the cancel action to the toolbar
                               to stop background actions. Fixed an issue with IntelliJ 14 which failed to find
                               components / services if on application level.
@@ -90,21 +101,28 @@
     <depends>org.jetbrains.idea.maven</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder"/>
-        <toolWindow id="AEM (EID)" anchor="right" icon="/images/hw.png"
+        <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder"/>
+        <toolWindow id="AEM (0.6.4.9)" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory"/>
         <facetType implementation="com.headwire.aem.tooling.intellij.facet.SlingModuleFacetType"/>
+        <!-- Configuration must be configured now otherwise they don't show up -->
+        <applicationConfigurable
+                groupId="tools"
+                groupWeight="200"
+                instance="com.headwire.aem.tooling.intellij.config.general.AEMPluginSettings"
+                id="preferences.tools.aem.plugin"
+                displayName="AEM Plugin"
+                order="last"
+                nonDefaultProject="false"
+        />
     </extensions>
 
     <application-components>
         <!-- Add your application components here -->
         <!-- AS NOTE: Any Wrapper class (ending in Wrapper) are classes that mimic the OSGi binding of other services -->
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration</implementation-class>
-        </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog</implementation-class>
         </component>
@@ -163,6 +181,10 @@
         </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener</implementation-class>
+        </component>
+        <component>
+            <interface-class>com.headwire.aem.tooling.intellij.config.ModuleManager</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.config.ModuleManagerImpl</implementation-class>
         </component>
     </project-components>
 
@@ -247,7 +269,7 @@
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM (EID)"
+               text="AEM (0.6.4.9)"
                popup="true"
                icon="/images/hw.png"
         >

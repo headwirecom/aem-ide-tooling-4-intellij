@@ -47,7 +47,7 @@ public class DeployToServerAction
     }
 
     public DeployToServerAction() {
-        this("deploy.configuration.action");
+        this("action.deploy.configuration");
     }
 
     protected boolean isForced() {
@@ -69,7 +69,7 @@ public class DeployToServerAction
         ProgressHandler aProgressHandler = progressHandler.startSubTasks(5, progressHandler.getTitle());
         final ServerConnectionManager connectionManager = getConnectionManager(project);
         final SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        final String description = AEMBundle.message("deploy.configuration.action.description");
+        final String description = AEMBundle.message("action.deploy.configuration.description");
         aProgressHandler.next(description);
         // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
         // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages

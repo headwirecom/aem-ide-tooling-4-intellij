@@ -34,7 +34,12 @@ public class StartDebugConnectionAction
 {
 
     public StartDebugConnectionAction() {
-        super("debug.configuration.action");
+        super("action.debug.configuration");
+    }
+
+    @Override
+    protected boolean isAsynchronous() {
+        return false;
     }
 
     @Override
@@ -50,7 +55,7 @@ public class StartDebugConnectionAction
         if(runManager != null) {
             connectionManager.connectInDebugMode(runManager);
         } else {
-            getMessageManager(project).showAlert("debug.configuration.action.failure");
+            getMessageManager(project).showAlert("action.debug.configuration.failure");
         }
     }
 

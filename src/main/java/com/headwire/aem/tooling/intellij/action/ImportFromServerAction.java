@@ -32,7 +32,6 @@ import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
@@ -110,10 +109,10 @@ public class ImportFromServerAction extends AbstractProjectAction {
                     new Runnable() {
                         public void run() {
                             try {
-                                final String description = AEMBundle.message("deploy.configuration.action.description");
+                                final String description = AEMBundle.message("action.deploy.configuration.description");
                                 IServer server = new IServer(currentModule.getParent());
                                 String path = file.getPath();
-                                String modulePath = currentModule.getModuleContext().getModuleDirectory();
+                                String modulePath = currentModule.getUnifiedModule().getModuleDirectory();
                                 String relativePath = path.substring(modulePath.length());
                                 if(relativePath.startsWith("/")) {
                                     relativePath = relativePath.substring(1);

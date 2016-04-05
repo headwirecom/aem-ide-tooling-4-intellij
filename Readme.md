@@ -7,9 +7,28 @@ Can be found on our [Wiki Page](https://github.com/headwirecom/aem-ide-tooling-4
 
 #### Current Branch:
 
-The latest code can  be found in the **all-action-in-the-background** branch.
+The latest code can  be found in the **master** branch.
 
 #### Updates:
+
+**0.6.4.9**:
+* Dropped the SNAPSHOT from the version.  
+* Started to work on a better Module handling to unify
+  all the various modules (IntelliJ Project Modules, Maven Project and Server Configuration Module).  
+* Added to support for an override of the Bundle Symbolic Name as Felix is renaming them sometimes and
+  porting all OSGi configuration for non-Maven OSGi bundles to the Facet to work with any OSGi
+  configurations and not just Osmorc.  
+* Made the Server Configuration Verification Action available for any selected Server Configuration
+  and let it run in the Foreground to allow for user interactions.  
+* Moving most of the static text into the Resource Bundle including Debug messages.
+* Fixed an issue with the Sling Module Builder which was renamed.  
+* Fixed an issue where in the latest IntelliJ the Plugin Settings will not show in the settings.  
+* Fixed an issue with the Debug Mode as it cannot run in the background.  
+* Updated the Documentation to this release and added new topics like Sling Module Facets etc.  
+
+**0.6.4.8-SNAPSHOT**: Make it work with IntelliJ 2016.1.0. Added the cancel action to the toolbar
+                      to stop background actions. Fixed an issue with IntelliJ 14 which failed to find
+                      components / services if on application level.
 
 **0.6.4.7-SNAPSHOT**: All but Dialog Actions were move into the background which is done in the base
                       class so the Actions don't need to do anything special. Added a better way to

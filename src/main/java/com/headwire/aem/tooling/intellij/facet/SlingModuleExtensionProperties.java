@@ -25,7 +25,7 @@ import com.intellij.util.xmlb.annotations.Tag;
  */
 public class SlingModuleExtensionProperties {
 
-  public enum ModuleType { content, bundle, excluded };
+  public enum ModuleType { content, bundle, excluded};
 
   @Tag("source-root-path")
   public String sourceRootPath = "";
@@ -35,4 +35,16 @@ public class SlingModuleExtensionProperties {
 
   @Tag("module-type")
   public ModuleType moduleType = ModuleType.excluded;
+
+  @Tag("ignore-maven")
+  public boolean ignoreMaven = false;
+
+  @Tag("osgi-symblic-name")
+  public String osgiSymbolicName = "";
+
+  @Tag("osgi-version")
+  public String osgiVersion = "";
+
+  @Tag("osgi-jar-file-name")
+  public String osgiJarFileName = "";
 }

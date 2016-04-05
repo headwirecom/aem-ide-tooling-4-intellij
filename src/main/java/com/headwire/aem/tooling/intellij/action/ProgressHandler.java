@@ -47,6 +47,18 @@ public interface ProgressHandler {
     public ProgressHandler startSubTasks(int Steps, String title);
 
     /**
+     * Creates a new set of sub tasks. Keep in mind
+     * that this will not start a sub task so for the
+     * first subtask a next() is required.
+     *
+     * @param Steps Number of steps. 0 or less means that
+     *              the indicator is indeterminate
+     * @param title Title of the Sub Tasks
+     * @param params List of Parameters added to the Task
+     */
+    public ProgressHandler startSubTasks(int Steps, String title, String...params);
+
+    /**
      * Starts the next sub task. If this call goes beyond
      * the last step it will keep on setting the task name
      * but not progress the indicator bar.
@@ -56,6 +68,18 @@ public interface ProgressHandler {
      * @param task Name of the Task
      */
     public void next(String task);
+
+    /**
+     * Starts the next sub task. If this call goes beyond
+     * the last step it will keep on setting the task name
+     * but not progress the indicator bar.
+     * If there is a sub task then it needs to be finished
+     * first (in IntelliJ pop from stack).
+     *
+     * @param task Name of the Task
+     * @param params List of Parameters added to the Task
+     */
+    public void next(String task, String...params);
 
     public String getTitle();
 

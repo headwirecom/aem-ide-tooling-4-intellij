@@ -36,11 +36,6 @@ public class AEMPluginConfigurationDialog {
     public AEMPluginConfigurationDialog() {
     }
 
-//    private void setUpDialog(AEMPluginConfiguration pluginConfiguration) {
-//        this.pluginConfiguration = pluginConfiguration;
-//        setData(pluginConfiguration);
-//    }
-
     public JComponent getRootPane() {
         return contentPane;
     }

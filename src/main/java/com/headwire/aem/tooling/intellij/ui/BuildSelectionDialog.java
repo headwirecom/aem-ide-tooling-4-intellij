@@ -57,7 +57,7 @@ public class BuildSelectionDialog extends DialogWrapper {
     public BuildSelectionDialog(@NotNull Project project, @NotNull ServerConfiguration serverConfiguration) {
         super(project);
 
-        setTitle(AEMBundle.message("build.configuration.dialog.title"));
+        setTitle(AEMBundle.message("dialog.build.configuration.title"));
         setModal(true);
         setUpDialog(serverConfiguration);
         init();
@@ -232,6 +232,7 @@ public class BuildSelectionDialog extends DialogWrapper {
     public static class ModuleListCellRenderer extends ColoredListCellRenderer {
         protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
             Module module = (Module) value;
+            //AS TODO: This should refer to the module name in the display of the Server Configuration
             append(module.getSymbolicName(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
 //            final String text = group.getTemplatePresentation().getText();
 //            if (text != null) {

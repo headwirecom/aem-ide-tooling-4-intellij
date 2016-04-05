@@ -18,7 +18,7 @@
 
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ModuleContext;
+import com.headwire.aem.tooling.intellij.config.UnifiedModule;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
@@ -138,10 +138,10 @@ public class IntelliJDeploymentManager
 
         public List<String> findContentResources(String filePath) {
             List<String> ret = new ArrayList<String>();
-            ModuleContext moduleContext = getModule().getModuleContext();
-            List<String> contentDirectoryPaths = moduleContext.getContentDirectoryPaths();
+            UnifiedModule unifiedModule = getModule().getUnifiedModule();
+            List<String> contentDirectoryPaths = unifiedModule.getContentDirectoryPaths();
             for(String basePath: contentDirectoryPaths) {
-                messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
+                messageManager.sendDebugNotification("debug.content.base.path", basePath);
                 //AS TODO: Paths from Windows have backlashes instead of forward slashes
                 //AS TODO: It is possible that certain files are in forward slashes even on Windows
                 String myFilePath = filePath == null ? null : filePath.replace("\\", "/");

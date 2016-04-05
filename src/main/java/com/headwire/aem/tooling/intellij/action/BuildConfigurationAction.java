@@ -36,7 +36,7 @@ public class BuildConfigurationAction
     extends AbstractProjectAction
 {
     public BuildConfigurationAction() {
-        super("build.configuration.action");
+        super("action.build.configuration");
     }
 
     @Override

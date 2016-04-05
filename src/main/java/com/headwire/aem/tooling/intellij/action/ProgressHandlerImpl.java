@@ -18,6 +18,7 @@
 
 package com.headwire.aem.tooling.intellij.action;
 
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.progress.ProgressIndicator;
 
 /**
@@ -44,19 +45,28 @@ public class ProgressHandlerImpl
     }
 
     public ProgressHandlerImpl(ProgressIndicator progressIndicator, int steps, String title) {
+        this(progressIndicator, steps, title, new String[] {});
+    }
+
+    public ProgressHandlerImpl(ProgressIndicator progressIndicator, int steps, String title, String...params) {
         this.steps = steps;
-        this.title = title;
+        this.title = AEMBundle.messageOrKey(title, params);
         this.progressIndicator = progressIndicator;
     }
 
     @Override
     public ProgressHandler startSubTasks(int Steps, String title) {
+        return startSubTasks(Steps, title, new String[] {});
+    }
+
+    @Override
+    public ProgressHandler startSubTasks(int Steps, String title, String...params) {
         checkCancellation();
         if(subTasks != null) {
             // Finish any existing sub task
             subTasks.finish();
         }
-        subTasks = new ProgressHandlerImpl(progressIndicator, steps, title);
+        subTasks = new ProgressHandlerImpl(progressIndicator, steps, title, params);
         subTasks.parent = this;
         if(progressIndicator != null) {
             progressIndicator.pushState();
@@ -67,13 +77,18 @@ public class ProgressHandlerImpl
 
     @Override
     public void next(String task) {
+        next(task, new String[]{});
+    }
+
+    @Override
+    public void next(String task, String...params) {
         checkCancellation();
         // Check if the
         if(subTasks != null) {
             subTasks.finish();
         }
         if(progressIndicator != null) {
-            progressIndicator.setText2(task);
+            progressIndicator.setText2(AEMBundle.messageOrKey(task, params));
             if(steps > 0) {
                 // Set fraction as the ratio between the actual step and the total steps
                 progressIndicator.setFraction(currentStep++ / steps);

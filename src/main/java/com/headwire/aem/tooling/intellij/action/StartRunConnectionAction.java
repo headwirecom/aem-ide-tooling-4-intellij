@@ -36,13 +36,18 @@ import org.apache.sling.ide.osgi.OsgiClient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
  */
 public class StartRunConnectionAction extends AbstractProjectAction {
 
+    private volatile CountDownLatch stopSignal;
+
     public StartRunConnectionAction() {
-        super("check.configuration.action");
+        super("action.check.configuration");
     }
 
     @Override
@@ -60,47 +65,61 @@ public class StartRunConnectionAction extends AbstractProjectAction {
         final SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
         final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         if(selectionHandler != null && serverConnectionManager != null) {
-            final String description = AEMBundle.message("check.configuration.action.description");
+            final String description = AEMBundle.message("action.check.configuration.description");
 
             // First Run the Verifier
             ActionManager actionManager = ActionManager.getInstance();
-            VerifyConfigurationAction verifyConfigurationAction = (VerifyConfigurationAction) actionManager.getAction("AEM.Verify.Configuration.Action");
-            boolean verifiedOk = true;
-            ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(9, "Start Run Connection");
+            final VerifyConfigurationAction verifyConfigurationAction = (VerifyConfigurationAction) actionManager.getAction("AEM.Verify.Configuration.Action");
+            final ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(9, "progress.start.run.connection");
+            final AtomicBoolean verifiedOk = new AtomicBoolean(true);
             if(verifyConfigurationAction != null) {
                 try {
-                    progressHandlerSubTask.next("Do Verify");
-                    verifiedOk = verifyConfigurationAction.doVerify(project, SimpleDataContext.getSimpleContext(VerifyConfigurationAction.VERIFY_CONTENT_WITH_WARNINGS, false, dataContext), progressHandlerSubTask);
+                    stopSignal = new CountDownLatch(1);
+                    ApplicationManager.getApplication().invokeLater(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                progressHandlerSubTask.next("progress.start.verification");
+                                try {
+                                    verifiedOk.set(verifyConfigurationAction.doVerify(project, SimpleDataContext.getSimpleContext(VerifyConfigurationAction.VERIFY_CONTENT_WITH_WARNINGS, false, dataContext), progressHandlerSubTask));
+                                } catch(Exception e) {
+                                    getMessageManager(project).sendErrorNotification("server.configuration.verification.failed.unexpected", e);
+                                }
+                                stopSignal.countDown();
+                            }
+                        }
+                    );
+                    stopSignal.await();
                 } catch(Exception e) {
                     // Catch and report unexpected exception as debug message to keep it going
-                    getMessageManager(project).sendDebugNotification("Verification failed due to unexpected exception: " + e);
+                    getMessageManager(project).sendErrorNotification("server.configuration.verification.failed.unexpected", e);
                 }
             }
-            if(verifiedOk) {
-                progressHandlerSubTask.next("Get Current Server Configuration");
+            if(verifiedOk.get()) {
+                progressHandlerSubTask.next("progress.get.current.server.configuration");
                 if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
                     return;
                 }
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                 //AS TODO: this is not showing if the check is short but if it takes longer it will update
-                progressHandlerSubTask.next("Update Server Status");
+                progressHandlerSubTask.next("progress.update.server.status");
                 serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.checking);
-                progressHandlerSubTask.next("Update Server Status, Wait");
+                progressHandlerSubTask.next("progress.update.server.status.wait.cycle");
                 try {
                     Thread.sleep(1000);
                 } catch(InterruptedException e1) {
                     e1.printStackTrace();
                 }
-                progressHandlerSubTask.next("Obtain OSGi Client");
+                progressHandlerSubTask.next("progress.obtain.osgi.client");
                 OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
                 if(osgiClient != null) {
-                    progressHandlerSubTask.next("Check and Update Support Bundle");
+                    progressHandlerSubTask.next("progress.check.support.bundle");
                     ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);
                     if(status != ServerConnectionManager.BundleStatus.failed) {
                         // If a Module is selected then check only this one
-                        progressHandlerSubTask.next("Check and Update Support Bundle");
+                        progressHandlerSubTask.next("progress.obtain.module");
                         ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
-                        progressHandlerSubTask.next("Check Module(s)");
+                        progressHandlerSubTask.next("progress.check.modules");
                         if(module != null) {
                             // Handle Module only
                             serverConnectionManager.checkModule(osgiClient, module);
@@ -108,11 +127,11 @@ public class StartRunConnectionAction extends AbstractProjectAction {
                             // Handle entire Project
                             serverConnectionManager.checkModules(osgiClient);
                         }
-                        progressHandlerSubTask.next("Update Server Status (Running)");
+                        progressHandlerSubTask.next("progress.update.server.status.to.running");
                         serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerConfiguration.ServerStatus.running);
                     }
                 } else {
-                    progressHandlerSubTask.next("Update Server Status (Failed)");
+                    progressHandlerSubTask.next("progress.update.server.status.to.failed");
                     serverConnectionManager.updateServerStatus(serverConfiguration.getName(), ServerStatus.failed);
                 }
             }

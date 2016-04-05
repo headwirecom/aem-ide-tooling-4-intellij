@@ -42,7 +42,7 @@ public class CancelBackgroundAction
     private Icon defaultIcon;
 
     public CancelBackgroundAction() {
-        super("cancel.background.action");
+        super("action.cancel.background");
     }
 
     @Override
