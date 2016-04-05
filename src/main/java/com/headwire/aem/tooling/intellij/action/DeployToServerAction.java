@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -48,7 +47,7 @@ public class DeployToServerAction
     }
 
     public DeployToServerAction() {
-        this("deploy.configuration.action");
+        this("action.deploy.configuration");
     }
 
     protected boolean isForced() {
@@ -56,8 +55,8 @@ public class DeployToServerAction
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
-        doDeploy(dataContext, project, isForced(), indicator);
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
+        doDeploy(dataContext, project, isForced(), progressHandler);
     }
 
     @Override
@@ -66,41 +65,36 @@ public class DeployToServerAction
         return connectionManager != null && connectionManager.isConnectionInUse();
     }
 
-    private void doDeploy(final DataContext dataContext, final Project project, final boolean forceDeploy, @NotNull final ProgressIndicator indicator) {
+    private void doDeploy(final DataContext dataContext, final Project project, final boolean forceDeploy, final ProgressHandler progressHandler) {
+        ProgressHandler aProgressHandler = progressHandler.startSubTasks(5, progressHandler.getTitle());
         final ServerConnectionManager connectionManager = getConnectionManager(project);
         final SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        indicator.setIndeterminate(false);
-        final String description = AEMBundle.message("deploy.configuration.action.description");
-        indicator.setText(description);
-        indicator.setFraction(0);
+        final String description = AEMBundle.message("action.deploy.configuration.description");
+        aProgressHandler.next(description);
         // There is no Run Connection to be made to the AEM Server like with DEBUG (no HotSwap etc).
         // So we just need to setup a connection to the AEM Server to handle OSGi Bundles and Sling Packages
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-        indicator.setText2("Update Status");
-        indicator.setFraction(0.1d);
+        aProgressHandler.next("Update Status");
         //AS TODO: this is not showing if the check is short but if it takes longer it will update
         connectionManager.updateStatus(serverConfiguration, ServerConfiguration.SynchronizationStatus.updating);
-        indicator.setText2("Update Status, wait");
-        indicator.setFraction(0.2d);
+        aProgressHandler.next("Update Status, wait");
         try {
             Thread.sleep(1000);
         } catch(InterruptedException e1) {
             e1.printStackTrace();
         }
-        indicator.setText2("Get Bundle Status");
-        indicator.setFraction(0.3d);
+        aProgressHandler.next("Get Bundle Status");
         // First Check if the Install Support Bundle is installed
         ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(false);
         ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
-        indicator.setText2("Build and Deploy " + (module != null ? "All" : "Single") + " Module");
-        indicator.setFraction(0.4d);
-        indicator.pushState();
+        aProgressHandler.next("Build and Deploy " + (module != null ? "All" : "Single") + " Module");
         if(module != null) {
             // Deploy only the selected Module
-            connectionManager.deployModule(dataContext, module, forceDeploy, indicator);
+            connectionManager.deployModule(dataContext, module, forceDeploy, aProgressHandler);
         } else {
             // Deploy all Modules of the Project
-            connectionManager.deployModules(dataContext, forceDeploy, indicator);
+            connectionManager.deployModules(dataContext, forceDeploy, aProgressHandler);
         }
+        progressHandler.next("Done");
     }
 }

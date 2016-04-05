@@ -1,25 +1,24 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.eclipse;
 
-import com.headwire.aem.tooling.intellij.config.ModuleContext;
+import com.headwire.aem.tooling.intellij.config.UnifiedModule;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
@@ -99,8 +98,8 @@ public class ProjectUtil {
             VirtualFile metaInfFolder = module.getMetaInfFolder();
             if(metaInfFolder == null) {
                 // Now go through the Maven Resource folder and check
-                ModuleContext moduleContext = module.getModuleContext();
-                for(String contentPath: moduleContext.getContentDirectoryPaths()) {
+                UnifiedModule unifiedModule = module.getUnifiedModule();
+                for(String contentPath: unifiedModule.getContentDirectoryPaths()) {
                     if(contentPath.endsWith("/" + META_INF_FOLDER_NAME)) {
                         metaInfFolder = module.getProject().getBaseDir().getFileSystem().findFileByPath(contentPath);
                         module.setMetaInfFolder(metaInfFolder);
@@ -109,8 +108,8 @@ public class ProjectUtil {
             }
             if(metaInfFolder == null) {
                 // Lastly we check if we can find the folder somewhere in the maven project file system
-                ModuleContext moduleContext = module.getModuleContext();
-                VirtualFile test = module.getProject().getBaseDir().getFileSystem().findFileByPath(moduleContext.getModuleDirectory());
+                UnifiedModule unifiedModule = module.getUnifiedModule();
+                VirtualFile test = module.getProject().getBaseDir().getFileSystem().findFileByPath(unifiedModule.getModuleDirectory());
                 metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
                 module.setMetaInfFolder(metaInfFolder);
             }

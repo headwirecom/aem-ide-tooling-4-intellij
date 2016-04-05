@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -22,6 +21,7 @@ package com.headwire.aem.tooling.intellij.action;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -37,33 +37,33 @@ import java.util.List;
 public class ResetConfigurationAction extends AbstractProjectAction {
 
     public ResetConfigurationAction() {
-        super("reset.configuration.action");
+        super("action.reset.configuration");
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
-        doReset(project);
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
+        doReset(project, progressHandler);
     }
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 
-    public void doReset(final Project project) {
+    public void doReset(final Project project, final ProgressHandler progressHandler) {
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         if(selectionHandler != null && serverConnectionManager != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
             if(source != null) {
                 // Before we can verify we need to ensure the Configuration is properly bound to Maven
-                serverConnectionManager.checkBinding(source);
+                serverConnectionManager.checkBinding(source, progressHandler);
                 // Verify each Module to see if all prerequisites are met
-                getMessageManager(project).sendInfoNotification("action.reset.configuration.begin");
+                getMessageManager(project).sendInfoNotification("reset.configuration.begin");
                 for(ServerConfiguration.Module module: source.getModuleList()) {
                     if(module.isSlingPackage()) {
-                        getMessageManager(project).sendInfoNotification("action.reset.configuration.start", module.getName());
+                        getMessageManager(project).sendInfoNotification("reset.configuration.start", module.getName());
                         // Check if the Content Modules have a Content Resource
                         List<String> resourceList = serverConnectionManager.findContentResources(module);
                         for(String contentPath: resourceList) {
@@ -72,10 +72,10 @@ public class ResetConfigurationAction extends AbstractProjectAction {
                                 Util.resetModificationStamp(contentResourceDirectory, true);
                             }
                         }
-                        getMessageManager(project).sendInfoNotification("action.reset.configuration.end", module.getName());
+                        getMessageManager(project).sendInfoNotification("reset.configuration.end", module.getName());
                     }
                 }
-                getMessageManager(project).sendInfoNotification("action.reset.configuration.finish");
+                getMessageManager(project).sendInfoNotification("reset.configuration.finish");
             }
         }
     }

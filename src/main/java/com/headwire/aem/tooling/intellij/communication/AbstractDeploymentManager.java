@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -45,6 +44,9 @@ import java.util.Set;
  */
 public abstract class AbstractDeploymentManager<M, P, F>
 {
+
+    public static final String RENDITIONS_ORIGINAL_FOLDER = "/renditions/original";
+    public static final String RENDITIONS_PATH_FOLDER = "/renditions/";
 
     public abstract class ModuleWrapper {
         private M module;
@@ -127,9 +129,9 @@ public abstract class AbstractDeploymentManager<M, P, F>
         Repository repository = null;
         long lastModificationTimestamp = -1;
         if(force) {
-            sendMessage(MessageType.INFO, "aem.explorer.deploy.module.by.force.prepare", module);
+            sendMessage(MessageType.INFO, "deploy.module.by.force.prepare", module);
         } else {
-            sendMessage(MessageType.INFO, "aem.explorer.deploy.module.prepare", module);
+            sendMessage(MessageType.INFO, "deploy.module.prepare", module);
         }
         try {
             repository = module.obtainRepository();
@@ -149,7 +151,7 @@ public abstract class AbstractDeploymentManager<M, P, F>
                     Iterator<FileWrapper> i = changedResources.iterator();
                     while(i.hasNext()) {
                         FileWrapper fileWrapper = i.next();
-                        if(!fileWrapper.getPath().contains("/renditions/original")) {
+                        if(!fileWrapper.getPath().contains(RENDITIONS_ORIGINAL_FOLDER)) {
                             changedResourcesOrdered.add(fileWrapper);
                             i.remove();
                         }
@@ -162,7 +164,7 @@ public abstract class AbstractDeploymentManager<M, P, F>
                     for(FileWrapper changedResource : changedResources) {
                         // Brute force fix for avoiding the rendition issue
                         String path = changedResource.getPath();
-                        if(path.contains("/renditions/") && !path.contains("/renditions/original")) {
+                        if(path.contains(RENDITIONS_PATH_FOLDER) && !path.contains(RENDITIONS_ORIGINAL_FOLDER)) {
                             continue;
                         }
                         try {
@@ -196,13 +198,13 @@ public abstract class AbstractDeploymentManager<M, P, F>
                                 // The Connector Exception is used to end the processing of publishing a file. In case of an error it will stop the entire processing
                                 // and in case of a warning it will proceed
                                 MessageType type = e.getId() < 0 ? MessageType.ERROR : MessageType.WARNING;
-                                sendAlert(type, "aem.explorer.deploy.exception.title", e.getMessage());
+                                sendAlert(type, "deploy.exception.title", e.getMessage());
                                 if(e.getId() < 0) {
                                     return;
                                 }
                                 throw e;
                             } else {
-                                sendAlert(MessageType.ERROR, "aem.explorer.deploy.exception.title", e.getCause().getMessage());
+                                sendAlert(MessageType.ERROR, "deploy.exception.title", e.getCause().getMessage());
                                 return;
                             }
                         }
@@ -215,26 +217,26 @@ public abstract class AbstractDeploymentManager<M, P, F>
                     if(file != null) {
                         execute(reorderChildNodesCommand(repository, module, file));
                     } else {
-                        sendMessage(MessageType.ERROR, "aem.explorer.deploy.failed.to.reorder.missing.resource", resourcePath);
+                        sendMessage(MessageType.ERROR, "deploy.failed.to.reorder.missing.resource", resourcePath);
                     }
                 }
                 module.setModuleLastModificationTimestamp(lastModificationTimestamp);
                 module.updateModuleStatus(SynchronizationStatus.upToDate);
                 if(force) {
-                    sendMessage(MessageType.INFO, "aem.explorer.deploy.module.by.force.success", module);
+                    sendMessage(MessageType.INFO, "deploy.module.by.force.success", module);
                 } else {
-                    sendMessage(MessageType.INFO, "aem.explorer.deploy.module.success", module);
+                    sendMessage(MessageType.INFO, "deploy.module.success", module);
                 }
             }
         } catch(ConnectorException e) {
-            sendMessage(MessageType.ERROR, "aem.explorer.deploy.module.failed.client", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module, e);
             module.updateModuleStatus(SynchronizationStatus.failed);
             throw new RuntimeException(e);
         } catch(SerializationException e) {
-            sendMessage(MessageType.ERROR, "aem.explorer.deploy.module.failed.client", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module, e);
             module.updateModuleStatus(SynchronizationStatus.failed);
         } catch(IOException e) {
-            sendMessage(MessageType.ERROR, "aem.explorer.deploy.module.failed.io", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.io", module, e);
             module.updateModuleStatus(SynchronizationStatus.failed);
         }
     }
@@ -298,8 +300,8 @@ public abstract class AbstractDeploymentManager<M, P, F>
                 rethrow = new ConnectorException(
                     getMessage(
                         (e.getId() == ExceptionConstants.COMMAND_EXECUTION_FAILURE ?
-                            "aem.explorer.deploy.create.parent.failed.message" :
-                            "aem.explorer.deploy.create.parent.unsuccessful.message" ),
+                            "deploy.create.parent.failed.message" :
+                            "deploy.create.parent.unsuccessful.message" ),
                         e.getMessage(),
                         e.getCause().getMessage()),
                     e
@@ -391,7 +393,7 @@ public abstract class AbstractDeploymentManager<M, P, F>
             }
             throw new ConnectorException(
                 ExceptionConstants.COMMAND_EXECUTION_UNSUCCESSFUL,
-                getMessage("aem.explorer.deploy.command.execution.unsuccessful.message", command.getPath())
+                getMessage("deploy.command.execution.unsuccessful.message", command.getPath())
             );
         }
     }

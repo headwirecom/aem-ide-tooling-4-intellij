@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -29,10 +28,10 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
@@ -52,7 +51,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
     @Override
     public boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         boolean ret = false;
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         if(serverConnectionManager.isConfigurationSelected()) {
             // Now check if a file is selected
             VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
@@ -68,7 +67,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
     }
 
     @Override
-    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator) {
+    protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
         if(virtualFiles != null) {
             switch(virtualFiles.length) {
@@ -85,13 +84,13 @@ public class ImportFromServerAction extends AbstractProjectAction {
     }
 
     private void doImport(final Project project, final VirtualFile file) {
-        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
-        final SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
+        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        final SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
         if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
             return;
         }
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-        serverConnectionManager.checkBinding(serverConfiguration);
+        serverConnectionManager.checkBinding(serverConfiguration, new ProgressHandlerImpl("Do Import from Server"));
         List<ServerConfiguration.Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
         ServerConfiguration.Module currentModuleLookup = null;
         for(ServerConfiguration.Module module: moduleList) {
@@ -110,17 +109,17 @@ public class ImportFromServerAction extends AbstractProjectAction {
                     new Runnable() {
                         public void run() {
                             try {
-                                final String description = AEMBundle.message("deploy.configuration.action.description");
+                                final String description = AEMBundle.message("action.deploy.configuration.description");
                                 IServer server = new IServer(currentModule.getParent());
                                 String path = file.getPath();
-                                String modulePath = currentModule.getModuleContext().getModuleDirectory();
+                                String modulePath = currentModule.getUnifiedModule().getModuleDirectory();
                                 String relativePath = path.substring(modulePath.length());
                                 if(relativePath.startsWith("/")) {
                                     relativePath = relativePath.substring(1);
                                 }
                                 IPath projectRelativePath = new IPath(relativePath);
                                 IProject iProject = new IProject(currentModule);
-                                SerializationManager serializationManager = project.getComponent(SerializationManager.class);
+                                SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
 
 
                                 try {

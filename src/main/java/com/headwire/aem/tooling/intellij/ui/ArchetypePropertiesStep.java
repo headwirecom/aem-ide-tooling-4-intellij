@@ -1,24 +1,23 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 package com.headwire.aem.tooling.intellij.ui;
 
-import com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder;
+import com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
@@ -55,7 +54,7 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
     public static final String NAME_FOR_FOLDER_PLACEHOLDER = "$nameForFolder$";
     public static final String ARTIFACT_ID_PLACEHOLDER = "$artifactId$";
     private final Project myProjectOrNull;
-    private final SlingModuleBuilder myBuilder;
+    private final SlingMavenModuleBuilder myBuilder;
 
     private JPanel myMainPanel;
     private JPanel myEnvironmentPanel;
@@ -69,7 +68,7 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
     private Map<String, String> myAvailableProperties = new HashMap<String, String>();
     private Map<String, String> requiredProperties = new java.util.HashMap<String, String>();
 
-    public ArchetypePropertiesStep(@Nullable Project project, SlingModuleBuilder builder) {
+    public ArchetypePropertiesStep(@Nullable Project project, SlingMavenModuleBuilder builder) {
         myProjectOrNull = project;
         myBuilder = builder;
 
@@ -116,7 +115,7 @@ public class ArchetypePropertiesStep extends ModuleWizardStep {
 
     @Override
     public void updateStep() {
-        SlingModuleBuilder.ArchetypeTemplate archetypeTemplate = myBuilder.getArchetypeTemplate();
+        SlingMavenModuleBuilder.ArchetypeTemplate archetypeTemplate = myBuilder.getArchetypeTemplate();
         MavenArchetype archetype = archetypeTemplate.getMavenArchetype();
 
         Map<String, String> props = new LinkedHashMap<String, String>();

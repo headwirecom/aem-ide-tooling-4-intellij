@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -24,6 +23,7 @@ import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.io.ServiceProvider4IntelliJ;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -71,9 +71,9 @@ public class SlingPluginExplorer
         logger.info("Info message for SSE");
         logger.debug("Debug message for SSE");
         this.project = project;
-        serverConfigurationManager = project.getComponent(ServerConfigurationManager.class);
+        serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
 
-        SlingServerTreeManager slingServerTreeManager = project.getComponent(SlingServerTreeManager.class);
+        SlingServerTreeManager slingServerTreeManager = ComponentProvider.getComponent(project, SlingServerTreeManager.class);
         if(slingServerTreeManager == null) {
             messageManager.showAlert("Failure", "Failure to find Server Tree Manager");
         }
@@ -82,11 +82,11 @@ public class SlingPluginExplorer
         setContent(ScrollPaneFactory.createScrollPane(tree));
         ToolTipManager.sharedInstance().registerComponent(tree);
         RunExecutionMonitor.getInstance(project);
-        messageManager = this.project.getComponent(MessageManager.class);
+        messageManager = ComponentProvider.getComponent(this.project, MessageManager.class);
         tree.addContainerListener(new ContainerListener() {
             @Override
             public void componentAdded(ContainerEvent containerEvent) {
-                messageManager.sendDebugNotification("Container Added Event: " + containerEvent);
+                messageManager.sendDebugNotification("debug.tree.container.listener.component.added", containerEvent);
             }
 
             @Override

@@ -2,11 +2,11 @@
 
 #### Refinements
 
-* Add a Cancel Action to the Toolbar to kill a long running build
-* Improve the Progress Indicator
+* Add a Cancel Action to the Toolbar to kill a long running build (**Done**)
+* Improve the Progress Indicator (**1. Iteration DONE**)
 * Sort / Order the Modules to handle build dependencies
 * When a Server Configuration is created its modules should be created
-  as it is done uring verify. There is not need to verify as that should
+  as it is done inside verify. There is not need to verify as that should
   only be done when a connection is established
 * Clean up the Debug Messages and improve the overall message handling
 * Remove deprecated classes from the project after there is a replacement
@@ -31,12 +31,13 @@
 * Add the OSGi settings into the Sling Facet to support any type of OSGi package
 * Add more tests to the Verification in order to make sure that a build
   is going through. OSGi settings, sling content folders, filters etc
-* Test the Plugin with AEM 6.2 beta
+* Test the Plugin with AEM 6.2 beta (**done**)
 * Find a better way to handle the various types of modules and how to
   discover them from any other type (there should be only one code that
   correlates them by using a Module Manager)
 * All Actions should be executed in the background. Add this to the base
-  Action class
+  Action class (**DONE: Dialog Actions are still executed in the Dispatcher
+  Thread**)
 * 
 
-Andreas Schaefer, 3/13/2016
+Andreas Schaefer, 3/17/2016

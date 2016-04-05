@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -22,6 +21,7 @@ package com.headwire.aem.tooling.intellij.facet;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleExtensionProperties.ModuleType;
+import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
 import com.intellij.facet.ui.FacetEditorValidator;
@@ -41,6 +41,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE_NAME;
+import static com.headwire.aem.tooling.intellij.facet.FacetUtil.createValidatorResult;
+import static com.headwire.aem.tooling.intellij.facet.FacetUtil.createConfigurationException;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 3/4/16.
@@ -56,6 +58,12 @@ public class SlingModuleFacetEditor
     private JCheckBox bundleCheckBox;
     private JCheckBox excludedCheckBox;
     private TextFieldWithBrowseButton metaInfPath;
+    private JTextField bundleSymbolicName;
+    private JTextField bundleVersion;
+    private JCheckBox ignoreMaven;
+    private JTextField jarFileName;
+    private JScrollPane facetHelpScrollPane;
+    private JTextArea facetHelp;
 
     private SlingModuleFacetConfiguration slingModuleFacetConfiguration;
     private FacetEditorContext editorContext;
@@ -65,10 +73,11 @@ public class SlingModuleFacetEditor
         this.slingModuleFacetConfiguration = slingModuleFacetConfiguration;
         this.editorContext = editorContext;
         this.validatorsManager = validatorsManager;
+        this.facetHelp.setText(AEMBundle.message("facet.help.text"));
         reset();
         sourceRootPath.addBrowseFolderListener(
-            "Source Content Root Folder",
-            "For Content Modules you need to specify the source content root folder",
+            AEMBundle.message("facet.content.filter.title"),
+            AEMBundle.message("facet.content.filter.description"),
             editorContext.getProject(),
             FileChooserDescriptorFactory.createSingleFolderDescriptor()
         );
@@ -80,26 +89,14 @@ public class SlingModuleFacetEditor
                     ModuleType moduleType = getModuleType();
                     if(moduleType == ModuleType.content) {
                         Module module = editorContext.getModule();
-                        VirtualFile moduleFile = module.getModuleFile();
                         String filePath = sourceRootPath.getText();
-                        if(filePath == null || filePath.length() == 0) {
-                            return new ValidationResult(
-                                "For a Content Module a Content Root Path must be set",
-                                null //AS TODO: Shall we create a Quick Fix here?
-                            );
-                        } else {
-                            VirtualFile folder = moduleFile.getFileSystem().findFileByPath(filePath);
-                            if(folder == null) {
-                                return new ValidationResult(
-                                    "Content Root Folder: '" + filePath + "' could not be found",
-                                    null //AS TODO: Shall we create a Quick Fix here?
-                                );
-                            } else if(!folder.isDirectory()) {
-                                return new ValidationResult(
-                                    "Content Root Folder: '" + filePath + "' is not a folder",
-                                    null //AS TODO: Shall we create a Quick Fix here?
-                                );
-                            }
+                        switch(FacetUtil.checkFile(module, filePath, true)) {
+                            case fileEmpty:
+                                return createValidatorResult("facet.content.root.not.set");
+                            case fileNotFound:
+                                return createValidatorResult("facet.content.folder.not.found", filePath);
+                            case notDirectory:
+                                return createValidatorResult("facet.content.is.not.folder", filePath);
                         }
                     }
                     return ValidationResult.OK;
@@ -108,8 +105,8 @@ public class SlingModuleFacetEditor
             sourceRootPath
         );
         metaInfPath.addBrowseFolderListener(
-            "Filter Root Folder",
-            "For Content Modules you need to specify the META-INF folder (containing the vault/filter.xml file)",
+            AEMBundle.message("facet.meta-inf.filter.title"),
+            AEMBundle.message("facet.meta-inf.filter.description"),
             editorContext.getProject(),
             FileChooserDescriptorFactory.createSingleFolderDescriptor()
         );
@@ -118,50 +115,101 @@ public class SlingModuleFacetEditor
                 @NotNull
                 @Override
                 public ValidationResult check() {
-                    String result = "";
                     ModuleType moduleType = getModuleType();
-                    String sourceRoot = "";
                     if(moduleType == ModuleType.content) {
                         Module module = editorContext.getModule();
-                        VirtualFile moduleFile = module.getModuleFile();
                         String filePath = metaInfPath.getText();
-                        if(filePath == null || filePath.length() == 0) {
-                            return new ValidationResult(
-                                "For a Content Module a Meta Inf Path must be set",
-                                null //AS TODO: Shall we create a Quick Fix here?
-                            );
-                        } else {
-                            VirtualFile folder = moduleFile.getFileSystem().findFileByPath(filePath);
-                            if(folder == null) {
-                                return new ValidationResult(
-                                    "META-INF Folder: '" + filePath + "' could not be found",
-                                    null //AS TODO: Shall we create a Quick Fix here?
-                                );
-                            } else if(!folder.isDirectory()) {
-                                return new ValidationResult(
-                                    "META-INF Folder: '" + filePath + "' is not a folder",
-                                    null //AS TODO: Shall we create a Quick Fix here?
-                                );
-                            } else {
+                        switch(FacetUtil.checkFile(module, filePath, true)) {
+                            case fileEmpty:
+                                return createValidatorResult("facet.meta-inf.root.not.set");
+                            case fileNotFound:
+                                return createValidatorResult("facet.meta-inf.folder.not.found", filePath);
+                            case notDirectory:
+                                return createValidatorResult("facet.meta-inf.is.not.folder", filePath);
+                            case ok:
+                                VirtualFile folder = module.getModuleFile().getFileSystem().findFileByPath(filePath);
                                 // Check that the Filter file is there
                                 VirtualFile filterFile = ProjectUtil.findFileOrFolder(folder, VAULT_FILTER_FILE_NAME, false);
                                 if(filterFile == null) {
-                                    return new ValidationResult(
-                                        "META-INF Folder: '" + filePath + "' does not contain filter file (" + VAULT_FILTER_FILE_NAME + ")",
-                                        null //AS TODO: Shall we create a Quick Fix here?
-                                    );
+                                    return createValidatorResult("facet.meta-inf.folder.filter.not.found", filePath);
                                 }
-                            }
                         }
                     }
                     return ValidationResult.OK;
                 }
             }, metaInfPath
         );
+        validatorsManager.registerValidator(
+            new FacetEditorValidator() {
+                @NotNull
+                @Override
+                public ValidationResult check() {
+                    ModuleType moduleType = getModuleType();
+                    if(moduleType == ModuleType.bundle) {
+                        boolean ignore = ignoreMaven.isSelected();
+                        String symbolicName = bundleSymbolicName.getText();
+                        if(ignore && symbolicName.length() == 0) {
+                            return createValidatorResult("facet.osgi.symbolic.name.missing");
+                        }
+                    }
+                    return ValidationResult.OK;
+                }
+            },
+            bundleSymbolicName
+        );
+        validatorsManager.registerValidator(
+            new FacetEditorValidator() {
+                @NotNull
+                @Override
+                public ValidationResult check() {
+                    ModuleType moduleType = getModuleType();
+                    if(moduleType == ModuleType.bundle) {
+                        boolean ignore = ignoreMaven.isSelected();
+                        String version = bundleVersion.getText();
+                        if(ignore) {
+                            if(version.length() == 0) {
+                                return createValidatorResult("facet.osgi.version.missing");
+                            }
+                        } else {
+                            if(version.length() > 0) {
+                                return createValidatorResult("facet.osgi.version.not.allowed.with.maven");
+                            }
+                        }
+                    }
+                    return ValidationResult.OK;
+                }
+            },
+            bundleVersion
+        );
+        validatorsManager.registerValidator(
+            new FacetEditorValidator() {
+                @NotNull
+                @Override
+                public ValidationResult check() {
+                    ModuleType moduleType = getModuleType();
+                    if(moduleType == ModuleType.bundle) {
+                        boolean ignore = ignoreMaven.isSelected();
+                        String jar = jarFileName.getText();
+                        if(ignore) {
+                            if(jar.length() == 0) {
+                                return createValidatorResult("facet.osgi.jar.missing");
+                            }
+                        } else {
+                            if(jar.length() > 0) {
+                                return createValidatorResult("facet.osgi.jar.not.allowed.with.maven");
+                            }
+                        }
+                    }
+                    return ValidationResult.OK;
+                }
+            },
+            bundleVersion
+        );
         ChangeListener groupChangeListener = new GroupChangeListener();
         contentCheckBox.addChangeListener(groupChangeListener);
         bundleCheckBox.addChangeListener(groupChangeListener);
         excludedCheckBox.addChangeListener(groupChangeListener);
+        ignoreMaven.addChangeListener(groupChangeListener);
         // Make sure the source root path is enabled correctly at the beginnning
         checkCheckBoxes();
     }
@@ -178,13 +226,17 @@ public class SlingModuleFacetEditor
         boolean moduleTypeChanged = moduleType != slingModuleFacetConfiguration.getModuleType();
         boolean sourcePathChanged = !sourceRootPath.getText().equals(slingModuleFacetConfiguration.getSourceRootPath());
         boolean metainfPathChanged = !metaInfPath.getText().equals(slingModuleFacetConfiguration.getMetaInfPath());
-        LOG.debug(
-            "Module Type Changed: " + moduleTypeChanged +
-            "source path changed: " + sourcePathChanged +
-            "metainf path changed: " + metainfPathChanged
-        );
+        LOG.debug(AEMBundle.message("debug.facet.module.type.changed", moduleTypeChanged));
+        LOG.debug(AEMBundle.message("debug.facet.source.path.changed", sourcePathChanged));
+        LOG.debug(AEMBundle.message("debug.facet.meta-inf.path.changed", metainfPathChanged));
+        boolean ignoreMavenChanged = ignoreMaven.isSelected() != slingModuleFacetConfiguration.isIgnoreMaven();
+        boolean symbolicNameChanged = bundleSymbolicName.getText().equals(slingModuleFacetConfiguration.getOsgiSymbolicName());
+        boolean versionChanged = bundleVersion.getText().equals(slingModuleFacetConfiguration.getOsgiVersion());
+        boolean jarFileNameChanged = jarFileName.getText().equals(slingModuleFacetConfiguration.getOsgiJarFileName());
         return moduleTypeChanged ||
-            (moduleType == ModuleType.content && (sourcePathChanged || metainfPathChanged));
+            (moduleType == ModuleType.content && (sourcePathChanged || metainfPathChanged)) ||
+            (moduleType == ModuleType.bundle && (ignoreMavenChanged || symbolicNameChanged || versionChanged || jarFileNameChanged))
+            ;
     }
 
     @Override
@@ -196,15 +248,16 @@ public class SlingModuleFacetEditor
             Module module = editorContext.getModule();
             VirtualFile moduleFile = module.getModuleFile();
             String filePath = sourceRootPath.getText();
-            if(filePath == null) {
-                throw new ConfigurationException("Source Root Path must be set for Content Module");
-            } else {
-                VirtualFile folder = moduleFile.getFileSystem().findFileByPath(filePath);
-                if(folder == null) {
-                    throw new ConfigurationException("Source Root Path: " + filePath + " does not point to a folder");
-                } else {
+            switch(FacetUtil.checkFile(module, filePath, true)) {
+                case fileEmpty:
+                    throw createConfigurationException("facet.content.root.not.set");
+                case fileNotFound:
+                    throw createConfigurationException("facet.content.folder.not.found", filePath);
+                case notDirectory:
+                    throw createConfigurationException("facet.content.is.not.folder", filePath);
+                default:
+                    VirtualFile folder = moduleFile.getFileSystem().findFileByPath(filePath);
                     sourceRoot = folder.getPath();
-                }
             }
         }
         slingModuleFacetConfiguration.setSourceRootPath(sourceRoot);
@@ -213,18 +266,49 @@ public class SlingModuleFacetEditor
             Module module = editorContext.getModule();
             VirtualFile moduleFile = module.getModuleFile();
             String filePath = metaInfPath.getText();
-            if(filePath == null) {
-                throw new ConfigurationException("Filter Root Path must be set for Content Module");
-            } else {
-                VirtualFile folder = moduleFile.getFileSystem().findFileByPath(filePath);
-                if(folder == null) {
-                    throw new ConfigurationException("Metainf Path: " + filePath + " does not point to a folder");
-                } else {
-                    filterRoot = folder.getPath();
-                }
+            switch(FacetUtil.checkFile(module, filePath, true)) {
+                case fileEmpty:
+                    throw createConfigurationException("facet.meta-inf.root.not.set");
+                case fileNotFound:
+                    throw createConfigurationException("facet.meta-inf.folder.not.found", filePath);
+                case notDirectory:
+                    throw createConfigurationException("facet.meta-inf.is.not.folder", filePath);
+                case ok:
+                    VirtualFile folder = module.getModuleFile().getFileSystem().findFileByPath(filePath);
+                    // Check that the Filter file is there
+                    VirtualFile filterFile = ProjectUtil.findFileOrFolder(folder, VAULT_FILTER_FILE_NAME, false);
+                    if(filterFile == null) {
+                        throw createConfigurationException("facet.meta-inf.folder.filter.not.found", filePath);
+                    } else {
+                        filterRoot = folder.getPath();
+                    }
             }
         }
         slingModuleFacetConfiguration.setMetaInfPath(filterRoot);
+        boolean ignore = true;
+        String symbolicName = "";
+        String version = "";
+        String jar = "";
+        if(moduleType == ModuleType.bundle) {
+            ignore = ignoreMaven.isSelected();
+            symbolicName = bundleSymbolicName.getText();
+            version = bundleVersion.getText();
+            jar = jarFileName.getText();
+            if(ignore) {
+                if(version.length() == 0) {
+                    throw createConfigurationException("facet.osgi.version.missing");
+                } else if(jar.length() == 0) {
+                    throw createConfigurationException("facet.osgi.jar.missing");
+                }
+            }
+            if(symbolicName.length() == 0) {
+                throw createConfigurationException("facet.osgi.symbolic.name.missing");
+            }
+        }
+        slingModuleFacetConfiguration.setIgnoreMaven(ignore);
+        slingModuleFacetConfiguration.setOsgiSymbolicName(symbolicName);
+        slingModuleFacetConfiguration.setOsgiVersion(version);
+        slingModuleFacetConfiguration.setOsgiJarFileName(jar);
         // Inform the Server Configuration Manager about the change and that he should refresh the modules
         ServerConfigurationManager serverConfigurationManager =
             editorContext.getProject().getComponent(ServerConfigurationManager.class);
@@ -233,7 +317,7 @@ public class SlingModuleFacetEditor
             succeeded = serverConfigurationManager.updateCurrentServerConfiguration();
         }
         if(!succeeded) {
-            throw new ConfigurationException("Failed to update server configuration");
+            throw new ConfigurationException(AEMBundle.message("facet.update.server.configuration.failed"));
         }
     }
 
@@ -241,6 +325,10 @@ public class SlingModuleFacetEditor
     public void reset() {
         sourceRootPath.setText(slingModuleFacetConfiguration.getSourceRootPath());
         metaInfPath.setText(slingModuleFacetConfiguration.getMetaInfPath());
+        ignoreMaven.setSelected(slingModuleFacetConfiguration.isIgnoreMaven());
+        bundleSymbolicName.setText(slingModuleFacetConfiguration.getOsgiSymbolicName());
+        bundleVersion.setText(slingModuleFacetConfiguration.getOsgiVersion());
+        jarFileName.setText(slingModuleFacetConfiguration.getOsgiJarFileName());
         switch(slingModuleFacetConfiguration.getModuleType()) {
             case content:
                 contentCheckBox.setSelected(true);
@@ -260,12 +348,14 @@ public class SlingModuleFacetEditor
     @Nls
     @Override
     public String getDisplayName() {
-        return "Sling Content Facet";
+        return AEMBundle.message("facet.name");
     }
 
     private void checkCheckBoxes() {
         sourceRootPath.setEnabled(contentCheckBox.isSelected());
         metaInfPath.setEnabled(contentCheckBox.isSelected());
+        bundleVersion.setEnabled(ignoreMaven.isSelected());
+        jarFileName.setEnabled(ignoreMaven.isSelected());
     }
 
     private ModuleType getModuleType() {

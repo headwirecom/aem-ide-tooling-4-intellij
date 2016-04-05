@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -23,6 +22,7 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.ide.CommonActionsManager;
@@ -95,17 +95,17 @@ public class SlingServerTreeManager
 
     public SlingServerTreeManager(@NotNull Project project) {
         super(project);
-        final MessageManager messageManager = project.getComponent(MessageManager.class);
+        final MessageManager messageManager = ComponentProvider.getComponent(project, MessageManager.class);
         final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
         tree = new Tree(model);
         tree.setRootVisible(true);
         tree.setShowsRootHandles(true);
         tree.setCellRenderer(new NodeRenderer());
-        SlingServerTreeSelectionHandler selectionHandler = project.getComponent(SlingServerTreeSelectionHandler.class);
+        SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
         selectionHandler.init(tree);
-        ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
         serverConnectionManager.init(selectionHandler);
-        myConfig = project.getComponent(ServerConfigurationManager.class);
+        myConfig = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
         myBuilder = new SlingServerTreeBuilder(project, tree, model);
         TreeUtil.installActions(tree);
         new TreeSpeedSearch(tree);
@@ -120,7 +120,7 @@ public class SlingServerTreeManager
         tree.addContainerListener(new ContainerListener() {
             @Override
             public void componentAdded(ContainerEvent containerEvent) {
-                messageManager.sendDebugNotification("Container Event: " + containerEvent);
+                messageManager.sendDebugNotification("debug.tree.container.listener.component.added", containerEvent);
             }
 
             @Override
@@ -204,10 +204,10 @@ public class SlingServerTreeManager
 
     public void adjustToolbar(DefaultActionGroup group) {
         AnAction action = CommonActionsManager.getInstance().createExpandAllAction(myTreeExpander, tree);
-        action.getTemplatePresentation().setDescription(AEMBundle.message("eam.explorer.expand.all.nodes.action.description"));
+        action.getTemplatePresentation().setDescription(AEMBundle.message("action.expand.all.nodes.description"));
         group.add(action);
         action = CommonActionsManager.getInstance().createCollapseAllAction(myTreeExpander, tree);
-        action.getTemplatePresentation().setDescription(AEMBundle.message("aem.explorer.collapse.all.nodes.action.description"));
+        action.getTemplatePresentation().setDescription(AEMBundle.message("action.collapse.all.nodes.description"));
         group.add(action);
     }
 

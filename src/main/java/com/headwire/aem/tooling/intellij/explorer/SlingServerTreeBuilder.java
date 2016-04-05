@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 package com.headwire.aem.tooling.intellij.explorer;
@@ -21,6 +20,7 @@ package com.headwire.aem.tooling.intellij.explorer;
 import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
 import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.ide.util.treeView.*;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -52,7 +52,7 @@ final class SlingServerTreeBuilder extends AbstractTreeBuilder {
         super(tree, treeModel, new SlingServerTreeStructure(project), IndexComparator.INSTANCE);
         myProject = project;
         myConfigurationListener = new ConfigurationListenerImpl();
-        myConfig = project.getComponent(ServerConfigurationManager.class);
+        myConfig = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
         myExpansionListener = new ExpandedStateUpdater();
         tree.addTreeExpansionListener(myExpansionListener);
         initRootNode();

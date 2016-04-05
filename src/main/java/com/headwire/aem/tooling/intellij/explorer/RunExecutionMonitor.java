@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -22,6 +21,7 @@ package com.headwire.aem.tooling.intellij.explorer;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.debugger.engine.RemoteDebugProcessHandler;
 import com.intellij.execution.ExecutionAdapter;
 import com.intellij.execution.ExecutionManager;
@@ -59,7 +59,7 @@ public class RunExecutionMonitor {
         synchronized(instances) {
             ret = instances.get(project);
             if(ret == null) {
-                project.getComponent(MessageManager.class).sendDebugNotification("Create new REM for Project: " + project);
+                ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification("debug.runtime.execution.manager.created", project);
                 ret = new RunExecutionMonitor(project);
                 instances.put(project, ret);
             }
@@ -90,7 +90,7 @@ public class RunExecutionMonitor {
     }
 
     private void init() {
-        serverConfigurationManager = project.getComponent(ServerConfigurationManager.class);
+        serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
         final MessageBus bus = project.getMessageBus();
         connection = bus.connect();
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
@@ -101,8 +101,8 @@ public class RunExecutionMonitor {
                 @Override
                 public void processStartScheduled(String executorId, ExecutionEnvironment env) {
                     if(RUN_EXECUTION.equals(executorId)) {
-                        project.getComponent(MessageManager.class).sendDebugNotification(
-                            "Schedule Maven Run on Project: " + project
+                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
+                            "debug.runtime.execution.manager.scheduled", project
                         );
                     }
                 }
@@ -120,8 +120,8 @@ public class RunExecutionMonitor {
                             // Mark any Bundles inside the Tree as unknown
                         }
                     } else if(RUN_EXECUTION.equals(executorId)) {
-                        project.getComponent(MessageManager.class).sendDebugNotification(
-                            "Maven Run Failed to Start on Project: " + project
+                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
+                            "debug.runtime.execution.manager.failed.to.start", project
                         );
                         stopSignal.countDown();
                     }
@@ -155,8 +155,8 @@ public class RunExecutionMonitor {
                             // Mark any Bundles inside the Tree as disconnected
                         }
                     } else if(runProfile instanceof MavenRunConfiguration) {
-                        project.getComponent(MessageManager.class).sendDebugNotification(
-                            "Finish Maven Run Ended Project: " + project
+                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
+                            "debug.runtime.execution.manager.ended", project
                         );
                         stopSignal.countDown();
                     }

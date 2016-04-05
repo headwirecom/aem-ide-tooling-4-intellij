@@ -1,27 +1,25 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.ui;
 
-import com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder;
+import com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.wizard.CommitStepException;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.popup.ListItemDescriptorAdapter;
@@ -41,11 +39,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.headwire.aem.tooling.intellij.explorer.SlingModuleBuilder.ArchetypeTemplate;
+import static com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder.ArchetypeTemplate;
 
 public class SlingArchetypesStep extends ModuleWizardStep implements Disposable {
 
@@ -55,10 +52,10 @@ public class SlingArchetypesStep extends ModuleWizardStep implements Disposable 
     private JTextArea archetypeDescriptionField;
     private JScrollPane archetypeDescriptionScrollPane;
 
-    private final SlingModuleBuilder moduleBuilder;
-    private final List<SlingModuleBuilder.ArchetypeTemplate> mavenArchetypeList;
+    private final SlingMavenModuleBuilder moduleBuilder;
+    private final List<SlingMavenModuleBuilder.ArchetypeTemplate> mavenArchetypeList;
 
-    public SlingArchetypesStep(SlingModuleBuilder builder, @NotNull List<ArchetypeTemplate> archetypeList) {
+    public SlingArchetypesStep(SlingMavenModuleBuilder builder, @NotNull List<ArchetypeTemplate> archetypeList) {
         moduleBuilder = builder;
         mavenArchetypeList = archetypeList;
         archetypeJBList.setModel(

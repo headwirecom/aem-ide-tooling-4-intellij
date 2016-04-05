@@ -1,29 +1,30 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.action;
 
+import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl.CancellationException;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -32,6 +33,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
+import com.intellij.ui.SystemNotifications;
 import com.intellij.util.containers.HashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,6 +50,7 @@ public abstract class AbstractProjectAction
 {
     /** Map that contains the Toolbar Locks per Project **/
     private static Map<Project, Boolean> lockMap = new HashMap<Project, Boolean>();
+    private static ProgressHandlerImpl progressHandler;
 
     private String titleId;
 
@@ -84,15 +87,21 @@ public abstract class AbstractProjectAction
 
                     @Nullable
                     public NotificationInfo getNotificationInfo() {
-                        return new NotificationInfo(AEMBundle.message("plugin.action.title"), getTitle(), AEMBundle.message(taskId));
+                        return new NotificationInfo(AEMBundle.message("plugin.action.title"), AEMBundle.message(myTitle), AEMBundle.message(taskId));
                     }
 
                     public void run(@NotNull final ProgressIndicator indicator) {
                         try {
-                            execute(project, dataContext, indicator);
+                            getMessageManager(project).sendInfoNotification("action.start", AEMBundle.message(myTitle));
+                            progressHandler = new ProgressHandlerImpl(indicator, getTitle());
+                            execute(project, dataContext, progressHandler);
+                            getMessageManager(project).sendInfoNotification("action.end", AEMBundle.message(myTitle));
+                        } catch(CancellationException e) {
+                            // The user cancelled the task and so we catch the exception and report is to the user
+                            getMessageManager(project).sendInfoNotification("action.cancelled", e.getMessage());
                         } finally {
+                            progressHandler = null;
                             unlock(project);
-                            getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
                         }
                     }
 
@@ -106,10 +115,9 @@ public abstract class AbstractProjectAction
                 });
             } else {
                 try {
-                    execute(project, dataContext, new NullProgressIndicator());
+                    execute(project, dataContext, null);
                 } finally {
                     unlock(project);
-                    getMessageManager(project).sendInfoNotification("aem.explorer.deploy.done");
                 }
             }
         }
@@ -117,25 +125,20 @@ public abstract class AbstractProjectAction
 
     @NotNull
     protected MessageManager getMessageManager(@NotNull Project project) {
-        return project.getComponent(MessageManager.class);
+        return ComponentProvider.getComponent(project, MessageManager.class);
     }
 
-    protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext, @NotNull final ProgressIndicator indicator);
+    /** Method that provides does do the action. If the action is handled in the background the Progress Indicator is set otherwise null */
+    protected abstract void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler);
 
     protected abstract boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext);
 
-    /**
-     * This method indicates if an Action is executing tasks in the background. If true then
-     * the action must unlock the toolbar when the task is done.
-     *
-     * @return True if code is executed in the background and therefore the unlock must be postponed
-     *         where it becomes the Action responsibility to unlock it when done.
-     */
+    /** @return True if the Action must be executed in the background. If so the Progress Indicator is provided otherwise it is null */
     protected boolean isAsynchronous() {
         return true;
     }
 
-    private synchronized boolean isLocked(Project project) {
+    protected synchronized boolean isLocked(Project project) {
         Boolean ret = lockMap.get(project);
         return ret == null ? false : ret;
     }
@@ -149,6 +152,20 @@ public abstract class AbstractProjectAction
         lockMap.put(project, true);
     }
 
+    protected boolean isCancelable() {
+        return progressHandler != null;
+    }
+
+    protected boolean isCancelled() {
+        return progressHandler != null && progressHandler.isMarkedAsCancelled();
+    }
+
+    protected void cancel() {
+        if(progressHandler != null) {
+            progressHandler.markAsCancelled();
+        }
+    }
+
     /**
      * Unlocks the Toolbar for the given Project
      *
@@ -159,14 +176,14 @@ public abstract class AbstractProjectAction
     }
 
     protected SlingServerTreeSelectionHandler getSelectionHandler(@Nullable Project project) {
-        return project == null ? null : project.getComponent(SlingServerTreeSelectionHandler.class);
+        return project == null ? null : ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
     }
 
     protected ServerConnectionManager getConnectionManager(@Nullable Project project) {
-        return project == null ? null : project.getComponent(ServerConnectionManager.class);
+        return project == null ? null : ComponentProvider.getComponent(project, ServerConnectionManager.class);
     }
 
     protected ServerConfigurationManager getConfigurationManager(@Nullable Project project) {
-        return project == null ? null : project.getComponent(ServerConfigurationManager.class);
+        return project == null ? null : ComponentProvider.getComponent(project, ServerConfigurationManager.class);
     }
 }

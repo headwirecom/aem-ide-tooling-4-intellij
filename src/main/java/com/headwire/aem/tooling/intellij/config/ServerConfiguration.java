@@ -1,19 +1,18 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -151,7 +150,7 @@ public class ServerConfiguration
     //AS TODO: Not sure about this -> Check if that works
     private transient ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
     private transient SynchronizationStatus synchronizationStatus = DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
-    private transient boolean bound = false;
+//    private transient boolean bound = false;
     private transient boolean booted = false;
     // Modules must be stored because they carry the info if a project is part of the deployment build
     private List<Module> moduleList = new ArrayList<Module>();
@@ -382,11 +381,27 @@ public class ServerConfiguration
 
     public List<Module> getModuleList() { return moduleList; }
 
+    @Deprecated
     public Module obtainModuleBySymbolicName(String symbolicName) {
         Module ret = null;
         if(symbolicName != null) {
             for(Module module : moduleList) {
+                //AS TODO: Need to figure out who is calling this mehod to know if this is related to OSGi
                 if(symbolicName.equals(module.getSymbolicName())) {
+                    ret = module;
+                    break;
+                }
+            }
+        }
+        return ret;
+    }
+
+    public Module obtainModuleByName(String moduleName) {
+        Module ret = null;
+        if(moduleName != null) {
+            for(Module module : moduleList) {
+                //AS TODO: Need to figure out who is calling this mehod to know if this is related to OSGi
+                if(moduleName.equals(module.getName())) {
                     ret = module;
                     break;
                 }
@@ -413,10 +428,10 @@ public class ServerConfiguration
         return ret;
     }
 
-    public Module addModule(Project project, ModuleContext moduleContext) {
+    public Module addModule(Project project, UnifiedModule unifiedModule) {
         Module ret = obtainModuleBySymbolicName(name);
         if(ret == null) {
-            ret = new Module(this, project, moduleContext);
+            ret = new Module(this, project, unifiedModule);
             moduleList.add(ret);
         }
         return ret;
@@ -428,7 +443,7 @@ public class ServerConfiguration
     }
 
     public boolean isBound() {
-        boolean ret = bound;
+        boolean ret = !moduleList.isEmpty();
         for(Module module: moduleList) {
             ret = ret && module.isBound();
         }
@@ -436,7 +451,7 @@ public class ServerConfiguration
     }
 
     public void unBind() {
-        bound = false;
+//        bound = false;
         for(Module module: moduleList) {
             module.unBind();
         }
@@ -444,37 +459,34 @@ public class ServerConfiguration
 
     public static class Module {
         private ServerConfiguration parent;
-//        private String artifactId;
-        private String symbolicName;
+        private String moduleName;
         private boolean partOfBuild = true;
         private long lastModificationTimestamp;
         private transient Project project;
         private transient SlingProject slingProject;
-        private transient ModuleContext moduleContext;
+        private transient UnifiedModule unifiedModule;
         private transient SynchronizationStatus status = SynchronizationStatus.notChecked;
         private transient ServerConfigurationManager.ConfigurationChangeListener configurationChangeListener;
         private transient VirtualFile metaInfFolder;
         private transient VirtualFile filterFile;
         private transient Filter filter;
 
-        public Module(@NotNull ServerConfiguration parent, /* @NotNull String artifactId,*/ @NotNull String symbolicName, boolean partOfBuild, long lastModificationTimestamp) {
+        public Module(@NotNull ServerConfiguration parent, @NotNull String moduleName, boolean partOfBuild, long lastModificationTimestamp) {
             this.parent = parent;
-//            this.artifactId = artifactId;
-            this.symbolicName = symbolicName;
+            this.moduleName = moduleName;
             setPartOfBuild(partOfBuild);
             this.lastModificationTimestamp = lastModificationTimestamp;
             this.configurationChangeListener = parent.configurationChangeListener;
         }
 
-        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull ModuleContext moduleContext) {
+        private Module(@NotNull ServerConfiguration parent, @NotNull Project project, @NotNull UnifiedModule unifiedModule) {
             this.parent = parent;
-//            this.artifactId = moduleContext.getArtifactId();
-            this.symbolicName = getSymbolicName(moduleContext);
+            this.moduleName = unifiedModule.getModule().getName();
             this.configurationChangeListener = parent.configurationChangeListener;
-            rebind(project, moduleContext);
+            rebind(project, unifiedModule);
         }
 
-        public static String getSymbolicName(ModuleContext project) {
+        public static String getSymbolicName(UnifiedModule project) {
             return project.getSymbolicName();
         }
 
@@ -501,11 +513,11 @@ public class ServerConfiguration
         }
 
         public String getSymbolicName() {
-            return symbolicName;
+            return unifiedModule == null ? "No Project" : unifiedModule.getSymbolicName();
         }
 
         public String getName() {
-            return project == null ? "No Project" : moduleContext.getName();
+            return unifiedModule == null ? moduleName : unifiedModule.getName();
         }
 
         public long getLastModificationTimestamp() {
@@ -519,7 +531,7 @@ public class ServerConfiguration
         }
 
         public String getVersion() {
-            return project == null ? "No Project" : moduleContext.getVersion();
+            return unifiedModule == null ? "No Project" : unifiedModule.getVersion();
         }
 
         public Project getProject() {
@@ -530,8 +542,8 @@ public class ServerConfiguration
             return slingProject;
         }
 
-        public ModuleContext getModuleContext() {
-            return moduleContext;
+        public UnifiedModule getUnifiedModule() {
+            return unifiedModule;
         }
 
         public SynchronizationStatus getStatus() {
@@ -563,40 +575,46 @@ public class ServerConfiguration
         }
 
         public boolean isOSGiBundle() {
-            return project != null && moduleContext.isOSGiBundle();
+            return unifiedModule != null && unifiedModule.isOSGiBundle();
         }
 
         public boolean isSlingPackage() {
-            return project != null && moduleContext.isContent();
+            return unifiedModule != null && unifiedModule.isContent();
         }
 
         public boolean isBound() {
-            return moduleContext != null;
+            return unifiedModule != null;
         }
 
         public void unBind() {
-            moduleContext = null;
+            // First remove this Module from the Module Context
+            if(unifiedModule != null) {
+                unifiedModule.removeServerConfigurationModule(this);
+            }
+            unifiedModule = null;
         }
 
-        public boolean rebind(@NotNull Project project, @NotNull ModuleContext moduleContext) {
+        public boolean rebind(@NotNull Project project, @NotNull UnifiedModule unifiedModule) {
             boolean ret = false;
-            parent.bound = true;
-            // Check if the Symbolic Name match
-            String symbolicName = getSymbolicName(moduleContext);
-            if(this.symbolicName.equals(symbolicName)) {
-                this.project = project;
-                this.moduleContext = moduleContext;
-//                this.artifactId = moduleContext.getArtifactId();
-                if(!isOSGiBundle() && !isSlingPackage()) {
-                    setStatus(SynchronizationStatus.unsupported);
-                } else {
-                    setStatus(SynchronizationStatus.notChecked);
-                }
-                if(configurationChangeListener != null) { configurationChangeListener.configurationChanged(); }
-                this.slingProject = new SlingProject4IntelliJ(this);
-                ret = true;
+            // Check if the Module Name match and issue a warning if not otherwise proceed
+            String moduleName = unifiedModule.getName();
+            if(!this.moduleName.equals(moduleName)) {
+                //AS TODO: Warn about the mismatch in the Modules
             }
-            String metaInfPath = moduleContext.getMetaInfPath();
+            this.project = project;
+            this.unifiedModule = unifiedModule;
+            this.unifiedModule.addServerConfigurationModule(this);
+            if(!isOSGiBundle() && !isSlingPackage()) {
+                setStatus(SynchronizationStatus.unsupported);
+            } else {
+                setStatus(SynchronizationStatus.notChecked);
+            }
+            if(configurationChangeListener != null) {
+                configurationChangeListener.configurationChanged();
+            }
+            this.slingProject = new SlingProject4IntelliJ(this);
+            ret = true;
+            String metaInfPath = unifiedModule.getMetaInfPath();
             if(metaInfPath != null) {
                 VirtualFile metaInfFolder = project.getBaseDir().getFileSystem().findFileByPath(metaInfPath);
                 if(metaInfFolder != null) {
@@ -616,7 +634,7 @@ public class ServerConfiguration
         @Override
         public String toString() {
             return "Module: " +
-                "symbolic name = '" + symbolicName + '\'' +
+                "module name = '" + moduleName + '\'' +
                 ", last modification timestamp = " + lastModificationTimestamp +
                 ", part of build = " + partOfBuild +
                 "";

@@ -1,43 +1,39 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.action.NullProgressIndicator;
+import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction;
 import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.codeInsight.CodeSmellInfo;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressIndicatorProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.vcs.CodeSmellDetector;
@@ -79,8 +75,8 @@ public class ContentResourceChangeListener
 
     public ContentResourceChangeListener(@NotNull Project project) {
         super(project);
-        final ServerConnectionManager serverConnectionManager = project.getComponent(ServerConnectionManager.class);
-        pluginConfiguration = project.getComponent(AEMPluginConfiguration.class);
+        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        pluginConfiguration = ComponentProvider.getComponent(project, AEMPluginConfiguration.class);
         this.serverConnectionManager = serverConnectionManager;
         this.project = project;
 
@@ -159,7 +155,7 @@ public class ContentResourceChangeListener
             new Runnable() {
                 @Override
                 public void run() {
-                    SlingServerTreeManager slingServerTreeManager = myProject.getComponent(SlingServerTreeManager.class);
+                    SlingServerTreeManager slingServerTreeManager = ComponentProvider.getComponent(myProject, SlingServerTreeManager.class);
                     if(slingServerTreeManager != null) {
                         // At the end of the Tool Window is created we run the Check if a project is marked as Default
                         Object modelRoot = slingServerTreeManager.getTree().getModel().getRoot();
@@ -179,7 +175,7 @@ public class ContentResourceChangeListener
                                                 slingServerTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                                 StartRunConnectionAction runAction = (StartRunConnectionAction) actionManager.getAction("AEM.Check.Action");
                                                 if (runAction != null) {
-                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new NullProgressIndicator());
+                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new ProgressHandlerImpl("Connection Change Listener Check"));
                                                 }
                                                 break;
                                             case debug:
@@ -285,7 +281,7 @@ public class ContentResourceChangeListener
                         }
                     );
                 } else {
-                    MessageManager messageManager = project.getComponent(MessageManager.class);
+                    MessageManager messageManager = ComponentProvider.getComponent(project, MessageManager.class);
                     if(messageManager != null) {
                         messageManager.sendErrorNotification(
                             "server.update.file.change.with.error",

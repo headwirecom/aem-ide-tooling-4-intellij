@@ -1,26 +1,27 @@
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *  * Licensed to the Apache Software Foundation (ASF) under one or more
- *  * contributor license agreements.  See the NOTICE file distributed with
- *  * this work for additional information regarding copyright ownership.
- *  * The ASF licenses this file to You under the Apache License, Version 2.0
- *  * (the "License"); you may not use this file except in compliance with
- *  * the License.  You may obtain a copy of the License at
- *  *
- *  *      http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ModuleContext;
-import com.headwire.aem.tooling.intellij.config.ModuleProjectFactory;
+import com.headwire.aem.tooling.intellij.action.ProgressHandler;
+import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
+import com.headwire.aem.tooling.intellij.config.ModuleManager;
+import com.headwire.aem.tooling.intellij.config.UnifiedModule;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 
@@ -35,6 +36,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
@@ -61,13 +63,11 @@ import com.intellij.openapi.compiler.CompileScope;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
-import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowId;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.packaging.impl.compiler.ArtifactCompileScope;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
@@ -87,6 +87,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
+import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.MavenDataKeys;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
@@ -99,7 +100,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -138,14 +138,16 @@ public class ServerConnectionManager
     private ServerConfigurationManager serverConfigurationManager;
 //    private NewResourceChangeCommandFactory commandFactory;
     private IntelliJDeploymentManager deploymentManager;
+    private ModuleManager moduleManager;
 
     private static boolean firstRun = true;
 
     public ServerConnectionManager(@NotNull Project project) {
         super(project);
-        messageManager = myProject.getComponent(MessageManager.class);
-        serverConfigurationManager = myProject.getComponent(ServerConfigurationManager.class);
+        messageManager = ComponentProvider.getComponent(myProject, MessageManager.class);
+        serverConfigurationManager = ComponentProvider.getComponent(myProject, ServerConfigurationManager.class);
         deploymentManager = new IntelliJDeploymentManager(project);
+        moduleManager = ComponentProvider.getComponent(myProject, ModuleManager.class);
     }
 
     public void init(@NotNull SlingServerTreeSelectionHandler slingServerTreeSelectionHandler) {
@@ -187,7 +189,7 @@ public class ServerConnectionManager
         if(serverConfiguration != null) {
             ServerConfiguration.SynchronizationStatus status = ServerConfiguration.SynchronizationStatus.upToDate;
             boolean allSynchronized = true;
-            if(checkBinding(serverConfiguration)) {
+            if(checkBinding(serverConfiguration, new ProgressHandlerImpl("Check Bindings"))) {
                 int moduleCount = serverConfiguration.getModuleList().size();
                 float steps = (float) (0.9 / moduleCount);
                 for(Module module : serverConfiguration.getModuleList()) {
@@ -202,7 +204,7 @@ public class ServerConnectionManager
             }
             updateStatus(serverConfiguration.getName(), status);
         } else {
-            messageManager.sendNotification("aem.explorer.check.modules.no.configuration.selected", NotificationType.WARNING);
+            messageManager.sendNotification("deploy.module.no.configuration.selected", NotificationType.WARNING);
         }
     }
 
@@ -211,21 +213,41 @@ public class ServerConnectionManager
         try {
             if(module.isPartOfBuild()) {
                 // Check Binding
-                if(checkBinding(module.getParent())) {
-                    ModuleContext moduleContext = module.getModuleContext();
-                    if(moduleContext != null) {
-                        String moduleName = moduleContext.getName();
-                        String symbolicName = moduleContext.getSymbolicName();
-                        String version = moduleContext.getVersion();
+                if(checkBinding(module.getParent(), new ProgressHandlerImpl("Check Bindings"))) {
+                    UnifiedModule unifiedModule = module.getUnifiedModule();
+                    if(unifiedModule != null) {
+                        String moduleName = unifiedModule.getName();
+                        String symbolicName = unifiedModule.getSymbolicName();
+                        String version = unifiedModule.getVersion();
                         version = checkBundleVersion(version);
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
                         if(module.isOSGiBundle()) {
+                            //AS TODO: This looks like OSGi Symbolic Name
                             Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
+                            // If not remote Version is found there is a chance that the Felix Bundle did change
+                            // the symbolic names and here we test that and inform the user about it
+                            if(remoteVersion == null) {
+                                // If this is Maven and the last part of the package is also used at the begining of the Artifact Id
+                                if(unifiedModule.isMavenBased()) {
+                                    MavenProject mavenProject = moduleManager.getMavenProject(unifiedModule);
+                                    if(mavenProject != null) {
+                                        String groupId = mavenProject.getMavenId().getGroupId();
+                                        String artifactId = mavenProject.getMavenId().getArtifactId();
+                                        int index = groupId.lastIndexOf('.');
+                                        String lastPackage = groupId.substring(index > 0 ? index + 1: 0);
+                                        if(artifactId.startsWith(lastPackage)) {
+                                            messageManager.showAlertWithArguments(
+                                                "module.check.possible.symbolic.name.mismatch", module.getSymbolicName()
+                                            );
+                                        }
+                                    }
+                                }
+                            }
                             Version localVersion = new Version(version);
-                            messageManager.sendDebugNotification("Check OSGi Module: '" + moduleName + "', symbolic name: '" + symbolicName + "', version: '" + remoteVersion + "' vs. '" + localVersion + "'");
+                            messageManager.sendDebugNotification("debug.check.osgi.module", moduleName, symbolicName, remoteVersion, localVersion);
                             boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
                             Object state = BundleStateHelper.getBundleState(module);
-                            messageManager.sendDebugNotification("Bundle State of Module: '" + module.getName() + "', state: '" + state + "'");
+                            messageManager.sendDebugNotification("debug.bundle.module.state", module.getName(), state);
                             if(remoteVersion == null) {
                                 // Mark as not deployed yet
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.notDeployed);
@@ -306,40 +328,66 @@ public class ServerConnectionManager
      * @param serverConfiguration The Server Connection that is checked and bound if not already done
      * @return True if the the connection was successfully bound otherwise false
      */
-    public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration) {
+    public boolean checkBinding(@NotNull ServerConfiguration serverConfiguration, final ProgressHandler progressHandler) {
+        boolean ret = true;
         if(!serverConfiguration.isBound()) {
-            List<Module> moduleList = bindModules(serverConfiguration);
-            return moduleList.isEmpty();
+            ret = findUnboundModules(serverConfiguration).isEmpty();
         }
-        return true;
+        return ret;
     }
 
-    public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration) {
-        List<ModuleContext> moduleContexts = ModuleProjectFactory.getProjectModules(myProject, serverConfiguration);
+    public List<Module> findUnboundModules(@NotNull ServerConfiguration serverConfiguration) {
+        List<UnifiedModule> unifiedModules = moduleManager.getUnifiedModules(serverConfiguration);
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
-        for(ModuleContext moduleContext : moduleContexts) {
-            String moduleName = moduleContext.getName();
-            String symbolicName = moduleContext.getSymbolicName();
-            String version = moduleContext.getVersion();
-            // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
-            messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', symbolic name: '" + symbolicName + "', version: '" + version + "'");
-            // Ignore the Unnamed Projects
-            if(moduleName == null) {
-                continue;
+        for(UnifiedModule unifiedModule : unifiedModules) {
+            Module moduleFound = null;
+            for(Module module: moduleList) {
+                if(unifiedModule.containsServerConfigurationModule(module)) {
+                    moduleFound = module;
+                    break;
+                }
             }
-            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleContext));
-            if(module == null) {
-                module = serverConfiguration.addModule(myProject, moduleContext);
-            } else if(!module.isBound()) {
-                // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-                module.rebind(myProject, moduleContext);
-                moduleList.remove(module);
-            } else {
-                moduleList.remove(module);
+            if(moduleFound != null) {
+                moduleList.remove(moduleFound);
             }
         }
         return moduleList;
     }
+
+//    /**
+//     * Binds found Modules and returns a list of modules not found
+//     * @param serverConfiguration
+//     * @param progressHandler
+//     * @return List of all modules found that did not have a matching Nodule Context and so are abandoned
+//     */
+//    public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration, final ProgressHandler progressHandler) {
+//        List<UnifiedModule> moduleContexts = ComponentProvider.getComponent(ModuleManager.class).getModuleManagerInstance(myProject, serverConfiguration).getUnifiedModules();
+//        List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
+//        ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(moduleContexts.size(), "Bind Modules");
+//        for(UnifiedModule moduleContext : moduleContexts) {
+//            progressHandlerSubTask.next("Bind Module: " + moduleContext.getName());
+//            String moduleName = moduleContext.getName();
+//            String symbolicName = moduleContext.getSymbolicName();
+//            String version = moduleContext.getVersion();
+//            // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
+//            messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', symbolic name: '" + symbolicName + "', version: '" + version + "'");
+//            // Ignore the Unnamed Projects
+//            if(moduleName == null) {
+//                continue;
+//            }
+//            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleContext));
+//            if(module == null) {
+//                module = serverConfiguration.addModule(myProject, moduleContext);
+//            } else if(!module.isBound()) {
+//                // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
+//                module.rebind(myProject, moduleContext);
+//                moduleList.remove(module);
+//            } else {
+//                moduleList.remove(module);
+//            }
+//        }
+//        return moduleList;
+//    }
 
     public enum BundleStatus { upToDate, outDated, failed };
     public BundleStatus checkAndUpdateSupportBundle(boolean onlyCheck) {
@@ -349,39 +397,41 @@ public class ServerConnectionManager
         if(serverConfiguration != null) {
             try {
                 OsgiClient osgiClient = obtainSGiClient();
-                EmbeddedArtifactLocator artifactLocator = myProject.getComponent(EmbeddedArtifactLocator.class);
-                Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
+                EmbeddedArtifactLocator artifactLocator = ComponentProvider.getComponent(myProject, EmbeddedArtifactLocator.class);
+                if(artifactLocator != null) {
+                    Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 
-                messageManager.sendInfoNotification("aem.explorer.version.installed.support.bundle", remoteVersion);
+                    messageManager.sendInfoNotification("remote.repository.version.installed.support.bundle", remoteVersion);
 
-                final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
-                final Version embeddedVersion = new Version(supportBundle.getVersion());
+                    final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
+                    final Version embeddedVersion = new Version(supportBundle.getVersion());
 
-                if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
-                    ret = BundleStatus.outDated;
-                    if(!onlyCheck) {
-                        InputStream contents = null;
-                        try {
-                            messageManager.sendInfoNotification("aem.explorer.begin.installing.support.bundle", embeddedVersion);
-                            contents = supportBundle.openInputStream();
-                            osgiClient.installBundle(contents, supportBundle.getName());
-                            ret = BundleStatus.upToDate;
-                        } finally {
-                            IOUtils.closeQuietly(contents);
+                    if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
+                        ret = BundleStatus.outDated;
+                        if(!onlyCheck) {
+                            InputStream contents = null;
+                            try {
+                                messageManager.sendInfoNotification("remote.repository.begin.installing.support.bundle", embeddedVersion);
+                                contents = supportBundle.openInputStream();
+                                osgiClient.installBundle(contents, supportBundle.getName());
+                                ret = BundleStatus.upToDate;
+                            } finally {
+                                IOUtils.closeQuietly(contents);
+                            }
+                            remoteVersion = embeddedVersion;
                         }
-                        remoteVersion = embeddedVersion;
+                    } else {
+                        ret = BundleStatus.upToDate;
                     }
-                } else {
-                    ret = BundleStatus.upToDate;
+                    messageManager.sendInfoNotification("remote.repository.finished.connection.to.remote");
                 }
-                messageManager.sendInfoNotification("aem.explorer.finished.connection.to.remote");
             } catch(IOException e) {
-                messageManager.sendErrorNotification("aem.explorer.cannot.read.installation.support.bundle", serverConfiguration.getName(), e);
+                messageManager.sendErrorNotification("remote.repository.cannot.read.installation.support.bundle", serverConfiguration.getName(), e);
             } catch(OsgiClientException e) {
-                messageManager.sendErrorNotification("aem.explorer.osgi.client.problem", serverConfiguration.getName(), e);
+                messageManager.sendErrorNotification("remote.repository.osgi.client.problem", serverConfiguration.getName(), e);
             }
         } else {
-            messageManager.sendNotification("\n" + "aem.explorer.check.support.bundle.no.configuration.selected", NotificationType.WARNING);
+            messageManager.sendNotification("deploy.module.bundle.no.configuration.selected", NotificationType.WARNING);
         }
         return ret;
     }
@@ -401,7 +451,7 @@ public class ServerConnectionManager
                     result = command.execute();
                     success = result.isSuccess();
 
-                    messageManager.sendInfoNotification("aem.explorer.connected.sling.repository", success);
+                    messageManager.sendInfoNotification("remote.repository.connected.sling.repository", success);
                     if(success) {
                         serverConfiguration.setServerStatus(ServerConfiguration.ServerStatus.connected);
                         RepositoryInfo repositoryInfo = ServerUtil.getRepositoryInfo(
@@ -411,10 +461,10 @@ public class ServerConnectionManager
                     }
                 }
             } catch(URISyntaxException e) {
-                messageManager.sendErrorNotification("aem.explorer.server.uri.bad", serverConfiguration.getName(), e);
+                messageManager.sendErrorNotification("remote.repository.uri.bad", serverConfiguration.getName(), e);
             }
         } else {
-            messageManager.sendErrorNotification("aem.explorer.cannot.connect.repository.missing.configuration", serverConfiguration.getName());
+            messageManager.sendErrorNotification("server.configuration.cannot.connect.repository.missing.configuration", serverConfiguration.getName());
         }
         return ret;
     }
@@ -422,7 +472,7 @@ public class ServerConnectionManager
     @Nullable
     public static Repository obtainRepository(@NotNull ServerConfiguration serverConfiguration, @NotNull MessageManager messageManager) {
         Repository ret = null;
-        messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
+        messageManager.sendInfoNotification("remote.repository.begin.connecting.sling.repository");
         try {
             ret = ServerUtil.connectRepository(new IServer(serverConfiguration), new NullProgressMonitor());
             // Check if the Connection is still alive by fetching the root nodes
@@ -431,9 +481,9 @@ public class ServerConnectionManager
             // Show Alert and exit
             //AS TODO: Seriously the RepositoryUtils class is throwing a IllegalArgumentException is it cannot connect to a Repo
             if(e.getCause().getClass() == IllegalArgumentException.class) {
-                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository.refused", serverConfiguration.getName());
+                messageManager.showAlertWithArguments("server.configuration.cannot.connect.repository.refused", serverConfiguration.getName());
             } else {
-                messageManager.showAlertWithArguments("aem.explorer.cannot.connect.repository", serverConfiguration.getName(), e);
+                messageManager.showAlertWithArguments("server.configuration.cannot.connect.repository", serverConfiguration.getName(), e);
             }
         }
         return ret;
@@ -464,27 +514,29 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public void deployModules(final DataContext dataContext, boolean force, ProgressIndicator indicator) {
+    public void deployModules(final DataContext dataContext, boolean force, final ProgressHandler progressHandler) {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
-            indicator.setText2("Check Bindings");
-            checkBinding(serverConfiguration);
+            checkBinding(serverConfiguration, progressHandler);
             List<Module> moduleList = serverConfiguration.getModuleList();
+            ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(moduleList.size(), "Check Bindings");
             double i = 0;
             for(ServerConfiguration.Module module: moduleList) {
-                deployModule(dataContext, module, force, indicator);
-                indicator.setFraction(i / moduleList.size());
+                progressHandlerSubTask.next("Deploy Module: " + module.getName());
+                deployModule(dataContext, module, force, progressHandlerSubTask);
                 i += 1;
             }
         } else {
-            messageManager.sendNotification("aem.explorer.deploy.modules.no.configuration.selected", NotificationType.WARNING);
+            messageManager.sendNotification("deploy.modules.no.configuration.selected", NotificationType.WARNING);
         }
     }
 
-    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, ProgressIndicator indicator) {
-        messageManager.sendInfoNotification("aem.explorer.begin.connecting.sling.repository");
-        indicator.setText2("Deploy Module: " + module.getName());
-        checkBinding(module.getParent());
+    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, final ProgressHandler progressHandler) {
+        ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(2, "Bind Module: " + module.getName());
+        messageManager.sendInfoNotification("remote.repository.begin.connecting.sling.repository");
+        progressHandlerSubTask.next("Check Binding of Parent Module: " + module.getParent());
+        checkBinding(module.getParent(), progressHandler);
+        progressHandlerSubTask.next("Deploy Module to Server: " + module.getName());
         if(module.isPartOfBuild()) {
             if(module.isOSGiBundle()) {
                 publishBundle(dataContext, module);
@@ -495,11 +547,11 @@ public class ServerConnectionManager
                     force
                 );
             } else {
-                messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not a supported package");
+                messageManager.sendDebugNotification("debug.module.not.supported.package", module.getName());
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.unsupported);
             }
         } else {
-            messageManager.sendDebugNotification("Module: '" + module.getName() + "' is not Part of the Build");
+            messageManager.sendDebugNotification("debug.module.not.part.of.build", module.getName());
             updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.excluded);
         }
     }
@@ -609,18 +661,16 @@ public class ServerConnectionManager
     // Publishing Stuff --------------------------
 
     public void publishBundle(@NotNull final DataContext dataContext, final @NotNull Module module) {
-        messageManager.sendInfoNotification("aem.explorer.deploy.module.prepare", module);
+        messageManager.sendInfoNotification("deploy.module.prepare", module);
         InputStream contents = null;
         // Check if this is a OSGi Bundle
-        final ModuleContext moduleContext = module.getModuleContext();
-        if(moduleContext.isOSGiBundle()) {
+        final UnifiedModule unifiedModule = module.getUnifiedModule();
+        if(unifiedModule.isOSGiBundle()) {
             try {
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.updating);
                 boolean localBuildDoneSuccessfully = true;
                 //AS TODO: This should be isBuildLocally instead as we can now build both with Maven or Locally if Facet is specified
-                if(module.getParent().isBuildWithMaven() && module.getModuleContext().isMavenBased()) {
-                    //AS TODO: Here we check if a Facet is present and if not if it is a Maven project and if both fail show an Alert
-//                    SlingModuleFacet facet = SlingModuleFacet.getFacetByModule(module.getModuleContext());
+                if(module.getParent().isBuildWithMaven() && module.getUnifiedModule().isMavenBased()) {
                     localBuildDoneSuccessfully = false;
                     List<String> goals = MavenDataKeys.MAVEN_GOALS.getData(dataContext);
                     if (goals == null) {
@@ -628,16 +678,17 @@ public class ServerConnectionManager
                     }
                     if (goals.isEmpty()) {
 //                        goals.add("package");
+                        // If a module depends on anoher Maven module then we need to have it installed into the local repo
                         goals.add("install");
                     }
-                    messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.goals", goals);
+                    messageManager.sendInfoNotification("deploy.module.maven.goals", goals);
                     final MavenProjectsManager projectsManager = MavenActionUtil.getProjectsManager(dataContext);
                     if (projectsManager == null) {
                         messageManager.showAlert("Maven Failure", "Could not find Maven Project Manager, need to build manually");
                     } else {
                         final ToolWindow tw = ToolWindowManager.getInstance(module.getProject()).getToolWindow(ToolWindowId.RUN);
                         final boolean isShown = tw != null && tw.isVisible();
-                        String workingDirectory = moduleContext.getModuleDirectory();
+                        String workingDirectory = unifiedModule.getModuleDirectory();
                         MavenExplicitProfiles explicitProfiles = projectsManager.getExplicitProfiles();
                         final MavenRunnerParameters params = new MavenRunnerParameters(true, workingDirectory, goals, explicitProfiles.getEnabledProfiles(), explicitProfiles.getDisabledProfiles());
                         // This Monitor is used to know when the Maven build is done
@@ -666,34 +717,31 @@ public class ServerConnectionManager
                         } catch (IllegalStateException e) {
                             if (firstRun) {
                                 firstRun = false;
-                                messageManager.showAlert("aem.explorer.deploy.module.maven.first.run.failure");
+                                messageManager.showAlert("deploy.module.maven.first.run.failure");
                             }
                         } catch(RuntimeException e) {
-                            messageManager.sendDebugNotification("Maven Build failed with an unexpectected exception");
-                            messageManager.sendUnexpectedException(e);
+                            messageManager.sendDebugNotification("debug.maven.build.failed.unexpected", e);
                         }
                         // Now we can wait for the process to end
-//                        switch(RunExecutionMonitor.getInstance(myProject).waitFor(module.getParent().getMavenBuildTimeoutInSeconds())) {
                         switch(RunExecutionMonitor.getInstance(myProject).waitFor()) {
                             case done:
-                                messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.done");
+                                messageManager.sendInfoNotification("deploy.module.maven.done");
                                 localBuildDoneSuccessfully = true;
                                 break;
                             case timedOut:
-                                messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.timedout");
-                                messageManager.showAlert("aem.explorer.deploy.module.maven.timedout");
+                                messageManager.sendInfoNotification("deploy.module.maven.timedout");
+                                messageManager.showAlert("deploy.module.maven.timedout");
                                 break;
                             case interrupted:
-                                messageManager.sendInfoNotification("aem.explorer.deploy.module.maven.interrupted");
-                                messageManager.showAlert("aem.explorer.deploy.module.maven.interrupted");
+                                messageManager.sendInfoNotification("deploy.module.maven.interrupted");
+                                messageManager.showAlert("deploy.module.maven.interrupted");
                                 break;
                         }
                     }
-                } else if(!module.getModuleContext().isMavenBased()) {
+                } else if(!module.getUnifiedModule().isMavenBased()) {
                     // Compile the IntelliJ way
                     final CompilerManager compilerManager = CompilerManager.getInstance(myProject);
-                    final CompileScope moduleScope = compilerManager.createModuleCompileScope(module.getModuleContext().getModule(), true);
-//                    final CompileScope compileScope = ArtifactCompileScope.createScopeWithArtifacts(moduleScope, Collections.singletonList(myArtifact));
+                    final CompileScope moduleScope = compilerManager.createModuleCompileScope(module.getUnifiedModule().getModule(), true);
                     final CountDownLatch waiter = new CountDownLatch(1);
                     final AtomicBoolean checker = new AtomicBoolean(false);
                     ApplicationManager.getApplication().invokeLater(
@@ -716,41 +764,43 @@ public class ServerConnectionManager
                     } catch(InterruptedException e) {
                         //AS TODO: Show Info Notification and Alert
                     }
+                    localBuildDoneSuccessfully = checker.get();
                 }
                 if(localBuildDoneSuccessfully) {
-                    File buildDirectory = new File(module.getModuleContext().getBuildDirectoryPath());
+                    File buildDirectory = new File(module.getUnifiedModule().getBuildDirectoryPath());
                     if(buildDirectory.exists() && buildDirectory.isDirectory()) {
-                        File buildFile = new File(buildDirectory, module.getModuleContext().getBuildFileName());
-                        messageManager.sendDebugNotification("Build File Name: " + buildFile.toURL());
+                        File buildFile = new File(buildDirectory, module.getUnifiedModule().getBuildFileName());
+                        messageManager.sendDebugNotification("debug.build.file.name", buildFile.toURL());
                         if(buildFile.exists()) {
+                            //AS TODO: This looks like OSGi Symbolic Name to be used here
                             EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
                             contents = bundle.openInputStream();
                             obtainSGiClient().installBundle(contents, bundle.getName());
                             module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
                         } else {
-                            messageManager.showAlertWithArguments("aem.explorer.deploy.module.maven.missing.build.file", buildFile.getAbsolutePath());
+                            messageManager.showAlertWithArguments("deploy.module.maven.missing.build.file", buildFile.getAbsolutePath());
                         }
                     }
                     updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
-                    messageManager.sendInfoNotification("aem.explorer.deploy.module.success", module);
+                    messageManager.sendInfoNotification("deploy.module.success", module);
                 }
             } catch(MalformedURLException e) {
                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
-                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.bad.url", e);
+                messageManager.sendErrorNotification("deploy.module.failed.bad.url", e);
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             } catch(OsgiClientException e) {
                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
-                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.client", e);
+                messageManager.sendErrorNotification("deploy.module.failed.client", e);
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             } catch(IOException e) {
                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
-                messageManager.sendErrorNotification("aem.explorer.deploy.module.failed.io", e);
+                messageManager.sendErrorNotification("deploy.module.failed.io", e);
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             } finally {
                 IOUtils.closeQuietly(contents);
             }
         } else {
-            messageManager.sendNotification("aem.explorer.deploy.module.unsupported.maven.packaging", NotificationType.WARNING);
+            messageManager.sendNotification("deploy.module.unsupported.maven.packaging", NotificationType.WARNING);
         }
     }
 
@@ -761,11 +811,11 @@ public class ServerConnectionManager
 
         List<String> resourceList = findContentResources(module);
         Set<String> allResourcesUpdatedList = new HashSet<String>();
-        ModuleContext moduleContext = module.getModuleContext();
+        UnifiedModule unifiedModule = module.getUnifiedModule();
         VirtualFile baseFile = module.getProject().getBaseDir();
         for(String resource: resourceList) {
             VirtualFile resourceFile = baseFile.getFileSystem().findFileByPath(resource);
-            messageManager.sendDebugNotification("LMT Resource File to check: " + resourceFile);
+            messageManager.sendDebugNotification("debug.last.modification.time.resource.file", resourceFile);
             List<VirtualFile> changedResources = new ArrayList<VirtualFile>();
             getChangedResourceList(resourceFile, changedResources);
             //AS TODO: Create a List of Changed Resources
@@ -791,7 +841,7 @@ public class ServerConnectionManager
     ) {
         long ret = -1;
         VirtualFile parentFile = file.getParent();
-        messageManager.sendDebugNotification("PLMT Check Parent File: " + parentFile);
+        messageManager.sendDebugNotification("debug.last.modification.time.parent.resource.file", parentFile);
         if(parentFile.getPath().equals(basePath)) {
             return ret;
         }
@@ -859,11 +909,11 @@ public class ServerConnectionManager
                     } else if(module.isOSGiBundle()) {
                         // Here we are not interested in a source file but rather in the Artifact. If it is the artifact then
                         // we mark the module as outdated
-                        ModuleContext moduleContext = module.getModuleContext();
-                        if(filePath.startsWith(moduleContext.getBuildDirectoryPath())) {
+                        UnifiedModule unifiedModule = module.getUnifiedModule();
+                        if(filePath.startsWith(unifiedModule.getBuildDirectoryPath())) {
                             // Check if it is the build file
                             String fileName = fileChange.getFile().getName();
-                            String buildFileName = moduleContext.getBuildFileName();
+                            String buildFileName = unifiedModule.getBuildFileName();
                             if(fileName.equals(buildFileName)) {
                                 messageManager.sendInfoNotification("server.update.file.change.prepare", filePath, fileChange.getFileChangeType());
                                 module.setStatus(ServerConfiguration.SynchronizationStatus.outdated);
@@ -887,7 +937,7 @@ public class ServerConnectionManager
                         String basePath = fileChange.getResourcePath();
                         Module currentModule = fileChange.getModule();
                         messageManager.sendInfoNotification("server.update.file.change.prepare", path, type);
-                        messageManager.sendDebugNotification("Got Repository: " + repository);
+                        messageManager.sendDebugNotification("debug.obtained.repository", repository);
                         Command<?> command = null;
                         switch(type) {
                             case CHANGED:
@@ -907,7 +957,7 @@ public class ServerConnectionManager
                                 );
                                 break;
                         }
-                        messageManager.sendDebugNotification("Got Command: " + command);
+                        messageManager.sendDebugNotification("debug.resource.command", command);
                         if(command != null) {
                             Set<String> handledPaths = new HashSet<String>();
                             deploymentManager.ensureParentIsPublished(
@@ -949,10 +999,10 @@ public class ServerConnectionManager
 
     public List<String> findContentResources(Module module, String filePath) {
         List<String> ret = new ArrayList<String>();
-        ModuleContext moduleContext = module.getModuleContext();
-        List<String> contentDirectoryPaths = moduleContext.getContentDirectoryPaths();
+        UnifiedModule unifiedModule = module.getUnifiedModule();
+        List<String> contentDirectoryPaths = unifiedModule.getContentDirectoryPaths();
         for(String basePath: contentDirectoryPaths) {
-            messageManager.sendDebugNotification("Content Base Path: '" + basePath + "'");
+            messageManager.sendDebugNotification("debug.content.base.path", basePath);
             //AS TODO: Paths from Windows have backlashes instead of forward slashes
             //AS TODO: It is possible that certain files are in forward slashes even on Windows
             String myFilePath = filePath == null ? null : filePath.replace("\\", "/");
@@ -977,7 +1027,7 @@ public class ServerConnectionManager
         ServerConfiguration connectedServerConfiguration = serverConfigurationManager.findConnectedServerConfiguration();
         if(connectedServerConfiguration != null && serverConfiguration != connectedServerConfiguration) {
             if(showAlert) {
-                messageManager.showAlert("aem.explorer.check.connection.out.of.sync");
+                messageManager.showAlert("remote.repository.selection.mismatch");
             }
             return false;
         } else if(serverConfiguration != null && automaticBuild && serverConfiguration.getPublishType() != ServerConfiguration.PublishType.automaticallyOnChange) {

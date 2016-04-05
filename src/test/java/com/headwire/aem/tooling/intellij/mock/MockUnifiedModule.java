@@ -19,9 +19,11 @@
 
 package com.headwire.aem.tooling.intellij.mock;
 
-import com.headwire.aem.tooling.intellij.config.ModuleContext;
+import com.headwire.aem.tooling.intellij.config.UnifiedModule;
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.intellij.openapi.module.Module;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.maven.project.MavenProject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +31,8 @@ import java.util.List;
 /**
  * Created by Andreas Schaefer (Headwire.com) on 12/28/15.
  */
-public class MockModuleContext
-    implements ModuleContext
+public class MockUnifiedModule
+    implements UnifiedModule
 {
     public enum Type{ OSGI, Content, Other };
 
@@ -45,7 +47,32 @@ public class MockModuleContext
     private String metainfPath = "";
 
     @Override
-    public void init(@NotNull Object payload) {
+    public void init(MavenProject mavenProject, @NotNull Module module) {
+    }
+
+    @Override
+    public boolean containsServerConfigurationModule(@NotNull ServerConfiguration.Module module) {
+        return false;
+    }
+
+    @Override
+    public boolean addServerConfigurationModule(@NotNull ServerConfiguration.Module module) {
+        return false;
+    }
+
+    @Override
+    public boolean removeServerConfigurationModule(@NotNull ServerConfiguration.Module module) {
+        return false;
+    }
+
+    @Override
+    public List<ServerConfiguration.Module> getSererConfigurationModuleList() {
+        return null;
+    }
+
+    @Override
+    public ServerConfiguration.Module getServerConfigurationModule(@NotNull ServerConfiguration serverConfiguration) {
+        return null;
     }
 
     @Override
@@ -98,47 +125,47 @@ public class MockModuleContext
         return metainfPath;
     }
 
-    public MockModuleContext setSymbolicName(String symbolicName) {
+    public MockUnifiedModule setSymbolicName(String symbolicName) {
         this.symbolicName = symbolicName;
         return this;
     }
 
-    public MockModuleContext setVersion(String version) {
+    public MockUnifiedModule setVersion(String version) {
         this.version = version;
         return this;
     }
 
-    public MockModuleContext setName(String name) {
+    public MockUnifiedModule setName(String name) {
         this.name = name;
         return this;
     }
 
-    public MockModuleContext setBuildFileName(String buildFileName) {
+    public MockUnifiedModule setBuildFileName(String buildFileName) {
         this.buildFileName = buildFileName;
         return this;
     }
 
-    public MockModuleContext setType(Type type) {
+    public MockUnifiedModule setType(Type type) {
         this.type = type;
         return this;
     }
 
-    public MockModuleContext setBuildDirectoryPath(String buildDirectoryPath) {
+    public MockUnifiedModule setBuildDirectoryPath(String buildDirectoryPath) {
         this.buildDirectoryPath = buildDirectoryPath;
         return this;
     }
 
-    public MockModuleContext setModuleDirectoryPath(String moduleDirectoryPath) {
+    public MockUnifiedModule setModuleDirectoryPath(String moduleDirectoryPath) {
         this.moduleDirectoryPath = moduleDirectoryPath;
         return this;
     }
 
-    public MockModuleContext setContentDirectoryPaths(List<String> contentDirectoryPaths) {
+    public MockUnifiedModule setContentDirectoryPaths(List<String> contentDirectoryPaths) {
         this.contentDirectoryPaths = contentDirectoryPaths;
         return this;
     }
 
-    public MockModuleContext setMetainfPath(String metainfPath) {
+    public MockUnifiedModule setMetainfPath(String metainfPath) {
         this.metainfPath = metainfPath;
         return this;
     }
