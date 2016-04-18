@@ -27,7 +27,6 @@ public class AEMPluginConfigurationDialog {
     public static final String COMPONENT_NAME = "AEMPluginConfiguration";
 
     private JPanel contentPane;
-    private AEMPluginConfiguration pluginConfiguration;
 
     private JCheckBox incrementalBuild;
     private JSpinner deployDelay;

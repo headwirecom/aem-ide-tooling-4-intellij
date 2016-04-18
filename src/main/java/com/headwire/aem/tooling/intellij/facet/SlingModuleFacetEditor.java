@@ -19,9 +19,9 @@
 package com.headwire.aem.tooling.intellij.facet;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
-import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleExtensionProperties.ModuleType;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
 import com.intellij.facet.ui.FacetEditorValidator;
@@ -129,7 +129,7 @@ public class SlingModuleFacetEditor
                             case ok:
                                 VirtualFile folder = module.getModuleFile().getFileSystem().findFileByPath(filePath);
                                 // Check that the Filter file is there
-                                VirtualFile filterFile = ProjectUtil.findFileOrFolder(folder, VAULT_FILTER_FILE_NAME, false);
+                                VirtualFile filterFile = Util.findFileOrFolder(folder, VAULT_FILTER_FILE_NAME, false);
                                 if(filterFile == null) {
                                     return createValidatorResult("facet.meta-inf.folder.filter.not.found", filePath);
                                 }
@@ -146,9 +146,10 @@ public class SlingModuleFacetEditor
                 public ValidationResult check() {
                     ModuleType moduleType = getModuleType();
                     if(moduleType == ModuleType.bundle) {
-                        boolean ignore = ignoreMaven.isSelected();
+//                        boolean ignore = ignoreMaven.isSelected();
                         String symbolicName = bundleSymbolicName.getText();
-                        if(ignore && symbolicName.length() == 0) {
+//                        if(ignore && symbolicName.length() == 0) {
+                        if(symbolicName.length() == 0) {
                             return createValidatorResult("facet.osgi.symbolic.name.missing");
                         }
                     }
@@ -203,7 +204,7 @@ public class SlingModuleFacetEditor
                     return ValidationResult.OK;
                 }
             },
-            bundleVersion
+            jarFileName
         );
         ChangeListener groupChangeListener = new GroupChangeListener();
         contentCheckBox.addChangeListener(groupChangeListener);
@@ -264,7 +265,7 @@ public class SlingModuleFacetEditor
         String filterRoot = "";
         if(moduleType == ModuleType.content) {
             Module module = editorContext.getModule();
-            VirtualFile moduleFile = module.getModuleFile();
+//            VirtualFile moduleFile = module.getModuleFile();
             String filePath = metaInfPath.getText();
             switch(FacetUtil.checkFile(module, filePath, true)) {
                 case fileEmpty:
@@ -276,7 +277,7 @@ public class SlingModuleFacetEditor
                 case ok:
                     VirtualFile folder = module.getModuleFile().getFileSystem().findFileByPath(filePath);
                     // Check that the Filter file is there
-                    VirtualFile filterFile = ProjectUtil.findFileOrFolder(folder, VAULT_FILTER_FILE_NAME, false);
+                    VirtualFile filterFile = Util.findFileOrFolder(folder, VAULT_FILTER_FILE_NAME, false);
                     if(filterFile == null) {
                         throw createConfigurationException("facet.meta-inf.folder.filter.not.found", filePath);
                     } else {

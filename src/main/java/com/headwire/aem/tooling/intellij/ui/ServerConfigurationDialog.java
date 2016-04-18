@@ -20,7 +20,10 @@ package com.headwire.aem.tooling.intellij.ui;
 
 import javax.swing.*;
 
+import com.headwire.aem.tooling.intellij.communication.MessageManager;
+import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
@@ -59,18 +62,22 @@ public class ServerConfigurationDialog
     private JTextField mavenBuildTimeoutInSeconds;
 
     private ServerConfiguration serverConfiguration;
+    private ServerConnectionManager serverConnectionManager;
+    private MessageManager messageManager;
 
     public ServerConfigurationDialog(@Nullable Project project) {
         this(project, null);
     }
 
-    public ServerConfigurationDialog(@Nullable Project project, @Nullable ServerConfiguration serverConfiguration) {
+    public ServerConfigurationDialog(@Nullable Project project, @Nullable final ServerConfiguration serverConfiguration) {
         super(project);
 
         setTitle((serverConfiguration == null ? "Create" :"Edit") + " Server Connection Properties");
         setModal(true);
         setUpDialog(serverConfiguration == null ? getConfiguration() : serverConfiguration);
         init();
+        serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        messageManager = ComponentProvider.getComponent(project, MessageManager.class);
         // Implement the toggle if one is selected while the other is selected
         defaultRunConfiguration.addActionListener(
             new ActionListener() {
@@ -88,6 +95,19 @@ public class ServerConfigurationDialog
                 public void actionPerformed(ActionEvent actionEvent) {
                     if(defaultDebugConfiguration.isSelected()) {
                         defaultRunConfiguration.setSelected(false);
+                    }
+                }
+            }
+        );
+        installButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    // First Check if the Install Support Bundle is installed
+                    if(serverConnectionManager != null) {
+                        serverConnectionManager.checkAndUpdateSupportBundle(false);
+                    } else if(messageManager != null) {
+                        messageManager.showAlert("server.configuration.configuration.no.connection");
                     }
                 }
             }

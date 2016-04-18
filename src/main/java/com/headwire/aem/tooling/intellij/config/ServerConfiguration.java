@@ -462,6 +462,7 @@ public class ServerConfiguration
         private String moduleName;
         private boolean partOfBuild = true;
         private long lastModificationTimestamp;
+        private boolean ignoreSymbolicNameMismatch;
         private transient Project project;
         private transient SlingProject slingProject;
         private transient UnifiedModule unifiedModule;
@@ -572,6 +573,15 @@ public class ServerConfiguration
 
         public void setFilter(Filter filter) {
             this.filter = filter;
+        }
+
+        public boolean isIgnoreSymbolicNameMismatch() {
+            return ignoreSymbolicNameMismatch;
+        }
+
+        public Module setIgnoreSymbolicNameMismatch(boolean ignoreSymbolicNameMismatch) {
+            this.ignoreSymbolicNameMismatch = ignoreSymbolicNameMismatch;
+            return this;
         }
 
         public boolean isOSGiBundle() {

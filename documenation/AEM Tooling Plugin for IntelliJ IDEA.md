@@ -128,10 +128,10 @@ In order to speed up deployment the plugin keeps the last modification timestamp
 
 ![Purge Cache](./img/2.5.0.Plugin.Purge.Cache.Server.Configuration.png)
 
-**Attention**: the plugin data cache is **per project and server**. So if a server connection changes or server changes it is necessary to purge the cache to update the server correctly.
+**Attention**: the plugin data cache is **per project and server**. So if a server connection changes or server changes it is necessary to purge the cache to update the server correctly. The Plugin does remember the last Server it was connected to and will purge the cache automatically if the server configuration has chagned.
 
 With the **Purge Local Plugin Data Cache** the user can wipe these cached modification timestamps and make sure the project is deployed from scratch. This is especially important if the project is deployed onto multiple servers.  
-Another way to accomplish a full deployment without dropping the cached modification timestamps is to use **force deploy**. Keep in mind though that the **Purge** is clearing of all cached timestamps whereas the **Forced Deploy** is only temporary ignoring them.
+**Purge Cache** is also the first step of the **Forced Deploy** and so is the same as **Purge Cache** followed by **Deploy to Server**.
 
 ##### Edit Build Configuration
 
@@ -191,8 +191,6 @@ The **forced** deployment will take its time as all resource files are deployed.
 This are the icon to deploy the modules:
 
 ![Deploy / Forced Deploy](./img/2.10.0.Plugin.Deploy.Server.Configuration.png)
-
-**Attention**: the **Forced Deployment** is temporary ignoring the cached timestamps. If this deployment fails all untouched files are still in cached.
 
 #### Deploy of Selected Module
 

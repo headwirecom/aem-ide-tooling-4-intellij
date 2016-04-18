@@ -18,7 +18,6 @@
 
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
 import com.headwire.aem.tooling.intellij.eclipse.ResourceAndInfo;
 import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
@@ -36,15 +35,12 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
-import com.intellij.notification.NotificationType;
-import com.intellij.openapi.components.ServiceManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.jackrabbit.vault.util.Text;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.FilterResult;
 import org.apache.sling.ide.filter.IgnoredResources;
-import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
 import org.apache.sling.ide.log.Logger;
 import org.apache.sling.ide.serialization.SerializationData;
 import org.apache.sling.ide.serialization.SerializationDataBuilder;
@@ -72,6 +68,8 @@ import java.util.Set;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 
 /**
+ * This is an adaption of the org.apache.sling.ide.eclipse.ui.internal.ImportRepositoryContentAction class.
+ *
  * Created by Andreas Schaefer (Headwire.com) on 6/17/15.
  */
 public class ImportRepositoryContentManager {

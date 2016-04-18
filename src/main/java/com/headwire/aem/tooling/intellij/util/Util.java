@@ -47,6 +47,27 @@ public class Util {
     // This is only used to test different style folder separators
     private static char folderSeparator = File.separatorChar;
 
+    public static VirtualFile findFileOrFolder(VirtualFile rootFile, String name, boolean isFolder) {
+        VirtualFile ret = null;
+        for(VirtualFile child: rootFile.getChildren()) {
+            if(child.isDirectory()) {
+                if(isFolder) {
+                    if(child.getName().equals(name)) {
+                        return child;
+                    }
+                }
+                ret = findFileOrFolder(child, name, isFolder);
+                if(ret != null) { break; }
+            } else {
+                if(child.getName().equals(name)) {
+                    ret = child;
+                    break;
+                }
+            }
+        }
+        return ret;
+    }
+
     public static boolean pathEndsWithFolder(String path, String folder) {
         return pathContainsFolder(path, folder) == FolderLocation.end;
     }

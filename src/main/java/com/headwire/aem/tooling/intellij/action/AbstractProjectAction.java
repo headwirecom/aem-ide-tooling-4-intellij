@@ -25,9 +25,13 @@ import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.headwire.aem.tooling.intellij.util.ExecutionUtil.WaitableRunner;
+import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
@@ -39,6 +43,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/13/15.
@@ -115,7 +124,7 @@ public abstract class AbstractProjectAction
                 });
             } else {
                 try {
-                    execute(project, dataContext, null);
+                    execute(project, dataContext, new ProgressHandlerImpl(AEMBundle.message(titleId)));
                 } finally {
                     unlock(project);
                 }
@@ -126,6 +135,35 @@ public abstract class AbstractProjectAction
     @NotNull
     protected MessageManager getMessageManager(@NotNull Project project) {
         return ComponentProvider.getComponent(project, MessageManager.class);
+    }
+
+    protected boolean doVerify(@NotNull final Project project, @Nullable final DataContext dataContext, @NotNull final ProgressHandler progressHandler) {
+        // First Run the Verifier and if the Server Configuration has changed also the Purge Cache
+        ActionManager actionManager = ActionManager.getInstance();
+        final VerifyConfigurationAction verifyConfigurationAction = (VerifyConfigurationAction) actionManager.getAction("AEM.Verify.Configuration.Action");
+        WaitableRunner<AtomicBoolean> runner = null;
+        if(verifyConfigurationAction != null) {
+            runner = new WaitableRunner<AtomicBoolean>(new AtomicBoolean(true)) {
+                @Override
+                public void run() {
+                    progressHandler.next("progress.start.verification");
+                    getResponse().set(
+                        verifyConfigurationAction.doVerify(project, SimpleDataContext.getSimpleContext(VerifyConfigurationAction.VERIFY_CONTENT_WITH_WARNINGS, false, dataContext), progressHandler)
+                    );
+                }
+                @Override
+                public void handleException(Exception e) {
+                    // Catch and report unexpected exception as debug message to keep it going
+                    getMessageManager(project).sendErrorNotification("server.configuration.verification.failed.unexpected", e);
+                }
+                @Override
+                public boolean isAsynchronous() {
+                    return AbstractProjectAction.this.isAsynchronous();
+                }
+            };
+            runAndWait(runner);
+        }
+        return runner == null || runner.getResponse().get();
     }
 
     /** Method that provides does do the action. If the action is handled in the background the Progress Indicator is set otherwise null */

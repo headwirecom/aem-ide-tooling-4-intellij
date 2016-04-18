@@ -18,6 +18,7 @@
 
 package com.headwire.aem.tooling.intellij.config.general;
 
+import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,6 @@ public class AEMPluginSettings
     extends SearchableConfigurable.Delegate
 {
     public AEMPluginSettings() {
-        super(new AEMPluginConfiguration());
+        super(ComponentProvider.getComponent(AEMPluginConfiguration.class));
     }
 }

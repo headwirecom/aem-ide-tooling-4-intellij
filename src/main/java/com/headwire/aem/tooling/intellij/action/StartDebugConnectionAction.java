@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
  * Created by Andreas Schaefer (Headwire.com) on 6/13/15.
  */
 public class StartDebugConnectionAction
-    extends AbstractProjectAction
+    extends AbstractConnectionAction
 {
 
     public StartDebugConnectionAction() {
@@ -46,7 +46,10 @@ public class StartDebugConnectionAction
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         ServerConnectionManager connectionManager = getConnectionManager(project);
         if(connectionManager != null) {
-            doDebug(project, connectionManager);
+            boolean verified = prepareDeployment(project, dataContext, progressHandler);
+            if(verified) {
+                doDebug(project, connectionManager);
+            }
         }
     }
 

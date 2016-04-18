@@ -81,6 +81,7 @@ public class ServerConfigurationManager
     public static final String MODULE_NAME = "moduleName";
     public static final String PART_OF_BUILD = "partOfBuild";
     public static final String LAST_MODIFICATION_TIMESTAMP = "lastModificationTimestamp";
+    public static final String SYMBOLIC_NAME_MISMATCH = "symbolicNameMismatch";
 
     private MessageManager messageManager;
 //    private ServerConnectionManager serverConnectionManager;
@@ -261,6 +262,7 @@ public class ServerConfigurationManager
                 moduleChildNode.setAttribute(MODULE_NAME, module.getName());
                 moduleChildNode.setAttribute(PART_OF_BUILD, module.isPartOfBuild() + "");
                 moduleChildNode.setAttribute(LAST_MODIFICATION_TIMESTAMP, module.getLastModificationTimestamp() + "");
+                moduleChildNode.setAttribute(SYMBOLIC_NAME_MISMATCH, module.isIgnoreSymbolicNameMismatch() + "");
                 childNode.addContent(moduleChildNode);
             }
             root.addContent(childNode);
@@ -316,7 +318,9 @@ public class ServerConfigurationManager
                     String moduleName = element.getAttributeValue(MODULE_NAME, "");
                     boolean isPartOfBuild = new Boolean(element.getAttributeValue(PART_OF_BUILD, "true"));
                     long lastModificationTimestamp = new Long(element.getAttributeValue(LAST_MODIFICATION_TIMESTAMP, "-1"));
+                    boolean ignoreSymbolicNameMismatch = new Boolean(element.getAttributeValue(SYMBOLIC_NAME_MISMATCH, "false"));
                     ServerConfiguration.Module module = new ServerConfiguration.Module(serverConfiguration, moduleName, isPartOfBuild, lastModificationTimestamp);
+                    module.setIgnoreSymbolicNameMismatch(ignoreSymbolicNameMismatch);
                     serverConfiguration.addModule(module);
                 } catch(Exception e) {
                     // Ignore any exceptions to avoid a stall configurations

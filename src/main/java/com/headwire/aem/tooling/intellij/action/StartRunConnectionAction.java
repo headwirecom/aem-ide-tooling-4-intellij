@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
  */
-public class StartRunConnectionAction extends AbstractProjectAction {
+public class StartRunConnectionAction extends AbstractConnectionAction {
 
     private volatile CountDownLatch stopSignal;
 
@@ -67,35 +67,10 @@ public class StartRunConnectionAction extends AbstractProjectAction {
         if(selectionHandler != null && serverConnectionManager != null) {
             final String description = AEMBundle.message("action.check.configuration.description");
 
-            // First Run the Verifier
-            ActionManager actionManager = ActionManager.getInstance();
-            final VerifyConfigurationAction verifyConfigurationAction = (VerifyConfigurationAction) actionManager.getAction("AEM.Verify.Configuration.Action");
             final ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(9, "progress.start.run.connection");
-            final AtomicBoolean verifiedOk = new AtomicBoolean(true);
-            if(verifyConfigurationAction != null) {
-                try {
-                    stopSignal = new CountDownLatch(1);
-                    ApplicationManager.getApplication().invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                progressHandlerSubTask.next("progress.start.verification");
-                                try {
-                                    verifiedOk.set(verifyConfigurationAction.doVerify(project, SimpleDataContext.getSimpleContext(VerifyConfigurationAction.VERIFY_CONTENT_WITH_WARNINGS, false, dataContext), progressHandlerSubTask));
-                                } catch(Exception e) {
-                                    getMessageManager(project).sendErrorNotification("server.configuration.verification.failed.unexpected", e);
-                                }
-                                stopSignal.countDown();
-                            }
-                        }
-                    );
-                    stopSignal.await();
-                } catch(Exception e) {
-                    // Catch and report unexpected exception as debug message to keep it going
-                    getMessageManager(project).sendErrorNotification("server.configuration.verification.failed.unexpected", e);
-                }
-            }
-            if(verifiedOk.get()) {
+
+            boolean verified = prepareDeployment(project, dataContext, progressHandlerSubTask);
+            if(verified) {
                 progressHandlerSubTask.next("progress.get.current.server.configuration");
                 if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
                     return;

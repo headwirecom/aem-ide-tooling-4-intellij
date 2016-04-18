@@ -47,6 +47,7 @@ public class AEMPluginConfiguration
 
     private boolean incrementalBuilds = true;
     private int deployDelayInSeconds = -1;
+    private String lastUsedServerConfiguration = "";
 
     private AEMPluginConfigurationDialog configDialog;
 
@@ -72,6 +73,15 @@ public class AEMPluginConfiguration
 
     public void setDeployDelayInSeconds(int deployDelayInSeconds) {
         this.deployDelayInSeconds = deployDelayInSeconds;
+    }
+
+    public String getLastUsedServerConfiguration() {
+        return lastUsedServerConfiguration;
+    }
+
+    public AEMPluginConfiguration setLastUsedServerConfiguration(String lastUsedServerConfiguration) {
+        this.lastUsedServerConfiguration = lastUsedServerConfiguration;
+        return this;
     }
 
     // -------------- Configurable interface implementation --------------------------
@@ -124,6 +134,7 @@ public class AEMPluginConfiguration
             "deployDelayInSeconds",
             String.valueOf(incrementalBuilds ? deployDelayInSeconds : -1)
         );
+        aemNode.setAttribute("lastUsedServerConfiguration", lastUsedServerConfiguration);
         root.addContent(aemNode);
         return root;
     }
@@ -138,6 +149,7 @@ public class AEMPluginConfiguration
             } catch(NumberFormatException e) {
                 deployDelayInSeconds = -1;
             }
+            lastUsedServerConfiguration = aemNode.getAttributeValue("lastUsedServerConfiguration", "");
         }
     }
 }

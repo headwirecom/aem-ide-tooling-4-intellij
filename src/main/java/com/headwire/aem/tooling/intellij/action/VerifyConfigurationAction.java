@@ -22,22 +22,19 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
-import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
-import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Constants;
-import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.filter.FilterResult;
+import org.apache.sling.ide.io.ConnectorException;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.ResourceProxy;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +42,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
@@ -127,6 +123,8 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                     } catch(IllegalArgumentException e) {
                         messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.verification.failed.due.to.bind.exception", source.getName(), e.getMessage());
                         return false;
+                    } finally {
+                        serverConfigurationManager.updateCurrentServerConfiguration();
                     }
                     if(unboundModules != null && !unboundModules.isEmpty()) {
                         progressHandlerSubTask.next("progress.verify.update.server.configuration");
@@ -156,7 +154,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                                 // Check if the Filter is available for Content Modules
                                 Filter filter = null;
                                 try {
-                                    filter = ProjectUtil.loadFilter(module);
+                                    filter = module.getSlingProject().loadFilter();
                                     if(filter == null) {
                                         ret = false;
                                         exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.not.found", module.getName());
@@ -165,7 +163,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                                             return false;
                                         }
                                     }
-                                } catch(CoreException e) {
+                                } catch(ConnectorException e) {
                                     ret = false;
                                     exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.failure", module.getName(), e.getMessage());
                                     module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);

@@ -227,7 +227,7 @@ public class ContentResourceChangeListener
     }
 
     private void executeMake(final VirtualFileEvent event) {
-        if(pluginConfiguration.isIncrementalBuilds()) {
+        if(pluginConfiguration == null || pluginConfiguration.isIncrementalBuilds()) {
             // Check if the file is a Java Class and if os build it
             VirtualFile file = event.getFile();
             if("java".equalsIgnoreCase(file.getExtension())) {
@@ -319,7 +319,9 @@ public class ContentResourceChangeListener
                         serverConnectionManager.handleFileChanges(work);
                         // Wait for the timeout
                         try {
-                            int delay = pluginConfiguration.getDeployDelayInSeconds();
+                            int delay = pluginConfiguration == null ?
+                                30 :
+                                pluginConfiguration.getDeployDelayInSeconds();
                             if(delay > 0) {
                                 Thread.sleep(delay * 1000);
                             }
