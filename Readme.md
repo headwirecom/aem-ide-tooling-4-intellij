@@ -4,12 +4,24 @@
 
 Can be found on our [Wiki Page](https://github.com/headwirecom/aem-ide-tooling-4-intellij/wiki)
 
+#### Attention:
+
+There is a problem with the release of 0.7.0 where the test if the current connection had changed
+brings up too many warning dialog boxes. We are working on a fix but for now the only fix is to
+delete 0.7.0 and install 0.6.4.9.
+If you encounter any issues please report them in the **Isuees** section so that we can fix them
+quickly.
 
 #### Current Branch:
 
 The latest code can  be found in the **master** branch.
 
 #### Updates:
+
+**0.7.1** (not released yet):
+* Fixed an issue where the Plugin tried to connect to the repository during incremental deployment
+  even when the connection was stopped
+
 
 **0.7.0**:
 * Forced Deployment will Purge Cache first so that both have the same effect locally
