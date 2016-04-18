@@ -22,6 +22,7 @@ import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -86,14 +87,24 @@ public class DeployToServerAction
         aProgressHandler.next("Get Bundle Status");
         // First Check if the Install Support Bundle is installed
         ServerConnectionManager.BundleStatus bundleStatus = connectionManager.checkAndUpdateSupportBundle(false);
+
+        if(forceDeploy) {
+            // First Run the Purge Cache
+            ActionManager actionManager = ActionManager.getInstance();
+            final ResetConfigurationAction resetConfigurationAction = (ResetConfigurationAction) actionManager.getAction("AEM.Purge.Cache.Action");
+            if(resetConfigurationAction != null) {
+                resetConfigurationAction.doReset(project, progressHandler);
+            }
+        }
+
         ServerConfiguration.Module module = selectionHandler.getCurrentModuleConfiguration();
         aProgressHandler.next("Build and Deploy " + (module != null ? "All" : "Single") + " Module");
         if(module != null) {
             // Deploy only the selected Module
-            connectionManager.deployModule(dataContext, module, forceDeploy, aProgressHandler);
+            connectionManager.deployModule(dataContext, module, false, aProgressHandler);
         } else {
             // Deploy all Modules of the Project
-            connectionManager.deployModules(dataContext, forceDeploy, aProgressHandler);
+            connectionManager.deployModules(dataContext, false, aProgressHandler);
         }
         progressHandler.next("Done");
     }

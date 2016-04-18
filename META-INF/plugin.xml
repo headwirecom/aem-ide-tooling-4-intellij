@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.6.4.9</version>
+    <version>0.7.0</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,21 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.7.0: The Support Bundle Install button on the Server Configuration is now performing the installation.
+                   The Force Deploy action is doing a Purge Cache before it deploys. This way the Force Deploy
+                     is the same as Purge Cache and Deploy action.
+                   Made General Plugin Configuration persistent.
+                   Added a check to the Run Connection so that if the user changes the Server Configuration the
+                     cache will be automatically purged so that the next deployed will push all of it.
+                   The Debug Connection is now also doing a Verification and Server Configuration change check
+                     like the Run Connection.
+                   The Jar File validator on the Facet is now working properly.
+                   Exported the Background task execution into its own utility method.
+                   Added a Dialog to the Possible Symbolic Name Mismatch so that further warnings can be ignored.
+                   When a new module is created the module is automatically verified. This will also create the
+                     list of modules and updates the tree.
+                   Fixed a NPE when the Plugin Preferences Configuration is not created
+        </li>
         <li>0.6.4.9: Dropped the SNAPSHOT from the version. Started to work on a better Module handling to unify
                      all the various modules (IntelliJ Project Modules, Maven Project and Server Configuration Module).
                      Added to support an override of the Bundle Symbolic Name as Felix is renaming them sometimes and
@@ -102,7 +117,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder"/>
-        <toolWindow id="AEM (0.6.4.9)" anchor="right" icon="/images/hw.png"
+        <toolWindow id="AEM (0.7.0)" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
@@ -158,6 +173,10 @@
             <interface-class>org.apache.sling.ide.log.Logger</interface-class>
             <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.PluginLoggerWrapper</implementation-class>
         </component>
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration</implementation-class>
+        </component>
+
     </application-components>
 
     <project-components>
@@ -202,7 +221,7 @@
         <action id="AEM.Verify.Configuration.Action"
                 class="com.headwire.aem.tooling.intellij.action.VerifyConfigurationAction"
                 icon="AllIcons.Actions.Share"/>
-        <action id="AEM.Reset.Configuration.Action"
+        <action id="AEM.Purge.Cache.Action"
                 class="com.headwire.aem.tooling.intellij.action.ResetConfigurationAction"
                 icon="AllIcons.Actions.Lightning"/>
         <action id="AEM.Build.Configuration.Action"
@@ -237,7 +256,7 @@
             <reference ref="AEM.Remove.Action"/>
             <reference ref="AEM.Edit.Action"/>
             <reference ref="AEM.Verify.Configuration.Action"/>
-            <reference ref="AEM.Reset.Configuration.Action"/>
+            <reference ref="AEM.Purge.Cache.Action"/>
             <reference ref="AEM.Build.Configuration.Action"/>
             <separator/>
             <reference ref="AEM.Check.Action"/>
@@ -254,7 +273,7 @@
             <reference ref="AEM.Edit.Action"/>
             <reference ref="AEM.Build.Configuration.Action"/>
             <reference ref="AEM.Verify.Configuration.Action"/>
-            <reference ref="AEM.Reset.Configuration.Action"/>
+            <reference ref="AEM.Purge.Cache.Action"/>
             <separator/>
             <reference ref="AEM.Check.Action"/>
             <reference ref="AEM.Start.Debug.Action"/>
@@ -269,7 +288,7 @@
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM (0.6.4.9)"
+               text="AEM (0.7.0)"
                popup="true"
                icon="/images/hw.png"
         >

@@ -82,6 +82,7 @@ public abstract class AbstractEditServerConfigurationAction
                         } else {
                             configuration.addServerConfiguration(target);
                         }
+                        doVerify(project, null, new ProgressHandlerImpl(getTemplatePresentation().getText()));
                     }
                 }
             } while(!isOk);

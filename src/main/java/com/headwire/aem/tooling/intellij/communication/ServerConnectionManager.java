@@ -107,9 +107,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.WaitableRunner;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
 
 /**
  * Handles the Server Connections for the Plugin, its state and flags
@@ -208,7 +211,7 @@ public class ServerConnectionManager
         }
     }
 
-    public boolean checkModule(@NotNull OsgiClient osgiClient, @NotNull Module module) {
+    public boolean checkModule(@NotNull OsgiClient osgiClient, @NotNull final Module module) {
         boolean ret = true;
         try {
             if(module.isPartOfBuild()) {
@@ -227,8 +230,8 @@ public class ServerConnectionManager
                             // If not remote Version is found there is a chance that the Felix Bundle did change
                             // the symbolic names and here we test that and inform the user about it
                             if(remoteVersion == null) {
-                                // If this is Maven and the last part of the package is also used at the begining of the Artifact Id
-                                if(unifiedModule.isMavenBased()) {
+                                // If this is Maven and the last part of the package is also used at the beginning of the Artifact Id
+                                if(unifiedModule.isMavenBased() && !module.isIgnoreSymbolicNameMismatch()) {
                                     MavenProject mavenProject = moduleManager.getMavenProject(unifiedModule);
                                     if(mavenProject != null) {
                                         String groupId = mavenProject.getMavenId().getGroupId();
@@ -236,9 +239,31 @@ public class ServerConnectionManager
                                         int index = groupId.lastIndexOf('.');
                                         String lastPackage = groupId.substring(index > 0 ? index + 1: 0);
                                         if(artifactId.startsWith(lastPackage)) {
-                                            messageManager.showAlertWithArguments(
-                                                "module.check.possible.symbolic.name.mismatch", module.getSymbolicName()
-                                            );
+                                            WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
+                                                private AtomicInteger response = new AtomicInteger(1);
+                                                @Override
+                                                public boolean isAsynchronous() {
+                                                    return true;
+                                                }
+
+                                                @Override
+                                                public AtomicInteger getResponse() {
+                                                    return response;
+                                                }
+
+                                                @Override
+                                                public void run() {
+                                                    int selection = messageManager.showAlertWithOptions(
+                                                        NotificationType.WARNING, "module.check.possible.symbolic.name.mismatch", module.getSymbolicName()
+                                                    );
+                                                    getResponse().set(selection);
+                                                }
+                                            };
+                                            com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait(runner);
+                                            if(runner.getResponse().get() == 0) {
+                                                // If ignore is selected then save it on that moduleL
+                                                module.setIgnoreSymbolicNameMismatch(true);
+                                            }
                                         }
                                     }
                                 }
@@ -742,29 +767,34 @@ public class ServerConnectionManager
                     // Compile the IntelliJ way
                     final CompilerManager compilerManager = CompilerManager.getInstance(myProject);
                     final CompileScope moduleScope = compilerManager.createModuleCompileScope(module.getUnifiedModule().getModule(), true);
-                    final CountDownLatch waiter = new CountDownLatch(1);
-                    final AtomicBoolean checker = new AtomicBoolean(false);
-                    ApplicationManager.getApplication().invokeLater(
-                        new Runnable() {
-                            public void run() {
-                                compilerManager.make(
-                                    moduleScope,
-                                    new CompileStatusNotification() {
-                                        public void finished(boolean aborted, int errors, int warnings, CompileContext compileContext) {
-                                            checker.set(!aborted && errors == 0);
-                                            waiter.countDown();
-                                        }
+                    WaitableRunner<AtomicBoolean> runner = new WaitableRunner<AtomicBoolean>(new AtomicBoolean(false)) {
+                        @Override
+                        public void run() {
+                            compilerManager.make(
+                                moduleScope,
+                                new CompileStatusNotification() {
+                                    public void finished(boolean aborted, int errors, int warnings, CompileContext compileContext) {
+                                    getResponse().set(!aborted && errors == 0);
                                     }
-                                );
-                            }
+                                }
+                            );
                         }
-                    );
-                    try {
-                        waiter.await();
-                    } catch(InterruptedException e) {
-                        //AS TODO: Show Info Notification and Alert
-                    }
-                    localBuildDoneSuccessfully = checker.get();
+                    };
+                    runAndWait(runner);
+//                    final CountDownLatch waiter = new CountDownLatch(1);
+//                    final AtomicBoolean checker = new AtomicBoolean(false);
+//                    ApplicationManager.getApplication().invokeLater(
+//                        new Runnable() {
+//                            public void run() {
+//                            }
+//                        }
+//                    );
+//                    try {
+//                        waiter.await();
+//                    } catch(InterruptedException e) {
+//                        //AS TODO: Show Info Notification and Alert
+//                    }
+                    localBuildDoneSuccessfully = runner.getResponse().get();
                 }
                 if(localBuildDoneSuccessfully) {
                     File buildDirectory = new File(module.getUnifiedModule().getBuildDirectoryPath());

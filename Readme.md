@@ -11,6 +11,21 @@ The latest code can  be found in the **master** branch.
 
 #### Updates:
 
+**0.7.0**:
+* Forced Deployment will Purge Cache first so that both have the same effect locally
+* Implemented Install Button in Server Configuration to install Support Bundle
+* Made General Plugin Configuration persistent.
+* Added a check to the Run Connection so that if the user changes the Server Configuration the
+  cache will be automatically purged so that the next deployed will push all of it.
+* The Debug Connection is now also doing a Verification and Server Configuration change check
+  like the Run Connection.
+* The Jar File validator on the Facet is now working properly.
+* Exported the Background task execution into its own utility method.
+* Added a Dialog to the Possible Symbolic Name Mismatch so that further warnings can be ignored.
+* When a new module is created the module is automatically verified. This will also create the
+  list of modules and updates the tree.
+* Fixed a NPE when the Plugin Preferences Configuration is not created
+
 **0.6.4.9**:
 * Dropped the SNAPSHOT from the version.  
 * Started to work on a better Module handling to unify
