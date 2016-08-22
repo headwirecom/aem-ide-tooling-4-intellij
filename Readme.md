@@ -1,6 +1,6 @@
 ### AEM Tooling for IntelliJ IDE Plugin
 
-#### Relese:
+#### Releases:
 
 Can be found on our [Wiki Page](https://github.com/headwirecom/aem-ide-tooling-4-intellij/wiki)
 
@@ -18,10 +18,14 @@ The latest code can  be found in the **master** branch.
 
 #### Updates:
 
-**0.7.1** (not released yet):
+**0.7.1**:
 * Fixed an issue where the Plugin tried to connect to the repository during incremental deployment
   even when the connection was stopped
-
+* Fixed an issue when the Plugin tried to compile even though there was not configuration
+  (non AEM / Sling project)
+* Added the 'Filter is generated' flag to the Sling Module Facet. With that it is possible to verify
+  a project without having a filter.xml file. It is important though that the filter.xml file is
+  available in the designated META-INF/vault folder at the time of the deployment.
 
 **0.7.0**:
 * Forced Deployment will Purge Cache first so that both have the same effect locally

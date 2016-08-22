@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.7.0</version>
+    <version>0.7.1</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,15 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.7.1:
+                   Fixed an issue where the Plugin tried to connect to the repository during incremental deployment
+                     even when the connection was stopped
+                   Fixed an issue when the Plugin tried to compile even though there was not configuration (non
+                     AEM / Sling project)
+                   Added the 'Filter is generated' flag to the Sling Module Facet. With that it is possible to verify
+                     a project without having a filter.xml file. It is important though that the filter.xml file is
+                     available in the designated META-INF/vault folder at the time of the deployment.
+        </li>
         <li>0.7.0: The Support Bundle Install button on the Server Configuration is now performing the installation.
                    The Force Deploy action is doing a Purge Cache before it deploys. This way the Force Deploy
                      is the same as Purge Cache and Deploy action.
@@ -117,7 +126,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder"/>
-        <toolWindow id="AEM (0.7.0)" anchor="right" icon="/images/hw.png"
+        <toolWindow id="AEM (0.7.1)" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
@@ -288,7 +297,7 @@
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM (0.7.0)"
+               text="AEM (0.7.1)"
                popup="true"
                icon="/images/hw.png"
         >

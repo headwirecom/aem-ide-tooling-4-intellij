@@ -23,6 +23,8 @@ import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.facet.SlingModuleFacet;
+import com.headwire.aem.tooling.intellij.facet.SlingModuleFacetConfiguration;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Constants;
 import com.intellij.notification.NotificationType;
@@ -156,11 +158,23 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                                 try {
                                     filter = module.getSlingProject().loadFilter();
                                     if(filter == null) {
-                                        ret = false;
-                                        exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.not.found", module.getName());
-                                        module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                        if(exitNow == Messages.CANCEL) {
-                                            return false;
+                                        boolean isGeneratedFilter = false;
+                                        SlingModuleFacet slingModuleFacet = SlingModuleFacet.getFacetByModule(module.getUnifiedModule().getModule());
+                                        if(slingModuleFacet != null) {
+                                            SlingModuleFacetConfiguration slingModuleFacetConfiguration = slingModuleFacet.getConfiguration();
+                                            if(slingModuleFacetConfiguration.isGeneratedFilter()) {
+                                                isGeneratedFilter = true;
+                                            }
+                                        }
+                                        if(!isGeneratedFilter) {
+                                            ret = false;
+                                            exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.not.found", module.getName());
+                                            module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
+                                            if(exitNow == Messages.CANCEL) {
+                                                return false;
+                                            }
+                                        } else {
+                                            //AS TODO: Add a notification message here indicating that filter.xml presence was not tested as it was set to Generated
                                         }
                                     }
                                 } catch(ConnectorException e) {

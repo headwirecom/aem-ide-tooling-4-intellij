@@ -953,7 +953,8 @@ public class ServerConnectionManager
                 }
             }
         }
-        if(!resourcePathToModuleMap.isEmpty()) {
+        // The automatic deployment is only done when connected
+        if(!resourcePathToModuleMap.isEmpty() && isConnectionInUse()) {
             Module module = resourcePathToModuleMap.values().iterator().next();
             Repository repository =  ServerUtil.getConnectedRepository(
                 new IServer(module.getParent()), new NullProgressMonitor(), messageManager

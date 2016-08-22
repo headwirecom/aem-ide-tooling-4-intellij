@@ -64,6 +64,7 @@ public class SlingModuleFacetEditor
     private JTextField jarFileName;
     private JScrollPane facetHelpScrollPane;
     private JTextArea facetHelp;
+    private JCheckBox generatedFilter;
 
     private SlingModuleFacetConfiguration slingModuleFacetConfiguration;
     private FacetEditorContext editorContext;
@@ -117,6 +118,7 @@ public class SlingModuleFacetEditor
                 public ValidationResult check() {
                     ModuleType moduleType = getModuleType();
                     if(moduleType == ModuleType.content) {
+                        boolean generatedFilterFlag = generatedFilter.isSelected();
                         Module module = editorContext.getModule();
                         String filePath = metaInfPath.getText();
                         switch(FacetUtil.checkFile(module, filePath, true)) {
@@ -127,11 +129,14 @@ public class SlingModuleFacetEditor
                             case notDirectory:
                                 return createValidatorResult("facet.meta-inf.is.not.folder", filePath);
                             case ok:
-                                VirtualFile folder = module.getModuleFile().getFileSystem().findFileByPath(filePath);
-                                // Check that the Filter file is there
-                                VirtualFile filterFile = Util.findFileOrFolder(folder, VAULT_FILTER_FILE_NAME, false);
-                                if(filterFile == null) {
-                                    return createValidatorResult("facet.meta-inf.folder.filter.not.found", filePath);
+                                if(!generatedFilterFlag) {
+                                    // Because the filter.xml is generated the filter.xml might not be there yet
+                                    VirtualFile folder = module.getModuleFile().getFileSystem().findFileByPath(filePath);
+                                    // Check that the Filter file is there
+                                    VirtualFile filterFile = Util.findFileOrFolder(folder, VAULT_FILTER_FILE_NAME, false);
+                                    if(filterFile == null) {
+                                        return createValidatorResult("facet.meta-inf.folder.filter.not.found", filePath);
+                                    }
                                 }
                         }
                     }
@@ -146,9 +151,7 @@ public class SlingModuleFacetEditor
                 public ValidationResult check() {
                     ModuleType moduleType = getModuleType();
                     if(moduleType == ModuleType.bundle) {
-//                        boolean ignore = ignoreMaven.isSelected();
                         String symbolicName = bundleSymbolicName.getText();
-//                        if(ignore && symbolicName.length() == 0) {
                         if(symbolicName.length() == 0) {
                             return createValidatorResult("facet.osgi.symbolic.name.missing");
                         }
@@ -210,6 +213,7 @@ public class SlingModuleFacetEditor
         contentCheckBox.addChangeListener(groupChangeListener);
         bundleCheckBox.addChangeListener(groupChangeListener);
         excludedCheckBox.addChangeListener(groupChangeListener);
+        generatedFilter.addChangeListener(groupChangeListener);
         ignoreMaven.addChangeListener(groupChangeListener);
         // Make sure the source root path is enabled correctly at the beginnning
         checkCheckBoxes();
@@ -230,13 +234,14 @@ public class SlingModuleFacetEditor
         LOG.debug(AEMBundle.message("debug.facet.module.type.changed", moduleTypeChanged));
         LOG.debug(AEMBundle.message("debug.facet.source.path.changed", sourcePathChanged));
         LOG.debug(AEMBundle.message("debug.facet.meta-inf.path.changed", metainfPathChanged));
+        boolean generatedFilterChanged = generatedFilter.isSelected() != slingModuleFacetConfiguration.isGeneratedFilter();
         boolean ignoreMavenChanged = ignoreMaven.isSelected() != slingModuleFacetConfiguration.isIgnoreMaven();
         boolean symbolicNameChanged = bundleSymbolicName.getText().equals(slingModuleFacetConfiguration.getOsgiSymbolicName());
         boolean versionChanged = bundleVersion.getText().equals(slingModuleFacetConfiguration.getOsgiVersion());
         boolean jarFileNameChanged = jarFileName.getText().equals(slingModuleFacetConfiguration.getOsgiJarFileName());
         return moduleTypeChanged ||
-            (moduleType == ModuleType.content && (sourcePathChanged || metainfPathChanged)) ||
-            (moduleType == ModuleType.bundle && (ignoreMavenChanged || symbolicNameChanged || versionChanged || jarFileNameChanged))
+            (moduleType == ModuleType.content && (sourcePathChanged || metainfPathChanged || generatedFilterChanged)) ||
+            (moduleType == ModuleType.bundle && (ignoreMavenChanged || generatedFilterChanged || symbolicNameChanged || versionChanged || jarFileNameChanged))
             ;
     }
 
@@ -263,6 +268,7 @@ public class SlingModuleFacetEditor
         }
         slingModuleFacetConfiguration.setSourceRootPath(sourceRoot);
         String filterRoot = "";
+        boolean generatedFilterFlag = generatedFilter.isSelected();
         if(moduleType == ModuleType.content) {
             Module module = editorContext.getModule();
 //            VirtualFile moduleFile = module.getModuleFile();
@@ -306,6 +312,7 @@ public class SlingModuleFacetEditor
                 throw createConfigurationException("facet.osgi.symbolic.name.missing");
             }
         }
+        slingModuleFacetConfiguration.setGeneratedFilter(generatedFilterFlag);
         slingModuleFacetConfiguration.setIgnoreMaven(ignore);
         slingModuleFacetConfiguration.setOsgiSymbolicName(symbolicName);
         slingModuleFacetConfiguration.setOsgiVersion(version);
@@ -326,6 +333,7 @@ public class SlingModuleFacetEditor
     public void reset() {
         sourceRootPath.setText(slingModuleFacetConfiguration.getSourceRootPath());
         metaInfPath.setText(slingModuleFacetConfiguration.getMetaInfPath());
+        generatedFilter.setSelected(slingModuleFacetConfiguration.isGeneratedFilter());
         ignoreMaven.setSelected(slingModuleFacetConfiguration.isIgnoreMaven());
         bundleSymbolicName.setText(slingModuleFacetConfiguration.getOsgiSymbolicName());
         bundleVersion.setText(slingModuleFacetConfiguration.getOsgiVersion());
@@ -355,6 +363,7 @@ public class SlingModuleFacetEditor
     private void checkCheckBoxes() {
         sourceRootPath.setEnabled(contentCheckBox.isSelected());
         metaInfPath.setEnabled(contentCheckBox.isSelected());
+        generatedFilter.setEnabled(contentCheckBox.isSelected());
         bundleVersion.setEnabled(ignoreMaven.isSelected());
         jarFileName.setEnabled(ignoreMaven.isSelected());
     }

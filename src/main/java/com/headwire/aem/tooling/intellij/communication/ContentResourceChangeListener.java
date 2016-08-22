@@ -227,7 +227,11 @@ public class ContentResourceChangeListener
     }
 
     private void executeMake(final VirtualFileEvent event) {
-        if(pluginConfiguration == null || pluginConfiguration.isIncrementalBuilds()) {
+        if(
+            (pluginConfiguration == null || pluginConfiguration.isIncrementalBuilds())
+// If no Configuration Selected which can happen when the project is not AEM / Sling based then do nothing
+            && serverConnectionManager.isConfigurationSelected()
+        ) {
             // Check if the file is a Java Class and if os build it
             VirtualFile file = event.getFile();
             if("java".equalsIgnoreCase(file.getExtension())) {

@@ -39,6 +39,9 @@ public class SlingModuleExtensionProperties {
   @Tag("ignore-maven")
   public boolean ignoreMaven = false;
 
+  @Tag("generated-filter")
+  public boolean generatedFilter = false;
+
   @Tag("osgi-symblic-name")
   public String osgiSymbolicName = "";
 

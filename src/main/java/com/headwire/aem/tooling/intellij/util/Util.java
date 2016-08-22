@@ -236,20 +236,20 @@ public class Util {
 
     public static void setModificationStamp(VirtualFile file) {
         // Store it in memory first
-        file.putUserData(Util.MODIFICATION_DATE_KEY, file.getModificationStamp());
-        if(file instanceof NewVirtualFile) {
-            final DataOutputStream os = MODIFICATION_STAMP_FILE_ATTRIBUTE.writeAttribute(file);
-            try {
+        if(file != null) {
+            file.putUserData(Util.MODIFICATION_DATE_KEY, file.getModificationStamp());
+            if(file instanceof NewVirtualFile) {
+                final DataOutputStream os = MODIFICATION_STAMP_FILE_ATTRIBUTE.writeAttribute(file);
                 try {
-                    IOUtil.writeString(StringUtil.notNullize(file.getTimeStamp() + ""), os);
+                    try {
+                        IOUtil.writeString(StringUtil.notNullize(file.getTimeStamp() + ""), os);
+                    } finally {
+                        os.close();
+                    }
+                } catch(IOException e) {
+                    // Ignore it but we might need to throw an exception
+                    String message = e.getMessage();
                 }
-                finally {
-                    os.close();
-                }
-            }
-            catch (IOException e) {
-                // Ignore it but we might need to throw an exception
-                String message = e.getMessage();
             }
         }
     }

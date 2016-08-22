@@ -78,6 +78,10 @@ public class SlingModuleFacetConfiguration implements FacetConfiguration, Persis
         properties.moduleType = moduleType;
     }
 
+    public boolean isGeneratedFilter() { return properties.generatedFilter; }
+
+    public void setGeneratedFilter(boolean generatedFilter) { properties.generatedFilter = generatedFilter; }
+
     public boolean isIgnoreMaven() { return properties.ignoreMaven; }
 
     public void setIgnoreMaven(boolean ignoreMaven) { properties.ignoreMaven = ignoreMaven; }
