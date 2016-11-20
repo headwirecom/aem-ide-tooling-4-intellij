@@ -18,6 +18,17 @@ The latest code can  be found in the **master** branch.
 
 #### Updates:
 
+**Attention**:
+The lastest build (0.7.2-beta2) has the start of the Run / Debug Connection when a project
+is loaded disabled due to a race condition / thread deadlock. This means you need to start
+the connection manually when you load the project. This means you need to start the connection
+manually until a fix is provided.
+
+**0.7.2-beta2**:
+* Disabled automatic start of the Connection due to a failure to start the run / debug
+  connection background thread.
+**0.7.2-beta**:
+* Trying to fix some sporadic issues like ConsoleLog class not found and continuous indexing
 **0.7.1**:
 * Fixed an issue where the Plugin tried to connect to the repository during incremental deployment
   even when the connection was stopped

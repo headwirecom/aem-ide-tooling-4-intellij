@@ -20,12 +20,14 @@ package com.headwire.aem.tooling.intellij.console;
 
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.execution.filters.HyperlinkInfo;
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.notification.EventLogCategory;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
 import com.intellij.notification.Notifications;
 import com.intellij.notification.NotificationsAdapter;
 import com.intellij.notification.impl.NotificationsManagerImpl;
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.editor.Document;
@@ -50,6 +52,8 @@ import com.intellij.util.IJSwingUtilities;
 import com.intellij.util.ObjectUtils;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.hash.LinkedHashMap;
+import com.intellij.util.messages.MessageBus;
+import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.text.CharArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -78,21 +82,58 @@ public class ConsoleLog
     private static final Set<String> NEW_LINES = ContainerUtil.newHashSet("<br>", "</br>", "<br/>", "<p>", "</p>", "<p/>");
     protected static final String DEFAULT_CATEGORY = "";
 
-    private final ConsoleLogModel myModel = new ConsoleLogModel(null, ApplicationManager.getApplication());
+    private ConsoleLogModel myModel;
+    private Application application;
 
-    public ConsoleLog() {
-        ApplicationManager.getApplication().getMessageBus().connect().subscribe(Notifications.TOPIC, new NotificationsAdapter() {
-            @Override
-            public void notify(@NotNull Notification notification) {
-                final Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
-                if(openProjects.length == 0) {
-                    myModel.addNotification(notification);
-                }
-                for(Project p : openProjects) {
-                    getProjectComponent(p).printNotification(notification);
-                }
+    public ConsoleLog(@NotNull Application application) {
+        this.application = application;
+    }
+
+    @Override
+    public void initComponent() {
+        try {
+            if(application != null) {
+                myModel = new ConsoleLogModel(null, application);
+                MessageBus bus = application.getMessageBus();
+                MessageBusConnection connection = bus.connect();
+                connection.subscribe(Notifications.TOPIC, new NotificationImpl());
+            } else {
+                PluginManager.getLogger().error("Application could not be retrieved -> no subscription, no model");
             }
-        });
+        } catch(IllegalStateException e) {
+            PluginManager.getLogger().error("Could not subscribe to Message Buss Notification Topic", e);
+        } catch(Exception e) {
+            PluginManager.getLogger().error("Unexpected exception while trying to subscribe to Message Buss Notification Topic", e);
+        }
+    }
+
+    private class NotificationImpl
+        extends NotificationsAdapter
+    {
+        @Override
+        public void notify(@NotNull Notification notification) {
+            try {
+                final ProjectManager projectManager = ProjectManager.getInstance();
+                if(projectManager != null) {
+                    final Project[] openProjects = projectManager.getOpenProjects();
+                    if(openProjects.length == 0) {
+                        if(myModel != null) {
+                            myModel.addNotification(notification);
+                        }
+                    }
+                    for(Project p : openProjects) {
+                        ConsoleLogProjectTracker consoleLogProjectTracker = getProjectComponent(p);
+                        if(consoleLogProjectTracker != null) {
+                            consoleLogProjectTracker.printNotification(notification);
+                        }
+                    }
+                } else {
+                    PluginManager.getLogger().error("Project Manager could not be retrieved");
+                }
+            } catch(Exception e) {
+                PluginManager.getLogger().error("Could not Notify to Console Log Project Tracker", e);
+            }
+        }
     }
 
     protected ConsoleLogModel getModel() {
@@ -100,24 +141,47 @@ public class ConsoleLog
     }
 
     public static void expireNotification(@NotNull Notification notification) {
-        getApplicationComponent().myModel.removeNotification(notification);
-        for(Project p : ProjectManager.getInstance().getOpenProjects()) {
-            getProjectComponent(p).getMyProjectModel().removeNotification(notification);
+        ConsoleLog consoleLog = getApplicationComponent();
+        if(consoleLog != null) {
+            if(consoleLog.myModel != null) {
+                consoleLog.myModel.removeNotification(notification);
+                for(Project p : ProjectManager.getInstance().getOpenProjects()) {
+                    getProjectComponent(p).getMyProjectModel().removeNotification(notification);
+                }
+            }
         }
     }
 
     protected static ConsoleLog getApplicationComponent() {
-        return ApplicationManager.getApplication().getComponent(ConsoleLog.class);
+        ConsoleLog answer = null;
+        Application application = ApplicationManager.getApplication();
+        if(application != null) {
+            answer = application.getComponent(ConsoleLog.class);
+        }
+        return answer;
     }
 
-    @NotNull
+    @Nullable
     public static ConsoleLogModel getLogModel(@Nullable Project project) {
-        return project != null ? getProjectComponent(project).getMyProjectModel() : getApplicationComponent().myModel;
+        ConsoleLogModel answer = null;
+        if(project != null) {
+            answer = getProjectComponent(project).getMyProjectModel();
+        } else {
+            ConsoleLog consoleLog = getApplicationComponent();
+            if(consoleLog != null) {
+                answer = consoleLog.myModel;
+            }
+        }
+        return answer;
     }
 
     @Nullable
     public static Trinity<Notification, String, Long> getStatusMessage(@Nullable Project project) {
-        return getLogModel(project).getStatusMessage();
+        ConsoleLogModel model = getLogModel(project);
+        if(model != null) {
+            return model.getStatusMessage();
+        }
+        return null;
     }
 
     public static LogEntry formatForLog(@NotNull final Notification notification, String indent) {
@@ -380,7 +444,10 @@ public class ConsoleLog
     }
 
     public static void addNotification(@NotNull Project project, @NotNull Notification notification) {
-        getLogModel(project).addNotification(notification);
+        ConsoleLogModel model = getLogModel(project);
+        if(model != null) {
+            model.addNotification(notification);
+        }
     }
 
     private static class NotificationHyperlinkInfo implements HyperlinkInfo {
@@ -419,8 +486,11 @@ public class ConsoleLog
         public void navigate(Project project) {
             hideBalloon(myNotification);
 
-            for(Notification notification : getLogModel(project).getNotifications()) {
-                hideBalloon(notification);
+            ConsoleLogModel model = getLogModel(project);
+            if(model != null) {
+                for(Notification notification : model.getNotifications()) {
+                    hideBalloon(notification);
+                }
             }
 
             ConsoleLogConsole console = ObjectUtils.assertNotNull(getProjectComponent(project).getConsole(myNotification));

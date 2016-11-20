@@ -47,7 +47,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/13/15.

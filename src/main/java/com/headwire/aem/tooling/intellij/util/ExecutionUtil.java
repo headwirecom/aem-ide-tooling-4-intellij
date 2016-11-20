@@ -43,6 +43,8 @@ public class ExecutionUtil {
                         }
                     }
                 });
+                //AS TODO: re-opening another project will start this method as part of the when project is initialized. The runnable task
+                //AS TODO: is not started and the next step waits forever.
                 stopSignal.await();
             } else {
                 runner.run();
