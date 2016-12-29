@@ -55,6 +55,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.headwire.aem.tooling.intellij.communication.ServerConnectionManager.FileChangeType;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
@@ -71,6 +72,8 @@ public class ContentResourceChangeListener
     private final Project project;
 
     private final LinkedList<FileChange> queue = new LinkedList<FileChange>();
+    private Runner runner;
+    private VirtualFileAdapter virtualFileAdapter;
 
 
     public ContentResourceChangeListener(@NotNull Project project) {
@@ -79,75 +82,6 @@ public class ContentResourceChangeListener
         pluginConfiguration = ComponentProvider.getComponent(project, AEMPluginConfiguration.class);
         this.serverConnectionManager = serverConnectionManager;
         this.project = project;
-
-        // File Change Events are not handled right away but queued up and handled in
-        // batches to avoid a constant load on the IDEA. The timeout is configurable so
-        // that the user can decide the delay
-        Thread thread = new Thread(new Runner());
-        thread.setDaemon(true);
-        thread.start();
-
-        // Create the Listener on File Changes
-        VirtualFileManager.getInstance().addVirtualFileListener(
-            new VirtualFileAdapter() {
-                @Override
-                public void contentsChanged(@NotNull VirtualFileEvent event) {
-                    if(event.isFromSave()) {
-                        executeMake(event);
-                        if (serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
-                            handleChange(event.getFile(), FileChangeType.CHANGED);
-                        }
-                    }
-                }
-
-                @Override
-                public void fileCreated(@NotNull VirtualFileEvent event) {
-                    if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
-                        handleChange(event.getFile(), FileChangeType.CREATED);
-                    }
-                }
-
-                @Override
-                public void fileDeleted(@NotNull VirtualFileEvent event) {
-                    // When a file is deleted the remove does not work anymore because it is gone -> Delete the file
-                    // on line before the actual deletion
-                }
-
-                @Override
-                public void beforeFileMovement(@NotNull VirtualFileMoveEvent event) {
-                    if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
-                        // We delete before the Move because the original file still exists
-                        VirtualFile file = event.getFile();
-                        handleChange(file, FileChangeType.DELETED);
-                    }
-                }
-
-                @Override
-                public void beforeFileDeletion(@NotNull VirtualFileEvent event) {
-                    if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
-                        // Delete the JCR Resource before the file is gone
-                        handleChange(event.getFile(), FileChangeType.DELETED);
-                    }
-                }
-
-                @Override
-                public void fileMoved(@NotNull VirtualFileMoveEvent event) {
-                    if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
-                        // After the move we create the new file
-                        VirtualFile file = event.getFile();
-                        handleChange(event.getFile(), FileChangeType.CREATED);
-                    }
-                }
-
-                @Override
-                public void fileCopied(@NotNull VirtualFileCopyEvent event) {
-                    if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
-                        handleChange(event.getFile(), FileChangeType.CREATED);
-                    }
-                }
-            },
-            project
-        );
 
         // Register a Startup Manager to check the project if it is default after the project is initialized
         StartupManager startupManager = StartupManager.getInstance(project);
@@ -175,13 +109,15 @@ public class ContentResourceChangeListener
                                                 slingServerTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                                 StartRunConnectionAction runAction = (StartRunConnectionAction) actionManager.getAction("AEM.Check.Action");
                                                 if (runAction != null) {
-                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new ProgressHandlerImpl("Connection Change Listener Check"));
+//AS TODO: This is not working anymore.
+                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new ProgressHandlerImpl("Connection Change Listener Check").setForceAsynchronous(false));
                                                 }
                                                 break;
                                             case debug:
                                                 slingServerTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                                 StartDebugConnectionAction debugAction = (StartDebugConnectionAction) actionManager.getAction("AEM.Start.Debug.Action");
                                                 if (debugAction != null) {
+//AS TODO: This is not working anymore.
                                                     debugAction.doDebug(myProject, serverConnectionManager);
                                                 }
                                                 break;
@@ -194,26 +130,95 @@ public class ContentResourceChangeListener
                 }
             }
         );
-        //AS TODO: That would work if we would build the project without maven but that is not the case
-        //AS TODO: Also maven is not sending events on the Build Manager Listeners
-        //AS TODO: If that does not work we can remove the messageBusConnection from the constructor
-//        messageBusConnection.subscribe(
-//            BuildManagerListener.TOPIC,
-//            new BuildManagerListener() {
-//
-//                @Override
-//                public void buildStarted(Project project, UUID sessionId, boolean isAutomake) {
-//                    // Test this here
-//                    String test = "start";
-//                }
-//
-//                @Override
-//                public void buildFinished(Project project, UUID sessionId, boolean isAutomake) {
-//                    // Test this here
-//                    String test = "end";
-//                }
-//            }
-//        );
+    }
+
+    @Override
+    public void projectOpened() {
+
+        // File Change Events are not handled right away but queued up and handled in
+        // batches to avoid a constant load on the IDEA. The timeout is configurable so
+        // that the user can decide the delay
+        if(runner == null) {
+            runner = new Runner();
+            Thread thread = new Thread(runner);
+            thread.setDaemon(true);
+            thread.start();
+        }
+
+        // Create the Listener on File Changes
+        virtualFileAdapter = new VirtualFileAdapter() {
+            @Override
+            public void contentsChanged(@NotNull VirtualFileEvent event) {
+                if(event.isFromSave()) {
+                    executeMake(event);
+                    if (serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
+                        handleChange(event.getFile(), FileChangeType.CHANGED);
+                    }
+                }
+            }
+
+            @Override
+            public void fileCreated(@NotNull VirtualFileEvent event) {
+                if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
+                    handleChange(event.getFile(), FileChangeType.CREATED);
+                }
+            }
+
+            @Override
+            public void fileDeleted(@NotNull VirtualFileEvent event) {
+                // When a file is deleted the remove does not work anymore because it is gone -> Delete the file
+                // on line before the actual deletion
+            }
+
+            @Override
+            public void beforeFileMovement(@NotNull VirtualFileMoveEvent event) {
+                if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
+                    // We delete before the Move because the original file still exists
+                    VirtualFile file = event.getFile();
+                    handleChange(file, FileChangeType.DELETED);
+                }
+            }
+
+            @Override
+            public void beforeFileDeletion(@NotNull VirtualFileEvent event) {
+                if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
+                    // Delete the JCR Resource before the file is gone
+                    handleChange(event.getFile(), FileChangeType.DELETED);
+                }
+            }
+
+            @Override
+            public void fileMoved(@NotNull VirtualFileMoveEvent event) {
+                if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
+                    // After the move we create the new file
+                    VirtualFile file = event.getFile();
+                    handleChange(event.getFile(), FileChangeType.CREATED);
+                }
+            }
+
+            @Override
+            public void fileCopied(@NotNull VirtualFileCopyEvent event) {
+                if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
+                    handleChange(event.getFile(), FileChangeType.CREATED);
+                }
+            }
+        };
+        VirtualFileManager.getInstance().addVirtualFileListener(
+            virtualFileAdapter,
+            project
+        );
+    }
+
+    @Override
+    public void projectClosed() {
+        if(runner != null) {
+            runner.stop();
+            runner = null;
+        }
+        if(virtualFileAdapter != null) {
+            VirtualFileManager.getInstance().removeVirtualFileListener(virtualFileAdapter);
+            virtualFileAdapter = null;
+        }
     }
 
     private void handleChange(VirtualFile file, FileChangeType fileChangeType) {
@@ -300,14 +305,31 @@ public class ContentResourceChangeListener
     private  class Runner
         implements Runnable
     {
+        // Indicator if the Runner is running:
+        // - False: not started yet
+        // - True: currently running
+        // - is null: thread existed and cannot be restarted
+        private AtomicBoolean running = new AtomicBoolean(false);
+
+        public void stop() {
+            if(running != null) {
+                synchronized(queue) {
+                    running.set(false);
+                    queue.notifyAll();
+                }
+            }
+        }
+
         @Override
         public void run() {
-            while(true) {
-                LinkedList<FileChange> work = null;
-                synchronized(queue) {
-                    work = new LinkedList<FileChange>(queue);
-                    queue.clear();
-                }
+            if(running != null) {
+                running.set(true);
+                while(running.get()) {
+                    LinkedList<FileChange> work = null;
+                    synchronized(queue) {
+                        work = new LinkedList<FileChange>(queue);
+                        queue.clear();
+                    }
                     if(work.isEmpty()) {
                         synchronized(queue) {
                             try {
@@ -323,9 +345,7 @@ public class ContentResourceChangeListener
                         serverConnectionManager.handleFileChanges(work);
                         // Wait for the timeout
                         try {
-                            int delay = pluginConfiguration == null ?
-                                30 :
-                                pluginConfiguration.getDeployDelayInSeconds();
+                            int delay = pluginConfiguration == null ? 30 : pluginConfiguration.getDeployDelayInSeconds();
                             if(delay > 0) {
                                 Thread.sleep(delay * 1000);
                             }
@@ -333,7 +353,9 @@ public class ContentResourceChangeListener
                             // Ignore it
                         }
                     }
+                }
             }
+            running = null;
         }
     }
 }

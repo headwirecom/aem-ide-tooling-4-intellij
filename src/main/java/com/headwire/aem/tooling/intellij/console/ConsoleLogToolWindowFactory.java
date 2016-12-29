@@ -182,7 +182,10 @@ public class ConsoleLogToolWindowFactory
         public void ancestorAdded(AncestorEvent event) {
             ToolWindow log = ConsoleLog.getLogWindow(myProject);
             if (log != null && log.isVisible()) {
-                ConsoleLog.getLogModel(myProject).logShown();
+                ConsoleLogModel model = ConsoleLog.getLogModel(myProject);
+                if(model != null) {
+                    model.logShown();
+                }
             }
         }
     }

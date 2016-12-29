@@ -371,5 +371,15 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
         public boolean isNotCancelable() {
             return false;
         }
+
+        @Override
+        public ProgressHandler getParent() {
+            return null;
+        }
+
+        @Override
+        public Boolean forceAsynchronous() {
+            return null;
+        }
     }
 }

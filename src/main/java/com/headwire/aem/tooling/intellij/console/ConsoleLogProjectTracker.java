@@ -58,8 +58,14 @@ public class ConsoleLogProjectTracker
 
         myProjectModel = new ConsoleLogModel(project, project);
 
-        for(Notification notification : ConsoleLog.getApplicationComponent().getModel().takeNotifications()) {
-            printNotification(notification);
+        ConsoleLog consoleLog = ConsoleLog.getApplicationComponent();
+        if(consoleLog != null) {
+            ConsoleLogModel model = consoleLog.getModel();
+            if(model != null) {
+                for(Notification notification : model.takeNotifications()) {
+                    printNotification(notification);
+                }
+            }
         }
 
         project.getMessageBus().connect(project).subscribe(Notifications.TOPIC, new NotificationsAdapter() {
@@ -85,7 +91,13 @@ public class ConsoleLogProjectTracker
 
     @Override
     public void projectClosed() {
-        ConsoleLog.getApplicationComponent().getModel().setStatusMessage(null, 0);
+        ConsoleLog consoleLog = ConsoleLog.getApplicationComponent();
+        if(consoleLog != null) {
+            ConsoleLogModel model = consoleLog.getModel();
+            if(model != null) {
+                model.setStatusMessage(null, 0);
+            }
+        }
         StatusBar.Info.set("", null, LOG_REQUESTOR);
     }
 

@@ -102,4 +102,9 @@ public interface ProgressHandler {
 
     /** @return True if the Progress Handler is set a not cancelable */
     public boolean isNotCancelable();
+
+    public ProgressHandler getParent();
+
+    /** @return True if it has to run asynchronous, false if not and null if it is not forced **/
+    public Boolean forceAsynchronous();
 }

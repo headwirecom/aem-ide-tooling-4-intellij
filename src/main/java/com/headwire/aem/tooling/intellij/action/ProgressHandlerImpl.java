@@ -35,6 +35,7 @@ public class ProgressHandlerImpl
     private ProgressIndicator progressIndicator;
     private boolean markedAsCanceled;
     private boolean notCancelable;
+    private Boolean forceAsynchronous;
 
     public ProgressHandlerImpl(String title) {
         this(null, 0, title);
@@ -129,6 +130,28 @@ public class ProgressHandlerImpl
     @Override
     public boolean isNotCancelable() {
         return notCancelable;
+    }
+
+    @Override
+    public ProgressHandler getParent() {
+        return parent;
+    }
+
+    public ProgressHandlerImpl setForceAsynchronous(Boolean forceAsynchronous) {
+        this.forceAsynchronous = forceAsynchronous;
+        return this;
+    }
+
+    @Override
+    public Boolean forceAsynchronous() {
+        if(forceAsynchronous != null) {
+            return forceAsynchronous;
+        } else {
+            if(parent != null) {
+                return parent.forceAsynchronous();
+            }
+        }
+        return null;
     }
 
     private void checkCancellation()

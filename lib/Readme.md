@@ -5,4 +5,4 @@ up you need to go to the Project Modules and go through all Libraries
 especially in the Maven one as they contains references to one or many
 artifacts.
 
-Andreas Schaefer, 3/11/2016
+Andreas Schaefer, 3/11/2016s
