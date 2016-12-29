@@ -18,12 +18,12 @@ The latest code can  be found in the **master** branch.
 
 #### Updates:
 
-**0.7.2-beta2**:
-* It is possible that during loading a project with an automatic start of a Run  / Debug Connection
-  the plugin / IDE hangs with a thread deadlock. This release has that feature disabled until there
-  is a proper fix.
-  For now you must **start** the Connection **manually** after loading a project.
-  
+**Attention**:
+
+**0.7.2**:
+* Fixed the issue with the deadlock during Project Load. An automatic start connection during
+  that phase led to a deadlock inside the Event Dispatcher. This means that you can use the
+  Start Connection on Load again.
 **0.7.1**:
 * Fixed an issue where the Plugin tried to connect to the repository during incremental deployment
   even when the connection was stopped
