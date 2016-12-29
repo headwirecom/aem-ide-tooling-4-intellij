@@ -110,7 +110,7 @@ public class ContentResourceChangeListener
                                                 StartRunConnectionAction runAction = (StartRunConnectionAction) actionManager.getAction("AEM.Check.Action");
                                                 if (runAction != null) {
 //AS TODO: This is not working anymore.
-//                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new ProgressHandlerImpl("Connection Change Listener Check"));
+                                                    runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new ProgressHandlerImpl("Connection Change Listener Check").setForceAsynchronous(false));
                                                 }
                                                 break;
                                             case debug:
@@ -118,7 +118,7 @@ public class ContentResourceChangeListener
                                                 StartDebugConnectionAction debugAction = (StartDebugConnectionAction) actionManager.getAction("AEM.Start.Debug.Action");
                                                 if (debugAction != null) {
 //AS TODO: This is not working anymore.
-//                                                    debugAction.doDebug(myProject, serverConnectionManager);
+                                                    debugAction.doDebug(myProject, serverConnectionManager);
                                                 }
                                                 break;
                                         }

@@ -19,6 +19,7 @@
 package com.headwire.aem.tooling.intellij.util;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CountDownLatch;
@@ -32,6 +33,7 @@ public class ExecutionUtil {
         try {
             if(runner.isAsynchronous()) {
                 final CountDownLatch stopSignal = runner.getLatch();
+                Logger.getInstance("#com.headwire.aem.tooling.intellij.util.ExecutionUtil").debug("Is Application Dispatcher Thread: " + ApplicationManager.getApplication().isDispatchThread());
                 ApplicationManager.getApplication().invokeLater(new Runnable() {
                     @Override
                     public void run() {

@@ -157,7 +157,12 @@ public abstract class AbstractProjectAction
                 }
                 @Override
                 public boolean isAsynchronous() {
-                    return AbstractProjectAction.this.isAsynchronous();
+                    Boolean forced = progressHandler.forceAsynchronous();
+                    if(forced != null) {
+                        return forced;
+                    } else {
+                        return AbstractProjectAction.this.isAsynchronous();
+                    }
                 }
             };
             runAndWait(runner);
