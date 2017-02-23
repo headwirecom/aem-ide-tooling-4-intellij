@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/apps/example"/>
+
+
+
+    <filter root="/etc/clientlibs/example"/>
+
+
+    <filter root="/etc/designs/example">
+        <include pattern="/etc/designs/example/jcr:content"/>
+
+    </filter>
+
+</workspaceFilter>

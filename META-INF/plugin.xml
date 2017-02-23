@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.7.2</version>
+    <version>0.7.3</version>
     <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,15 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>0.7.3:
+                   Working on integrating and testing latest Sling Tooling IDE code from Trunk
+                   Fixed an issue with Import From Server (Context Menu) failing
+                   Fixed an issue with finding a folder in Windows
+                   Fixed an issue with creating folders locally during import from server
+                   Added the AEM Developer Companion to the Plugin
+                   Added a Info page to the plugin
+                   Fixed an issue with the modification timestamp
+        </li>
         <li>0.7.2:
                    Fixed the issued with the deadlock (everlasting indexing) by making sure that the Project
                    Verification during the Project Load's Start Connection is done asynchronously.
@@ -127,10 +136,11 @@
     <!-- This Dependency is necessary to be able to access the IntelliJ Maven Classes from within this plugin -->
     <!-- For development make sure the plugin is added to the IntelliJ SDK and not as a library -->
     <depends>org.jetbrains.idea.maven</depends>
+    <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder"/>
-        <toolWindow id="AEM (0.7.2)" anchor="right" icon="/images/hw.png"
+        <toolWindow id="AEM (0.7.3)" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
@@ -218,6 +228,9 @@
             <interface-class>com.headwire.aem.tooling.intellij.config.ModuleManager</interface-class>
             <implementation-class>com.headwire.aem.tooling.intellij.config.ModuleManagerImpl</implementation-class>
         </component>
+        <component>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.AemdcPanel</implementation-class>
+        </component>
     </project-components>
 
     <actions>
@@ -263,6 +276,11 @@
                 text="Import from"
                 description="Import from current Server Connection"
                 icon="AllIcons.ToolbarDecorator.Import"/>
+        <action id="AEM.DC.Panel.Action"
+                class="com.headwire.aem.tooling.intellij.action.AemDcPanelAction"
+                text="AEM DC"
+                description="Show / Hide AEM DC Panel"
+                icon="/images/hw.png"/>
 
         <group id="AEM.Toolbar">
             <reference ref="AEM.Add.Action"/>
@@ -279,6 +297,7 @@
             <reference ref="AEM.Deploy.Action"/>
             <reference ref="AEM.Force.Deploy.Action"/>
             <reference ref="AEM.Cancel.Background.Action"/>
+            <reference ref="AEM.DC.Panel.Action"/>
         </group>
         <group id="AEM.Connection.Popup">
             <reference ref="AEM.Add.Action"/>
@@ -301,7 +320,7 @@
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM (0.7.2)"
+               text="AEM (0.7.3)"
                popup="true"
                icon="/images/hw.png"
         >

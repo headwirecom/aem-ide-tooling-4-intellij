@@ -21,6 +21,7 @@ package com.headwire.aem.tooling.intellij.communication;
 import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction;
 import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
+import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
@@ -34,6 +35,7 @@ import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.vcs.CodeSmellDetector;
@@ -305,6 +307,8 @@ public class ContentResourceChangeListener
     private  class Runner
         implements Runnable
     {
+        private final Logger logger = Logger.getInstance(Runner.class);
+
         // Indicator if the Runner is running:
         // - False: not started yet
         // - True: currently running
@@ -325,33 +329,41 @@ public class ContentResourceChangeListener
             if(running != null) {
                 running.set(true);
                 while(running.get()) {
-                    LinkedList<FileChange> work = null;
-                    synchronized(queue) {
-                        work = new LinkedList<FileChange>(queue);
-                        queue.clear();
-                    }
-                    if(work.isEmpty()) {
+                    try {
+                        LinkedList<FileChange> work = null;
                         synchronized(queue) {
+                            work = new LinkedList<FileChange>(queue);
+                            queue.clear();
+                        }
+                        if(work.isEmpty()) {
+                            synchronized(queue) {
+                                try {
+                                    // This should block until an entry is written to the queue
+                                    // where a notifyAll() will wake up this thread for another loop
+                                    queue.wait();
+                                } catch(InterruptedException e) {
+                                    // Ignore it
+                                }
+                            }
+                        } else {
+                            // Do the updates
+                            serverConnectionManager.handleFileChanges(work);
+                            // Wait for the timeout
                             try {
-                                // This should block until an entry is written to the queue
-                                // where a notifyAll() will wake up this thread for another loop
-                                queue.wait();
+                                int delay = pluginConfiguration == null ? 30 : pluginConfiguration.getDeployDelayInSeconds();
+                                if(delay > 0) {
+                                    Thread.sleep(delay * 1000);
+                                }
                             } catch(InterruptedException e) {
                                 // Ignore it
                             }
                         }
-                    } else {
-                        // Do the updates
-                        serverConnectionManager.handleFileChanges(work);
-                        // Wait for the timeout
-                        try {
-                            int delay = pluginConfiguration == null ? 30 : pluginConfiguration.getDeployDelayInSeconds();
-                            if(delay > 0) {
-                                Thread.sleep(delay * 1000);
-                            }
-                        } catch(InterruptedException e) {
-                            // Ignore it
-                        }
+                    } catch(Exception e) {
+                        //AS TODO: Write this to IDEA Logs -> ignore it for now
+                        logger.warn("Caught unexpected exception while listening for file changes", e);
+                    } catch(Error e) {
+                        //AS TODO: Write this to IDEA Logs -> ignore it for now
+                        logger.error("Caught unexpected error while listening for file changes", e);
                     }
                 }
             }

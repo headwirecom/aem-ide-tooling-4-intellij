@@ -107,7 +107,7 @@ public class ImportRepositoryContentManager {
         this.currentResources = new HashSet<IResource>();
     }
 
-    public void doImport(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException,
+    public void doImport(IProgressMonitor monitor) throws InterruptedException,
         SerializationException, CoreException {
 
 //        // TODO: We should try to make this give 'nice' progress feedback (aka here's what I'm processing)
@@ -129,7 +129,7 @@ public class ImportRepositoryContentManager {
                 skm = new SerializationKindManager();
                 skm.init(repository);
             } catch(RepositoryException e1) {
-                throw new InvocationTargetException(e1);
+                throw new CoreException("Failed to obtain the Serialization Kind Manager or initialize it", e1);
             }
 
             filter = ProjectUtil.loadFilter(project);
@@ -149,21 +149,14 @@ public class ImportRepositoryContentManager {
                 String relativeFromSyncRoot = projectRelativePath.toOSString();
                 int index = relativeFromSyncRoot.indexOf("/" + JCR_ROOT_FOLDER_NAME + "/");
                 relativeFromSyncRoot = relativeFromSyncRoot.substring(index + ("/" + JCR_ROOT_FOLDER_NAME + "/").length());
-                repositoryImportRoot = new IPath(
-                    new IPath(contentSyncRoot),
-                    relativeFromSyncRoot
-                );
+                repositoryImportRoot = new IPath(new IPath(contentSyncRoot), relativeFromSyncRoot);
 
 
                 readVltIgnoresNotUnderImportRoot(contentSyncRootDir, repositoryImportRoot);
 
                 //            ProgressUtils.advance(monitor, 1);
 
-                Activator
-                    .getDefault()
-                    .getPluginLogger()
-                    .trace("Starting import; repository start point is {0}, workspace start point is {1}",
-                        repositoryImportRoot, projectRelativePath);
+                Activator.getDefault().getPluginLogger().trace("Starting import; repository start point is {0}, workspace start point is {1}", repositoryImportRoot, projectRelativePath);
 
                 recordNotIgnoredResources();
 
@@ -182,7 +175,8 @@ public class ImportRepositoryContentManager {
                 //        } catch (OperationCanceledException e) {
                 //            throw e;
             } catch(Exception e) {
-                throw new InvocationTargetException(e);
+                Activator.getDefault().getPluginLogger().error("Import failed: '" + e.getMessage() + "'", e);
+                throw new CoreException("Failed to handle Import", e);
             } finally {
                 if(builder != null) {
                     builder.destroy();
@@ -205,9 +199,18 @@ public class ImportRepositoryContentManager {
 //            IPath repoPath = current.getProjectRelativePath().makeRelativeTo(syncDir.getProjectRelativePath())
 //                .makeAbsolute();
             parseIgnoreFiles(current, repoPath.toPortableString());
-            current = (IFolder) current.findMember(repositoryImportRoot.segment(i));
+            IResource child = current.findMember(repositoryImportRoot.segment(i));
+            if(child instanceof IFolder) {
+                current = (IFolder) child;
+            } else {
+                // This must be a file then -> make sure it is the leave otherwise throw a Core Exception
+                if(i == repositoryImportRoot.segmentCount() - 1) {
+                    break;
+                } else {
+                    throw new CoreException("Encounter a File: '" + child.getProjectRelativePath().toPortableString() + " and it is not a leaf");
+                }
+            }
         }
-
     }
 
     private void recordNotIgnoredResources() throws CoreException {

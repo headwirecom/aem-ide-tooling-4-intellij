@@ -21,6 +21,7 @@ package com.headwire.aem.tooling.intellij.util;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
+import org.osgi.framework.BundleContext;
 
 import java.net.URL;
 
@@ -47,6 +48,26 @@ public class ArtifactsLocatorImpl
         URL jarUrl = loadResource(
 //            bundleContext,
             ARTIFACTS_LOCATION + "/sling-tooling-support-install/" + fileName
+        );
+
+        return new EmbeddedArtifact(fileName, version, jarUrl);
+    }
+
+    @Override
+    public EmbeddedArtifact loadSourceSupportBundle() {
+//        BundleContext bundleContext = context.getBundleContext();
+
+        String version = "1.0.0"; // TODO - remove version hardcoding
+        String artifactId = "org.apache.sling.tooling.support.source";
+        String extension = "jar";
+
+        String fileName = artifactId
+            + (version != null || version.trim().length() > 0 ? "-" + version : "")
+            + "." + extension;
+
+        URL jarUrl = loadResource(
+//            bundleContext,
+            ARTIFACTS_LOCATION + "/sling-tooling-support-source/" + fileName
         );
 
         return new EmbeddedArtifact(fileName, version, jarUrl);

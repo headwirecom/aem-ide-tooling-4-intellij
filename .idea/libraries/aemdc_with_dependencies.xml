@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="aemdc-with-dependencies">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../aemdc.hw/aemdc/target/aemdc-0.10.2-SNAPSHOT-jar-with-dependencies.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java" />
+    </SOURCES>
+  </library>
+</component>

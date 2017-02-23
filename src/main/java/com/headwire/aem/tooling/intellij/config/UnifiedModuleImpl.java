@@ -219,6 +219,19 @@ public class UnifiedModuleImpl
     }
 
     @Override
+    public List<String> getSourceDirectoryPaths() {
+        List<String> ret = new ArrayList<String>();
+        if(mavenProject != null) {
+            ret = mavenProject.getSources();
+        } else {
+            if(slingConfiguration != null && slingConfiguration.getModuleType() == ModuleType.bundle) {
+                ret.add(slingConfiguration.getSourceRootPath());
+            }
+        }
+        return ret;
+    }
+
+    @Override
     public String getMetaInfPath() {
         if(mavenProject != null) {
             return null;

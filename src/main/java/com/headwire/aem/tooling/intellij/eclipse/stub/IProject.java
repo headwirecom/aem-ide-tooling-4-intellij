@@ -60,7 +60,11 @@ public class IProject {
 
         VirtualFileSystem vfs = module.getProject().getBaseDir().getFileSystem();
         VirtualFile file = vfs.findFileByPath(path.toOSString());
-        return new IFolder(module, file);
+        if(file != null) {
+            return new IFolder(module, file);
+        } else {
+            return new IFolder(module, new File(path.toOSString()));
+        }
     }
 
     /* IntelliJ Specific Methods */
@@ -109,7 +113,23 @@ public class IProject {
 
     public IFile getFile(String path) {
         IFile ret = null;
-        if(path.startsWith("/")) {
+        boolean isAbsolute = false;
+        if(path != null) {
+            if (path.charAt(0) == '/') {
+                isAbsolute = true;
+            } else {
+                int index = path.indexOf(":\\");
+                int index2 = path.indexOf('\\');
+                if (index < 0) {
+                    index = path.indexOf(":/");
+                    index2 = path.indexOf('/');
+                }
+                if (index > 0 && index < index2) {
+                    isAbsolute = true;
+                }
+            }
+        }
+        if(isAbsolute) {
             VirtualFile virtualFile = project.getProjectFile().getFileSystem().findFileByPath(path);
             if(virtualFile != null) {
                 ret = new IFile(module, virtualFile);

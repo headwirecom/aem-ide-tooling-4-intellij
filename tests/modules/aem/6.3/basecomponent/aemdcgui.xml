@@ -1,0 +1,25 @@
+<model>
+   <config type="servlet">
+      <typeRoot>
+         <template name="safemethods">
+            <template>
+               <params name="java-class">
+                  <value>
+                     <value>ThreeServlet21</value>
+                  </value>
+               </params>
+               <params name="targetName">
+                  <value>
+                     <value>Three</value>
+                  </value>
+               </params>
+               <params name="java-package">
+                  <value>
+                     <value>one.two.three</value>
+                  </value>
+               </params>
+            </template>
+         </template>
+      </typeRoot>
+   </config>
+</model>

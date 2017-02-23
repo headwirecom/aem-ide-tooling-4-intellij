@@ -230,6 +230,8 @@ public class Util {
                     }
                 }
             }
+        } else {
+            ret = temporary;
         }
         return ret;
     }
@@ -237,7 +239,7 @@ public class Util {
     public static void setModificationStamp(VirtualFile file) {
         // Store it in memory first
         if(file != null) {
-            file.putUserData(Util.MODIFICATION_DATE_KEY, file.getModificationStamp());
+            file.putUserData(Util.MODIFICATION_DATE_KEY, file.getTimeStamp());
             if(file instanceof NewVirtualFile) {
                 final DataOutputStream os = MODIFICATION_STAMP_FILE_ATTRIBUTE.writeAttribute(file);
                 try {

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.sling:org.apache.sling.scripting.api:2.0.2-incubator">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/org.apache.sling.scripting.api/2.0.2-incubator/org.apache.sling.scripting.api-2.0.2-incubator.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/org.apache.sling.scripting.api/2.0.2-incubator/org.apache.sling.scripting.api-2.0.2-incubator-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/sling/org.apache.sling.scripting.api/2.0.2-incubator/org.apache.sling.scripting.api-2.0.2-incubator-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

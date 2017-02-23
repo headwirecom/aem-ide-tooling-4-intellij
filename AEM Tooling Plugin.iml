@@ -11,7 +11,7 @@
       <excludeFolder url="file://$MODULE_DIR$/eclipse.aem.tooling.generatedd.test.project" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intellij" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="IntelliJ IDEA Community Edition IC-163.10154.41" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
     <orderEntry type="library" name="org.osgi:org.osgi.compendium:4.3.1" level="project" />
@@ -22,12 +22,15 @@
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-spi-commons:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-spi:2.4.0" level="project" />
     <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault.rcp:3.0.0" level="project" />
-    <orderEntry type="library" name="org.slf4j:slf4j-simple:1.5.8" level="project" />
     <orderEntry type="library" name="org.json:json:20140107" level="project" />
-    <orderEntry type="library" name="Apache-Sling-IDE-1.0.9" level="project" />
     <orderEntry type="library" name="commons-io:commons-io:2.4" level="project" />
-    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault.rcp:3.0.01" level="project" />
     <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="maven-plugin-libraries" level="project" />
+    <orderEntry type="library" name="Apache-Sling-IDE-trunk" level="project" />
+    <orderEntry type="library" name="org.xhtmlrenderer:flying-saucer-core:9.1.1" level="project" />
+    <orderEntry type="library" name="org.slf4j:slf4j-api:1.7.6" level="project" />
+    <orderEntry type="library" name="Simple Logging Facade for Java:1.7.6" level="project" />
+    <orderEntry type="library" name="org.slf4j:jcl-over-slf4j:1.7.6" level="project" />
+    <orderEntry type="library" name="aemdc-with-dependencies" level="project" />
   </component>
 </module>

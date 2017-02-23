@@ -76,7 +76,7 @@ public class SlingResource4IntelliJ
         boolean ret = true;
         if(file != null) {
             Long modificationTimestamp = Util.getModificationStamp(file);
-            Long fileModificationTimestamp = file.getModificationStamp();
+            Long fileModificationTimestamp = file.getTimeStamp();
             ret = modificationTimestamp < fileModificationTimestamp;
         }
         return ret;

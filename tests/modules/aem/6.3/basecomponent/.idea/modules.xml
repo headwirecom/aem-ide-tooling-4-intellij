@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/base.iml" filepath="$PROJECT_DIR$/base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/base.core.iml" filepath="$PROJECT_DIR$/core/base.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui.apps/base.ui.apps.iml" filepath="$PROJECT_DIR$/ui.apps/base.ui.apps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui.apps/target/maven-archiver/maven-archiver.iml" filepath="$PROJECT_DIR$/ui.apps/target/maven-archiver/maven-archiver.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,131 @@
+<'sling'='http://sling.apache.org/jcr/sling/1.0'>
+<'cq'='http://www.day.com/jcr/cq/1.0'>
+<'nt'='http://www.jcp.org/jcr/nt/1.0'>
+<'mix'='http://www.jcp.org/jcr/mix/1.0'>
+<'jcr'='http://www.jcp.org/jcr/1.0'>
+<'rep'='internal'>
+
+[sling:Resource]
+  mixin
+  - sling:resourceType (string)
+
+[cq:ClientLibraryFolder] > sling:Folder
+  - channels (string) multiple
+  - categories (string) multiple
+  - dependencies (string) multiple
+  - embed (string) multiple
+
+[sling:Folder] > nt:folder
+  - * (undefined) multiple
+  - * (undefined)
+  + * (nt:base) = sling:Folder version
+
+[cq:PageContent] > cq:OwnerTaggable, cq:ReplicationStatus, mix:created, mix:title, nt:unstructured, sling:Resource, sling:VanityPath
+  orderable
+  - pageTitle (string)
+  - cq:lastModified (date)
+  - jcr:language (string)
+  - offTime (date)
+  - cq:lastModifiedBy (string)
+  - hideInNav (boolean)
+  - cq:designPath (string)
+  - cq:template (string)
+  - onTime (date)
+  - navTitle (string)
+  - cq:allowedTemplates (string) multiple
+
+[sling:VanityPath]
+  mixin
+  - sling:vanityPath (string) multiple
+  - sling:redirect (boolean)
+  - sling:vanityOrder (long)
+  - sling:redirectStatus (long)
+
+[cq:OwnerTaggable] > cq:Taggable
+  mixin
+
+[cq:Taggable]
+  mixin
+  - cq:tags (string) multiple
+
+[cq:ReplicationStatus]
+  mixin
+  - cq:lastPublishedBy (string) ignore
+  - cq:lastReplicatedBy (string) ignore
+  - cq:lastReplicationAction (string) ignore
+  - cq:lastReplicationStatus (string) ignore
+  - cq:lastPublished (date) ignore
+  - cq:lastReplicated (date) ignore
+
+[cq:Template] > mix:title, nt:hierarchyNode
+  - allowedParents (string) multiple
+  - allowedChildren (string) multiple
+  - ranking (long)
+  - * (undefined) multiple
+  - * (undefined)
+  + * (nt:base) = nt:base multiple version
+  + icon.png (nt:file)
+  + thumbnail.png (nt:file)
+  + workflows (nt:base)
+  + jcr:content (nt:base)
+
+[cq:Component] > mix:title, nt:folder, sling:ResourceSuperType
+  - * (undefined)
+  - allowedChildren (string) multiple
+  - dialogPath (string)
+  - * (undefined) multiple
+  - cq:isContainer (boolean)
+  - cq:noDecoration (boolean)
+  - cq:cellName (string)
+  - allowedParents (string) multiple
+  - componentGroup (string)
+  + cq:childEditConfig (cq:EditConfig) = cq:EditConfig
+  + design_dialog (nt:base) = nt:unstructured
+  + * (nt:base) = nt:base multiple version
+  + cq:infoProviders (nt:base) = nt:unstructured
+  + virtual (nt:base) = sling:Folder
+  + dialog (nt:base) = nt:unstructured
+  + cq:htmlTag (nt:base) = nt:unstructured
+  + cq:editConfig (cq:EditConfig) = cq:EditConfig
+  + icon.png (nt:file)
+  + thumbnail.png (nt:file)
+
+[sling:ResourceSuperType]
+  mixin
+  - sling:resourceSuperType (string)
+
+[cq:EditConfig] > nt:hierarchyNode, nt:unstructured
+  orderable
+  - cq:dialogMode (string) < 'auto', 'floating', 'inline'
+  - cq:layout (string) < 'editbar', 'rollover', 'auto'
+  - cq:actions (string) multiple
+  - cq:emptyText (string)
+  - cq:inherit (boolean)
+  + cq:formParameters (nt:base) = nt:unstructured
+  + cq:actionConfigs (nt:base) = nt:unstructured
+  + cq:dropTargets (nt:base) = nt:unstructured
+  + cq:inplaceEditing (cq:InplaceEditingConfig) = cq:InplaceEditingConfig
+  + cq:listeners (nt:base) = cq:EditListenersConfig
+
+[cq:InplaceEditingConfig] > nt:unstructured
+  orderable
+  - editorType (string)
+  - configPath (string)
+  - active (boolean)
+  + config (nt:unstructured) = nt:unstructured
+
+[cq:EditListenersConfig]
+  - afteredit (string)
+  - aftermove (string)
+  - afterinsert (string)
+  - * (undefined) multiple
+  - aftercreate (string)
+  - afterremove (string)
+  - * (undefined)
+  - afterdelete (string)
+  + * (nt:base) = nt:base multiple version
+
+[rep:RepoAccessControllable]
+  mixin
+  + rep:repoPolicy (rep:Policy) protected ignore
+

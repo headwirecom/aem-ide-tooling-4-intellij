@@ -10,6 +10,9 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.form" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources/images/sling.gif" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api-io" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

@@ -23,6 +23,7 @@ import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
@@ -44,15 +45,29 @@ public class IFolder extends IResource {
     }
 
     public IResource findMember(String member) {
-        // IntelliJ is expected forward slashes
-        member = member.replace("\\", "/");
-        VirtualFile memberFile = virtualFile.findChild(member);
-        if(memberFile == null) {
-            memberFile = virtualFile.findFileByRelativePath(member);
-        }
         IResource ret = null;
-        if(memberFile != null) {
-            ret = memberFile.isDirectory() ? new IFolder(module, memberFile) : new IFile(module, memberFile);
+        // IntelliJ is expected forward slashes
+        final String adjustedMember = member.replace("\\", "/");
+        if(virtualFile == null) {
+            File[] memberFiles = file.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    //AS TODO: Check if that also works for files in child folders
+                    return name.equals(adjustedMember);
+                }
+            });
+            if(memberFiles.length > 0) {
+                File memberFile = memberFiles[0];
+                ret = memberFile.isDirectory() ? new IFolder(module, memberFile) : new IFile(module, memberFile);
+            }
+        } else {
+            VirtualFile memberFile = virtualFile.findChild(member);
+            if(memberFile == null) {
+                memberFile = virtualFile.findFileByRelativePath(member);
+            }
+            if(memberFile != null) {
+                ret = memberFile.isDirectory() ? new IFolder(module, memberFile) : new IFile(module, memberFile);
+            }
         }
         return ret;
     }
@@ -62,23 +77,27 @@ public class IFolder extends IResource {
     }
 
     public void create(boolean force, boolean local, IProgressMonitor monitor) throws CoreException {
+        VirtualFile parentFolder;
+        String folderName;
         if(virtualFile == null) {
-            if(!file.exists()) {
-                try {
-                    file.createNewFile();
-                } catch(IOException e) {
-                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to create file: " + file, e));
+            File parentFile = file.getParentFile();
+            parentFolder = module.getProject().getProjectFile().getFileSystem().findFileByPath(parentFile.getPath());
+            folderName = file.getName();
+        } else {
+            parentFolder = virtualFile.getParent();
+            folderName = virtualFile.getName();
+        }
+        if(parentFolder != null) {
+            try {
+                parentFolder.createChildDirectory(module, folderName);
+                if(virtualFile == null) {
+                    virtualFile = parentFolder.findChild(folderName);
                 }
+            } catch(IOException e) {
+                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to create file: " + file, e));
             }
         } else {
-            if(!virtualFile.exists()) {
-                File newFile = new File(virtualFile.getPath());
-                try {
-                    newFile.createNewFile();
-                } catch(IOException e) {
-                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to create file: " + newFile, e));
-                }
-            }
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to create folder: " + file + " because parent could not be found"));
         }
     }
 }

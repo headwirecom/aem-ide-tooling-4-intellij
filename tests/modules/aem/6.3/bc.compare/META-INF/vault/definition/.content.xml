@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:vlt="http://www.day.com/jcr/vault/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:created="{Date}2017-01-08T11:51:16.026-08:00"
+    jcr:createdBy="admin"
+    jcr:description="Maven Multimodule project for AEM Base Components."
+    jcr:lastModified="{Date}2017-01-08T11:51:16.026-08:00"
+    jcr:lastModifiedBy="admin"
+    jcr:primaryType="vlt:PackageDefinition"
+    buildCount="1"
+    group="hwbase"
+    lastUnwrapped="{Date}2017-01-08T11:51:16.026-08:00"
+    lastUnwrappedBy="admin"
+    lastWrapped="{Date}2017-01-08T11:51:16.026-08:00"
+    lastWrappedBy="admin"
+    name="base.ui.apps"
+    requiresRestart="{Boolean}false"
+    requiresRoot="{Boolean}false"
+    version="0.0.1-SNAPSHOT">
+    <thumbnail.png/>
+    <filter jcr:primaryType="nt:unstructured">
+        <f0
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/apps/base"
+            rules="[]"/>
+        <f1
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/etc/clientlibs/base"
+            rules="[]"/>
+        <f2
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/etc/designs/base"
+            rules="[include:/etc/designs/base/jcr:content]"/>
+    </filter>
+</jcr:root>

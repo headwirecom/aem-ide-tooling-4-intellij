@@ -71,9 +71,6 @@ public abstract class AbstractProjectAction
         this.titleId = textId + ".text";
     }
 
-    public AbstractProjectAction() {
-    }
-
     public void update(AnActionEvent event) {
         Project project = event.getProject();
         DataContext dataContext = event.getDataContext();
