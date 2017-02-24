@@ -353,7 +353,6 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                         handler.addParameters("https://github.com/headwirecom/aemdc-files.git");
                         try {
                             handler.run();
-                            throw new VcsException("Test me");
                         } catch(VcsException e) {
                             feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.cloned.description", folder.getAbsolutePath(), e.getMessage()) + "\n\n");
                         }

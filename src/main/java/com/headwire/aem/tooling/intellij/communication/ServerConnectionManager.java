@@ -139,7 +139,6 @@ public class ServerConnectionManager
     private SlingServerTreeSelectionHandler selectionHandler;
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
-//    private NewResourceChangeCommandFactory commandFactory;
     private IntelliJDeploymentManager deploymentManager;
     private ModuleManager moduleManager;
 
@@ -379,42 +378,8 @@ public class ServerConnectionManager
         return moduleList;
     }
 
-//    /**
-//     * Binds found Modules and returns a list of modules not found
-//     * @param serverConfiguration
-//     * @param progressHandler
-//     * @return List of all modules found that did not have a matching Nodule Context and so are abandoned
-//     */
-//    public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration, final ProgressHandler progressHandler) {
-//        List<UnifiedModule> moduleContexts = ComponentProvider.getComponent(ModuleManager.class).getModuleManagerInstance(myProject, serverConfiguration).getUnifiedModules();
-//        List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
-//        ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(moduleContexts.size(), "Bind Modules");
-//        for(UnifiedModule moduleContext : moduleContexts) {
-//            progressHandlerSubTask.next("Bind Module: " + moduleContext.getName());
-//            String moduleName = moduleContext.getName();
-//            String symbolicName = moduleContext.getSymbolicName();
-//            String version = moduleContext.getVersion();
-//            // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
-//            messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', symbolic name: '" + symbolicName + "', version: '" + version + "'");
-//            // Ignore the Unnamed Projects
-//            if(moduleName == null) {
-//                continue;
-//            }
-//            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleContext));
-//            if(module == null) {
-//                module = serverConfiguration.addModule(myProject, moduleContext);
-//            } else if(!module.isBound()) {
-//                // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-//                module.rebind(myProject, moduleContext);
-//                moduleList.remove(module);
-//            } else {
-//                moduleList.remove(module);
-//            }
-//        }
-//        return moduleList;
-//    }
-
     public enum BundleStatus { upToDate, outDated, failed };
+
     public BundleStatus checkAndUpdateSupportBundle(boolean onlyCheck) {
         BundleStatus ret = BundleStatus.failed;
 
@@ -702,7 +667,6 @@ public class ServerConnectionManager
                         goals = new ArrayList<String>();
                     }
                     if (goals.isEmpty()) {
-//                        goals.add("package");
                         // If a module depends on anoher Maven module then we need to have it installed into the local repo
                         goals.add("install");
                     }
@@ -781,19 +745,6 @@ public class ServerConnectionManager
                         }
                     };
                     runAndWait(runner);
-//                    final CountDownLatch waiter = new CountDownLatch(1);
-//                    final AtomicBoolean checker = new AtomicBoolean(false);
-//                    ApplicationManager.getApplication().invokeLater(
-//                        new Runnable() {
-//                            public void run() {
-//                            }
-//                        }
-//                    );
-//                    try {
-//                        waiter.await();
-//                    } catch(InterruptedException e) {
-//                        //AS TODO: Show Info Notification and Alert
-//                    }
                     localBuildDoneSuccessfully = runner.getResponse().get();
                 }
                 if(localBuildDoneSuccessfully) {
@@ -1034,8 +985,6 @@ public class ServerConnectionManager
         List<String> contentDirectoryPaths = unifiedModule.getContentDirectoryPaths();
         for(String basePath: contentDirectoryPaths) {
             messageManager.sendDebugNotification("debug.content.base.path", basePath);
-            //AS TODO: Paths from Windows have backlashes instead of forward slashes
-            //AS TODO: It is possible that certain files are in forward slashes even on Windows
             String myFilePath = filePath == null ? null : filePath.replace("\\", "/");
             String myBasePath = basePath == null ? null : basePath.replace("\\", "/");
             if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (myFilePath == null || myFilePath.startsWith(myBasePath))) {

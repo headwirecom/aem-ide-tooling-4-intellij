@@ -21,10 +21,8 @@ package com.headwire.aem.tooling.intellij.action;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/13/15.
