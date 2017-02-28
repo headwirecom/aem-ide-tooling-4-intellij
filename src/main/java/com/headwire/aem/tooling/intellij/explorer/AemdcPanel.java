@@ -27,6 +27,7 @@ import com.headwire.aem.tooling.intellij.ui.AemdcConfigurationDialog;
 import com.headwire.aem.tooling.intellij.ui.BuildSelectionDialog;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aemdc.companion.Config;
+import com.headwire.aemdc.companion.RunnableCompanion;
 import com.headwire.aemdc.gui.MainApp;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
@@ -70,6 +71,8 @@ public class AemdcPanel
     extends Wrapper
     implements ProjectComponent
 {
+    public static final String AEMDC_CONFIG_PROPERTIES = "aemdc-config.properties";
+    public static final String LAZYBONES_FOLDER = ".lazybones";
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     private JFXPanel panel;
@@ -121,7 +124,7 @@ public class AemdcPanel
     public void display(boolean doShow) {
         if(doShow) {
             // Check if the Config to see if we need to bring up the dialog
-            if(!Config.validateThisConfiguration(new File(project.getBasePath()), "aemdc-config.properties").isEmpty()) {
+            if(!Config.validateThisConfiguration(new File(project.getBasePath()), AEMDC_CONFIG_PROPERTIES).isEmpty()) {
                 if(!showDialog()) {
                     // Show dialog why panel is not shown
                     ComponentProvider.getComponent(project, MessageManager.class).showAlertWithArguments(
@@ -142,9 +145,28 @@ public class AemdcPanel
     }
 
     public boolean showDialog() {
+        // First check if the aemdc configuration file exists. If not but there is a lazybones configuration
+        // try auto configuration first
+        VirtualFile aemdcConfigPropertiesFile = project.getBaseDir().findChild(AEMDC_CONFIG_PROPERTIES);
+        if(aemdcConfigPropertiesFile == null) {
+            if(project.getBaseDir().findChild(LAZYBONES_FOLDER) != null) {
+                // Ask the user if he wants to auto configure from the lazybones configuration
+                int response = ComponentProvider.getComponent(project, MessageManager.class).showAlertWithOptions(
+                    NotificationType.INFORMATION,
+                    "dialog.aemdc.do.auto.configuration"
+                );
+                if(response == 1) {
+                    try {
+                        RunnableCompanion.main(new String[]{"-temp=" + project.getBasePath(), "config"});
+                    } catch(IOException e) {
+                        ComponentProvider.getComponent(project, MessageManager.class).showAlertWithArguments(NotificationType.ERROR, "dialog.aemdc.failed.auto.configuration");
+                    }
+                }
+            }
+        }
         SlingServerTreeSelectionHandler slingServerTreeSelectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
         ServerConfiguration serverConfiguration = slingServerTreeSelectionHandler.getCurrentConfiguration();
-        AemdcConfigurationDialog dialog = new AemdcConfigurationDialog(project, serverConfiguration, aemdc);
+        AemdcConfigurationDialog dialog = new AemdcConfigurationDialog(project, serverConfiguration);
         return dialog.showAndGet();
     }
 

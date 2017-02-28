@@ -1,5 +1,5 @@
 # Source folders
-SOURCE_FOLDER=/Users/schaefa/Development/headwire/AdobeAEM.projects/HW.AEM.Tooling.Development/aemdc.hw/aemdc-files
+SOURCE_FOLDER=/Users/schaefa/Development/headwire/AdobeAEM.projects/HW.AEM.Tooling.Development/HW.AEM.Tooling.IntelliJ-Plugin/tests/modules/aem/aemdc-files
 SOURCE_TYPES_FOLDER={{SOURCE_FOLDER}}
 
 # Target folders
@@ -8,11 +8,11 @@ TARGET_PROJECT_APPS_FOLDER=base
 TARGET_PROJECT_CONF_FOLDER=base
 TARGET_PROJECT_DESIGN_FOLDER=base
 TARGET_PROJECT_ROOT={{TARGET_UI_FOLDER}}/apps/{{TARGET_PROJECT_APPS_FOLDER}}
+TARGET_OSGI_SUBFOLDER=/configuration
 TARGET_JAVA_FOLDER=core/src/main/java
 TARGET_JAVA_PACKAGE=com.headwire.aemdc.samples
 TARGET_JAVA_PACKAGE_FOLDER={{TARGET_JAVA_FOLDER}}/com/headwire/aemdc/samples
 TARGET_JAVA_MODEL_SUBPACKAGE={{ PH_TARGET_JAVA_MODEL_SUBPACKAGE }}
-TARGET_OSGI_SUBFOLDER=/configuration
 
 # Other config properties
 FILES_WITH_PLACEHOLDERS_EXTENSIONS=xml,java,html,jsp,js,css,properties
