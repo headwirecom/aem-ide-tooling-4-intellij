@@ -229,7 +229,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="9e0fe" class="javax.swing.JTextArea" binding="feedback">
+              <component id="9e0fe" class="javax.swing.JTextArea" binding="feedback" custom-create="true">
                 <constraints/>
                 <properties>
                   <lineWrap value="true"/>

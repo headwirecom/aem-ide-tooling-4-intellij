@@ -314,7 +314,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         List < String > validationReports = config.validateConfiguration();
         feedback.setText("");
         for(String report: validationReports) {
-            feedback.append(report + "\n");
+            feedback.append(report);
         }
 
         validateButton.addActionListener(new ActionListener() {
@@ -356,7 +356,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
             String pathToGit = GitVcsApplicationSettings.getInstance().getPathToGit();
             if(!validator.isExecutableValid(pathToGit)) {
                 // Tell the user to set Git in the preferences
-                feedback.append(AEMBundle.message("aemdc.panel.git.path.invalid.description", pathToGit) + "\n\n");
+                feedback.append(AEMBundle.message("aemdc.panel.git.path.invalid.description", pathToGit));
             } else {
                 if(PULL_BUTTON.equals(cloneOrPullButton.getText())) {
                     String aemdcFilesFolderPath = aemdcFiles.getText();
@@ -365,7 +365,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                      try {
                         handler.run();
                     } catch(VcsException e) {
-                        feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.pulled.description", aemdcFilesFolder.getAbsolutePath(), e.getMessage()) + "\n\n");
+                        feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.pulled.description", aemdcFilesFolder.getAbsolutePath(), e.getMessage()));
                     }
                 } else {
                     // Ask user to enter the parent folder of the where the aemdc-files are extracted to
@@ -374,9 +374,9 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                         String folderPath = dialog.getFolder();
                         File folder = folderPath.startsWith("/") ? new File(folderPath) : new File(baseDir.getPath(), folderPath);
                         if(!folder.exists()) {
-                            feedback.append(AEMBundle.message("aemdc.panel.parent.folder.for.aemdc.files.does.not.exist.description", folder.getAbsolutePath()) + "\n\n");
+                            feedback.append(AEMBundle.message("aemdc.panel.parent.folder.for.aemdc.files.does.not.exist.description", folder.getAbsolutePath()));
                         } else if(!folder.isDirectory()) {
-                            feedback.append(AEMBundle.message("aemdc.panel.parent.folder.for.aemdc.files.is.not.a.folder.description", folder.getAbsolutePath()) + "\n\n");
+                            feedback.append(AEMBundle.message("aemdc.panel.parent.folder.for.aemdc.files.is.not.a.folder.description", folder.getAbsolutePath()));
                         } else {
                             GitSimpleHandler handler = new GitSimpleHandler(project, folder, GitCommand.CLONE);
                             handler.addParameters("https://github.com/headwirecom/aemdc-files.git");
@@ -386,9 +386,9 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                                 aemdcFiles.setText(adjustPath(project, folderPath + "/aemdc-files", true));
                                 cloneOrPullButton.setText(PULL_BUTTON);
                             } catch(VcsException e) {
-                                feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.cloned.description", folder.getAbsolutePath(), e.getMessage()) + "\n\n");
+                                feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.cloned.description", folder.getAbsolutePath(), e.getMessage()));
                             } catch(BadFolderException e) {
-                                feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.cloned.description", folder.getAbsolutePath(), "Folder does nto exist") + "\n\n");
+                                feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.cloned.description", folder.getAbsolutePath(), "Folder does nto exist"));
                             }
                         }
                     }
@@ -403,7 +403,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         if(isOk) {
             super.doOKAction();
         } else {
-            feedback.append("Failed to write configuration file -> fix it or hit cancel to close w/o saving\n");
+            feedback.append("Failed to write configuration file -> fix it or hit cancel to close w/o saving");
         }
     }
 
@@ -441,12 +441,12 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                 List<String> validationReports = Config.validateThisConfiguration(tempTargetFile.getParentFile(), tempTargetFile.getName());
                 // - Writes out feedback
                 if(!validationReports.isEmpty()) {
-                    feedback.append("Validation Report of Current Settings\n");
+                    feedback.append("Validation Report of Current Settings");
                     for(String report : validationReports) {
-                        feedback.append(report + "\n");
+                        feedback.append(report);
                     }
                 } else {
-                    feedback.append("Current Settings are valid\n");
+                    feedback.append("Current Settings are valid");
                 }
                 if(write) {
                     if(validationReports.isEmpty()) {
@@ -454,24 +454,29 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                             targetFile.renameTo(new File(targetFile.getParent(), targetFile.getName() + ".back"));
                         }
                         if(!tempTargetFile.renameTo(targetFile)) {
-                            feedback.append("Rename to the Target File failed\n");
+                            feedback.append("Rename to the Target File failed");
                         } else {
-                            feedback.append("Target File: "+ targetFile.getName() + " was created successfully\n");
+                            feedback.append("Target File: "+ targetFile.getName() + " was created successfully");
                             answer = true;
                         }
                     } else {
-                        feedback.append("Errors -> Config File was not created\n");
+                        feedback.append("Errors -> Config File was not created");
                     }
                 } else {
                     answer = validationReports.isEmpty();
                 }
             } else {
-                feedback.append("Resource with Path: '" + filePath + "' not found\n");
+                feedback.append("Resource with Path: '" + filePath + "' not found");
             }
         } catch(IOException e) {
-            feedback.append("Failed to read aemdc config file template\n");
+            feedback.append("Failed to read aemdc config file template");
         }
         return answer;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        feedback = new Feedback();
     }
 
     private static interface DoIt {
@@ -669,6 +674,17 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                     feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.parent.path.does.not.exist", e.getPath()));
                 }
             }
+        }
+    }
+
+    private class Feedback
+        extends JTextArea
+    {
+        private int counter = 0;
+
+        public void append(String message) {
+//            insert(counter++ + ": " + message + "\n\n", 0);
+            super.append(counter++ + ": " + message + "\n\n");
         }
     }
 }
