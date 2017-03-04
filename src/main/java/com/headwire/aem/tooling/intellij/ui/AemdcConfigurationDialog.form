@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="e3588" layout-manager="GridLayoutManager" row-count="11" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="e3588" layout-manager="GridLayoutManager" row-count="11" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -55,26 +55,26 @@
               <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="OSGi Configuration"/>
+              <text value="Run Modes"/>
             </properties>
           </component>
           <component id="4be61" class="javax.swing.JTextField" binding="javaPackage">
             <constraints>
-              <grid row="6" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <toolTipText value="Your Java Package"/>
             </properties>
           </component>
-          <component id="a4949" class="javax.swing.JTextField" binding="osgiConfiguration">
+          <component id="a4949" class="javax.swing.JTextField" binding="runModes">
             <constraints>
-              <grid row="8" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="8" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
           </component>
           <grid id="1a442" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -89,7 +89,7 @@
           </grid>
           <grid id="3f87e" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -104,7 +104,7 @@
           </grid>
           <grid id="f044d" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
-              <grid row="5" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -120,20 +120,16 @@
           <grid id="9af12" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="10" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="10" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="352aa" class="javax.swing.JButton" binding="resetButton" default-binding="true">
+              <hspacer id="f34ab">
                 <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties>
-                  <text value="Reset"/>
-                  <toolTipText value="Discard any Changes"/>
-                </properties>
-              </component>
+              </hspacer>
               <component id="f1344" class="javax.swing.JButton" binding="validateButton">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -143,11 +139,15 @@
                   <toolTipText value="Validates the Current Settings"/>
                 </properties>
               </component>
-              <hspacer id="f34ab">
+              <component id="352aa" class="javax.swing.JButton" binding="resetButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-              </hspacer>
+                <properties>
+                  <text value="Reset"/>
+                  <toolTipText value="Discard any Changes"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <component id="c0186" class="javax.swing.JLabel">
@@ -160,7 +160,7 @@
           </component>
           <component id="f8e3a" class="javax.swing.JTextField" binding="appsFolderName">
             <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="2" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -186,7 +186,7 @@
           </component>
           <component id="283b0" class="javax.swing.JTextField" binding="confFolderName">
             <constraints>
-              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -196,32 +196,12 @@
           </component>
           <component id="881fc" class="javax.swing.JTextField" binding="designFolderName">
             <constraints>
-              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties>
               <toolTipText value="The design folder under /etc/designs"/>
-            </properties>
-          </component>
-          <component id="161a7" class="javax.swing.JCheckBox" binding="confSameAsApps">
-            <constraints>
-              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <selected value="true"/>
-              <text value=""/>
-              <toolTipText value="Is the Same as Apps Folder"/>
-            </properties>
-          </component>
-          <component id="958fa" class="javax.swing.JCheckBox" binding="designSameAsApps">
-            <constraints>
-              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <selected value="true"/>
-              <text value=""/>
-              <toolTipText value="Is the Same as Apps Folder"/>
             </properties>
           </component>
           <component id="cc64c" class="javax.swing.JLabel">
@@ -234,7 +214,7 @@
           </component>
           <component id="bdb9b" class="javax.swing.JTextField" binding="javaPath">
             <constraints>
-              <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="7" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -242,48 +222,14 @@
               <toolTipText value="Java Path relative to the Java Folder"/>
             </properties>
           </component>
-          <component id="a1f31" class="javax.swing.JCheckBox" binding="derivedFromJavaPackage">
-            <constraints>
-              <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <selected value="true"/>
-              <text value=""/>
-              <toolTipText value="Is Derived from Java Package"/>
-            </properties>
-          </component>
-          <grid id="f6239" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="ff3c3" class="javax.swing.JButton" binding="cloneButton" default-binding="true">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Clone"/>
-                  <toolTipText value="Clone the 'aemdc-file'"/>
-                </properties>
-              </component>
-              <hspacer id="4ea17">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-              </hspacer>
-            </children>
-          </grid>
           <scrollpane id="2e428">
             <constraints>
-              <grid row="9" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="9" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="9e0fe" class="javax.swing.JTextArea" binding="feedback">
+              <component id="9e0fe" class="javax.swing.JTextArea" binding="feedback" custom-create="true">
                 <constraints/>
                 <properties>
                   <lineWrap value="true"/>
@@ -293,6 +239,56 @@
               </component>
             </children>
           </scrollpane>
+          <component id="ff3c3" class="javax.swing.JButton" binding="cloneOrPullButton">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <hideActionText value="false"/>
+              <horizontalTextPosition value="11"/>
+              <text value="Clone"/>
+              <toolTipText value="Clone the 'aemdc-file'"/>
+            </properties>
+          </component>
+          <component id="161a7" class="javax.swing.JCheckBox" binding="confSameAsApps">
+            <constraints>
+              <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="30" height="20"/>
+              </grid>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="11"/>
+              <selected value="true"/>
+              <text value=""/>
+              <toolTipText value="Is the Same as Apps Folder"/>
+            </properties>
+          </component>
+          <component id="958fa" class="javax.swing.JCheckBox" binding="designSameAsApps">
+            <constraints>
+              <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="30" height="20"/>
+              </grid>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="11"/>
+              <selected value="true"/>
+              <text value=""/>
+              <toolTipText value="Is the Same as Apps Folder"/>
+            </properties>
+          </component>
+          <component id="a1f31" class="javax.swing.JCheckBox" binding="derivedFromJavaPackage">
+            <constraints>
+              <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="30" height="20"/>
+              </grid>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="11"/>
+              <selected value="true"/>
+              <text value=""/>
+              <toolTipText value="Is Derived from Java Package"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <vspacer id="655ca">

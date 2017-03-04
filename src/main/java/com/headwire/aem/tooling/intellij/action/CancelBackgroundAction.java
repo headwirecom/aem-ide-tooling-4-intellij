@@ -26,8 +26,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
 
-import static com.intellij.icons.AllIcons.Icon;
-
 /**
  * This action enables the user to cancel a background action
  * by using the Progress Handler.

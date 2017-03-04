@@ -2,28 +2,36 @@
 
 #### Releases:
 
-Can be found on our [Wiki Page](https://github.com/headwirecom/aem-ide-tooling-4-intellij/wiki)
-
-#### Attention:
-
-There is a problem with the release of 0.7.0 where the test if the current connection had changed
-brings up too many warning dialog boxes. We are working on a fix but for now the only fix is to
-delete 0.7.0 and install 0.6.4.9.
-If you encounter any issues please report them in the **Isuees** section so that we can fix them
-quickly.
+New Releases can be found in the **Code -> Release** section on
+GitHub: [AEM Intellij Plugin](https://github.com/headwirecom/aem-ide-tooling-4-intellij)
 
 #### Current Branch:
 
-The latest code can  be found in the **master** branch.
+The current development can be found under **feature/'version'** branch.
+The **develop** branch is the latest pre-released code.
+The **master** is the latest release code and it the same as the highest
+**release/v'version'** branch.
 
 #### Updates:
 
-**Attention**:
+**1.0**:
+* Cleaning up Code
+* Improving Documentation
+
+**0.7.3**
+* Working on integrating and testing latest Sling Tooling IDE code from Trunk
+* Fixed an issue with Import From Server (Context Menu) failing
+* Fixed an issue with finding a folder in Windows
+* Fixed an issue with creating folders locally during import from server
+* Added the AEM Developer Companion to the Plugin
+* Added a Info page to the plugin
+* Fixed an issue with the modification timestamp
 
 **0.7.2**:
 * Fixed the issue with the deadlock during Project Load. An automatic start connection during
   that phase led to a deadlock inside the Event Dispatcher. This means that you can use the
   Start Connection on Load again.
+
 **0.7.1**:
 * Fixed an issue where the Plugin tried to connect to the repository during incremental deployment
   even when the connection was stopped

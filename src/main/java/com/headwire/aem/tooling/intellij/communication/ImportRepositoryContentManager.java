@@ -110,11 +110,6 @@ public class ImportRepositoryContentManager {
     public void doImport(IProgressMonitor monitor) throws InterruptedException,
         SerializationException, CoreException {
 
-//        // TODO: We should try to make this give 'nice' progress feedback (aka here's what I'm processing)
-//        monitor.beginTask("Repository import", IProgressMonitor.UNKNOWN);
-
-//        this.monitor = monitor;
-
         MessageManager messageManager = project.getModule().getProject().getComponent(MessageManager.class);
         repository = ServerUtil.getConnectedRepository(server, monitor, messageManager);
         if(repository != null) {
@@ -196,8 +191,6 @@ public class ImportRepositoryContentManager {
             IPath syncDirProjectRelative = syncDir.getProjectRelativePath();
             IPath syncDirRelative = projectRelative.makeRelativeTo(syncDirProjectRelative);
             IPath repoPath = syncDirRelative.makeAbsolute();
-//            IPath repoPath = current.getProjectRelativePath().makeRelativeTo(syncDir.getProjectRelativePath())
-//                .makeAbsolute();
             parseIgnoreFiles(current, repoPath.toPortableString());
             IResource child = current.findMember(repositoryImportRoot.segment(i));
             if(child instanceof IFolder) {
@@ -236,7 +229,6 @@ public class ImportRepositoryContentManager {
 
                     String repositoryPath = rai.getResource().getPath();
 
-//                    FilterResult filterResult = filter.filter(contentSyncRoot, repositoryPath);
 //AS TODO: This is an adjustment to the 1.0.9 codebase
                     FilterResult filterResult = filter.filter(repositoryPath);
 
@@ -254,7 +246,6 @@ public class ImportRepositoryContentManager {
                     throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
                         "Failed reading current project's resources", e));
                 }
-//                throw new UnsupportedOperationException("This method needs to be implemented first");
             }
         });
 
@@ -277,8 +268,6 @@ public class ImportRepositoryContentManager {
     /**
      * Crawls the repository and recursively imports founds resources
      * @param path the current path to import from
-//     * @param tracer
-//     * @throws JSONException
      * @throws RepositoryException
      * @throws CoreException
      * @throws IOException
@@ -374,8 +363,6 @@ public class ImportRepositoryContentManager {
             logger.trace("No serialization data found for {0}", resource.getPath());
         }
 
-//        ProgressUtils.advance(monitor, 1);
-
         for (ResourceProxy child : resourceChildren) {
 
             if (ignoredResources.isIgnored(child.getPath())) {
@@ -383,7 +370,6 @@ public class ImportRepositoryContentManager {
             }
 
             if (filter != null) {
-//                FilterResult filterResult = filter.filter(contentSyncRoot, child.getPath());
 //AS TODO: This is an adjustment to the 1.0.9 codebase
                 FilterResult filterResult = filter.filter(child.getPath());
                 if (filterResult == FilterResult.DENY) {

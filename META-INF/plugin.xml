@@ -1,8 +1,8 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>Headwire AEM Tooling Plugin</name>
-    <version>0.7.3</version>
-    <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
+    <version>1.0</version>
+    <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/t/intellij.html">Headwire Inc.</vendor>
 
     <description><![CDATA[
       This ItelliJ IDEA Plugin is to manage a project deployed on Adobe AEM through the IDE.
@@ -10,18 +10,23 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>1.0:
+            Cleaning up Code
+            Improving Documentation
+            Issue 28: AEMDC Dialog Enhancements
+        </li>
         <li>0.7.3:
-                   Working on integrating and testing latest Sling Tooling IDE code from Trunk
-                   Fixed an issue with Import From Server (Context Menu) failing
-                   Fixed an issue with finding a folder in Windows
-                   Fixed an issue with creating folders locally during import from server
-                   Added the AEM Developer Companion to the Plugin
-                   Added a Info page to the plugin
-                   Fixed an issue with the modification timestamp
+            Working on integrating and testing latest Sling Tooling IDE code from Trunk
+            Fixed an issue with Import From Server (Context Menu) failing
+            Fixed an issue with finding a folder in Windows
+            Fixed an issue with creating folders locally during import from server
+            Added the AEM Developer Companion to the Plugin
+            Added a Info page to the plugin
+            Fixed an issue with the modification timestamp
         </li>
         <li>0.7.2:
-                   Fixed the issued with the deadlock (everlasting indexing) by making sure that the Project
-                   Verification during the Project Load's Start Connection is done asynchronously.
+            Fixed the issued with the deadlock (everlasting indexing) by making sure that the Project
+            Verification during the Project Load's Start Connection is done asynchronously.
         </li>
         <li>0.7.1:
                    Fixed an issue where the Plugin tried to connect to the repository during incremental deployment
@@ -140,7 +145,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder"/>
-        <toolWindow id="AEM (0.7.3)" anchor="right" icon="/images/hw.png"
+        <toolWindow id="AEM (1.0)" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
@@ -320,7 +325,7 @@
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM (0.7.3)"
+               text="AEM (1.0)"
                popup="true"
                icon="/images/hw.png"
         >

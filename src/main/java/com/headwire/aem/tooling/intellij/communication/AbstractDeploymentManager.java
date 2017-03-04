@@ -18,9 +18,6 @@
 
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
-import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.io.ConnectorException;
 import org.apache.sling.ide.io.ExceptionConstants;
 import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
