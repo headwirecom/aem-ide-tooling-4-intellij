@@ -18,7 +18,6 @@
 
 package com.headwire.aem.tooling.intellij.ui;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;

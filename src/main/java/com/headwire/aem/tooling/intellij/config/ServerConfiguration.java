@@ -35,13 +35,6 @@ import java.util.List;
 /**
  * Created by Andreas Schaefer (Headwire.com) on 3/19/15.
  */
-//@State(
-//name = "SlingServerConfiguration",
-//    storages = {
-//        @Storage(file = StoragePathMacros.WORKSPACE_FILE),
-//        @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/slingServerConfiguration.xml", scheme = StorageScheme.DIRECTORY_BASED)
-//    }
-//)
 public class ServerConfiguration
     implements PersistentStateComponent<ServerConfiguration>
 {
@@ -108,7 +101,6 @@ public class ServerConfiguration
     }
 
     public enum ServerStatus {
-//        notConnected("not connected"), connecting, connected, disconnecting, disconnected, failed, upToDate("synchronized"), outdated("out dated");
         notConnected("not connected"), connecting, connected, disconnecting, disconnected, checking, running, failed;
 
         private String name;
@@ -150,7 +142,6 @@ public class ServerConfiguration
     //AS TODO: Not sure about this -> Check if that works
     private transient ServerStatus serverStatus = DEFAULT_SERVER_STATUS;
     private transient SynchronizationStatus synchronizationStatus = DEFAULT_SERVER_SYNCHRONIZATION_STATUS;
-//    private transient boolean bound = false;
     private transient boolean booted = false;
     // Modules must be stored because they carry the info if a project is part of the deployment build
     private List<Module> moduleList = new ArrayList<Module>();
@@ -451,7 +442,6 @@ public class ServerConfiguration
     }
 
     public void unBind() {
-//        bound = false;
         for(Module module: moduleList) {
             module.unBind();
         }

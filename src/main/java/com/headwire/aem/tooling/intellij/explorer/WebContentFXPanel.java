@@ -18,18 +18,6 @@
 
 package com.headwire.aem.tooling.intellij.explorer;
 
-import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
-import com.headwire.aem.tooling.intellij.ui.AemdcConfigurationDialog;
-import com.headwire.aem.tooling.intellij.util.ComponentProvider;
-import com.headwire.aemdc.companion.Config;
-import com.headwire.aemdc.gui.MainApp;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.PathManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.components.panels.Wrapper;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -38,17 +26,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 /**
  * Created by schaefa on 1/13/17.

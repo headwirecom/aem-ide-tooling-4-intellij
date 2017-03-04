@@ -19,7 +19,6 @@
 package com.headwire.aem.tooling.intellij.facet;
 
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
-import com.intellij.facet.ui.FacetEditorValidator;
 import com.intellij.facet.ui.ValidationResult;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.ConfigurationException;

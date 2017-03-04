@@ -158,7 +158,6 @@ public class SlingProject4IntelliJ
 
     private VirtualFile findFileOrFolder(VirtualFile rootFile, String name, boolean isFolder) {
         VirtualFile ret = null;
-//        rootFile.refresh(false, true);
         for(VirtualFile child: rootFile.getChildren()) {
             String childName = child.getName();
             if("jcr_root".equals(childName)) {

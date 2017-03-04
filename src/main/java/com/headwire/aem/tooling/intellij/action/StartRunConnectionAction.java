@@ -74,7 +74,7 @@ public class StartRunConnectionAction extends AbstractConnectionAction {
                     e1.printStackTrace();
                 }
                 progressHandlerSubTask.next("progress.obtain.osgi.client");
-                OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
+                OsgiClient osgiClient = serverConnectionManager.obtainOSGiClient();
                 if(osgiClient != null) {
                     progressHandlerSubTask.next("progress.check.support.bundle");
                     ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);

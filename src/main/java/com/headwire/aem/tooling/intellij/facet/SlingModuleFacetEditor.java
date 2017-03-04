@@ -271,7 +271,6 @@ public class SlingModuleFacetEditor
         boolean generatedFilterFlag = generatedFilter.isSelected();
         if(moduleType == ModuleType.content) {
             Module module = editorContext.getModule();
-//            VirtualFile moduleFile = module.getModuleFile();
             String filePath = metaInfPath.getText();
             switch(FacetUtil.checkFile(module, filePath, true)) {
                 case fileEmpty:

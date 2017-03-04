@@ -102,37 +102,40 @@ public class ConsoleLogProjectTracker
     }
 
     protected void printNotification(Notification notification) {
-        SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
-        if(selectionHandler != null) {
-            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
-            switch (logFilter) {
-                case debug:
-                    break;
-                case info:
-                    if (notification instanceof DebugNotification) {
-                        return;
-                    }
-                    break;
-                case warning:
-                    if (notification.getType() == NotificationType.INFORMATION) {
-                        return;
-                    }
-                    break;
-                case error:
-                default:
-                    if (notification.getType() != NotificationType.ERROR) {
-                        return;
-                    }
+        // Only show Plugin Log statements in our AEM Console
+        if(ConsoleLogCategory.CONSOLE_LOG_CATEGORY.equals(notification.getGroupId())) {
+            SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
+            if(selectionHandler != null) {
+                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
+                switch(logFilter) {
+                    case debug:
+                        break;
+                    case info:
+                        if(notification instanceof DebugNotification) {
+                            return;
+                        }
+                        break;
+                    case warning:
+                        if(notification.getType() == NotificationType.INFORMATION) {
+                            return;
+                        }
+                        break;
+                    case error:
+                    default:
+                        if(notification.getType() != NotificationType.ERROR) {
+                            return;
+                        }
+                }
             }
-        }
-        myProjectModel.addNotification(notification);
+            myProjectModel.addNotification(notification);
 
-        ConsoleLogConsole console = getConsole(notification);
-        if(console == null) {
-            myInitial.add(notification);
-        } else {
-            doPrintNotification(notification, console);
+            ConsoleLogConsole console = getConsole(notification);
+            if(console == null) {
+                myInitial.add(notification);
+            } else {
+                doPrintNotification(notification, console);
+            }
         }
     }
 

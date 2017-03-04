@@ -35,7 +35,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 
 import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
-import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
+import com.headwire.aem.tooling.intellij.util.BundleDataUtil;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
@@ -105,7 +105,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -270,8 +269,8 @@ public class ServerConnectionManager
                             Version localVersion = new Version(version);
                             messageManager.sendDebugNotification("debug.check.osgi.module", moduleName, symbolicName, remoteVersion, localVersion);
                             boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
-                            Object state = BundleStateHelper.getBundleState(module);
-                            messageManager.sendDebugNotification("debug.bundle.module.state", module.getName(), state);
+                            String bundleState = BundleDataUtil.getData(osgiClient, module.getSymbolicName()).get("state");
+                            messageManager.sendDebugNotification("debug.bundle.module.state", module.getName(), bundleState);
                             if(remoteVersion == null) {
                                 // Mark as not deployed yet
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.notDeployed);
@@ -365,7 +364,7 @@ public class ServerConnectionManager
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
         for(UnifiedModule unifiedModule : unifiedModules) {
             Module moduleFound = null;
-            for(Module module: moduleList) {
+            for(Module module : moduleList) {
                 if(unifiedModule.containsServerConfigurationModule(module)) {
                     moduleFound = module;
                     break;
@@ -386,7 +385,7 @@ public class ServerConnectionManager
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
             try {
-                OsgiClient osgiClient = obtainSGiClient();
+                OsgiClient osgiClient = obtainOSGiClient();
                 EmbeddedArtifactLocator artifactLocator = ComponentProvider.getComponent(myProject, EmbeddedArtifactLocator.class);
                 if(artifactLocator != null) {
                     Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
@@ -426,7 +425,7 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public OsgiClient obtainSGiClient() {
+    public OsgiClient obtainOSGiClient() {
         OsgiClient ret = null;
 
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
@@ -571,7 +570,7 @@ public class ServerConnectionManager
         Executor executor = ExecutorRegistry.getInstance().getExecutorById(ToolWindowId.DEBUG);
         ExecutionUtil.runConfiguration(configuration, executor);
         // Update the Modules with the Remote Sling Server
-        OsgiClient osgiClient = obtainSGiClient();
+        OsgiClient osgiClient = obtainOSGiClient();
         if(osgiClient != null) {
             BundleStatus status = checkAndUpdateSupportBundle(false);
             if(status != BundleStatus.failed) {
@@ -756,7 +755,22 @@ public class ServerConnectionManager
                             //AS TODO: This looks like OSGi Symbolic Name to be used here
                             EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
                             contents = bundle.openInputStream();
-                            obtainSGiClient().installBundle(contents, bundle.getName());
+                            OsgiClient osgiClient = obtainOSGiClient();
+                            osgiClient.installBundle(contents, bundle.getName());
+                            // Check if we can retrieve the bundle from the server
+                            Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
+                            if(remoteVersion == null) {
+                                // Bundle was not found and this happens when the Symbolic Name in the Bundle JAR is different than what
+                                // the plugin is maintaining. Here we report the issue to the user so that he can correct it. For most
+                                // part this will happen if the user overrides the Symbolic Name in the Facet but it does not match.
+                                // It can also happens if the plugin is unable to detect the correct Symbolic Name.
+                                messageManager.showAlertWithArguments("deploy.module.maven.missing.bundle", bundle.getName(), module.getSymbolicName());
+                            } else {
+                                String bundleState = BundleDataUtil.getData(osgiClient, module.getSymbolicName()).get("state");
+                                if(!"active".equalsIgnoreCase(bundleState)) {
+                                    messageManager.showAlertWithArguments("deploy.module.maven.bundle.not.active", bundle.getName(), module.getSymbolicName());
+                                }
+                            }
                             module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
                         } else {
                             messageManager.showAlertWithArguments("deploy.module.maven.missing.build.file", buildFile.getAbsolutePath());

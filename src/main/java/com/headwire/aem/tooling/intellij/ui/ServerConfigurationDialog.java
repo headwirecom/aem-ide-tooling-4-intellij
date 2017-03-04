@@ -24,7 +24,6 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
-import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
 import org.jetbrains.annotations.Nullable;

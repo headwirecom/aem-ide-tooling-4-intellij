@@ -52,6 +52,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.headwire.aemdc.companion.Constants.CONFIGPROP_SOURCE_FOLDER;
@@ -510,15 +513,11 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         }
     }
 
-    private static class BasePathTextBrowseFolderListener
-        extends TextBrowseFolderListener
+    private class BasePathTextBrowseFolderListener
+        extends BaseTextBrowseFolderListener
     {
-        private VirtualFile baseDir;
-
-        public BasePathTextBrowseFolderListener(Project project, VirtualFile baseDir) {
-            super(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project);
-            this.baseDir = baseDir;
-            myFileChooserDescriptor.setRoots(baseDir);
+        public BasePathTextBrowseFolderListener(Project project, VirtualFile projectFolder) {
+            super(project, projectFolder);
         };
 
         @NotNull
@@ -526,7 +525,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         protected String chosenFileToResultingText(@NotNull VirtualFile chosenFile) {
             String answer = "";
             String newPath = chosenFile.getPath();
-            String basePath = baseDir.getPath();
+            String basePath = projectFolder.getPath();
             if(newPath.length() > basePath.length() + 1) {
               answer = newPath.substring(basePath.length() + 1);
             }
@@ -537,12 +536,27 @@ public class AemdcConfigurationDialog extends DialogWrapper {
     private class BaseTextBrowseFolderListener
         extends TextBrowseFolderListener
     {
-        private VirtualFile baseDir;
+        protected VirtualFile projectFolder;
 
-        public  BaseTextBrowseFolderListener(Project project, VirtualFile baseDir) {
+        public  BaseTextBrowseFolderListener(Project project, VirtualFile projectFolder) {
             super(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project);
-            this.baseDir = baseDir;
+            myFileChooserDescriptor.setRoots(
+                baseDir,
+                baseDir.getFileSystem().findFileByPath("/")
+            );
+            this.projectFolder = projectFolder;
         };
+
+        @Nullable
+        @Override
+        protected VirtualFile getInitialFile() {
+            String path = getComponentText();
+            VirtualFile targetFolder = projectFolder.findFileByRelativePath(path);
+            if(targetFolder == null) {
+                targetFolder = projectFolder.getFileSystem().findFileByPath(path);
+            }
+            return targetFolder == null ? projectFolder : targetFolder;
+        }
 
         @NotNull
         @Override
@@ -680,11 +694,13 @@ public class AemdcConfigurationDialog extends DialogWrapper {
     private class Feedback
         extends JTextArea
     {
-        private int counter = 0;
+        private DateFormat dateFormatter = new SimpleDateFormat("hh:mm:ss");
+//        private int counter = 0;
 
         public void append(String message) {
 //            insert(counter++ + ": " + message + "\n\n", 0);
-            super.append(counter++ + ": " + message + "\n\n");
+//            super.append(counter++ + ": " + message + "\n\n");
+            super.append(dateFormatter.format(new Date()) + ": " + message + "\n\n");
         }
     }
 }

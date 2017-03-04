@@ -27,13 +27,11 @@ import com.intellij.openapi.vfs.newvfs.FileAttribute;
 import com.intellij.openapi.vfs.newvfs.NewVirtualFile;
 import com.intellij.util.io.IOUtil;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 4/30/15.
@@ -151,25 +149,6 @@ public class Util {
     }
 
     public static void resetModificationStamp(VirtualFile fileOrFolder, boolean recursive) {
-//        fileOrFolder.putUserData(MODIFICATION_DATE_KEY, null);
-//        if(fileOrFolder instanceof NewVirtualFile) {
-//            final DataOutputStream os = MODIFICATION_STAMP_FILE_ATTRIBUTE.writeAttribute(fileOrFolder);
-//            try {
-//                try {
-//                    IOUtil.writeString(StringUtil.notNullize("0"), os);
-//                } finally {
-//                    os.close();
-//                }
-//            } catch(IOException e) {
-//                // Ignore it but we might need to throw an exception
-//                String message = e.getMessage();
-//            }
-//        }
-//        if(recursive && fileOrFolder.isDirectory()) {
-//            for(VirtualFile child: fileOrFolder.getChildren()) {
-//                resetModificationStamp(child, true);
-//            }
-//        }
         VfsUtilCore.visitChildrenRecursively(
             fileOrFolder,
             new ResetFileVisitor(recursive)

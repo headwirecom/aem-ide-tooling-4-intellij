@@ -21,7 +21,6 @@ package com.headwire.aem.tooling.intellij.util;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
-import org.osgi.framework.BundleContext;
 
 import java.net.URL;
 
@@ -32,7 +31,6 @@ public class ArtifactsLocatorImpl
     extends ApplicationComponent.Adapter
     implements EmbeddedArtifactLocator
 {
-//    private static final String ARTIFACTS_LOCATION = "target/artifacts";
     private static final String ARTIFACTS_LOCATION = "artifacts";
 
     @Override
@@ -46,7 +44,6 @@ public class ArtifactsLocatorImpl
             + (version != null || version.trim().length() > 0 ? "-" + version : "")
             + "." + extension;
         URL jarUrl = loadResource(
-//            bundleContext,
             ARTIFACTS_LOCATION + "/sling-tooling-support-install/" + fileName
         );
 
@@ -55,8 +52,6 @@ public class ArtifactsLocatorImpl
 
     @Override
     public EmbeddedArtifact loadSourceSupportBundle() {
-//        BundleContext bundleContext = context.getBundleContext();
-
         String version = "1.0.0"; // TODO - remove version hardcoding
         String artifactId = "org.apache.sling.tooling.support.source";
         String extension = "jar";
@@ -66,7 +61,6 @@ public class ArtifactsLocatorImpl
             + "." + extension;
 
         URL jarUrl = loadResource(
-//            bundleContext,
             ARTIFACTS_LOCATION + "/sling-tooling-support-source/" + fileName
         );
 
@@ -74,7 +68,6 @@ public class ArtifactsLocatorImpl
     }
 
     private URL loadResource(
-//        BundleContext bundleContext,
         String resourceLocation
     ) {
         URL resourceUrl = getClass().getClassLoader().getResource(resourceLocation);
