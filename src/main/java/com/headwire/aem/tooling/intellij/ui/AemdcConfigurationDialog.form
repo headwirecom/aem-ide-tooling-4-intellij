@@ -247,7 +247,7 @@
               <hideActionText value="false"/>
               <horizontalTextPosition value="11"/>
               <text value="Clone"/>
-              <toolTipText value="Clone the 'aemdc-file'"/>
+              <toolTipText value="Clone or Pull the 'aemdc-files'"/>
             </properties>
           </component>
           <component id="161a7" class="javax.swing.JCheckBox" binding="confSameAsApps">

@@ -1,12 +1,12 @@
 # Source folders
-SOURCE_FOLDER=/Users/schaefa/Development/headwire/AdobeAEM.projects/HW.AEM.Tooling.Development/HW.AEM.Tooling.IntelliJ-Plugin/tests/modules/aem/aemdc-files
+SOURCE_FOLDER=../aemdc-files
 SOURCE_TYPES_FOLDER={{SOURCE_FOLDER}}
 
 # Target folders
 TARGET_UI_FOLDER=ui.apps/src/main/content/jcr_root
-TARGET_PROJECT_APPS_FOLDER=base
-TARGET_PROJECT_CONF_FOLDER=base
-TARGET_PROJECT_DESIGN_FOLDER=base
+TARGET_PROJECT_APPS_FOLDER=my-aem-project
+TARGET_PROJECT_CONF_FOLDER=my-aem-project
+TARGET_PROJECT_DESIGN_FOLDER=my-aem-project
 TARGET_PROJECT_ROOT={{TARGET_UI_FOLDER}}/apps/{{TARGET_PROJECT_APPS_FOLDER}}
 TARGET_OSGI_SUBFOLDER=/configuration
 TARGET_JAVA_FOLDER=core/src/main/java

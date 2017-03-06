@@ -330,10 +330,10 @@ public class AemdcConfigurationDialog extends DialogWrapper {
 
         // Check if the aemdc-files folder exists
         String aemdcFilesFolderPath = aemdcFiles.getText();
-        File aemdcFilesFolder = new File(aemdcFilesFolderPath);
+        File aemdcFilesFolder = getFile(basePath, aemdcFilesFolderPath);
         boolean aemdcFilesExists = aemdcFilesFolder.exists();
         boolean aemdcFilesPullabled = false;
-        if(!aemdcFilesExists) {
+        if(aemdcFilesExists) {
             if(aemdcFilesFolder.isDirectory()) {
                 File aemdcFilesGitFolder = new File(aemdcFilesFolder, ".git");
                 aemdcFilesPullabled = aemdcFilesGitFolder.exists() && aemdcFilesGitFolder.isDirectory();
@@ -363,7 +363,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
             } else {
                 if(PULL_BUTTON.equals(cloneOrPullButton.getText())) {
                     String aemdcFilesFolderPath = aemdcFiles.getText();
-                    File aemdcFilesFolder = new File(aemdcFilesFolderPath);
+                    File aemdcFilesFolder = getFile(baseDir.getPath(), aemdcFilesFolderPath);
                     GitSimpleHandler handler = new GitSimpleHandler(project, aemdcFilesFolder, GitCommand.PULL);
                      try {
                         handler.run();
@@ -375,7 +375,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                     FolderSelectionDialog dialog = new FolderSelectionDialog(project);
                     if(dialog.showAndGet()) {
                         String folderPath = dialog.getFolder();
-                        File folder = folderPath.startsWith("/") ? new File(folderPath) : new File(baseDir.getPath(), folderPath);
+                        File folder = getFile(baseDir.getPath(), folderPath);
                         if(!folder.exists()) {
                             feedback.append(AEMBundle.message("aemdc.panel.parent.folder.for.aemdc.files.does.not.exist.description", folder.getAbsolutePath()));
                         } else if(!folder.isDirectory()) {
@@ -621,6 +621,18 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                 return adjustRelativePath(folderPath, level + 1, parentFolder.getParentFile(), maxLevel);
             }
         }
+    }
+
+    private File getFile(String basePath, String filePath) {
+        return getFile(new File(basePath), filePath);
+    }
+
+    private File getFile(File baseFolder, String filePath) {
+        File answer = new File(filePath);
+        if(!answer.exists() && !answer.isAbsolute()) {
+            answer = new File(baseFolder, filePath);
+        }
+        return answer;
     }
 
     public static class BadFolderException
