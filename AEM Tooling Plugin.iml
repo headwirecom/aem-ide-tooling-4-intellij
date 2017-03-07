@@ -32,5 +32,6 @@
     <orderEntry type="library" name="Simple Logging Facade for Java:1.7.6" level="project" />
     <orderEntry type="library" name="org.slf4j:jcl-over-slf4j:1.7.6" level="project" />
     <orderEntry type="library" name="aemdc-with-dependencies" level="project" />
+    <orderEntry type="library" name="git4idea" level="project" />
   </component>
 </module>

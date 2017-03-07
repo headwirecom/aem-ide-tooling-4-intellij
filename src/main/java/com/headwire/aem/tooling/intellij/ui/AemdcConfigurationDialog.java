@@ -125,6 +125,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         aemdcFiles.setText(AEMDC_FILES_DEFAULT);
         aemdcFiles.addBrowseFolderListener(new BaseTextBrowseFolderListener(project, baseDir));
         aemdcFiles.getChildComponent().addFocusListener(new FolderTextFieldFocusListener(project, aemdcFiles, false));
+        aemdcFiles.getChildComponent().addFocusListener(new AemdcFilesChangeListener());
 
         // Find first content root and set it as UI Folder
         String contentRoot = null;
@@ -328,9 +329,18 @@ public class AemdcConfigurationDialog extends DialogWrapper {
             }
         });
 
-        // Check if the aemdc-files folder exists
+        adjustGitHandleButton();
+        cloneOrPullButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cloneAemdcFilesAndSet();
+            }
+        });
+    }
+
+    private void adjustGitHandleButton() {
         String aemdcFilesFolderPath = aemdcFiles.getText();
-        File aemdcFilesFolder = getFile(basePath, aemdcFilesFolderPath);
+        File aemdcFilesFolder = getFile(baseDir.getPath(), aemdcFilesFolderPath);
         boolean aemdcFilesExists = aemdcFilesFolder.exists();
         boolean aemdcFilesPullabled = false;
         if(aemdcFilesExists) {
@@ -339,17 +349,12 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                 aemdcFilesPullabled = aemdcFilesGitFolder.exists() && aemdcFilesGitFolder.isDirectory();
             }
         }
+        // Check if the aemdc-files folder exists
         if(aemdcFilesPullabled) {
             cloneOrPullButton.setText(PULL_BUTTON);
         } else {
             cloneOrPullButton.setText(CLONE_BUTTON);
         }
-        cloneOrPullButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cloneAemdcFilesAndSet();
-            }
-        });
     }
 
     private void cloneAemdcFilesAndSet() {
@@ -367,6 +372,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                     GitSimpleHandler handler = new GitSimpleHandler(project, aemdcFilesFolder, GitCommand.PULL);
                      try {
                         handler.run();
+                         feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.git.repo.pulled.successfully", aemdcFilesFolder.getAbsolutePath()));
                     } catch(VcsException e) {
                         feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.pulled.description", aemdcFilesFolder.getAbsolutePath(), e.getMessage()));
                     }
@@ -388,6 +394,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                                 // After successful cloning update the text field
                                 aemdcFiles.setText(adjustPath(project, folderPath + "/aemdc-files", true));
                                 cloneOrPullButton.setText(PULL_BUTTON);
+                                feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.git.repo.cloned.successfully", folder.getAbsolutePath()));
                             } catch(VcsException e) {
                                 feedback.append(AEMBundle.message("aemdc.panel.aemdc.files.could.not.be.cloned.description", folder.getAbsolutePath(), e.getMessage()));
                             } catch(BadFolderException e) {
@@ -572,6 +579,12 @@ public class AemdcConfigurationDialog extends DialogWrapper {
             }
             return chosenFile.getPath();
         }
+
+        @Override
+        protected void onFileChosen(@NotNull VirtualFile chosenFile) {
+            super.onFileChosen(chosenFile);
+            adjustGitHandleButton();
+        }
     }
 
     private String adjustPath(Project project, String givenPath, boolean targetMustExist)
@@ -580,7 +593,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         String answer = givenPath;
         String basePath = project.getBasePath();
         File base = new File(basePath);
-        File target = new File(answer);
+        File target = getFile(base, answer);
         if(targetMustExist && !target.exists()) {
             throw new BadFolderException().setFolderDoesNotExist(true).setPath(answer);
         } else {
@@ -601,6 +614,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
             return folderPath;
         } else {
             String basePath = parentFolder.getPath();
+            basePath = basePath.replaceAll("\\\\", "/");
             if(folderPath.startsWith(basePath)) {
                 if(level == 0) {
                     String answer = folderPath.substring(basePath.length());
@@ -670,8 +684,21 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         }
     }
 
+    private class AemdcFilesChangeListener
+        implements FocusListener
+    {
+        @Override
+        public void focusGained(FocusEvent e) {
+        }
+
+        @Override
+        public void focusLost(FocusEvent event) {
+            adjustGitHandleButton();
+        }
+    }
+
     private class FolderTextFieldFocusListener
-        implements  FocusListener
+        implements FocusListener
     {
         private Project project;
         private TextFieldWithBrowseButton textFieldWithBrowseButton;
@@ -707,11 +734,8 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         extends JTextArea
     {
         private DateFormat dateFormatter = new SimpleDateFormat("hh:mm:ss");
-//        private int counter = 0;
 
         public void append(String message) {
-//            insert(counter++ + ": " + message + "\n\n", 0);
-//            super.append(counter++ + ": " + message + "\n\n");
             super.append(dateFormatter.format(new Date()) + ": " + message + "\n\n");
         }
     }

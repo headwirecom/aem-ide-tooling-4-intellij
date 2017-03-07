@@ -26,6 +26,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
+import org.bouncycastle.util.Arrays;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
@@ -36,6 +37,7 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Defau
 public class ServerConfigurationDialog
     extends DialogWrapper
 {
+    private static final String DUMMY_PWD = "~~~~~~~~~~~~~~~~~~~";
     private JPanel contentPane;
     private JTextField host;
     private JTabbedPane tabbedPane1;
@@ -132,12 +134,9 @@ public class ServerConfigurationDialog
         ret.setConnectionDebugPort(UIUtil.obtainInteger(connectionDebugPort, 0));
         ret.setUserName(connectionUserName.getText());
         char[] password = connectionPassword.getPassword();
-        // If password is already set and we did not add anything then we don't changes it. If empty we set it anyway
-        if(ret.getPassword() != null) {
-            if(password != null && password.length > 0) {
-                ret.setPassword(password);
-            }
-        } else {
+        if(password == null) { password = new char[0]; }
+        // If it is the dummy password then ignore it
+        if(!Arrays.areEqual(password, DUMMY_PWD.toCharArray())) {
             ret.setPassword(password);
         }
         ret.setContextPath(connectionContextPath.getText());
@@ -204,6 +203,11 @@ public class ServerConfigurationDialog
                 default:
                     installBundlesViaBundleRadioButton.setSelected(true);
                     break;
+            }
+            // Preset the Dialog with dummy value if password is set
+            char[] pwd = configuration.getPassword();
+            if(pwd != null && pwd.length > 0) {
+                connectionPassword.setText(DUMMY_PWD);
             }
         }
     }

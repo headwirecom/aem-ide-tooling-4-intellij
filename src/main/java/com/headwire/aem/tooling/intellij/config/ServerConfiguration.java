@@ -259,7 +259,8 @@ public class ServerConfiguration
     }
 
     public void setPassword(char[] password) {
-        this.password = password == null || password.length == 0 ? DEFAULT_USER_NAME.toCharArray() : password;
+//        this.password = password == null || password.length == 0 ? DEFAULT_USER_NAME.toCharArray() : password;
+        this.password = password == null ? new char[0] : password;
     }
 
     public String getContextPath() {
