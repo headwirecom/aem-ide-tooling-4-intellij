@@ -26,6 +26,7 @@ import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aemdc.companion.Config;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComponentWithBrowseButton;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.TextBrowseFolderListener;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -94,6 +95,15 @@ public class AemdcConfigurationDialog extends DialogWrapper {
     private JTextField javaPath;
     private JCheckBox derivedFromJavaPackage;
     private JButton cloneOrPullButton;
+    private JLabel aemdcFilesLabel;
+    private JLabel uiFolderLabel;
+    private JLabel appsFolderLabel;
+    private JLabel confFolderLabel;
+    private JLabel designFolderLabel;
+    private JLabel javaFolderLabel;
+    private JLabel javaPackageLabel;
+    private JLabel javaPathLabel;
+    private JLabel runModesLabel;
 
     private Project project;
     private VirtualFile baseDir;
@@ -336,6 +346,27 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                 cloneAemdcFilesAndSet();
             }
         });
+
+        propagateToolTip(aemdcFiles, aemdcFiles, aemdcFilesLabel);
+        propagateToolTip(uiFolder, uiFolder, uiFolderLabel);
+        propagateToolTip(javaFolder, javaFolder, javaFolderLabel);
+        propagateToolTip(appsFolderName, appsFolderLabel);
+        propagateToolTip(confFolderName, confFolderLabel);
+        propagateToolTip(designFolderName, designFolderLabel);
+        propagateToolTip(javaPackage, javaPackageLabel);
+        propagateToolTip(javaPath, javaPathLabel);
+        propagateToolTip(runModes, runModesLabel);
+    }
+
+    private void propagateToolTip(JComponent source, JComponent ... targets) {
+        String toolTip = source.getToolTipText();
+        for(JComponent target: targets) {
+            if(target instanceof ComponentWithBrowseButton) {
+                ((ComponentWithBrowseButton) target).getChildComponent().setToolTipText(toolTip);
+            } else {
+                target.setToolTipText(toolTip);
+            }
+        }
     }
 
     private void adjustGitHandleButton() {

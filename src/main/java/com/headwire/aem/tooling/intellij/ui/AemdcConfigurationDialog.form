@@ -16,15 +16,16 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="a845e" class="javax.swing.JLabel">
+          <component id="a845e" class="javax.swing.JLabel" binding="aemdcFilesLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="aemdc files"/>
+              <text value="AEMDC files"/>
+              <toolTipText value=""/>
             </properties>
           </component>
-          <component id="26ac5" class="javax.swing.JLabel">
+          <component id="26ac5" class="javax.swing.JLabel" binding="uiFolderLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -32,7 +33,7 @@
               <text value="UI Folder"/>
             </properties>
           </component>
-          <component id="4ea89" class="javax.swing.JLabel">
+          <component id="4ea89" class="javax.swing.JLabel" binding="javaFolderLabel">
             <constraints>
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -40,7 +41,7 @@
               <text value="Java Folder"/>
             </properties>
           </component>
-          <component id="a159e" class="javax.swing.JLabel">
+          <component id="a159e" class="javax.swing.JLabel" binding="javaPackageLabel">
             <constraints>
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="94" height="12"/>
@@ -50,7 +51,7 @@
               <text value="Java Package"/>
             </properties>
           </component>
-          <component id="c641e" class="javax.swing.JLabel">
+          <component id="c641e" class="javax.swing.JLabel" binding="runModesLabel">
             <constraints>
               <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -63,14 +64,16 @@
               <grid row="6" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <toolTipText value="Your Java Package"/>
+              <toolTipText value="Java Package of your Java (Bundle) code"/>
             </properties>
           </component>
           <component id="a4949" class="javax.swing.JTextField" binding="runModes">
             <constraints>
               <grid row="8" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="Run Mode configuration name with a leading slash"/>
+            </properties>
           </component>
           <grid id="1a442" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
@@ -82,7 +85,7 @@
               <component id="7acfc" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="aemdcFiles">
                 <constraints border-constraint="North"/>
                 <properties>
-                  <toolTipText value="The location of your 'aemdc-files'"/>
+                  <toolTipText value="Location of your &quot;aemdc-files&quot; folder containing the AEMDC templates"/>
                 </properties>
               </component>
             </children>
@@ -97,7 +100,7 @@
               <component id="8eb20" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="uiFolder">
                 <constraints border-constraint="North"/>
                 <properties>
-                  <toolTipText value="Path of your content folder relative to the project root"/>
+                  <toolTipText value="Path of the content folder (jcr_root) relative to the project root"/>
                 </properties>
               </component>
             </children>
@@ -112,7 +115,7 @@
               <component id="4d778" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="javaFolder">
                 <constraints border-constraint="North"/>
                 <properties>
-                  <toolTipText value="Path to your Java code relative to the project root"/>
+                  <toolTipText value="Path to the Java code root folder relative to the project root"/>
                 </properties>
               </component>
             </children>
@@ -145,12 +148,12 @@
                 </constraints>
                 <properties>
                   <text value="Reset"/>
-                  <toolTipText value="Discard any Changes"/>
+                  <toolTipText value="Discard any Changes and reset to the defaults"/>
                 </properties>
               </component>
             </children>
           </grid>
-          <component id="c0186" class="javax.swing.JLabel">
+          <component id="c0186" class="javax.swing.JLabel" binding="appsFolderLabel">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -165,10 +168,10 @@
               </grid>
             </constraints>
             <properties>
-              <toolTipText value="The project folder under /apps"/>
+              <toolTipText value="The project folder name under /apps in the content"/>
             </properties>
           </component>
-          <component id="ac775" class="javax.swing.JLabel">
+          <component id="ac775" class="javax.swing.JLabel" binding="confFolderLabel">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -176,7 +179,7 @@
               <text value="Conf Folder"/>
             </properties>
           </component>
-          <component id="2112e" class="javax.swing.JLabel">
+          <component id="2112e" class="javax.swing.JLabel" binding="designFolderLabel">
             <constraints>
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -191,7 +194,7 @@
               </grid>
             </constraints>
             <properties>
-              <toolTipText value="The configuration folder under /apps"/>
+              <toolTipText value="The project folder name under /conf in the content"/>
             </properties>
           </component>
           <component id="881fc" class="javax.swing.JTextField" binding="designFolderName">
@@ -201,10 +204,10 @@
               </grid>
             </constraints>
             <properties>
-              <toolTipText value="The design folder under /etc/designs"/>
+              <toolTipText value="The project folder name under /etc/designs in the content"/>
             </properties>
           </component>
-          <component id="cc64c" class="javax.swing.JLabel">
+          <component id="cc64c" class="javax.swing.JLabel" binding="javaPathLabel">
             <constraints>
               <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -219,7 +222,7 @@
               </grid>
             </constraints>
             <properties>
-              <toolTipText value="Java Path relative to the Java Folder"/>
+              <toolTipText value="Path to the Java classes relative to the 'Java Folder'"/>
             </properties>
           </component>
           <scrollpane id="2e428">
@@ -234,6 +237,7 @@
                 <properties>
                   <lineWrap value="true"/>
                   <rows value="5"/>
+                  <toolTipText value="Feedback from the Dialog"/>
                   <wrapStyleWord value="false"/>
                 </properties>
               </component>
@@ -247,7 +251,7 @@
               <hideActionText value="true"/>
               <horizontalTextPosition value="11"/>
               <text value="Clone"/>
-              <toolTipText value="Clone or Pull the 'aemdc-files'"/>
+              <toolTipText value="Download (Clone) or Update (Pull) the 'aemdc-files' from the official Git Repo"/>
             </properties>
           </component>
           <component id="161a7" class="javax.swing.JCheckBox" binding="confSameAsApps">
@@ -260,7 +264,7 @@
               <horizontalAlignment value="11"/>
               <selected value="true"/>
               <text value=""/>
-              <toolTipText value="Is the Same as Apps Folder"/>
+              <toolTipText value="Is the name the same as from the 'Apps Folder'"/>
             </properties>
           </component>
           <component id="958fa" class="javax.swing.JCheckBox" binding="designSameAsApps">
@@ -273,7 +277,7 @@
               <horizontalAlignment value="11"/>
               <selected value="true"/>
               <text value=""/>
-              <toolTipText value="Is the Same as Apps Folder"/>
+              <toolTipText value="Is the name the same as from the 'Apps Folder'"/>
             </properties>
           </component>
           <component id="a1f31" class="javax.swing.JCheckBox" binding="derivedFromJavaPackage">
