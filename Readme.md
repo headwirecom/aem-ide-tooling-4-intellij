@@ -5,6 +5,15 @@
 New Releases can be found in the **Code -> Release** section on
 GitHub: [AEM Intellij Plugin](https://github.com/headwirecom/aem-ide-tooling-4-intellij)
 
+#### For Devs
+
+The plugin has a dependency on the IntelliJ Maven and Git4Idea plugin (see
+META-INF/plugin.xml) and they **have** to be added to the **InteliJ SDK**
+and **not as a libarary**.
+
+If this is added as a Library then one will encounter Class Cast Exception due
+to duplicate classes.
+
 #### Current Branch:
 
 The current development can be found under **feature/'version'** branch.
@@ -17,6 +26,9 @@ The **master** is the latest release code and it the same as the highest
 **1.0**:
 * Cleaning up Code
 * Improving Documentation
+* Fix issues with relative paths in the Plugin and AEMDC tool
+* Password shows if an entry was made w/o revealing its actual length
+* 
 
 **0.7.3**
 * Working on integrating and testing latest Sling Tooling IDE code from Trunk
