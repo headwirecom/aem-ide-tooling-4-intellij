@@ -1,5 +1,9 @@
 ### AEM Tooling for IntelliJ IDE Plugin
 
+#### Documentation:
+
+[docs](https://github.com/headwirecom/aem-ide-tooling-4-intellij/blob/master/documenation/AEM%20Tooling%20Plugin%20for%20IntelliJ%20IDEA.md)
+
 #### Releases:
 
 Can be found on our [Wiki Page](https://github.com/headwirecom/aem-ide-tooling-4-intellij/wiki)
