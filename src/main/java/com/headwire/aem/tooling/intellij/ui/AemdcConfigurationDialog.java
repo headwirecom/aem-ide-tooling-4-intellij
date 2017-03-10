@@ -492,7 +492,13 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                 if(write) {
                     if(validationReports.isEmpty()) {
                         if(targetFile.exists()) {
-                            targetFile.renameTo(new File(targetFile.getParent(), targetFile.getName() + ".back"));
+                            File backupFile = new File(targetFile.getParent(), targetFile.getName() + ".back");
+                            if(backupFile.exists()) {
+                                if(!backupFile.delete()) {
+                                    // Inform user that backup file could not be deleted
+                                }
+                            }
+                            targetFile.renameTo(backupFile);
                         }
                         if(!tempTargetFile.renameTo(targetFile)) {
                             feedback.append("Rename to the Target File failed");
@@ -578,10 +584,10 @@ public class AemdcConfigurationDialog extends DialogWrapper {
 
         public  BaseTextBrowseFolderListener(Project project, VirtualFile projectFolder) {
             super(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project);
-            myFileChooserDescriptor.setRoots(
-                baseDir,
-                baseDir.getFileSystem().findFileByPath("/")
-            );
+            // In order to let the user select folders outside of the project we cannot
+            // set any roots
+            // That said we use the getInitialFile() to make sure that the File Chooser
+            // is set to the current folder if found otherwise the project root folder
             this.projectFolder = projectFolder;
         };
 
@@ -674,7 +680,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
 
     private File getFile(File baseFolder, String filePath) {
         File answer = new File(filePath);
-        if(!answer.exists() && !answer.isAbsolute()) {
+        if(!answer.isAbsolute()) {
             answer = new File(baseFolder, filePath);
         }
         return answer;

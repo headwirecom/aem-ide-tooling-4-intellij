@@ -102,7 +102,13 @@ public class AemdcPanel
             setContent(null);
             panel = new JFXPanel();
             setContent(panel);
-            panel.setScene(aemdcScene);
+            if(aemdcScene == null) {
+                Platform.runLater(() -> {
+                    initFX(project);
+                });
+            } else {
+                panel.setScene(aemdcScene);
+            }
             setBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK, 1, false));
         }
     }
@@ -118,6 +124,8 @@ public class AemdcPanel
                         "dialog.aemdc.invalid.configuration"
                     );
                     return;
+                } else {
+                    aemdcScene = null;
                 }
             }
             // Re-adding the Panel will create a dual-pane view. To avoid this we have to re-create the JFX Panel on each showing
