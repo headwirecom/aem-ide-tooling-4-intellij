@@ -25,6 +25,7 @@ import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
+import org.apache.sling.ide.io.ConnectorException;
 import org.jetbrains.annotations.NotNull;
 
 /**

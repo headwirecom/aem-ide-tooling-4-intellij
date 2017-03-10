@@ -26,9 +26,13 @@ The **master** is the latest release code and it the same as the highest
 **1.0**:
 * Cleaning up Code
 * Improving Documentation
-* Fix issues with relative paths in the Plugin and AEMDC tool
-* Password shows if an entry was made w/o revealing its actual length
-* 
+* Issue 28: AEMDC Dialog Enhancements
+* Issue 30: Fix issues related to Symbolic Names
+* Fixed issues with relative and Windows OS paths
+* Added feedback to the Password field inside the Server Connection Configuration
+* Rearranged the AEMDC Dialog and improve user interaction
+* Added Tooltips to AEMDC Dialog
+* Increased the IntelliJ Version the plugin can run on to 2016.2 or higher 
 
 **0.7.3**
 * Working on integrating and testing latest Sling Tooling IDE code from Trunk

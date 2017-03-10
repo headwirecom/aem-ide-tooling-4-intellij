@@ -54,6 +54,8 @@ public abstract class AbstractDeploymentManager<M, P, F>
             this.project = project;
         }
 
+        public abstract String getName();
+
         public M getModule() {
             return module;
         }
@@ -226,14 +228,13 @@ public abstract class AbstractDeploymentManager<M, P, F>
                 }
             }
         } catch(ConnectorException e) {
-            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module.getName(), e);
             module.updateModuleStatus(SynchronizationStatus.failed);
-            throw new RuntimeException(e);
         } catch(SerializationException e) {
-            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module.getName(), e);
             module.updateModuleStatus(SynchronizationStatus.failed);
         } catch(IOException e) {
-            sendMessage(MessageType.ERROR, "deploy.module.failed.io", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.io", module.getName(), e);
             module.updateModuleStatus(SynchronizationStatus.failed);
         }
     }

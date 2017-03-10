@@ -503,7 +503,8 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public void deployModules(final DataContext dataContext, boolean force, final ProgressHandler progressHandler) {
+    public void deployModules(final DataContext dataContext, boolean force, final ProgressHandler progressHandler)
+    {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
             checkBinding(serverConfiguration, progressHandler);
@@ -520,7 +521,8 @@ public class ServerConnectionManager
         }
     }
 
-    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, final ProgressHandler progressHandler) {
+    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, final ProgressHandler progressHandler)
+    {
         ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(2, "Bind Module: " + module.getName());
         messageManager.sendInfoNotification("remote.repository.begin.connecting.sling.repository");
         progressHandlerSubTask.next("Check Binding of Parent Module: " + module.getParent());
@@ -766,8 +768,20 @@ public class ServerConnectionManager
                                 // It can also happens if the plugin is unable to detect the correct Symbolic Name.
                                 messageManager.showAlertWithArguments("deploy.module.maven.missing.bundle", bundle.getName(), module.getSymbolicName());
                             } else {
-                                String bundleState = BundleDataUtil.getData(osgiClient, module.getSymbolicName()).get("state");
+                                String bundleState = "";
+                                int retry = 5;
+                                // Try 5 times to see if the bundles was activated successfully. If that fails show an
+                                // alert informing the user about it
+                                while(!"active".equals(bundleState) && retry >= 0) {
+                                    retry--;
+                                    try {
+                                        Map<String, String> data = BundleDataUtil.getData(osgiClient, module.getSymbolicName());
+                                        bundleState = data.get("state").toLowerCase();
+                                    } catch(OsgiClientException e) {
+                                    }
+                                }
                                 if(!"active".equalsIgnoreCase(bundleState)) {
+                                    messageManager.sendDebugNotification("Bundle: " + bundle.getName() + ", state: " + bundleState);
                                     messageManager.showAlertWithArguments("deploy.module.maven.bundle.not.active", bundle.getName(), module.getSymbolicName());
                                 }
                             }
@@ -785,7 +799,7 @@ public class ServerConnectionManager
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             } catch(OsgiClientException e) {
                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
-                messageManager.sendErrorNotification("deploy.module.failed.client", e);
+                messageManager.sendErrorNotification("deploy.module.failed.client", module.getName(), e);
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             } catch(IOException e) {
                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);

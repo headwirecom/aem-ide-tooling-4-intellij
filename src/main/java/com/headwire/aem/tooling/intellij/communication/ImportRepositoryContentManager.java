@@ -283,42 +283,36 @@ public class ImportRepositoryContentManager {
         logger.trace("For resource at path {0} got serialization data {1}", resource.getPath(), serializationData);
 
         final List<ResourceProxy> resourceChildren = new LinkedList<ResourceProxy>(resource.getChildren());
-        if (serializationData != null) {
+        if(serializationData != null) {
 
-            IPath serializationFolderPath = contentSyncRootDir.getProjectRelativePath().append(
-                serializationData.getFolderPath());
+            IPath serializationFolderPath = contentSyncRootDir.getProjectRelativePath().append(serializationData.getFolderPath());
 
-            switch (serializationData.getSerializationKind()) {
+            switch(serializationData.getSerializationKind()) {
                 case FILE: {
                     byte[] contents = executeCommand(repository.newGetNodeCommand(path));
                     createFile(project, getPathForPlainFileNode(resource, serializationFolderPath), contents);
 
-                    if (serializationData.hasContents()) {
+                    if(serializationData.hasContents()) {
                         createFolder(project, serializationFolderPath);
-                        createFile(project, serializationFolderPath.append(serializationData.getFileName()),
-                            serializationData.getContents());
+                        createFile(project, serializationFolderPath.append(serializationData.getFileName()), serializationData.getContents());
 
                         // special processing for nt:resource nodes
-                        for (Iterator<ResourceProxy> it = resourceChildren.iterator(); it.hasNext();) {
+                        for(Iterator<ResourceProxy> it = resourceChildren.iterator(); it.hasNext(); ) {
                             ResourceProxy child = it.next();
-                            if (Repository.NT_RESOURCE.equals(child.getProperties().get(Repository.JCR_PRIMARY_TYPE))) {
+                            if(Repository.NT_RESOURCE.equals(child.getProperties().get(Repository.JCR_PRIMARY_TYPE))) {
 
-                                ResourceProxy reloadedChildResource = executeCommand(repository
-                                    .newListChildrenNodeCommand(child.getPath()));
+                                ResourceProxy reloadedChildResource = executeCommand(repository.newListChildrenNodeCommand(child.getPath()));
 
-                                logger.trace(
-                                    "Skipping direct handling of {0} node at {1} ; will additionally handle {2} direct children",
-                                    Repository.NT_RESOURCE, child.getPath(), reloadedChildResource.getChildren()
-                                        .size());
+                                logger.trace("Skipping direct handling of {0} node at {1} ; will additionally handle {2} direct children", Repository.NT_RESOURCE, child.getPath(), reloadedChildResource.getChildren().size());
 
-                                if (reloadedChildResource.getChildren().size() != 0) {
+                                if(reloadedChildResource.getChildren().size() != 0) {
 
                                     String pathName = Text.getName(reloadedChildResource.getPath());
                                     pathName = serializationManager.getOsPath(pathName);
                                     createFolder(project, serializationFolderPath.append(pathName));
 
                                     // 2. recursively handle all resources
-                                    for (ResourceProxy grandChild : reloadedChildResource.getChildren()) {
+                                    for(ResourceProxy grandChild : reloadedChildResource.getChildren()) {
                                         crawlChildrenAndImport(grandChild.getPath());
                                     }
                                 }
@@ -337,17 +331,15 @@ public class ImportRepositoryContentManager {
 
                     parseIgnoreFiles(folder, path);
 
-                    if (serializationData.hasContents()) {
-                        createFile(project, serializationFolderPath.append(serializationData.getFileName()),
-                            serializationData.getContents());
+                    if(serializationData.hasContents()) {
+                        createFile(project, serializationFolderPath.append(serializationData.getFileName()), serializationData.getContents());
                     }
                     break;
                 }
 
                 case METADATA_FULL: {
-                    if (serializationData.hasContents()) {
-                        createFile(project, serializationFolderPath.append(serializationData.getFileName()),
-                            serializationData.getContents());
+                    if(serializationData.hasContents()) {
+                        createFile(project, serializationFolderPath.append(serializationData.getFileName()), serializationData.getContents());
                     }
                     break;
                 }
@@ -355,23 +347,23 @@ public class ImportRepositoryContentManager {
 
             logger.trace("Resource at {0} has children: {1}", resource.getPath(), resourceChildren);
 
-            if (serializationData.getSerializationKind() == SerializationKind.METADATA_FULL) {
+            if(serializationData.getSerializationKind() == SerializationKind.METADATA_FULL) {
                 return;
             }
         } else {
             logger.trace("No serialization data found for {0}", resource.getPath());
         }
 
-        for (ResourceProxy child : resourceChildren) {
+        for(ResourceProxy child : resourceChildren) {
 
-            if (ignoredResources.isIgnored(child.getPath())) {
+            if(ignoredResources.isIgnored(child.getPath())) {
                 continue;
             }
 
-            if (filter != null) {
-//AS TODO: This is an adjustment to the 1.0.9 codebase
+            if(filter != null) {
+                //AS TODO: This is an adjustment to the 1.0.9 codebase
                 FilterResult filterResult = filter.filter(child.getPath());
-                if (filterResult == FilterResult.DENY) {
+                if(filterResult == FilterResult.DENY) {
                     continue;
                 }
             }
