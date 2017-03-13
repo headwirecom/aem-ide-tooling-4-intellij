@@ -1,5 +1,9 @@
 ### AEM Tooling for IntelliJ IDE Plugin
 
+#### Requirements
+
+This plugin requires to run IntelliJ IDEA **2016.2** or higher.
+
 #### Releases:
 
 New Releases can be found in the **Code -> Release** section on
@@ -32,7 +36,8 @@ The **master** is the latest release code and it the same as the highest
 * Added feedback to the Password field inside the Server Connection Configuration
 * Rearranged the AEMDC Dialog and improve user interaction
 * Added Tooltips to AEMDC Dialog
-* Increased the IntelliJ Version the plugin can run on to 2016.2 or higher 
+* Increased the IntelliJ Version the plugin can run on to 2016.2 or higher
+* Fixed issues with exception handling and reporting
 
 **0.7.3**
 * Working on integrating and testing latest Sling Tooling IDE code from Trunk

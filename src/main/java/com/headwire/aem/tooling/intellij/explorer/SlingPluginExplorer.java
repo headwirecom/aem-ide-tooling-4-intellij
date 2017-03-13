@@ -112,7 +112,7 @@ public class SlingPluginExplorer
         group.add(actionManager.getAction("AEM.Toolbar"));
         treeManager.adjustToolbar(group);
 
-        final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.ANT_EXPLORER_TOOLBAR, group, true);
+        final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, true);
 
         final JPanel buttonsPanel = new JPanel(new BorderLayout());
         buttonsPanel.add(actionToolbar.getComponent(), BorderLayout.CENTER);

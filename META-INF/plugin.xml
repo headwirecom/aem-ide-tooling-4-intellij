@@ -36,6 +36,8 @@
                         Added Tooltips to AEMDC Dialog
                     </li><li>
                         Increased the IntelliJ Version the plugin can run on to 2016.2 or higher
+                    </li><li>
+                        Fixed issues with exception handling and reporting
                     </li>
                 </ol>
             </li>
@@ -108,6 +110,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <!-- This requires IntelliJ IDEA 2016.2 or higher -->
     <idea-version since-build="162"/>
 
     <!-- Dependencies on other Plugins -->
@@ -273,7 +276,7 @@
                 class="com.headwire.aem.tooling.intellij.action.AemDcPanelAction"
                 text="AEM DC"
                 description="Show / Hide AEM DC Panel"
-                icon="/images/hw.png"/>
+                icon="/images/aemdc.png"/>
 
         <group id="AEM.Toolbar">
             <reference ref="AEM.Add.Action"/>
