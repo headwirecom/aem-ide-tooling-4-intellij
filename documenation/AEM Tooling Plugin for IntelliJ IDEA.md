@@ -459,6 +459,16 @@ The plugin features its own notification console which will only show notificati
 
 The AEM IntelliJ tooling plugin includes a built-in version of the AEM Developer Companion. For detailed documentation of the features of the AEM Developer Companion, visit its [GitHub Wiki Page](https://github.com/headwirecom/aemdc/wiki).
 
+The AEM Developer Companion requires a configuration file named **aemdc-config.properties** to be present in the project's root folder. If that file is missing then clicking on the **Wrench** icon in the toolbar will bring up:
+
+1. If the project is based on Lazybones then it will ask the user if the configuration should be auto-configured
+2. If the project is not based on Lazybones or the auto-configuration was ignored then it will bring up the configuration dialog
+ 
+The configuration properties file is written to the disk when user closes the dialog with the **Ok** button and the verification of the properties is successful. Otherwise the dialog stays open. If the user cancels the dialog then the configuration is discarded and AEMDC will not be shown.
+
+**Attention**: AEMDC will only work properly if the configuration properties are configured correctly. If it fails then the file needs to be
+either adjusted by hand or by forcing the dialog with **Alt-Click** on the icon.
+
 #### Troubleshooting
 
 ##### Installation
@@ -472,7 +482,10 @@ If the Debug Connection is failing for unknown reasons, then a TCP Proxy can be 
 
 ###### Password
 
-The password in the Server Configuration is left empty and will only show dots for input when a new password is entered. An empty field indicates that the password hasn't changed and **does not** have to be reentered.
+The password field is either showing nothing if no password is set otherwise 20 characters to prevent unauthorized users to guess
+the length of the password.
+If the user wants to change the password the field must be cleared first.
+In case the password remains unchanged no changes are made.
 
 ##### Connection
 
