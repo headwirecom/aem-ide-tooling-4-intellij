@@ -60,6 +60,7 @@ import java.util.List;
 
 import static com.headwire.aemdc.companion.Constants.CONFIGPROP_SOURCE_FOLDER;
 import static com.headwire.aemdc.companion.Constants.CONFIGPROP_TARGET_JAVA_FOLDER;
+import static com.headwire.aemdc.companion.Constants.CONFIGPROP_TARGET_JAVA_MODEL_SUBPACKAGE;
 import static com.headwire.aemdc.companion.Constants.CONFIGPROP_TARGET_JAVA_PACKAGE;
 import static com.headwire.aemdc.companion.Constants.CONFIGPROP_TARGET_JAVA_PACKAGE_FOLDER;
 import static com.headwire.aemdc.companion.Constants.CONFIGPROP_TARGET_OSGI_SUBFOLDER;
@@ -74,6 +75,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
     public static final String AEMDC_FILES_DEFAULT = "aemdc-files";
     public static final String PULL_BUTTON = "Pull";
     public static final String CLONE_BUTTON = "Clone";
+    public static final String MODEL_SUB_PACKAGE_DEFAULT = "model";
     public static final String RUN_MODES_DEFAULT = "/configuration";
 
     public static final int MAX_RELATIVE_LEVEL = 2;
@@ -104,6 +106,8 @@ public class AemdcConfigurationDialog extends DialogWrapper {
     private JLabel javaPackageLabel;
     private JLabel javaPathLabel;
     private JLabel runModesLabel;
+    private JTextField javaModelSubPackage;
+    private JLabel javaModelSubPackageLabel;
 
     private Project project;
     private VirtualFile baseDir;
@@ -215,6 +219,8 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         if(derivedFromJavaPackage.isSelected()) {
             javaPath.setText((javaPackage.getText().replaceAll("\\.", "/")));
         }
+        // Set default Java Model Sub Package
+        javaModelSubPackage.setText(MODEL_SUB_PACKAGE_DEFAULT);
         // Set default OSGi Configuration
         runModes.setText(RUN_MODES_DEFAULT);
         File configurationFile = new File(basePath, CONFIG_PROPS_FILENAME);
@@ -260,6 +266,10 @@ public class AemdcConfigurationDialog extends DialogWrapper {
             String packageAsFolder = config.getProperties().getProperty(CONFIGPROP_TARGET_JAVA_PACKAGE_FOLDER);
             if(packageAsFolder != null && packageAsFolder.startsWith(sourceFolder)) {
                 packageAsFolder = packageAsFolder.substring(sourceFolder.length() + 1);
+            }
+            String modelPackage = config.getProperties().getProperty(CONFIGPROP_TARGET_JAVA_MODEL_SUBPACKAGE);
+            if(modelPackage != null && !modelPackage.isEmpty()) {
+                javaModelSubPackage.setText(modelPackage);
             }
             if(packageAsFolder != null && !packageAsFolder.isEmpty()) {
                 javaPath.setText(packageAsFolder);
@@ -355,6 +365,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         propagateToolTip(designFolderName, designFolderLabel);
         propagateToolTip(javaPackage, javaPackageLabel);
         propagateToolTip(javaPath, javaPathLabel);
+        propagateToolTip(javaModelSubPackage, javaModelSubPackageLabel);
         propagateToolTip(runModes, runModesLabel);
     }
 
@@ -472,6 +483,8 @@ public class AemdcConfigurationDialog extends DialogWrapper {
                 content = content.replace("{{ PH_TARGET_JAVA_PACKAGE }}", javaPackage.getText());
 
                 content = content.replace("{{TARGET_JAVA_FOLDER}}/{{ PH_TARGET_JAVA_PACKAGE_FOLDER }}", "{{TARGET_JAVA_FOLDER}}/" + javaPath.getText());
+
+                content = content.replace("{{ PH_TARGET_JAVA_MODEL_SUBPACKAGE }}", javaModelSubPackage.getText());
 
                 content = content.replace("{{ PH_TARGET_OSGI_SUBFOLDER }}", runModes.getText());
 

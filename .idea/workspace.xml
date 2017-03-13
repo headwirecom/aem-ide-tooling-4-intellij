@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java" line="396" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java" line="407" />
   </component>
   <component name="ChangeListManager">
     <list id="e8001779-2c80-4417-9343-f2a698fc0cd2" name="Default" comment="" />
@@ -9,13 +9,14 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/.idea/libraries/Maven__org_apache_sling_org_apache_sling_models_api_1_3_0.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/aemdc-config.properties" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/aemdc-config.properties.temp" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/example/aemdc-config.properties" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/aemdc-files" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/aemdc-files" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/aemdc_with_dependencies.xml" afterPath="$PROJECT_DIR$/.idea/libraries/aemdc_with_dependencies.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.form" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.form" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/FolderSelectionDialog.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/FolderSelectionDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" afterPath="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/.idea/workspace.xml" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/base.core.iml" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/base.core.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/pom.xml" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/pom.xml" />
@@ -82,7 +83,59 @@
     </favorites_list>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="AemdcConfigurationDialog.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="608">
+              <caret line="486" column="77" lean-forward="false" selection-start-line="486" selection-start-column="77" selection-end-line="486" selection-end-column="77" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AemdcPanel.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="559">
+              <caret line="95" column="19" lean-forward="false" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/companion/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="8" column="3" lean-forward="false" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WebContentFXPanel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="765">
+              <caret line="70" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AemdcConfigurationDialog.form" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.form">
+          <provider selected="true" editor-type-id="ui-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -94,10 +147,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>panel</find>
-      <find>stagePeer</find>
-      <find>titleId</find>
-      <find>server.configuration.verification.successful</find>
       <find>server.configuration.verification.failed.due.to.bind.exception</find>
       <find>import</find>
       <find>workspace</find>
@@ -109,7 +158,6 @@
       <find>sourceFolderPath</find>
       <find>cloneOr</find>
       <find>aemdcFiles</find>
-      <find>aemdc</find>
       <find>BadFol</find>
       <find>obtainSG</find>
       <find>projectRoot</find>
@@ -124,6 +172,11 @@
       <find>FolderTextFieldFocusListener</find>
       <find>connectionPassword</find>
       <find>initFX</find>
+      <find>browser</find>
+      <find>RUN_MODES_DEFAULT</find>
+      <find>PH_TARGET_UI_PROJECT_FOLDER</find>
+      <find>PH_TARGET_JAVA_MODEL_SUBPACKAGE</find>
+      <find>aemdc</find>
     </findStrings>
     <replaceStrings>
       <replace>0.7.3-beta</replace>
@@ -152,8 +205,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/ui.apps/src/main/content/META-INF/vault/filter.xml" />
-        <option value="$PROJECT_DIR$/src/main/resources/messages/readme.txt" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfigurationManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/UnifiedModule.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/UnifiedModuleImpl.java" />
@@ -161,10 +212,8 @@
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/target/aemdc-0.9.4-SNAPSHOT-jar-with-dependencies.jar!/com/headwire/aemdc/util/FilesDirsUtil.class" />
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/gui/Model.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java" />
         <option value="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/aemdc-config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingPluginToolWindowFactory.java" />
-        <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/gui/MainApp.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/FolderSelectionDialog.form" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IFolder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/stub/IFile.java" />
@@ -196,12 +245,16 @@
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/BundleDataUtil.java" />
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/util/FilesDirsUtil.java" />
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/companion/Config.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.form" />
         <option value="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/FolderSelectionDialog.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/HyperlinkRedirectListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java" />
+        <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/gui/MainApp.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/HyperlinkRedirectListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java" />
       </list>
     </option>
@@ -283,7 +336,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -306,257 +358,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: p2.eclipse-plugin:org.eclipse.osgi:3.10.2.v20150203-1939" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.osgi-3.10.2.v20150203-1939.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: p2.eclipse-plugin:org.eclipse.osgi:3.10.2.v20150203-1939" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.osgi-3.10.2.v20150203-1939.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="osgi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: p2.eclipse-plugin:org.eclipse.osgi:3.10.2.v20150203-1939" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.osgi-3.10.2.v20150203-1939.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="osgi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: p2.eclipse-plugin:org.eclipse.osgi:3.10.2.v20150203-1939" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.osgi-3.10.2.v20150203-1939.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="osgi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="startlevel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: p2.eclipse-plugin:org.eclipse.osgi:3.10.2.v20150203-1939" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.osgi-3.10.2.v20150203-1939.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="osgi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="startlevel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dto" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: p2.eclipse-plugin:org.eclipse.osgi:3.10.2.v20150203-1939" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.eclipse.osgi-3.10.2.v20150203-1939.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="aemdc-with-dependencies" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc-0.10.3-SNAPSHOT-jar-with-dependencies.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc-with-dependencies" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc-0.10.3-SNAPSHOT-jar-with-dependencies.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc-with-dependencies" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc-0.10.3-SNAPSHOT-jar-with-dependencies.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc-with-dependencies" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc-0.10.3-SNAPSHOT-jar-with-dependencies.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aemdc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
+              <option name="myItemId" value="aemdc-0.10.3-jar-with-dependencies.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -567,6 +373,132 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aem" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aemdc-files" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aem" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aemdc-files" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="template" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aem" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="6.3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aem" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="6.3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -599,36 +531,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="messages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -655,10 +557,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -690,40 +588,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="ui" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FolderSelectionDialog" />
-              <option name="myItemType" value="com.intellij.uiDesigner.projectView.FormNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -785,62 +649,6 @@
               <option name="myItemId" value="intellij" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AEM Tooling Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intellij" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="explorer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
@@ -848,8 +656,9 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -899,6 +708,7 @@
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH" value="353" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -927,6 +737,9 @@
       <recent name="$PROJECT_DIR$/src/main/resources/images" />
       <recent name="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer" />
       <recent name="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intelliJ" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.headwire.aem.tooling.intellij.explorer" />
     </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
       <recent name="com.headwire.aem.tooling.intellij.config.ServerConfigurationManager" />
@@ -1692,7 +1505,8 @@
       <workItem from="1488897941664" duration="520000" />
       <workItem from="1488902337479" duration="1132000" />
       <workItem from="1488991536627" duration="604000" />
-      <workItem from="1489179375518" duration="2565000" />
+      <workItem from="1489179375518" duration="8604000" />
+      <workItem from="1489419621416" duration="5990000" />
     </task>
     <option name="localTasksCounter" value="3" />
     <option name="createChangelist" value="false" />
@@ -1717,7 +1531,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1791148000" />
+    <option name="totallyTimeSpent" value="1803177000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1729,7 +1543,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1280" y="23" width="2560" height="1413" extended-state="0" />
+    <frame x="1280" y="23" width="2560" height="1413" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1747,7 +1561,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4992057" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Notes" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962668" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20801815" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20801815" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30559757" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1757,8 +1571,9 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32323998" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32753405" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22972973" sideWeight="0.66943395" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="AEM (1.0)" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22933227" sideWeight="0.66943395" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="AEM (1.0)" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33055976" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19817315" sideWeight="0.33056605" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
@@ -1776,7 +1591,6 @@
       <window_info id="AEM (0.7.0)" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950708" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33055976" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
@@ -1916,13 +1730,13 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java</url>
-          <line>426</line>
+          <line>437</line>
           <properties />
           <option name="timeStamp" value="831" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java</url>
-          <line>302</line>
+          <line>312</line>
           <properties />
           <option name="timeStamp" value="837" />
         </line-breakpoint>
@@ -1970,7 +1784,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java</url>
-          <line>167</line>
+          <line>180</line>
           <properties />
           <option name="timeStamp" value="969" />
         </line-breakpoint>
@@ -1982,7 +1796,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java</url>
-          <line>566</line>
+          <line>579</line>
           <properties />
           <option name="timeStamp" value="974" />
         </line-breakpoint>
@@ -1994,7 +1808,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/gui/MainApp.java</url>
-          <line>521</line>
+          <line>525</line>
           <properties />
           <option name="timeStamp" value="985" />
         </line-breakpoint>
@@ -2002,7 +1816,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="993" />
+      <option name="time" value="994" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2011,56 +1825,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/companion/RunnableCompanion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/runner/ConfigPropsRunner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="639">
-          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/command/CommandMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/companion/Resource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="276" column="22" lean-forward="false" selection-start-line="276" selection-start-column="22" selection-end-line="276" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/openapi.jar!/com/intellij/openapi/vfs/VirtualFile.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="116" column="32" lean-forward="false" selection-start-line="116" selection-start-column="32" selection-end-line="116" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/javax/swing/InputVerifier.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/AbstractProjectAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="103" column="35" lean-forward="false" selection-start-line="103" selection-start-column="35" selection-end-line="103" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/openapi.jar!/com/intellij/openapi/ui/TextBrowseFolderListener.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/awt/event/FocusListener.java" />
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/io/File.java" />
     <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/command/CreateFileFromResourceCommand.java">
@@ -2227,23 +1991,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4080">
           <caret line="286" column="32" lean-forward="false" selection-start-line="286" selection-start-column="32" selection-end-line="286" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#19097#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#4481#4502#0" expanded="false" />
-            <element signature="e#5469#5627#0" expanded="false" />
-            <element signature="e#5626#5627#0" expanded="false" />
-            <element signature="e#6208#6209#0" expanded="false" />
-            <element signature="e#6261#6262#0" expanded="false" />
-            <element signature="e#8479#8625#0" expanded="false" />
-            <element signature="e#8624#8625#0" expanded="false" />
-            <element signature="e#9724#9725#0" expanded="false" />
-            <element signature="e#9777#9778#0" expanded="false" />
-            <element signature="e#17802#18155#0" expanded="false" />
-            <element signature="e#18154#18155#0" expanded="false" />
-            <element signature="e#18957#19075#0" expanded="false" />
-            <element signature="e#19074#19075#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2261,30 +2008,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/io/IntelliJProjectUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="34" column="13" lean-forward="false" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/io/IntelliJProjectUtil.java" />
     <entry file="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.osgi/3.10.2.v20150203-1939/org.eclipse.osgi-3.10.2.v20150203-1939.jar!/org/osgi/framework/startlevel/dto/BundleStartLevelDTO.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/gui/MainApp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="682" column="33" lean-forward="true" selection-start-line="682" selection-start-column="33" selection-end-line="682" selection-end-column="33" />
-          <folding>
-            <element signature="e#24201#24202#0" expanded="true" />
-            <element signature="e#24239#24240#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2292,7 +2020,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5032">
           <caret line="349" column="0" lean-forward="false" selection-start-line="349" selection-start-column="0" selection-end-line="349" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2300,143 +2027,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="958">
           <caret line="262" column="54" lean-forward="false" selection-start-line="262" selection-start-column="54" selection-end-line="262" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#23011#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#4145#4146#0" expanded="false" />
-            <element signature="e#4187#4188#0" expanded="false" />
-            <element signature="e#4233#4234#0" expanded="false" />
-            <element signature="e#4273#4274#0" expanded="false" />
-            <element signature="e#4535#4536#0" expanded="false" />
-            <element signature="e#4577#4578#0" expanded="false" />
-            <element signature="e#4614#4615#0" expanded="false" />
-            <element signature="e#4654#4655#0" expanded="false" />
-            <element signature="e#6383#6391#0" expanded="false" />
-            <element signature="e#8940#8941#0" expanded="false" />
-            <element signature="e#8967#8968#0" expanded="false" />
-            <element signature="e#9007#9008#0" expanded="false" />
-            <element signature="e#9085#9086#0" expanded="false" />
-            <element signature="e#9116#9117#0" expanded="false" />
-            <element signature="e#9143#9144#0" expanded="false" />
-            <element signature="e#9183#9184#0" expanded="false" />
-            <element signature="e#9261#9262#0" expanded="false" />
-            <element signature="e#9299#9300#0" expanded="false" />
-            <element signature="e#9333#9334#0" expanded="false" />
-            <element signature="e#9531#9532#0" expanded="false" />
-            <element signature="e#9568#9569#0" expanded="false" />
-            <element signature="e#9767#9768#0" expanded="false" />
-            <element signature="e#9809#9810#0" expanded="false" />
-            <element signature="e#10031#10032#0" expanded="false" />
-            <element signature="e#10062#10063#0" expanded="false" />
-            <element signature="e#10240#10241#0" expanded="false" />
-            <element signature="e#10271#10272#0" expanded="false" />
-            <element signature="e#10543#10544#0" expanded="false" />
-            <element signature="e#10577#10578#0" expanded="false" />
-            <element signature="e#10793#10794#0" expanded="false" />
-            <element signature="e#10838#10839#0" expanded="false" />
-            <element signature="e#11168#11169#0" expanded="false" />
-            <element signature="e#11212#11213#0" expanded="false" />
-            <element signature="e#11525#11526#0" expanded="false" />
-            <element signature="e#11559#11560#0" expanded="false" />
-            <element signature="e#11762#11763#0" expanded="false" />
-            <element signature="e#11801#11802#0" expanded="false" />
-            <element signature="e#12373#12374#0" expanded="false" />
-            <element signature="e#12417#12418#0" expanded="false" />
-            <element signature="e#12787#12788#0" expanded="false" />
-            <element signature="e#12819#12820#0" expanded="false" />
-            <element signature="e#12872#12873#0" expanded="false" />
-            <element signature="e#12914#12915#0" expanded="false" />
-            <element signature="e#12957#12958#0" expanded="false" />
-            <element signature="e#12991#12992#0" expanded="false" />
-            <element signature="e#13050#13051#0" expanded="false" />
-            <element signature="e#13096#13097#0" expanded="false" />
-            <element signature="e#13137#13138#0" expanded="false" />
-            <element signature="e#13174#13175#0" expanded="false" />
-            <element signature="e#13235#13236#0" expanded="false" />
-            <element signature="e#13287#13288#0" expanded="false" />
-            <element signature="e#13337#13338#0" expanded="false" />
-            <element signature="e#13386#13387#0" expanded="false" />
-            <element signature="e#13676#13677#0" expanded="false" />
-            <element signature="e#13705#13706#0" expanded="false" />
-            <element signature="e#13750#13751#0" expanded="false" />
-            <element signature="e#13786#13787#0" expanded="false" />
-            <element signature="e#13859#13860#0" expanded="false" />
-            <element signature="e#13886#13887#0" expanded="false" />
-            <element signature="e#17736#17737#0" expanded="false" />
-            <element signature="e#17792#17793#0" expanded="false" />
-            <element signature="e#17834#17835#0" expanded="false" />
-            <element signature="e#17876#17877#0" expanded="false" />
-            <element signature="e#18385#18386#0" expanded="false" />
-            <element signature="e#18422#18423#0" expanded="false" />
-            <element signature="e#18601#18602#0" expanded="false" />
-            <element signature="e#18692#18693#0" expanded="false" />
-            <element signature="e#18746#18747#0" expanded="false" />
-            <element signature="e#18802#18803#0" expanded="false" />
-            <element signature="e#19101#19102#0" expanded="false" />
-            <element signature="e#19197#19198#0" expanded="false" />
-            <element signature="e#19236#19237#0" expanded="false" />
-            <element signature="e#19274#19275#0" expanded="false" />
-            <element signature="e#19323#19324#0" expanded="false" />
-            <element signature="e#19366#19367#0" expanded="false" />
-            <element signature="e#19417#19418#0" expanded="false" />
-            <element signature="e#19461#19462#0" expanded="false" />
-            <element signature="e#19513#19514#0" expanded="false" />
-            <element signature="e#19550#19551#0" expanded="false" />
-            <element signature="e#19599#19600#0" expanded="false" />
-            <element signature="e#19643#19644#0" expanded="false" />
-            <element signature="e#19710#19711#0" expanded="false" />
-            <element signature="e#19768#19769#0" expanded="false" />
-            <element signature="e#19814#19815#0" expanded="false" />
-            <element signature="e#19855#19856#0" expanded="false" />
-            <element signature="e#19916#19917#0" expanded="false" />
-            <element signature="e#19968#19969#0" expanded="false" />
-            <element signature="e#20005#20006#0" expanded="false" />
-            <element signature="e#20042#20043#0" expanded="false" />
-            <element signature="e#20090#20091#0" expanded="false" />
-            <element signature="e#20134#20135#0" expanded="false" />
-            <element signature="e#20191#20192#0" expanded="false" />
-            <element signature="e#20248#20249#0" expanded="false" />
-            <element signature="e#20489#20490#0" expanded="false" />
-            <element signature="e#20573#20574#0" expanded="false" />
-            <element signature="e#20616#20617#0" expanded="false" />
-            <element signature="e#20697#20698#0" expanded="false" />
-            <element signature="e#20733#20734#0" expanded="false" />
-            <element signature="e#20785#20786#0" expanded="false" />
-          </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.form">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/FolderSelectionDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1037">
           <caret line="92" column="50" lean-forward="true" selection-start-line="92" selection-start-column="50" selection-end-line="92" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-561">
-          <caret line="444" column="22" lean-forward="false" selection-start-line="444" selection-start-column="22" selection-end-line="444" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -2484,11 +2081,112 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/BundleStateHelper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/BundleStateHelper.java" />
+    <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/gui/MainApp.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="42" column="13" lean-forward="false" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+        <state relative-caret-position="3961">
+          <caret line="272" column="0" lean-forward="false" selection-start-line="272" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/javafx-src.zip!/javafx/beans/value/ObservableValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="107" column="9" lean-forward="false" selection-start-line="107" selection-start-column="9" selection-end-line="107" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/javafx-src.zip!/javafx/concurrent/Worker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2567">
+          <caret line="177" column="41" lean-forward="false" selection-start-line="177" selection-start-column="41" selection-end-line="177" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/HyperlinkRedirectListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1888#1889#0" expanded="false" />
+            <element signature="e#1926#1927#0" expanded="false" />
+            <element signature="e#1973#1974#0" expanded="false" />
+            <element signature="e#2011#2012#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/modules/aem/aemdc-files/template/config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="46" lean-forward="false" selection-start-line="17" selection-start-column="46" selection-end-line="17" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.form">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../aemdc.hw/aemdc/target/aemdc-0.10.3-SNAPSHOT-jar-with-dependencies.jar!/types/config/aemdc/files/aemdc-config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="14" lean-forward="false" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/modules/aem/6.3/example/aemdc-config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/companion/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="8" column="3" lean-forward="false" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="486" column="77" lean-forward="false" selection-start-line="486" selection-start-column="77" selection-end-line="486" selection-end-column="77" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="70" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="559">
+          <caret line="95" column="19" lean-forward="false" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2580,7 +2278,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>maven-plugin-libraries</last-edited>
+          <last-edited>aemdc-with-dependencies</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

@@ -37,6 +37,7 @@ import com.intellij.ui.components.panels.Wrapper;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -67,6 +68,7 @@ public class AemdcPanel
     private Project project;
     private JBTabbedPane container;
     private Scene aemdcScene;
+    private HyperlinkRedirectListener hyperlinkRedirectListener;
 
     public AemdcPanel(Project project) {
         this.project = project;
@@ -84,7 +86,18 @@ public class AemdcPanel
             logger.debug("Setup AEMDC Main App");
             aemdc = new MainApp();
         }
+        if(aemdcScene != null && hyperlinkRedirectListener != null) {
+            // Remove existing Hyper Link Redirect Listener
+            WebView browser = aemdc.getBrowser();
+            browser.getEngine().getLoadWorker().stateProperty().removeListener(hyperlinkRedirectListener);
+        }
         aemdcScene = aemdc.getMainScene(new File(currentBasePath));
+
+        // Add new Hyper Link Redirect Listener
+        WebView browser = aemdc.getBrowser();
+        hyperlinkRedirectListener = new HyperlinkRedirectListener(browser);
+        browser.getEngine().getLoadWorker().stateProperty().addListener(hyperlinkRedirectListener);
+
         panel.setScene(aemdcScene);
     }
 
