@@ -457,13 +457,39 @@ The plugin features its own notification console which will only show notificati
 
 #### AEM Developer Companion
 
-The AEM IntelliJ tooling plugin includes a built-in version of the AEM Developer Companion. For detailed documentation of the features of the AEM Developer Companion, visit its [GitHub Wiki Page](https://github.com/headwirecom/aemdc/wiki).
+The AEM IntelliJ tooling plugin includes a built-in version of the AEM Developer Companion, a scaffolding tool to help AEM developers quickly create many of the typical files and structures commonly found in AEM projects.
+
+To start AEMDC within the plugin, click the wrench icon:
+
+![AEMDC Button](./img/10.1AEMDCButton.png)
+
+If you have not previously used AEMDC within your project, you will be prompted to configure it. If your project was built using the *AEM Lazybones Archetype*, you will see a dialog asking whether you want to automatically configure AEMDC based on your project's Lazybones configuration:
+ 
+ ![AEMDC Lazybones Prompt](./img/10.2AEMDCAutoConfig.png)
+ 
+ Press **Ignore** to manually configure AEMDC, or **Proceed** to use the settings from Lazybones.
+ 
+ This is the AEMDC configuration window:
+ 
+ ![AEMDC Configuration Window](./img/10.3AEMDCConfigScreenshot.png)
+ 
+ If you have not already pulled AEMDC from GitHub, you can use the **Clone** button in the upper right corner to download AEMDC. Once AEMDC is cloned, that button will change to **Pull**, and can be used to get the most recent changes.
+ 
+ For details about the configurable properties, see the **Configuration** section of the [AEMDC Wiki](https://github.com/headwirecom/aemdc/wiki#configuration) on GitHub.
+ 
+ Once you've configured AEMDC, you can click **Validate** to ensure that your settings are valid. Then press **OK** to save the settings. This will launch the AEMDC tool itself:
+ 
+ ![AEMDC Panel](./img/10.4AEMDCPanel.png)
+ 
+ AEMDC will appear as a new tab within the AEM IntelliJ plugin. To switch back to the main plugin, click the **Plugin** tab.
+ 
+ For information on how to use AEMDC, visit its [GitHub Wiki Page](https://github.com/headwirecom/aemdc/wiki).
 
 #### Troubleshooting
 
 ##### Installation
 
-If the installation or startup of the plugin fails, please have a look at the idea.log and report any errors / exceptions through the plugin's GitHub issue tracker page. The plugin is designed for IntelliJ **14 and up** and your mileage may vary with older versions.
+If the installation or startup of the plugin fails, please have a look at the idea.log and report any errors / exceptions through the plugin's GitHub issue tracker page. The plugin is designed for IntelliJ **16 and up** and your mileage may vary with older versions.
 
 ##### Configuration
 
