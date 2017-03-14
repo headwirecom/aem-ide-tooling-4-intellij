@@ -6,11 +6,229 @@
   <component name="ChangeListManager">
     <list id="e8001779-2c80-4417-9343-f2a698fc0cd2" name="Default" comment="" />
     <list default="true" id="91c2fe14-6608-43ab-899d-e717983a13fe" name="AEM Tooling" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/1.4.IntelliJ.Felix.Plugin.Release.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/1.4.IntelliJ.Preferences.Review.Felix.Plugin.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/10.1.Hot.Swap.Dialog.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/documenation/img/10.2.Hot.Swap.Feedback.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/_jcr_content/page/logo/image" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/favicon.ico" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/_jcr_content/image/file" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/en/_jcr_content/image/file" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/en/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/fr/_jcr_content/image/file" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/fr/_jcr_content/image/file.dir/_jcr_content/_dam_thumbnails/_dam_thumbnail_319.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/_jcr_content/folderThumbnail" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/asset.jpg/_jcr_content/renditions/cq5dam.thumbnail.140.100.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/asset.jpg/_jcr_content/renditions/cq5dam.thumbnail.319.319.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/asset.jpg/_jcr_content/renditions/cq5dam.thumbnail.48.48.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/asset.jpg/_jcr_content/renditions/cq5dam.web.1280.1280.jpeg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/asset.jpg/_jcr_content/renditions/original" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/felix-scr.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__biz_aQute_bndlib_1_50_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__com_adobe_aem_aem_api_unknown.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__com_adobe_aem_uber_jar_apis_6_2_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__com_cedarsoftware_json_io_4_1_6.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__com_day_cq_wcm_cq_wcm_taglib_5_7_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__commons_codec_commons_codec_1_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__commons_io_commons_io_1_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__javax_jcr_jcr_2_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__javax_servlet_servlet_api_2_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__junit_addons_junit_addons_1_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__junit_junit_4_8_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_commons_commons_exec_1_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_felix_org_apache_felix_scr_1_6_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_felix_org_apache_felix_scr_annotations_1_9_6.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_geronimo_specs_geronimo_atinject_1_0_spec_1_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_osgi_4_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_nio_4_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_osgi_4_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_commons_json_2_0_6.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_core_1_0_8.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_remote_1_0_8.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_junit_scriptable_1_0_8.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_launchpad_base_war_webapp_2_3_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_launchpad_standalone_6.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_servlets_post_2_3_4.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_testing_tools_1_0_8.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_mockito_mockito_all_1_9_5.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_osgi_org_osgi_compendium_4_2_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_osgi_org_osgi_core_4_2_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_slf4j_slf4j_api_1_5_11.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_slf4j_slf4j_simple_1_5_11.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__xerces_xercesImpl_2_6_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__xerces_xmlParserAPIs_2_6_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/aembase.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/aemdc-config.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/.settings/org.eclipse.pde.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/aembase.core.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/main/java/com/headwire/aembase/core/Test.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/main/java/com/headwire/aembase/core/filters/LoggingFilter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/main/java/com/headwire/aembase/core/listeners/SimpleResourceListener.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/main/java/com/headwire/aembase/core/models/HelloWorldModel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/main/java/com/headwire/aembase/core/package-info.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/main/java/com/headwire/aembase/core/schedulers/SimpleScheduledTask.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/main/java/com/headwire/aembase/core/servlets/SimpleServlet.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/main/java/com/headwire/aembase/core/servlets/TestServlet.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/core/src/test/java/com/headwire/aembase/core/models/TestHelloWorldModel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/aembase.it.launcher.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/src/main/java/com/headwire/aembase/it/launcher/package-info.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/src/test/java/com/headwire/aembase/it/launcher/SlingServerSideTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.launcher/src/test/java/com/headwire/aembase/it/launcher/SlingServerSideTestsBase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/.settings/org.eclipse.pde.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/aembase.it.tests.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/it.tests/src/main/java/com/headwire/aembase/it/tests/HelloWorldModelServerSideTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/.settings/org.apache.sling.ide.eclipse-core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/aembase.ui.apps.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/META-INF/vault/config.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/META-INF/vault/filter.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/META-INF/vault/settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/colctrl/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/colctrl/clientlib/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/colctrl/clientlib/css.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/colctrl/clientlib/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/example/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/example/example.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/example/render_1.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/helloworld/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/helloworld/_cq_dialog/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/helloworld/dialog.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/helloworld/helloworld.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/image/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/image/_cq_editConfig.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/text/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/textimage/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/textimage/clientlib/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/textimage/clientlib/css.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/textimage/clientlib/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/content/title/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/logo/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/clientlib/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/clientlib/css.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/clientlib/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/page.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/partials/footlibs.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/partials/head.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/partials/head.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/partials/headlibs.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/partials/main.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/page/partials/main.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/topnav/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/topnav/clientlib/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/topnav/clientlib/css.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/topnav/clientlib/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/topnav/topnav.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/components/structure/topnav/topnav.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/config.author/com.day.cq.wcm.mobile.core.impl.MobileEmulatorProvider-aembase.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/config/org.apache.sling.commons.log.LogManager.factory.config-aembase.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/i18n/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/i18n/fr.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/templates/page-content/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/templates/page-home/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/tests/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/tests/SampleTests.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/aembase/tests/js.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/sling/servlet/errorhandler/404.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/apps/sling/servlet/errorhandler/ResponseStatus.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/_jcr_content/page/logo/image.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-all/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-all/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-all/css.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-all/js.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-site/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-site/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-site/css.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-site/js.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-site/script.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.apps/src/main/content/jcr_root/etc/designs/aembase/clientlib-site/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/.classpath" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/.settings/org.apache.sling.ide.eclipse-core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/.settings/org.eclipse.core.resources.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/.settings/org.eclipse.jdt.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/.settings/org.eclipse.m2e.core.prefs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/.settings/org.eclipse.wst.common.project.facet.core.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/aembase.ui.content.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/META-INF/vault/config.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/META-INF/vault/filter.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/META-INF/vault/settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/_jcr_content/image/file.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/en/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/en/_jcr_content/image/file.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/fr/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/aembase/fr/_jcr_content/image/file.dir/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/asset.jpg/.content.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/ui.content/src/main/content/jcr_root/content/dam/aembase/asset.jpg/_jcr_content/renditions/original.dir/.content.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/documenation/img/Screenshot 2016-04-04 09.09.47 copy 3.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/documenation/img/Screenshot 2016-04-04 09.09.47 copy 4.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/documenation/img/Screenshot 2016-04-04 09.09.47 copy 5.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/documenation/img/Screenshot 2016-04-04 11.28.27 copy 2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/documenation/img/Screenshot 2016-04-04 11.28.27 copy 3.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/documenation/img/Screenshot 2016-04-04 11.28.27 copy 4.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/documenation/img/Screenshot 2016-04-04 11.28.27 copy.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/documenation/img/Screenshot 2016-04-04 11.28.27.png" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/.idea/libraries/Maven__org_apache_sling_org_apache_sling_models_api_1_3_0.xml" afterPath="$PROJECT_DIR$/tests/modules/aem/6.2/ruben.aem.plugin.test.project/.idea/libraries/Maven__org_apache_sling_org_apache_sling_models_api_1_3_0.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.pdf" afterPath="$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.pdf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/aemdc-files" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/aemdc-files" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.md" afterPath="$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogProjectTracker.java" afterPath="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogProjectTracker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" afterPath="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/.idea/workspace.xml" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/base.core.iml" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/base.core.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/pom.xml" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/src/main/java/com/headwire/aem/base/models/TextModel.java" afterPath="$PROJECT_DIR$/tests/modules/aem/6.3/basecomponent/core/src/main/java/com/headwire/aem/base/models/TextModel.java" />
     </list>
     <ignored path="AEM Tooling Plugin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -75,86 +293,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AemdcConfigurationDialog.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/AemdcConfigurationDialog.java">
+      <file leaf-file-name="HotSwapProgressImpl.class" pinned="false" current-in-tab="false">
+        <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/debugger/ui/HotSwapProgressImpl.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="486" column="77" lean-forward="false" selection-start-line="486" selection-start-column="77" selection-end-line="486" selection-end-column="77" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AemdcPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="559">
-              <caret line="95" column="19" lean-forward="false" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SlingPluginToolWindowFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingPluginToolWindowFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="50" column="13" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+            <state relative-caret-position="561">
+              <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SlingPluginExplorer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingPluginExplorer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="114" column="99" lean-forward="false" selection-start-line="114" selection-start-column="99" selection-end-line="114" selection-end-column="99" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ActionManagerImpl.class" pinned="false" current-in-tab="false">
-        <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/openapi/actionSystem/impl/ActionManagerImpl.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="508" column="28" lean-forward="true" selection-start-line="508" selection-start-column="28" selection-end-line="508" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ActionToolbarImpl.class" pinned="false" current-in-tab="false">
-        <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/openapi/actionSystem/impl/ActionToolbarImpl.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
-              <caret line="157" column="41" lean-forward="false" selection-start-line="157" selection-start-column="36" selection-end-line="157" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="40" column="24" lean-forward="false" selection-start-line="40" selection-start-column="24" selection-end-line="40" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AEM Tooling Plugin for IntelliJ IDEA.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AEM Tooling Plugin for IntelliJ IDEA.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="409">
-                <caret line="466" column="62" lean-forward="false" selection-start-line="466" selection-start-column="62" selection-end-line="466" selection-end-column="62" />
+            <state split_layout="FIRST">
+              <first_editor relative-caret-position="8041">
+                <caret line="532" column="23" lean-forward="false" selection-start-line="532" selection-start-column="23" selection-end-line="532" selection-end-column="23" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -162,25 +316,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Readme.md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Readme.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Readme.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="646">
-                <caret line="40" column="0" lean-forward="true" selection-start-line="39" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+              <first_editor relative-caret-position="663">
+                <caret line="39" column="52" lean-forward="false" selection-start-line="39" selection-start-column="52" selection-end-line="39" selection-end-column="52" />
                 <folding />
               </first_editor>
               <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebContentFXPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="70" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -197,7 +341,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>workspace</find>
       <find>0.7.3-beta</find>
       <find>0.7.4</find>
       <find>assert</find>
@@ -223,10 +366,11 @@
       <find>browser</find>
       <find>RUN_MODES_DEFAULT</find>
       <find>PH_TARGET_UI_PROJECT_FOLDER</find>
-      <find>aemdc</find>
       <find>ANT_EXPLORER_TOOLBAR</find>
       <find>place</find>
       <find>PH_TARGET_JAVA_MODEL_SUBPACKAGE</find>
+      <find>aemdc</find>
+      <find>Hot Swap</find>
     </findStrings>
     <replaceStrings>
       <replace>0.7.3-beta</replace>
@@ -255,7 +399,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/UnifiedModuleImpl.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/headwire/aem/tooling/intellij/mock/MockUnifiedModule.java" />
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/target/aemdc-0.9.4-SNAPSHOT-jar-with-dependencies.jar!/com/headwire/aemdc/util/FilesDirsUtil.class" />
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/gui/Model.java" />
@@ -287,11 +430,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java" />
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/command/CreateFileFromResourceCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/BundleStateHelper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/BundleDataUtil.java" />
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/util/FilesDirsUtil.java" />
         <option value="$PROJECT_DIR$/../aemdc.hw/aemdc/src/main/java/com/headwire/aemdc/companion/Config.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/config/ServerConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/FolderSelectionDialog.java" />
@@ -305,6 +446,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingPluginExplorer.java" />
         <option value="$PROJECT_DIR$/Readme.md" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogProjectTracker.java" />
         <option value="$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.md" />
       </list>
     </option>
@@ -394,7 +538,339 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IntelliJ IDEA Community Edition IC-163.10154.41 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IntelliJ IDEA Community Edition IC-163.10154.41 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IntelliJ IDEA Community Edition IC-163.10154.41 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IntelliJ IDEA Community Edition IC-163.10154.41 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IntelliJ IDEA Community Edition IC-163.10154.41 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="debugger" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; IntelliJ IDEA Community Edition IC-163.10154.41 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idea.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="debugger" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="messages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="explorer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="console" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AEM Tooling Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HW.AEM.Tooling.IntelliJ-Plugin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="communication" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1289,7 +1765,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1807332000" />
+    <option name="totallyTimeSpent" value="1817857000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1319,7 +1795,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4992057" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Notes" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962668" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20801815" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20801815" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329296" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30559757" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1327,7 +1803,7 @@
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32950708" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32323998" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32753405" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32753405" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22933227" sideWeight="0.66943395" order="0" side_tool="false" content_ui="combo" />
       <window_info id="AEM (1.0)" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -1560,7 +2036,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java</url>
-          <line>768</line>
+          <line>769</line>
           <properties />
           <option name="timeStamp" value="981" />
         </line-breakpoint>
@@ -1570,11 +2046,17 @@
           <properties />
           <option name="timeStamp" value="985" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/debugger/ui/HotSwapProgressImpl.class</url>
+          <line>70</line>
+          <properties />
+          <option name="timeStamp" value="994" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="994" />
+      <option name="time" value="995" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1583,77 +2065,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/StartRunConnectionAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="76" column="80" lean-forward="false" selection-start-line="76" selection-start-column="64" selection-end-line="76" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/lang/reflect/Field.java" />
-    <entry file="file://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api/src/org/apache/sling/ide/osgi/impl/TracingOsgiClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="37" column="39" lean-forward="false" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/Util.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2459">
-          <caret line="38" column="13" lean-forward="false" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/ExecutionUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/ide/startup/impl/StartupManagerImpl.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="345" column="0" lean-forward="false" selection-start-line="345" selection-start-column="0" selection-end-line="345" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api/src/org/apache/sling/ide/osgi/impl/HttpOsgiClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="99" column="36" lean-forward="false" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/ide/IdeEventQueue.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="432" column="0" lean-forward="false" selection-start-line="432" selection-start-column="0" selection-end-line="432" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/openapi.jar!/com/intellij/openapi/ui/ComponentWithBrowseButton.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="227" column="0" lean-forward="false" selection-start-line="227" selection-start-column="0" selection-end-line="227" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/action/AemDcPanelAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="737">
-          <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/util/BundleDataUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="56" column="54" lean-forward="false" selection-start-line="56" selection-start-column="54" selection-end-line="56" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/openapi.jar!/com/intellij/openapi/fileChooser/FileChooser.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="935">
@@ -1678,14 +2089,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="322" column="38" lean-forward="false" selection-start-line="322" selection-start-column="38" selection-end-line="322" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/bcprov-jdk15on-155.jar!/org/bouncycastle/util/Arrays.class" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ServerConfigurationDialog.form">
       <provider selected="true" editor-type-id="ui-designer">
@@ -1704,6 +2107,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4080">
           <caret line="286" column="32" lean-forward="false" selection-start-line="286" selection-start-column="32" selection-end-line="286" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#19097#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#4481#4502#0" expanded="false" />
+            <element signature="e#5469#5627#0" expanded="false" />
+            <element signature="e#5626#5627#0" expanded="false" />
+            <element signature="e#6208#6209#0" expanded="false" />
+            <element signature="e#6261#6262#0" expanded="false" />
+            <element signature="e#8479#8625#0" expanded="false" />
+            <element signature="e#8624#8625#0" expanded="false" />
+            <element signature="e#9724#9725#0" expanded="false" />
+            <element signature="e#9777#9778#0" expanded="false" />
+            <element signature="e#17802#18155#0" expanded="false" />
+            <element signature="e#18154#18155#0" expanded="false" />
+            <element signature="e#18957#19075#0" expanded="false" />
+            <element signature="e#19074#19075#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1740,6 +2160,109 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="958">
           <caret line="262" column="54" lean-forward="false" selection-start-line="262" selection-start-column="54" selection-end-line="262" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#23011#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#4145#4146#0" expanded="false" />
+            <element signature="e#4187#4188#0" expanded="false" />
+            <element signature="e#4233#4234#0" expanded="false" />
+            <element signature="e#4273#4274#0" expanded="false" />
+            <element signature="e#4535#4536#0" expanded="false" />
+            <element signature="e#4577#4578#0" expanded="false" />
+            <element signature="e#4614#4615#0" expanded="false" />
+            <element signature="e#4654#4655#0" expanded="false" />
+            <element signature="e#6383#6391#0" expanded="false" />
+            <element signature="e#8940#8941#0" expanded="false" />
+            <element signature="e#8967#8968#0" expanded="false" />
+            <element signature="e#9007#9008#0" expanded="false" />
+            <element signature="e#9085#9086#0" expanded="false" />
+            <element signature="e#9116#9117#0" expanded="false" />
+            <element signature="e#9143#9144#0" expanded="false" />
+            <element signature="e#9183#9184#0" expanded="false" />
+            <element signature="e#9261#9262#0" expanded="false" />
+            <element signature="e#9299#9300#0" expanded="false" />
+            <element signature="e#9333#9334#0" expanded="false" />
+            <element signature="e#9531#9532#0" expanded="false" />
+            <element signature="e#9568#9569#0" expanded="false" />
+            <element signature="e#9767#9768#0" expanded="false" />
+            <element signature="e#9809#9810#0" expanded="false" />
+            <element signature="e#10031#10032#0" expanded="false" />
+            <element signature="e#10062#10063#0" expanded="false" />
+            <element signature="e#10240#10241#0" expanded="false" />
+            <element signature="e#10271#10272#0" expanded="false" />
+            <element signature="e#10543#10544#0" expanded="false" />
+            <element signature="e#10577#10578#0" expanded="false" />
+            <element signature="e#10793#10794#0" expanded="false" />
+            <element signature="e#10838#10839#0" expanded="false" />
+            <element signature="e#11168#11169#0" expanded="false" />
+            <element signature="e#11212#11213#0" expanded="false" />
+            <element signature="e#11525#11526#0" expanded="false" />
+            <element signature="e#11559#11560#0" expanded="false" />
+            <element signature="e#11762#11763#0" expanded="false" />
+            <element signature="e#11801#11802#0" expanded="false" />
+            <element signature="e#12373#12374#0" expanded="false" />
+            <element signature="e#12417#12418#0" expanded="false" />
+            <element signature="e#12787#12788#0" expanded="false" />
+            <element signature="e#12819#12820#0" expanded="false" />
+            <element signature="e#12872#12873#0" expanded="false" />
+            <element signature="e#12914#12915#0" expanded="false" />
+            <element signature="e#12957#12958#0" expanded="false" />
+            <element signature="e#12991#12992#0" expanded="false" />
+            <element signature="e#13050#13051#0" expanded="false" />
+            <element signature="e#13096#13097#0" expanded="false" />
+            <element signature="e#13137#13138#0" expanded="false" />
+            <element signature="e#13174#13175#0" expanded="false" />
+            <element signature="e#13235#13236#0" expanded="false" />
+            <element signature="e#13287#13288#0" expanded="false" />
+            <element signature="e#13337#13338#0" expanded="false" />
+            <element signature="e#13386#13387#0" expanded="false" />
+            <element signature="e#13676#13677#0" expanded="false" />
+            <element signature="e#13705#13706#0" expanded="false" />
+            <element signature="e#13750#13751#0" expanded="false" />
+            <element signature="e#13786#13787#0" expanded="false" />
+            <element signature="e#13859#13860#0" expanded="false" />
+            <element signature="e#13886#13887#0" expanded="false" />
+            <element signature="e#17736#17737#0" expanded="false" />
+            <element signature="e#17792#17793#0" expanded="false" />
+            <element signature="e#17834#17835#0" expanded="false" />
+            <element signature="e#17876#17877#0" expanded="false" />
+            <element signature="e#18385#18386#0" expanded="false" />
+            <element signature="e#18422#18423#0" expanded="false" />
+            <element signature="e#18601#18602#0" expanded="false" />
+            <element signature="e#18692#18693#0" expanded="false" />
+            <element signature="e#18746#18747#0" expanded="false" />
+            <element signature="e#18802#18803#0" expanded="false" />
+            <element signature="e#19101#19102#0" expanded="false" />
+            <element signature="e#19197#19198#0" expanded="false" />
+            <element signature="e#19236#19237#0" expanded="false" />
+            <element signature="e#19274#19275#0" expanded="false" />
+            <element signature="e#19323#19324#0" expanded="false" />
+            <element signature="e#19366#19367#0" expanded="false" />
+            <element signature="e#19417#19418#0" expanded="false" />
+            <element signature="e#19461#19462#0" expanded="false" />
+            <element signature="e#19513#19514#0" expanded="false" />
+            <element signature="e#19550#19551#0" expanded="false" />
+            <element signature="e#19599#19600#0" expanded="false" />
+            <element signature="e#19643#19644#0" expanded="false" />
+            <element signature="e#19710#19711#0" expanded="false" />
+            <element signature="e#19768#19769#0" expanded="false" />
+            <element signature="e#19814#19815#0" expanded="false" />
+            <element signature="e#19855#19856#0" expanded="false" />
+            <element signature="e#19916#19917#0" expanded="false" />
+            <element signature="e#19968#19969#0" expanded="false" />
+            <element signature="e#20005#20006#0" expanded="false" />
+            <element signature="e#20042#20043#0" expanded="false" />
+            <element signature="e#20090#20091#0" expanded="false" />
+            <element signature="e#20134#20135#0" expanded="false" />
+            <element signature="e#20191#20192#0" expanded="false" />
+            <element signature="e#20248#20249#0" expanded="false" />
+            <element signature="e#20489#20490#0" expanded="false" />
+            <element signature="e#20573#20574#0" expanded="false" />
+            <element signature="e#20616#20617#0" expanded="false" />
+            <element signature="e#20697#20698#0" expanded="false" />
+            <element signature="e#20733#20734#0" expanded="false" />
+            <element signature="e#20785#20786#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1783,14 +2306,6 @@
             <element signature="e#24322#24323#0" expanded="false" />
             <element signature="e#24347#24348#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="984">
-          <caret line="290" column="66" lean-forward="false" selection-start-line="290" selection-start-column="66" selection-end-line="290" selection-end-column="66" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1892,14 +2407,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="70" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/AemdcPanel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="559">
@@ -1910,34 +2417,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingPluginToolWindowFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="50" column="13" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/openapi/actionSystem/impl/ActionToolbarImpl.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1156">
           <caret line="157" column="41" lean-forward="false" selection-start-line="157" selection-start-column="36" selection-end-line="157" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/openapi/actionSystem/impl/ActionManagerImpl.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="508" column="28" lean-forward="true" selection-start-line="508" selection-start-column="28" selection-end-line="508" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingPluginExplorer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="114" column="99" lean-forward="false" selection-start-line="114" selection-start-column="99" selection-end-line="114" selection-end-column="99" />
           <folding />
         </state>
       </provider>
@@ -1950,17 +2433,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Readme.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="646">
-            <caret line="40" column="0" lean-forward="true" selection-start-line="39" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
@@ -1969,11 +2441,158 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/openapi/actionSystem/impl/ActionManagerImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="508" column="28" lean-forward="true" selection-start-line="508" selection-start-column="28" selection-end-line="508" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingPluginToolWindowFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="50" column="13" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/WebContentFXPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="70" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/messages/AEMBundle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="431">
+          <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/FileChange.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="26" column="13" lean-forward="false" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingPluginExplorer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="553">
+          <caret line="87" column="38" lean-forward="false" selection-start-line="87" selection-start-column="24" selection-end-line="87" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="48" column="13" lean-forward="false" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogProjectTracker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="125" column="31" lean-forward="true" selection-start-line="125" selection-start-column="31" selection-end-line="125" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogCategory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="24" column="46" lean-forward="true" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6247">
+          <caret line="73" column="13" lean-forward="false" selection-start-line="73" selection-start-column="13" selection-end-line="73" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/DebugNotification.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="26" column="13" lean-forward="false" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogToolWindowFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1045">
+          <caret line="59" column="13" lean-forward="false" selection-start-line="59" selection-start-column="13" selection-end-line="59" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogConsole.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="77" column="13" lean-forward="false" selection-start-line="77" selection-start-column="13" selection-end-line="77" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ServerConnectionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2649">
+          <caret line="949" column="59" lean-forward="false" selection-start-line="949" selection-start-column="39" selection-end-line="949" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/RunExecutionMonitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1513">
+          <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/communication/ContentResourceChangeListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="762">
+          <caret line="346" column="62" lean-forward="true" selection-start-line="346" selection-start-column="62" selection-end-line="346" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Applications/IntelliJ IDEA CE.app/Contents/lib/idea.jar!/com/intellij/debugger/ui/HotSwapProgressImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/documenation/AEM Tooling Plugin for IntelliJ IDEA.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="8041">
+            <caret line="532" column="23" lean-forward="false" selection-start-line="532" selection-start-column="23" selection-end-line="532" selection-end-column="23" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="409">
-            <caret line="466" column="62" lean-forward="false" selection-start-line="466" selection-start-column="62" selection-end-line="466" selection-end-column="62" />
+          <first_editor relative-caret-position="663">
+            <caret line="39" column="52" lean-forward="false" selection-start-line="39" selection-start-column="52" selection-end-line="39" selection-end-column="52" />
             <folding />
           </first_editor>
           <second_editor />

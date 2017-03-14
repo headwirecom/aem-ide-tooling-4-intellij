@@ -387,7 +387,7 @@ public class ServerConnectionManager
             try {
                 OsgiClient osgiClient = obtainOSGiClient();
                 EmbeddedArtifactLocator artifactLocator = ComponentProvider.getComponent(myProject, EmbeddedArtifactLocator.class);
-                if(artifactLocator != null) {
+                if(osgiClient != null && artifactLocator != null) {
                     Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 
                     messageManager.sendInfoNotification("remote.repository.version.installed.support.bundle", remoteVersion);
@@ -440,6 +440,7 @@ public class ServerConnectionManager
                     result = command.execute();
                     success = result.isSuccess();
 
+                    //AS TODO: Send an error if we could not connect to remote server !!
                     messageManager.sendInfoNotification("remote.repository.connected.sling.repository", success);
                     if(success) {
                         serverConfiguration.setServerStatus(ServerConfiguration.ServerStatus.connected);

@@ -43,21 +43,16 @@ This concludes the initial setup for any project that does **not** have any OSGi
 In order to support the OSGi Annotations this external plugin must be installed as well (the reason is that the
 Maven OSGi Bundle plugin will create bind / unbind methods based on the annotations):
 
-1) Open the IntelliJ Preferences again, go to Plugins 
+1) Go to [Bobi's Felix SCR Annotation Progressor Clone](https://github.com/bobi/felix-annotation-processor/releases) and
+   download the latest release (1.7 as of this writing)
 
-![Start the Installation of the Felix Plugin](./img/1.4.IntelliJ.Felix.Plugin.Start.png)
+![Download Felix Plugin from Bobi's Fork](./img/1.4.IntelliJ.Felix.Plugin.Release.png)
 
-2) Search for **Felix** and select the **Felix OSGi Annotation Processor Plugin**, then click on **Install Plugin**  
+2) Repeat the same steps as above to install the AEM Plugin
 
-![Search, Select and Install Felix Plugin](./img/1.5.IntelliJ.Felix.Plugin.Search.and.Install.png)
+8) Go back to the Preferences, Plugins and make sure it is listed there
 
-3) Accept the Download and Installation of the Plugin  
-
-![Accept the Installation of the Plugin](./img/1.6.IntelliJ.Felix.Plugin.Accept.Installation.png)
-
-4) Accept the Restart of IntelliJ to activate the Plugin  
-
-![Accept the Restart of IntelliJ](./img/1.7.IntelliJ.Felix.Plugin.Accept.Restart.png)
+![IntelliJ with installed Felix SCR Annoation Processor](./img/1.4.IntelliJ.Preferences.Review.Felix.Plugin.png)
 
 The **Felix OSGi Annotation Processor** hooks into the compilation process and at the end of it will handle the
 **Annotation** similar to what the Maven OSGi Bundle plugin does. So when the compilation concludes the created class has
@@ -519,3 +514,25 @@ When the plugin is connected in **Debug Mode** to the remote AEM Server, a class
 Because the Hot Swap is done automatically, class changes will cause an error during development if the Connection is started in Debug Mode. Therefore, regular development should be done with the Debug Connection stopped.
 
 **Attention**: HotSwap will replace class code **in memory only**, meaning that a restart of the AEM Server will wipe any changes. It is necessary to deploy OSGi modules as soon as possible to avoid erratic behavior.
+
+###### Keep in Mind
+
+**Hot Swap** is handled by IntelliJ and so outside of the control of this plugin. In order to avoid surprises please keep
+these points in mind:
+
+* This only works in **Debug Mode**
+* Only **Method Body** changes are supported
+* Felix Annotations like **@Reference** will required code generation. Hot Swap will only work if the
+  **Felix SCR Annotation Processor** plugin is installed otherwise methods like **bind/unbind** are
+  missing and Hot Swap will understand that as Class Signature change and fail
+* A restart of the remote AEM server will wipe any Hot Swap changes
+* Hot Swap will show this dialog before it pushes the code (except that dialog is mark to not show)
+
+![Hot Swap Dialog](./img/10.1.Hot.Swap.Dialog.png)
+
+* A Hot Swap may report a warning no matter if it was successful or failed
+
+![Hot Swap Feedback](./img/10.2.Hot.Swap.Feedback.png)
+
+In order to check that Hot Swap is working add or change a logging statement and the check the log files for
+that change. 

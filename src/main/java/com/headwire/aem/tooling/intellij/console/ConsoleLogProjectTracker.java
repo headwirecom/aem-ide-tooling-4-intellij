@@ -37,6 +37,7 @@ import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ public class ConsoleLogProjectTracker
     private final Map<String, ConsoleLogConsole> myCategoryMap = ContainerUtil.newConcurrentMap();
     private final List<Notification> myInitial = ContainerUtil.createLockFreeCopyOnWriteList();
     private final ConsoleLogModel myProjectModel;
+    private final List<String> acceptGroupIds = Arrays.asList(ConsoleLogCategory.CONSOLE_LOG_CATEGORY, "HotSwap");
 
     public ConsoleLogProjectTracker(@NotNull final Project project) {
         super(project);
@@ -103,7 +105,7 @@ public class ConsoleLogProjectTracker
 
     protected void printNotification(Notification notification) {
         // Only show Plugin Log statements in our AEM Console
-        if(ConsoleLogCategory.CONSOLE_LOG_CATEGORY.equals(notification.getGroupId())) {
+        if(acceptGroupIds.contains(notification.getGroupId())) {
             SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
             if(selectionHandler != null) {
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
