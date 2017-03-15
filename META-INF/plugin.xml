@@ -1,17 +1,17 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
-    <name>Headwire AEM Tooling Plugin</name>
+    <name>AEM IDE Tooling 4 IntelliJ</name>
     <version>1.0</version>
-    <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/t/intellij.html">Headwire Inc.</vendor>
+    <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
-        This ItelliJ IDEA Plugin is to manage a project deployed on Adobe AEM or Apache Sling
-        through the IDEA. It supports the deployment of OSGi Bundles and JCR content nodes,
-        importing content from the AEM / Sling, creation of content nodes and OSGi services
-        through AEMDC (AEM Developer Companion) to one or more AEM / Sling instances.
+        This ItelliJ IDEA Plugin allows you to manage a project deployed to Adobe Experience Manager or Apache Sling
+        directly from IntellliJ IDEA. It supports the deployment of OSGi Bundles and JCR content nodes,
+        importing content from the Adobe Experience Manager / Apache Sling, creation of content nodes and OSGi services
+        through AEMDC (AEM Developer Companion) to one or more Adobe Experience Manager or Apache Sling instances.
         In addition a project can be created based on Maven Archetypes.
         Changes in content nodes can be pushed to the server automatically and changes to OSGi
-        services can be hot swapped in AEM / Sling without restarting the server.
+        services can be hot swapped in Adobe Experience Manager / Apache Sling without restarting the server.
     ]]></description>
 
     <change-notes><![CDATA[
