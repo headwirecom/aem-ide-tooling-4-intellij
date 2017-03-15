@@ -24,15 +24,12 @@ import com.headwire.aem.tooling.intellij.explorer.AemdcPanel;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
-import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
@@ -50,16 +47,14 @@ public class AemDcPanelAction extends AbstractProjectAction {
 
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
-//        toggle(project, progressHandler);
     }
 
+    // Had to override this method in order to gain access to the Mouse / Keyboard Modifiers
     public void actionPerformed(AnActionEvent event) {
         final Project project = event.getProject();
-        final DataContext dataContext = event.getDataContext();
         if(project != null && !isLocked(project)) {
             lock(project);
             try {
-//                execute(project, dataContext, new ProgressHandlerImpl(AEMBundle.message("action.aem.dc.panel.text")));
                 toggle(project, new ProgressHandlerImpl(AEMBundle.message("action.aem.dc.panel.text")), (event.getModifiers() & MouseEvent.ALT_MASK) != 0);
             } finally {
                 unlock(project);

@@ -108,6 +108,10 @@ public class IntelliJDeploymentManager
             super(module, new ProjectWrapper(project));
         }
 
+        public String getName() {
+            return getModule().getName();
+        }
+
         public Repository obtainRepository() {
             return ServerUtil.getConnectedRepository(
                 new IServer(getModule().getParent()), new NullProgressMonitor(), messageManager

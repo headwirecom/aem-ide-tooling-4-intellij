@@ -152,7 +152,6 @@ final class SlingServerTreeStructure extends AbstractTreeStructure {
 
         @Override
         public boolean update() {
-//      myName = "";
             return false;
         }
     }

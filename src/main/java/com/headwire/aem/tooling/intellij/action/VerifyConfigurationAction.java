@@ -43,7 +43,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
@@ -51,8 +50,6 @@ import java.util.concurrent.CountDownLatch;
 public class VerifyConfigurationAction extends AbstractProjectAction {
 
     public static final String VERIFY_CONTENT_WITH_WARNINGS = "VerifyContentWithWarnings";
-
-    private volatile CountDownLatch stopSignal = new CountDownLatch(1);
 
     public VerifyConfigurationAction() {
         super("action.verify.configuration");
@@ -103,7 +100,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
     public boolean doVerify(final Project project, final DataContext dataContext, final ProgressHandler progressHandler) {
         ProgressHandler progressHandlerSubTask =
             progressHandler == null ?
-                new EmptyProgresssHandler() :
+                new EmptyProgressHandler() :
                 progressHandler.startSubTasks(1, "progress.verify.project", project.getName());
         progressHandlerSubTask.next("progress.verify.check.environment");
         MessageManager messageManager = getMessageManager(project);
@@ -327,17 +324,17 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
         }
     }
 
-    public static class EmptyProgresssHandler
+    public static class EmptyProgressHandler
         implements ProgressHandler {
 
         @Override
         public ProgressHandler startSubTasks(int Steps, String title) {
-            return new EmptyProgresssHandler();
+            return new EmptyProgressHandler();
         }
 
         @Override
         public ProgressHandler startSubTasks(int Steps, String title, String... params) {
-            return new EmptyProgresssHandler();
+            return new EmptyProgressHandler();
         }
 
         @Override

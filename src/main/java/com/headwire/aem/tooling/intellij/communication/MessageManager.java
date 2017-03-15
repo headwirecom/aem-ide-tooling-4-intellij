@@ -91,7 +91,8 @@ public class MessageManager
     private void handlePossibleExceptions(Object ... parameters) {
         for(Object parameter: parameters) {
             if(parameter instanceof Throwable) {
-                PluginManager.processException((Throwable) parameter);
+                logger.error("Notification Exception", (Throwable) parameter);
+//                PluginManager.processException((Throwable) parameter);
             }
         }
     }

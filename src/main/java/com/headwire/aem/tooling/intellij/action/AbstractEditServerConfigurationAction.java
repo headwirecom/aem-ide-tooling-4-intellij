@@ -27,8 +27,6 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.Icon;
-
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
  */

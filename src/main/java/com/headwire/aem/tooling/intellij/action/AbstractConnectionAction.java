@@ -24,12 +24,9 @@ import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandle
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.WaitableRunner;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;

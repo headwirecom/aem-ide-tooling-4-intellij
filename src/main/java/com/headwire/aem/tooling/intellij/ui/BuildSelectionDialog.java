@@ -232,12 +232,12 @@ public class BuildSelectionDialog extends DialogWrapper {
     public static class ModuleListCellRenderer extends ColoredListCellRenderer {
         protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
             Module module = (Module) value;
-            //AS TODO: This should refer to the module name in the display of the Server Configuration
-            append(module.getSymbolicName(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
-//            final String text = group.getTemplatePresentation().getText();
-//            if (text != null) {
-//                append(" (" + text + ")", SimpleTextAttributes.REGULAR_ATTRIBUTES);
-//            }
+            append(
+                module.getName(),
+                SimpleTextAttributes.REGULAR_ATTRIBUTES
+            );
+//            //AS TODO: This should refer to the module name in the display of the Server Configuration
+//            append(module.getSymbolicName(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
         }
     }
 }

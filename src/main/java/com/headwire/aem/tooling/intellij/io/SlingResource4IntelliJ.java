@@ -18,8 +18,6 @@
 
 package com.headwire.aem.tooling.intellij.io;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.filter.Filter;

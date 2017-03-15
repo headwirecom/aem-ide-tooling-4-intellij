@@ -22,7 +22,6 @@ import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 

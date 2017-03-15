@@ -18,9 +18,6 @@
 
 package com.headwire.aem.tooling.intellij.communication;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
-import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.io.ConnectorException;
 import org.apache.sling.ide.io.ExceptionConstants;
 import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
@@ -56,6 +53,8 @@ public abstract class AbstractDeploymentManager<M, P, F>
             this.module = module;
             this.project = project;
         }
+
+        public abstract String getName();
 
         public M getModule() {
             return module;
@@ -229,14 +228,13 @@ public abstract class AbstractDeploymentManager<M, P, F>
                 }
             }
         } catch(ConnectorException e) {
-            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module.getName(), e);
             module.updateModuleStatus(SynchronizationStatus.failed);
-            throw new RuntimeException(e);
         } catch(SerializationException e) {
-            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.client", module.getName(), e);
             module.updateModuleStatus(SynchronizationStatus.failed);
         } catch(IOException e) {
-            sendMessage(MessageType.ERROR, "deploy.module.failed.io", module, e);
+            sendMessage(MessageType.ERROR, "deploy.module.failed.io", module.getName(), e);
             module.updateModuleStatus(SynchronizationStatus.failed);
         }
     }

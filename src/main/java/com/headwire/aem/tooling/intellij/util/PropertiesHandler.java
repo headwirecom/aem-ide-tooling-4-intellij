@@ -30,54 +30,6 @@ import java.util.Properties;
  */
 public class PropertiesHandler {
 
-//AS TODO: Not sure if that is worthwhile
-//    /**
-//     *
-//     * @param properties
-//     * @param pattern The Pattern on how to parse the Properties. There are a few rules for the format:
-//     *                - The levels (tokens) are separated by '|'
-//     *                - Any leading filter tokens are removed from the properties structure
-//     *                - Filter Tokens can be used to create sub properties
-//     *                - Filter Tokens are wrapped into <>
-//     *                - Indexes are numbers and the value indicates the starting index. It is wrapped into {}
-//     *                - Property names list are separated by colons ':'. [any] means any value
-//     * @return
-//     */
-//    public static Container parseProperties(Properties properties, String pattern) {
-//        Container ret = null;
-//        if(StringUtil.isNotEmpty(pattern)) {
-//            List<String> tokenList = StringUtil.split(pattern, "|");
-//
-//        }
-//    }
-//
-//    public static class Container {
-//        private Properties properties;
-//        private Map<Integer, Properties> propertiesMap;
-//
-//        public Container(Properties properties) {
-//            this.properties = properties;
-//            propertiesMap = null;
-//        }
-//
-//        public Container(Map<Integer, Properties> propertiesMap) {
-//            this.propertiesMap = propertiesMap;
-//            properties = null;
-//        }
-//
-//        public boolean isMap() {
-//            return propertiesMap != null;
-//        }
-//
-//        public Properties getProperties() {
-//            return properties;
-//        }
-//
-//        public Map<Integer, Properties> getPropertiesMap() {
-//            return propertiesMap;
-//        }
-//    }
-
     /**
      * Filters the given Properties with the given Prefix Token. Keep in mind you cannot
      * filter the last token.

@@ -21,7 +21,6 @@ package com.headwire.aem.tooling.intellij.communication;
 import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.action.StartDebugConnectionAction;
 import com.headwire.aem.tooling.intellij.action.StartRunConnectionAction;
-import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
@@ -111,7 +110,6 @@ public class ContentResourceChangeListener
                                                 slingServerTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                                 StartRunConnectionAction runAction = (StartRunConnectionAction) actionManager.getAction("AEM.Check.Action");
                                                 if (runAction != null) {
-//AS TODO: This is not working anymore.
                                                     runAction.doRun(myProject, SimpleDataContext.EMPTY_CONTEXT, new ProgressHandlerImpl("Connection Change Listener Check").setForceAsynchronous(false));
                                                 }
                                                 break;
@@ -119,7 +117,6 @@ public class ContentResourceChangeListener
                                                 slingServerTreeManager.getTree().setSelectionPath(new TreePath(childNode.getPath()));
                                                 StartDebugConnectionAction debugAction = (StartDebugConnectionAction) actionManager.getAction("AEM.Start.Debug.Action");
                                                 if (debugAction != null) {
-//AS TODO: This is not working anymore.
                                                     debugAction.doDebug(myProject, serverConnectionManager);
                                                 }
                                                 break;

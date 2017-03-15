@@ -18,7 +18,6 @@
 
 package com.headwire.aem.tooling.intellij.ui;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
@@ -75,6 +74,18 @@ public class FolderSelectionDialog extends DialogWrapper {
             this.baseDir = baseDir;
         };
 
+        @Nullable
+        @Override
+        protected VirtualFile getInitialFile() {
+            // Provide the initila file to make sure the clone folder is preset and does not
+            // point to the IntelliJ installation folder
+            String path = getComponentText();
+            VirtualFile targetFolder = baseDir.findFileByRelativePath(path);
+            if(targetFolder == null) {
+                targetFolder = baseDir.getFileSystem().findFileByPath(path);
+            }
+            return targetFolder == null ? baseDir : targetFolder;
+        }
         @NotNull
         @Override
         protected String chosenFileToResultingText(@NotNull VirtualFile chosenFile) {

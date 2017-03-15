@@ -19,34 +19,24 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
-import com.headwire.aem.tooling.intellij.config.ConfigurationListener;
-import com.headwire.aem.tooling.intellij.config.ModuleManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.ui.AemdcConfigurationDialog;
-import com.headwire.aem.tooling.intellij.ui.BuildSelectionDialog;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aemdc.companion.Config;
+import com.headwire.aemdc.companion.RunnableCompanion;
 import com.headwire.aemdc.gui.MainApp;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.ui.components.panels.Wrapper;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -58,8 +48,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -70,6 +58,8 @@ public class AemdcPanel
     extends Wrapper
     implements ProjectComponent
 {
+    public static final String AEMDC_CONFIG_PROPERTIES = "aemdc-config.properties";
+    public static final String LAZYBONES_FOLDER = ".lazybones";
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     private JFXPanel panel;
@@ -78,6 +68,7 @@ public class AemdcPanel
     private Project project;
     private JBTabbedPane container;
     private Scene aemdcScene;
+    private HyperlinkRedirectListener hyperlinkRedirectListener;
 
     public AemdcPanel(Project project) {
         this.project = project;
@@ -95,7 +86,18 @@ public class AemdcPanel
             logger.debug("Setup AEMDC Main App");
             aemdc = new MainApp();
         }
+        if(aemdcScene != null && hyperlinkRedirectListener != null) {
+            // Remove existing Hyper Link Redirect Listener
+            WebView browser = aemdc.getBrowser();
+            browser.getEngine().getLoadWorker().stateProperty().removeListener(hyperlinkRedirectListener);
+        }
         aemdcScene = aemdc.getMainScene(new File(currentBasePath));
+
+        // Add new Hyper Link Redirect Listener
+        WebView browser = aemdc.getBrowser();
+        hyperlinkRedirectListener = new HyperlinkRedirectListener(browser);
+        browser.getEngine().getLoadWorker().stateProperty().addListener(hyperlinkRedirectListener);
+
         panel.setScene(aemdcScene);
     }
 
@@ -113,7 +115,13 @@ public class AemdcPanel
             setContent(null);
             panel = new JFXPanel();
             setContent(panel);
-            panel.setScene(aemdcScene);
+            if(aemdcScene == null) {
+                Platform.runLater(() -> {
+                    initFX(project);
+                });
+            } else {
+                panel.setScene(aemdcScene);
+            }
             setBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK, 1, false));
         }
     }
@@ -121,7 +129,7 @@ public class AemdcPanel
     public void display(boolean doShow) {
         if(doShow) {
             // Check if the Config to see if we need to bring up the dialog
-            if(!Config.validateThisConfiguration(new File(project.getBasePath()), "aemdc-config.properties").isEmpty()) {
+            if(!Config.validateThisConfiguration(new File(project.getBasePath()), AEMDC_CONFIG_PROPERTIES).isEmpty()) {
                 if(!showDialog()) {
                     // Show dialog why panel is not shown
                     ComponentProvider.getComponent(project, MessageManager.class).showAlertWithArguments(
@@ -129,6 +137,8 @@ public class AemdcPanel
                         "dialog.aemdc.invalid.configuration"
                     );
                     return;
+                } else {
+                    aemdcScene = null;
                 }
             }
             // Re-adding the Panel will create a dual-pane view. To avoid this we have to re-create the JFX Panel on each showing
@@ -142,9 +152,28 @@ public class AemdcPanel
     }
 
     public boolean showDialog() {
+        // First check if the aemdc configuration file exists. If not but there is a lazybones configuration
+        // try auto configuration first
+        VirtualFile aemdcConfigPropertiesFile = project.getBaseDir().findChild(AEMDC_CONFIG_PROPERTIES);
+        if(aemdcConfigPropertiesFile == null) {
+            if(project.getBaseDir().findChild(LAZYBONES_FOLDER) != null) {
+                // Ask the user if he wants to auto configure from the lazybones configuration
+                int response = ComponentProvider.getComponent(project, MessageManager.class).showAlertWithOptions(
+                    NotificationType.INFORMATION,
+                    "dialog.aemdc.do.auto.configuration"
+                );
+                if(response == 1) {
+                    try {
+                        RunnableCompanion.main(new String[]{"-temp=" + project.getBasePath(), "config"});
+                    } catch(IOException e) {
+                        ComponentProvider.getComponent(project, MessageManager.class).showAlertWithArguments(NotificationType.ERROR, "dialog.aemdc.failed.auto.configuration");
+                    }
+                }
+            }
+        }
         SlingServerTreeSelectionHandler slingServerTreeSelectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
         ServerConfiguration serverConfiguration = slingServerTreeSelectionHandler.getCurrentConfiguration();
-        AemdcConfigurationDialog dialog = new AemdcConfigurationDialog(project, serverConfiguration, aemdc);
+        AemdcConfigurationDialog dialog = new AemdcConfigurationDialog(project, serverConfiguration);
         return dialog.showAndGet();
     }
 

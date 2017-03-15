@@ -1,146 +1,126 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
-    <name>Headwire AEM Tooling Plugin</name>
-    <version>0.7.3</version>
-    <vendor email="support@headwire.com" url="http://www.headwire.com">Headwire Inc.</vendor>
+    <name>AEM IDE Tooling 4 IntelliJ</name>
+    <version>1.0</version>
+    <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
-      This ItelliJ IDEA Plugin is to manage a project deployed on Adobe AEM through the IDE.
+        This ItelliJ IDEA Plugin allows you to manage a project deployed to Adobe Experience Manager or Apache Sling
+        directly from IntellliJ IDEA. It supports the deployment of OSGi Bundles and JCR content nodes,
+        importing content from the Adobe Experience Manager / Apache Sling, creation of content nodes and OSGi services
+        through AEMDC (AEM Developer Companion) to one or more Adobe Experience Manager or Apache Sling instances.
+        In addition a project can be created based on Maven Archetypes.
+        Changes in content nodes can be pushed to the server automatically and changes to OSGi
+        services can be hot swapped in Adobe Experience Manager / Apache Sling without restarting the server.
     ]]></description>
 
     <change-notes><![CDATA[
-      <ul>
-        <li>0.7.3:
-                   Working on integrating and testing latest Sling Tooling IDE code from Trunk
-                   Fixed an issue with Import From Server (Context Menu) failing
-                   Fixed an issue with finding a folder in Windows
-                   Fixed an issue with creating folders locally during import from server
-                   Added the AEM Developer Companion to the Plugin
-                   Added a Info page to the plugin
-                   Fixed an issue with the modification timestamp
-        </li>
-        <li>0.7.2:
-                   Fixed the issued with the deadlock (everlasting indexing) by making sure that the Project
-                   Verification during the Project Load's Start Connection is done asynchronously.
-        </li>
-        <li>0.7.1:
-                   Fixed an issue where the Plugin tried to connect to the repository during incremental deployment
-                     even when the connection was stopped
-                   Fixed an issue when the Plugin tried to compile even though there was not configuration (non
-                     AEM / Sling project)
-                   Added the 'Filter is generated' flag to the Sling Module Facet. With that it is possible to verify
-                     a project without having a filter.xml file. It is important though that the filter.xml file is
-                     available in the designated META-INF/vault folder at the time of the deployment.
-        </li>
-        <li>0.7.0: The Support Bundle Install button on the Server Configuration is now performing the installation.
-                   The Force Deploy action is doing a Purge Cache before it deploys. This way the Force Deploy
-                     is the same as Purge Cache and Deploy action.
-                   Made General Plugin Configuration persistent.
-                   Added a check to the Run Connection so that if the user changes the Server Configuration the
-                     cache will be automatically purged so that the next deployed will push all of it.
-                   The Debug Connection is now also doing a Verification and Server Configuration change check
-                     like the Run Connection.
-                   The Jar File validator on the Facet is now working properly.
-                   Exported the Background task execution into its own utility method.
-                   Added a Dialog to the Possible Symbolic Name Mismatch so that further warnings can be ignored.
-                   When a new module is created the module is automatically verified. This will also create the
-                     list of modules and updates the tree.
-                   Fixed a NPE when the Plugin Preferences Configuration is not created
-        </li>
-        <li>0.6.4.9: Dropped the SNAPSHOT from the version. Started to work on a better Module handling to unify
-                     all the various modules (IntelliJ Project Modules, Maven Project and Server Configuration Module).
-                     Added to support an override of the Bundle Symbolic Name as Felix is renaming them sometimes and
-                     porting all OSGi configuration for non-Maven OSGi bundles to the Facet to work with any OSGi
-                     configurations and not just Osmorc. Made the Server Configuration Verification Action available
-                     for any selected Server Configuration and let it run in the Foreground to allow for user interactions.
-                     Moving most of the static text into the Resource Bundle including Debug messages. Fixed an issue
-                     with the Sling Module Builder which was renamed.
-                     Fixed an issue where in the latest IntelliJ the Plugin Settings will not show in the settings.
-                     Fixed an issue with the Debug Mode as it cannot run in the background.
-        </li>
-        <li>0.6.4.8-SNAPSHOT: Make it work with IntelliJ 2016.1.0. Added the cancel action to the toolbar
-                              to stop background actions. Fixed an issue with IntelliJ 14 which failed to find
-                              components / services if on application level.
-        </li>
-        <li>0.6.4.7-SNAPSHOT: All but Dialog Actions were move into the background which is done in the base
-                              class so the Actions don't need to do anything special. Added a better way to
-                              handle process indicators that also deals with no indicator and handles the nesting
-                              easier as it automates the pops.
-        </li>
-        <li>0.6.4.6-SNAPSHOT: Fixed an issue with the entire Module build which lead to deadlocks. Also removed some
-                              debug statements that could disable the Plugin. For now the usage of non-Maven based
-                              project is discouraged as IntelliJ has no concept of a ZIP file based module.
-        </li>
-        <li>0.6.4.5-SNAPSHOT: Non-Maven OSGi modules should build now. There is a fix for any OSGi module as the
-                              deployment of Maven OSGi modules failed silently to deploy. This is fixed and if the
-                              build file is not present an alert is shown.
-                              There is also a fix for Maven modules where the Module Name and the Maven Artifact Id
-                              did nto match as it is now looking at the parent folder to find a match.
-        </li>
-        <li>0.6.4.4-SNAPSHOT: Added support for non-Maven based project. In order to support these types of projects
-                              you need to use two facets. For OSGi modules you need to use the "Osmorc" plugin
-                              to setup the OSGi Facet and for Content Modules you need to setup the Sling Content
-                              Facet and specify the Content and META-INF root folder.
-        </li>
-        <li>0.6.4.3-SNAPSHOT: The build process waits until the Maven Build is done and while any action fromo
-                              the toolbar is executed the toolbar is locked / disabled. In addition the
-                              original files from the renditions are pushed to the server last so that the
-                              DAM Workflow is not interferening with the rendition nodes.
-        </li>
-        <li>0.6.4.2-SNAPSHOT: The Maven Build for OSGi Bundles needs to be executed in a Dispatcher Thread
-                              but through changes in IntelliJ IDEA 15 that did not block anymore. In order
-                              to make it work this build is not building with a background task so that I can
-                              make the Caller of the Maven build wait for the Maven build to finish with a
-                              countdown latch.
-        </li>
-        <li>0.6.4.1-SNAPSHOT: Added a fix to try to solve mysterious failures in deploying renditions
-                              files.
-        </li>
-        <li>0.6.4-SNAPSHOT: Adjusted the Version to a Maven pattern to go along the Sling project.
-                            Started to incorporate the Sling Project project to test and verify the
-                            IDE independent Sling Connector.
-        </li>
-        <li>0.6 Beta 3: Fixed an issue with the Console Log Settings to being disabled if no configuration is selected.
-                        Fixed issues with Windows paths. Fixed an issue with Force Deploy doesn't apply to parent folders.
-                        Fixed an issue with Windows paths and File Changes.
-        </li>
-        <li>0.6 Beta 2: Checking a Selected Configuration is renamed to Run as it indicates a persistence which is
-                        what it actually does. Also renamed the Reset Current Configuration to Purge Plugin Cache Data.
-                        Fixed a bad Message Property Name.
-        </li>
-        <li>0.6 Beta 1: Added the support to create new Projects through Maven Archetypes (AEM or Sling). The Builder
-                        is geared towards that and only shows the available Archetypes and let the user set the
-                        required properties. The rest remains the same as creating a Project through the Maven Builder
-                        and using archetypes there
-        </li>
-        <li>0.5 Beta 2: A Deploy of an OSGi Bundle module will call Maven to build the artifact first.
-                        This can be switched on (default) or off in the Server Connection Configuration.
-        </li>
-        <li>0.5 Beta 1: First Beta Release. It includes many fixes including the making it work without the Plugin Window
-                        to be open, avoiding to compile Java classes with errors, avoiding repetitive messages during
-                        check / verify.
-        </li>
-        <li>Initial Version</li>
-      </ul>
+        <ul>
+            <li>1.0:
+                <ol>
+                    <li>
+                        Cleaning up Code
+                    </li><li>
+                        Improving Documentation
+                    </li><li>
+                        Issue 28: AEMDC Dialog Enhancements
+                    </li><li>
+                        Issue 30: Fix issues related to Symbolic Names
+                    </li><li>
+                        Fixed issues with relative and Windows OS paths
+                    </li><li>
+                        Added feedback to the Password field inside the Server Connection Configuration
+                    </li><li>
+                        Rearranged the AEMDC Dialog and improve user interaction
+                    </li><li>
+                        Added Tooltips to AEMDC Dialog
+                    </li><li>
+                        Increased the IntelliJ Version the plugin can run on to 2016.2 or higher
+                    </li><li>
+                        Fixed issues with exception handling and reporting
+                    </li>
+                </ol>
+            </li>
+            <li>0.7.3:
+                <ol>
+                    <li>
+                        Working on integrating and testing latest Sling Tooling IDE code from Trunk
+                    </li><li>
+                        Fixed an issue with Import From Server (Context Menu) failing
+                    </li><li>
+                        Fixed an issue with finding a folder in Windows
+                    </li><li>
+                        Fixed an issue with creating folders locally during import from server
+                    </li><li>
+                        Added the AEM Developer Companion to the Plugin
+                    </li><li>
+                        Added a Info page to the plugin
+                    </li><li>
+                        Fixed an issue with the modification timestamp
+                    </li>
+                </ol>
+            </li>
+            <li>0.7.2:
+                <ol>
+                    <li>
+                        Fixed the issued with the deadlock (everlasting indexing) by making sure that the Project
+                    </li><li>
+                        Verification during the Project Load's Start Connection is done asynchronously.
+                    </li><
+                </ol>
+            </li>
+            <li>0.7.1:
+                <ol>
+                    <li>
+                        Fixed an issue where the Plugin tried to connect to the repository during incremental deployment even when the connection was stopped
+                    </li><li>
+                        Fixed an issue when the Plugin tried to compile even though there was not configuration (non AEM / Sling project)
+                    </li><li>
+                        Added the 'Filter is generated' flag to the Sling Module Facet. With that it is possible to verify a project without having a filter.xml file. It is important though that the filter.xml file is available in the designated META-INF/vault folder at the time of the deployment.
+                    </li>
+                </ol>
+            </li>
+            <li>0.7.0:
+                <ol>
+                    <li>
+                        The Support Bundle Install button on the Server Configuration is now performing the installation.
+                    </li><li>
+                        The Force Deploy action is doing a Purge Cache before it deploys. This way the Force Deploy is the same as Purge Cache and Deploy action.
+                    </li><li>
+                        Made General Plugin Configuration persistent.
+                    </li><li>
+                        Added a check to the Run Connection so that if the user changes the Server Configuration the cache will be automatically purged so that the next deployed will push all of it.
+                    </li><li>
+                        The Debug Connection is now also doing a Verification and Server Configuration change check like the Run Connection.
+                    </li><li>
+                        The Jar File validator on the Facet is now working properly.
+                    </li><li>
+                        Exported the Background task execution into its own utility method.
+                    </li><li>
+                        Added a Dialog to the Possible Symbolic Name Mismatch so that further warnings can be ignored.
+                    </li><li>
+                        When a new module is created the module is automatically verified. This will also create the list of modules and updates the tree.
+                    </li><li>
+                        Fixed a NPE when the Plugin Preferences Configuration is not created
+                    </li>
+                </ol>
+            </li>
+        </ul>
     ]]>
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="131"/>
+    <!-- This requires IntelliJ IDEA 2016.2 or higher -->
+    <idea-version since-build="162"/>
 
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
-    <!-- This Dependency is necessary to be able to access the IntelliJ Maven Classes from within this plugin -->
+    <!-- Dependencies on other Plugins -->
     <!-- For development make sure the plugin is added to the IntelliJ SDK and not as a library -->
     <depends>org.jetbrains.idea.maven</depends>
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder builderClass="com.headwire.aem.tooling.intellij.explorer.SlingMavenModuleBuilder"/>
-        <toolWindow id="AEM (0.7.3)" anchor="right" icon="/images/hw.png"
+        <toolWindow id="AEM" anchor="right" icon="/images/hw.png"
                     factoryClass="com.headwire.aem.tooling.intellij.explorer.SlingPluginToolWindowFactory"/>
         <toolWindow id="AEM Console" anchor="bottom" secondary="true"
                     icon="/images/hw.png"
@@ -166,19 +146,23 @@
         </component>
         <component>
             <interface-class>org.osgi.service.event.EventAdmin</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.EventAdminWrapper</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.EventAdminWrapper
+            </implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.transport.RepositoryFactory</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltRepositoryFactoryWrapper</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltRepositoryFactoryWrapper
+            </implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.osgi.OsgiClientFactory</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.OsgiClientFactoryWrapper</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.OsgiClientFactoryWrapper
+            </implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.serialization.SerializationManager</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.SerializationManagerWrapper</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.SerializationManagerWrapper
+            </implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>
@@ -186,7 +170,8 @@
         </component>
         <component>
             <interface-class>org.apache.sling.ide.filter.FilterLocator</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltFilterLocatorWrapper</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltFilterLocatorWrapper
+            </implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.impl.vlt.VaultFsLocator</interface-class>
@@ -194,10 +179,12 @@
         </component>
         <component>
             <interface-class>org.apache.sling.ide.log.Logger</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.PluginLoggerWrapper</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.PluginLoggerWrapper
+            </implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration
+            </implementation-class>
         </component>
 
     </application-components>
@@ -207,22 +194,28 @@
             <implementation-class>com.headwire.aem.tooling.intellij.communication.MessageManager</implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler
+            </implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager
+            </implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager
+            </implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.communication.ServerConnectionManager</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.communication.ServerConnectionManager
+            </implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLogProjectTracker</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLogProjectTracker
+            </implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener</implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener
+            </implementation-class>
         </component>
         <component>
             <interface-class>com.headwire.aem.tooling.intellij.config.ModuleManager</interface-class>
@@ -238,6 +231,9 @@
         <action id="AEM.Add.Action"
                 class="com.headwire.aem.tooling.intellij.action.AddServerConfigurationAction"
                 icon="AllIcons.General.Add"/>
+        <action id="AEM.About.This"
+                class="com.headwire.aem.tooling.intellij.action.AboutThisPluginAction"
+                icon="AllIcons.General.Gear"/>
         <action id="AEM.Edit.Action"
                 class="com.headwire.aem.tooling.intellij.action.EditServerConfigurationAction"
                 icon="AllIcons.Actions.EditSource"/>
@@ -280,7 +276,7 @@
                 class="com.headwire.aem.tooling.intellij.action.AemDcPanelAction"
                 text="AEM DC"
                 description="Show / Hide AEM DC Panel"
-                icon="/images/hw.png"/>
+                icon="/images/aemdc.png"/>
 
         <group id="AEM.Toolbar">
             <reference ref="AEM.Add.Action"/>
@@ -316,11 +312,12 @@
         </group>
         <group id="AEM.Root.Popup">
             <reference ref="AEM.Add.Action"/>
+            <reference ref="AEM.About.This"/>
         </group>
         <!-- Context Menu Popup -->
         <group id="AEM.Context.Menu.Popup"
                class="com.headwire.aem.tooling.intellij.action.AEMActionGroup"
-               text="AEM (0.7.3)"
+               text="AEM"
                popup="true"
                icon="/images/hw.png"
         >

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="git4idea">
-    <CLASSES>
-      <root url="jar:///Applications/IntelliJ IDEA CE.app/Contents/plugins/git4idea/lib/git4idea.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

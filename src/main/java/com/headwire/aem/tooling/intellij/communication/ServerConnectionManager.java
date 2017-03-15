@@ -35,7 +35,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 
 import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
-import com.headwire.aem.tooling.intellij.util.BundleStateHelper;
+import com.headwire.aem.tooling.intellij.util.BundleDataUtil;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
@@ -105,7 +105,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -139,7 +138,6 @@ public class ServerConnectionManager
     private SlingServerTreeSelectionHandler selectionHandler;
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
-//    private NewResourceChangeCommandFactory commandFactory;
     private IntelliJDeploymentManager deploymentManager;
     private ModuleManager moduleManager;
 
@@ -271,8 +269,8 @@ public class ServerConnectionManager
                             Version localVersion = new Version(version);
                             messageManager.sendDebugNotification("debug.check.osgi.module", moduleName, symbolicName, remoteVersion, localVersion);
                             boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
-                            Object state = BundleStateHelper.getBundleState(module);
-                            messageManager.sendDebugNotification("debug.bundle.module.state", module.getName(), state);
+                            String bundleState = BundleDataUtil.getData(osgiClient, module.getSymbolicName()).get("state");
+                            messageManager.sendDebugNotification("debug.bundle.module.state", module.getName(), bundleState);
                             if(remoteVersion == null) {
                                 // Mark as not deployed yet
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.notDeployed);
@@ -366,7 +364,7 @@ public class ServerConnectionManager
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
         for(UnifiedModule unifiedModule : unifiedModules) {
             Module moduleFound = null;
-            for(Module module: moduleList) {
+            for(Module module : moduleList) {
                 if(unifiedModule.containsServerConfigurationModule(module)) {
                     moduleFound = module;
                     break;
@@ -379,51 +377,17 @@ public class ServerConnectionManager
         return moduleList;
     }
 
-//    /**
-//     * Binds found Modules and returns a list of modules not found
-//     * @param serverConfiguration
-//     * @param progressHandler
-//     * @return List of all modules found that did not have a matching Nodule Context and so are abandoned
-//     */
-//    public List<Module> bindModules(@NotNull ServerConfiguration serverConfiguration, final ProgressHandler progressHandler) {
-//        List<UnifiedModule> moduleContexts = ComponentProvider.getComponent(ModuleManager.class).getModuleManagerInstance(myProject, serverConfiguration).getUnifiedModules();
-//        List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
-//        ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(moduleContexts.size(), "Bind Modules");
-//        for(UnifiedModule moduleContext : moduleContexts) {
-//            progressHandlerSubTask.next("Bind Module: " + moduleContext.getName());
-//            String moduleName = moduleContext.getName();
-//            String symbolicName = moduleContext.getSymbolicName();
-//            String version = moduleContext.getVersion();
-//            // Check if this Module is listed in the Module Sub Tree of the Configuration. If not add it.
-//            messageManager.sendDebugNotification("Check Binding for Maven Module: '" + moduleName + "', symbolic name: '" + symbolicName + "', version: '" + version + "'");
-//            // Ignore the Unnamed Projects
-//            if(moduleName == null) {
-//                continue;
-//            }
-//            ServerConfiguration.Module module = serverConfiguration.obtainModuleBySymbolicName(ServerConfiguration.Module.getSymbolicName(moduleContext));
-//            if(module == null) {
-//                module = serverConfiguration.addModule(myProject, moduleContext);
-//            } else if(!module.isBound()) {
-//                // If the module already exists then it could be from the Storage so we need to re-bind with the maven project
-//                module.rebind(myProject, moduleContext);
-//                moduleList.remove(module);
-//            } else {
-//                moduleList.remove(module);
-//            }
-//        }
-//        return moduleList;
-//    }
-
     public enum BundleStatus { upToDate, outDated, failed };
+
     public BundleStatus checkAndUpdateSupportBundle(boolean onlyCheck) {
         BundleStatus ret = BundleStatus.failed;
 
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
             try {
-                OsgiClient osgiClient = obtainSGiClient();
+                OsgiClient osgiClient = obtainOSGiClient();
                 EmbeddedArtifactLocator artifactLocator = ComponentProvider.getComponent(myProject, EmbeddedArtifactLocator.class);
-                if(artifactLocator != null) {
+                if(osgiClient != null && artifactLocator != null) {
                     Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 
                     messageManager.sendInfoNotification("remote.repository.version.installed.support.bundle", remoteVersion);
@@ -461,7 +425,7 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public OsgiClient obtainSGiClient() {
+    public OsgiClient obtainOSGiClient() {
         OsgiClient ret = null;
 
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
@@ -476,6 +440,7 @@ public class ServerConnectionManager
                     result = command.execute();
                     success = result.isSuccess();
 
+                    //AS TODO: Send an error if we could not connect to remote server !!
                     messageManager.sendInfoNotification("remote.repository.connected.sling.repository", success);
                     if(success) {
                         serverConfiguration.setServerStatus(ServerConfiguration.ServerStatus.connected);
@@ -539,7 +504,8 @@ public class ServerConnectionManager
         return ret;
     }
 
-    public void deployModules(final DataContext dataContext, boolean force, final ProgressHandler progressHandler) {
+    public void deployModules(final DataContext dataContext, boolean force, final ProgressHandler progressHandler)
+    {
         ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
         if(serverConfiguration != null) {
             checkBinding(serverConfiguration, progressHandler);
@@ -556,7 +522,8 @@ public class ServerConnectionManager
         }
     }
 
-    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, final ProgressHandler progressHandler) {
+    public void deployModule(@NotNull final DataContext dataContext, @NotNull ServerConfiguration.Module module, boolean force, final ProgressHandler progressHandler)
+    {
         ProgressHandler progressHandlerSubTask = progressHandler.startSubTasks(2, "Bind Module: " + module.getName());
         messageManager.sendInfoNotification("remote.repository.begin.connecting.sling.repository");
         progressHandlerSubTask.next("Check Binding of Parent Module: " + module.getParent());
@@ -606,7 +573,7 @@ public class ServerConnectionManager
         Executor executor = ExecutorRegistry.getInstance().getExecutorById(ToolWindowId.DEBUG);
         ExecutionUtil.runConfiguration(configuration, executor);
         // Update the Modules with the Remote Sling Server
-        OsgiClient osgiClient = obtainSGiClient();
+        OsgiClient osgiClient = obtainOSGiClient();
         if(osgiClient != null) {
             BundleStatus status = checkAndUpdateSupportBundle(false);
             if(status != BundleStatus.failed) {
@@ -702,7 +669,6 @@ public class ServerConnectionManager
                         goals = new ArrayList<String>();
                     }
                     if (goals.isEmpty()) {
-//                        goals.add("package");
                         // If a module depends on anoher Maven module then we need to have it installed into the local repo
                         goals.add("install");
                     }
@@ -781,19 +747,6 @@ public class ServerConnectionManager
                         }
                     };
                     runAndWait(runner);
-//                    final CountDownLatch waiter = new CountDownLatch(1);
-//                    final AtomicBoolean checker = new AtomicBoolean(false);
-//                    ApplicationManager.getApplication().invokeLater(
-//                        new Runnable() {
-//                            public void run() {
-//                            }
-//                        }
-//                    );
-//                    try {
-//                        waiter.await();
-//                    } catch(InterruptedException e) {
-//                        //AS TODO: Show Info Notification and Alert
-//                    }
                     localBuildDoneSuccessfully = runner.getResponse().get();
                 }
                 if(localBuildDoneSuccessfully) {
@@ -805,7 +758,34 @@ public class ServerConnectionManager
                             //AS TODO: This looks like OSGi Symbolic Name to be used here
                             EmbeddedArtifact bundle = new EmbeddedArtifact(module.getSymbolicName(), module.getVersion(), buildFile.toURL());
                             contents = bundle.openInputStream();
-                            obtainSGiClient().installBundle(contents, bundle.getName());
+                            OsgiClient osgiClient = obtainOSGiClient();
+                            osgiClient.installBundle(contents, bundle.getName());
+                            // Check if we can retrieve the bundle from the server
+                            Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
+                            if(remoteVersion == null) {
+                                // Bundle was not found and this happens when the Symbolic Name in the Bundle JAR is different than what
+                                // the plugin is maintaining. Here we report the issue to the user so that he can correct it. For most
+                                // part this will happen if the user overrides the Symbolic Name in the Facet but it does not match.
+                                // It can also happens if the plugin is unable to detect the correct Symbolic Name.
+                                messageManager.showAlertWithArguments("deploy.module.maven.missing.bundle", bundle.getName(), module.getSymbolicName());
+                            } else {
+                                String bundleState = "";
+                                int retry = 5;
+                                // Try 5 times to see if the bundles was activated successfully. If that fails show an
+                                // alert informing the user about it
+                                while(!"active".equals(bundleState) && retry >= 0) {
+                                    retry--;
+                                    try {
+                                        Map<String, String> data = BundleDataUtil.getData(osgiClient, module.getSymbolicName());
+                                        bundleState = data.get("state").toLowerCase();
+                                    } catch(OsgiClientException e) {
+                                    }
+                                }
+                                if(!"active".equalsIgnoreCase(bundleState)) {
+                                    messageManager.sendDebugNotification("Bundle: " + bundle.getName() + ", state: " + bundleState);
+                                    messageManager.showAlertWithArguments("deploy.module.maven.bundle.not.active", bundle.getName(), module.getSymbolicName());
+                                }
+                            }
                             module.setStatus(ServerConfiguration.SynchronizationStatus.upToDate);
                         } else {
                             messageManager.showAlertWithArguments("deploy.module.maven.missing.build.file", buildFile.getAbsolutePath());
@@ -820,7 +800,7 @@ public class ServerConnectionManager
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             } catch(OsgiClientException e) {
                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
-                messageManager.sendErrorNotification("deploy.module.failed.client", e);
+                messageManager.sendErrorNotification("deploy.module.failed.client", module.getName(), e);
                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             } catch(IOException e) {
                 module.setStatus(ServerConfiguration.SynchronizationStatus.failed);
@@ -1034,8 +1014,6 @@ public class ServerConnectionManager
         List<String> contentDirectoryPaths = unifiedModule.getContentDirectoryPaths();
         for(String basePath: contentDirectoryPaths) {
             messageManager.sendDebugNotification("debug.content.base.path", basePath);
-            //AS TODO: Paths from Windows have backlashes instead of forward slashes
-            //AS TODO: It is possible that certain files are in forward slashes even on Windows
             String myFilePath = filePath == null ? null : filePath.replace("\\", "/");
             String myBasePath = basePath == null ? null : basePath.replace("\\", "/");
             if(Util.pathEndsWithFolder(basePath, JCR_ROOT_FOLDER_NAME) && (myFilePath == null || myFilePath.startsWith(myBasePath))) {

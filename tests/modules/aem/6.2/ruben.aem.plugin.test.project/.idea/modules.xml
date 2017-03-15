@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/aembase.iml" filepath="$PROJECT_DIR$/aembase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/aembase.core.iml" filepath="$PROJECT_DIR$/core/aembase.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/it.launcher/aembase.it.launcher.iml" filepath="$PROJECT_DIR$/it.launcher/aembase.it.launcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/it.tests/aembase.it.tests.iml" filepath="$PROJECT_DIR$/it.tests/aembase.it.tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui.apps/aembase.ui.apps.iml" filepath="$PROJECT_DIR$/ui.apps/aembase.ui.apps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui.content/aembase.ui.content.iml" filepath="$PROJECT_DIR$/ui.content/aembase.ui.content.iml" />
+    </modules>
+  </component>
+</project>

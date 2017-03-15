@@ -24,7 +24,6 @@ import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandle
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
