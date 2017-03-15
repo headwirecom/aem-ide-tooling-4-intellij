@@ -78,7 +78,7 @@ public class IFile extends IResource {
                     throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to create file: " + virtualFile, e));
                 }
             } else {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Parent: " + parent + " could not be found"));
+                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Parent: " + parentPath + " (" + newFile.getPath() + ") could not be found"));
             }
         }
     }

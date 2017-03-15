@@ -19,7 +19,6 @@
 package com.headwire.aem.tooling.intellij.config;
 
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.maven.project.MavenProject;
 
@@ -103,6 +102,9 @@ public interface UnifiedModule {
 
     /** List of all Content Directory Path if this is a Sling Content. This return as list but might be empty **/
     public List<String> getContentDirectoryPaths();
+
+    /** List of all Source Directory Path if this is a OSGi Bundle. This return as list but might be empty **/
+    public List<String> getSourceDirectoryPaths();
 
     /** @return the Metainf Path if set otherwise null **/
     public String getMetaInfPath();

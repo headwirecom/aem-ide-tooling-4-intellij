@@ -359,7 +359,7 @@ public class ServerConfigurationManager
     }
 
     public void addConfigurationListener(ConfigurationListener myConfigurationListener) {
-        //AS TODO: This class is loaded way ahead and so we fire a configuration listener is none are there
+        //AS TODO: This class is loaded way ahead and so we fire a configuration listener if none are there
         boolean first = myEventDispatcher.getListeners().isEmpty();
         myEventDispatcher.addListener(myConfigurationListener);
         if(first) {

@@ -24,27 +24,15 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration.ServerStatus
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
-import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
  */
 public class StartRunConnectionAction extends AbstractConnectionAction {
-
-    private volatile CountDownLatch stopSignal;
 
     public StartRunConnectionAction() {
         super("action.check.configuration");
@@ -86,7 +74,7 @@ public class StartRunConnectionAction extends AbstractConnectionAction {
                     e1.printStackTrace();
                 }
                 progressHandlerSubTask.next("progress.obtain.osgi.client");
-                OsgiClient osgiClient = serverConnectionManager.obtainSGiClient();
+                OsgiClient osgiClient = serverConnectionManager.obtainOSGiClient();
                 if(osgiClient != null) {
                     progressHandlerSubTask.next("progress.check.support.bundle");
                     ServerConnectionManager.BundleStatus status = serverConnectionManager.checkAndUpdateSupportBundle(false);

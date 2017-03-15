@@ -44,6 +44,7 @@ public class MockUnifiedModule
     private String buildDirectoryPath = "/build";
     private String moduleDirectoryPath = "/src";
     private List<String> contentDirectoryPaths = Arrays.asList();
+    private List<String> sourceDirectoryPaths = Arrays.asList();
     private String metainfPath = "";
 
     @Override
@@ -121,6 +122,11 @@ public class MockUnifiedModule
     }
 
     @Override
+    public List<String> getSourceDirectoryPaths() {
+        return sourceDirectoryPaths;
+    }
+
+    @Override
     public String getMetaInfPath() {
         return metainfPath;
     }
@@ -162,6 +168,11 @@ public class MockUnifiedModule
 
     public MockUnifiedModule setContentDirectoryPaths(List<String> contentDirectoryPaths) {
         this.contentDirectoryPaths = contentDirectoryPaths;
+        return this;
+    }
+
+    public MockUnifiedModule setSourceDirectoryPaths(List<String> sourceDirectoryPaths) {
+        this.sourceDirectoryPaths = sourceDirectoryPaths;
         return this;
     }
 

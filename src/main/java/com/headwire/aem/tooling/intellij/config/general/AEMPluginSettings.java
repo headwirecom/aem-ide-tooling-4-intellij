@@ -19,9 +19,7 @@
 package com.headwire.aem.tooling.intellij.config.general;
 
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
-import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by schaefa on 4/1/16.

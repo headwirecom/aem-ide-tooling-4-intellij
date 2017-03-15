@@ -1,0 +1,5 @@
+<sly
+        data-sly-use.helper="Helper"
+        data-sly-use.template="template.html"
+        data-sly-call="${template[helper.model.isRichText ? 'rte' : 'text'] @ text=helper.model.text}"
+/>

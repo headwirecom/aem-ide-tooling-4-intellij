@@ -54,24 +54,6 @@ public class SlingModuleFacet extends Facet<SlingModuleFacetConfiguration> {
         return FacetManager.getInstance(module).getFacetByType(ID);
     }
 
-    //  @NotNull
-    //  public AppEngineSdk getSdk() {
-    //    return AppEngineSdkManager.getInstance().findSdk(getConfiguration().getSdkHomePath());
-    //  }
-    //
-    //  @Nullable
-    //  public static AppEngineWebApp getDescriptorRoot(@Nullable VirtualFile descriptorFile, @NotNull final Project project) {
-    //    if (descriptorFile == null) return null;
-    //
-    //    Module module = ModuleUtilCore.findModuleForFile(descriptorFile, project);
-    //    if (module == null) return null;
-    //
-    //    PsiFile psiFile = PsiManager.getInstance(project).findFile(descriptorFile);
-    //    if (psiFile == null) return null;
-    //
-    //    return getRootElement(psiFile, AppEngineWebApp.class, module);
-    //  }
-
     //todo[nik] copied from JamCommonUtil
     @Nullable
     private static <T> T getRootElement(final PsiFile file, final Class<T> domClass, final Module module) {
@@ -86,12 +68,6 @@ public class SlingModuleFacet extends Facet<SlingModuleFacetConfiguration> {
 
 
     public boolean shouldRunEnhancerFor(@NotNull VirtualFile file) {
-        //    for (String path : getConfiguration().getFilesToEnhance()) {
-        //      final VirtualFile toEnhance = LocalFileSystem.getInstance().findFileByPath(path);
-        //      if (toEnhance != null && VfsUtilCore.isAncestor(toEnhance, file, false)) {
-        //        return true;
-        //      }
-        //    }
         return false;
     }
 }

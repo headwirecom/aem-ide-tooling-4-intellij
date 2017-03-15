@@ -120,12 +120,7 @@ final class SlingServerTreeBuilder extends AbstractTreeBuilder {
         final List<Object> pathsToExpand = new ArrayList<Object>();
         final List<Object> selectionPaths = new ArrayList<Object>();
         TreeBuilderUtil.storePaths(this, getRootNode(), pathsToExpand, selectionPaths, true);
-//AS TODO: TreeUtil.collapseAll() does expand all entries at the end. Copied over and took out what did not work
-//    TreeUtil.collapseAll(getTree(), 1);
         collapseAll(getTree(), 1);
-//    getTree().setSelectionPaths(EMPTY_TREE_PATH);
-//    pathsToExpand.clear();
-//    TreeBuilderUtil.restorePaths(this, pathsToExpand, selectionPaths, true);
     }
 
     public static void collapseAll(@NotNull final JTree tree, final int keepSelectionLevel) {
@@ -136,16 +131,6 @@ final class SlingServerTreeBuilder extends AbstractTreeBuilder {
             tree.collapseRow(row);
             row--;
         }
-//        tree.expandRow(0);
-//        final DefaultMutableTreeNode root = (DefaultMutableTreeNode)tree.getModel().getRoot();
-//        tree.expandPath(new TreePath(root));
-//        if (leadSelectionPath != null) {
-//            final Object[] path = leadSelectionPath.getPath();
-//            final Object[] pathToSelect = new Object[path.length > keepSelectionLevel && keepSelectionLevel >= 0 ? keepSelectionLevel : path.length];
-//            System.arraycopy(path, 0, pathToSelect, 0, pathToSelect.length);
-//            if (pathToSelect.length == 0) return;
-//            selectPath(tree, new TreePath(pathToSelect));
-//        }
     }
 
     private class ExpandedStateUpdater implements TreeExpansionListener {
@@ -158,15 +143,16 @@ final class SlingServerTreeBuilder extends AbstractTreeBuilder {
         }
 
         private void setExpandedState(TreeExpansionEvent event, boolean shouldExpand) {
-            final TreePath path = event.getPath();
-            final AbstractTreeUi ui = getUi();
-            final Object lastPathComponent = path.getLastPathComponent();
-            if(lastPathComponent != null) {
-                final Object element = ui.getElementFor(lastPathComponent);
-                if(element instanceof BaseNodeDescriptor) {
-//          ((BaseNodeDescriptor)element).setShouldExpand(shouldExpand);
-                }
-            }
+//AS TODO: Make sure this code is really not needed (3/1/2017)
+//            final TreePath path = event.getPath();
+//            final AbstractTreeUi ui = getUi();
+//            final Object lastPathComponent = path.getLastPathComponent();
+//            if(lastPathComponent != null) {
+//                final Object element = ui.getElementFor(lastPathComponent);
+//                if(element instanceof BaseNodeDescriptor) {
+////          ((BaseNodeDescriptor)element).setShouldExpand(shouldExpand);
+//                }
+//            }
         }
     }
 
@@ -187,7 +173,6 @@ final class SlingServerTreeBuilder extends AbstractTreeBuilder {
 
         @Override
         public void treeStructureChanged(TreeModelEvent treeModelEvent) {
-//            myConfigurationListener.configurationLoaded();
         }
     }
 }

@@ -112,7 +112,7 @@ public class SlingPluginExplorer
         group.add(actionManager.getAction("AEM.Toolbar"));
         treeManager.adjustToolbar(group);
 
-        final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.ANT_EXPLORER_TOOLBAR, group, true);
+        final ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, true);
 
         final JPanel buttonsPanel = new JPanel(new BorderLayout());
         buttonsPanel.add(actionToolbar.getComponent(), BorderLayout.CENTER);
@@ -121,67 +121,6 @@ public class SlingPluginExplorer
 
     @Nullable
     public Object getData(@NonNls String dataId) {
-//AS TODO: We don't need this for now. It is called on startup and when a connection is selected. Not sure if that is put into the dataContext etc
-//        if(CommonDataKeys.NAVIGATABLE.is(dataId)) {
-////            final AntBuildFile buildFile = getCurrentBuildFile();
-////            if (buildFile == null) {
-////                return null;
-////            }
-////            final VirtualFile file = buildFile.getVirtualFile();
-////            if (file == null) {
-////                return null;
-////            }
-//            final TreePath treePath = tree.getLeadSelectionPath();
-//            if(treePath == null) {
-//                return null;
-//            }
-//            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
-//            if(node == null) {
-//                return null;
-//            }
-////            if (node.getUserObject() instanceof AntTargetNodeDescriptor) {
-////                final AntTargetNodeDescriptor targetNodeDescriptor = (AntTargetNodeDescriptor)node.getUserObject();
-////                final AntBuildTargetBase buildTarget = targetNodeDescriptor.getTarget();
-////                final OpenFileDescriptor descriptor = buildTarget.getOpenFileDescriptor();
-////                if (descriptor != null) {
-////                    final VirtualFile descriptorFile = descriptor.getVirtualFile();
-////                    if (descriptorFile.isValid()) {
-////                        return descriptor;
-////                    }
-////                }
-////            }
-////            if (file.isValid()) {
-////                return new OpenFileDescriptor(project, file);
-////            }
-//        } else if(PlatformDataKeys.HELP_ID.is(dataId)) {
-////            return HelpID.ANT;
-//            return null;
-//        } else if(PlatformDataKeys.TREE_EXPANDER.is(dataId)) {
-//            String test = "";
-////            return project != null ? myTreeExpander : null;
-//        } else if(CommonDataKeys.VIRTUAL_FILE_ARRAY.is(dataId)) {
-////            final java.util.List<VirtualFile> virtualFiles = collectAntFiles(new Function<AntBuildFile, VirtualFile>() {
-////                @Override
-////                public VirtualFile fun(AntBuildFile buildFile) {
-////                    final VirtualFile virtualFile = buildFile.getVirtualFile();
-////                    if (virtualFile != null && virtualFile.isValid()) {
-////                        return virtualFile;
-////                    }
-////                    return null;
-////                }
-////            });
-////            return virtualFiles == null ? null : virtualFiles.toArray(new VirtualFile[virtualFiles.size()]);
-//            return null;
-//        } else if(LangDataKeys.PSI_ELEMENT_ARRAY.is(dataId)) {
-////            final java.util.List<PsiElement> elements = collectAntFiles(new Function<AntBuildFile, PsiElement>() {
-////                @Override
-////                public PsiElement fun(AntBuildFile buildFile) {
-////                    return buildFile.getAntFile();
-////                }
-////            });
-////            return elements == null ? null : elements.toArray(new PsiElement[elements.size()]);
-//            return null;
-//        }
         return super.getData(dataId);
     }
 }

@@ -7,18 +7,17 @@
   <component name="Archetypes.Configuration">
     <option name="workingDirectory" value="" />
   </component>
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
-  </component>
   <component name="IdProvider" IDEtalkID="CA96FC27612F7E33AFC88BDE0DC27209" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/../sling-git-fork/sling/api/pom.xml" />
+        <option value="$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api/pom.xml" />
+        <option value="$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api-io/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" default="false" project-jdk-name="IntelliJ IDEA Community Edition IC-162.2228.15" project-jdk-type="IDEA JDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="IntelliJ IDEA Community Edition IC-163.10154.41" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

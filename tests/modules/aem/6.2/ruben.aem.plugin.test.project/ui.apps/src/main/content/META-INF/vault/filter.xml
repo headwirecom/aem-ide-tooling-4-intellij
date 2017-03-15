@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/apps/aembase">
+        <exclude pattern="/apps/aembase/install" />
+    </filter>
+    <filter root="/apps/sling" />
+    <filter root="/etc/designs/aembase"/>
+</workspaceFilter>

@@ -1,0 +1,28 @@
+<model>
+   <config type="component">
+      <typeRoot>
+         <template name="component-js">
+            <template>
+               <params name="targetName">
+                  <value>
+                     <value>helloworld</value>
+                  </value>
+               </params>
+            </template>
+         </template>
+      </typeRoot>
+   </config>
+   <config type="compound">
+      <typeRoot>
+         <template name="component-and-model">
+            <template>
+               <params name="targetName">
+                  <value>
+                     <value>test</value>
+                  </value>
+               </params>
+            </template>
+         </template>
+      </typeRoot>
+   </config>
+</model>

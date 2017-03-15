@@ -23,9 +23,10 @@ import com.headwire.aem.tooling.intellij.facet.SlingModuleFacet;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacetConfiguration;
 import com.intellij.openapi.compiler.CompilerPaths;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.roots.CompilerProjectExtension;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.maven.model.MavenPlugin;
 import org.jetbrains.idea.maven.model.MavenResource;
 import org.jetbrains.idea.maven.project.MavenProject;
 
@@ -121,7 +122,27 @@ public class UnifiedModuleImpl
             ret = slingConfiguration.getOsgiSymbolicName();
         }
         if(ret.length() == 0 && mavenProject != null) {
-            ret = mavenProject.getMavenId().getGroupId() + "." + mavenProject.getMavenId().getArtifactId();
+            // Check if there is an Maven Bundle Plugin with an Symbolic Name override
+            boolean found = false;
+            List<MavenPlugin> mavenPlugins = mavenProject.getPlugins();
+            for(MavenPlugin mavenPlugin: mavenPlugins) {
+                if("org.apache.felix".equals(mavenPlugin.getGroupId()) && "maven-bundle-plugin".equals(mavenPlugin.getArtifactId())) {
+                    Element configuration = mavenPlugin.getConfigurationElement();
+                    if(configuration != null) {
+                        Element instructions = configuration.getChild("instructions");
+                        if(instructions != null) {
+                            Element bundleSymbolicName = instructions.getChild("Bundle-SymbolicName");
+                            if(bundleSymbolicName != null) {
+                                ret = bundleSymbolicName.getValue();
+                                found = true;
+                            }
+                        }
+                    }
+                }
+            }
+            if(!found) {
+                ret = mavenProject.getMavenId().getGroupId() + "." + mavenProject.getMavenId().getArtifactId();
+            }
         }
         return ret.length() == 0 ? NO_OSGI_BUNDLE : ret;
     }
@@ -140,11 +161,7 @@ public class UnifiedModuleImpl
 
     @Override
     public String getName() {
-//        if(mavenProject != null) {
-//            return mavenProject.getName();
-//        } else {
-            return module.getName();
-//        }
+        return module.getName();
     }
 
     @Override
@@ -216,6 +233,19 @@ public class UnifiedModuleImpl
             }
             return ret;
         }
+    }
+
+    @Override
+    public List<String> getSourceDirectoryPaths() {
+        List<String> ret = new ArrayList<String>();
+        if(mavenProject != null) {
+            ret = mavenProject.getSources();
+        } else {
+            if(slingConfiguration != null && slingConfiguration.getModuleType() == ModuleType.bundle) {
+                ret.add(slingConfiguration.getSourceRootPath());
+            }
+        }
+        return ret;
     }
 
     @Override

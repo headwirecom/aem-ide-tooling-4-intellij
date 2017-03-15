@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.adobe.aem:uber-jar:apis:6.2.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/adobe/aem/uber-jar/6.2.0/uber-jar-6.2.0-apis.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/adobe/aem/uber-jar/6.2.0/uber-jar-6.2.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/adobe/aem/uber-jar/6.2.0/uber-jar-6.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

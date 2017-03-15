@@ -58,7 +58,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -107,13 +106,8 @@ public class ImportRepositoryContentManager {
         this.currentResources = new HashSet<IResource>();
     }
 
-    public void doImport(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException,
+    public void doImport(IProgressMonitor monitor) throws InterruptedException,
         SerializationException, CoreException {
-
-//        // TODO: We should try to make this give 'nice' progress feedback (aka here's what I'm processing)
-//        monitor.beginTask("Repository import", IProgressMonitor.UNKNOWN);
-
-//        this.monitor = monitor;
 
         MessageManager messageManager = project.getModule().getProject().getComponent(MessageManager.class);
         repository = ServerUtil.getConnectedRepository(server, monitor, messageManager);
@@ -129,7 +123,7 @@ public class ImportRepositoryContentManager {
                 skm = new SerializationKindManager();
                 skm.init(repository);
             } catch(RepositoryException e1) {
-                throw new InvocationTargetException(e1);
+                throw new CoreException("Failed to obtain the Serialization Kind Manager or initialize it", e1);
             }
 
             filter = ProjectUtil.loadFilter(project);
@@ -149,21 +143,14 @@ public class ImportRepositoryContentManager {
                 String relativeFromSyncRoot = projectRelativePath.toOSString();
                 int index = relativeFromSyncRoot.indexOf("/" + JCR_ROOT_FOLDER_NAME + "/");
                 relativeFromSyncRoot = relativeFromSyncRoot.substring(index + ("/" + JCR_ROOT_FOLDER_NAME + "/").length());
-                repositoryImportRoot = new IPath(
-                    new IPath(contentSyncRoot),
-                    relativeFromSyncRoot
-                );
+                repositoryImportRoot = new IPath(new IPath(contentSyncRoot), relativeFromSyncRoot);
 
 
                 readVltIgnoresNotUnderImportRoot(contentSyncRootDir, repositoryImportRoot);
 
                 //            ProgressUtils.advance(monitor, 1);
 
-                Activator
-                    .getDefault()
-                    .getPluginLogger()
-                    .trace("Starting import; repository start point is {0}, workspace start point is {1}",
-                        repositoryImportRoot, projectRelativePath);
+                Activator.getDefault().getPluginLogger().trace("Starting import; repository start point is {0}, workspace start point is {1}", repositoryImportRoot, projectRelativePath);
 
                 recordNotIgnoredResources();
 
@@ -182,7 +169,8 @@ public class ImportRepositoryContentManager {
                 //        } catch (OperationCanceledException e) {
                 //            throw e;
             } catch(Exception e) {
-                throw new InvocationTargetException(e);
+                Activator.getDefault().getPluginLogger().error("Import failed: '" + e.getMessage() + "'", e);
+                throw new CoreException("Failed to handle Import", e);
             } finally {
                 if(builder != null) {
                     builder.destroy();
@@ -202,12 +190,19 @@ public class ImportRepositoryContentManager {
             IPath syncDirProjectRelative = syncDir.getProjectRelativePath();
             IPath syncDirRelative = projectRelative.makeRelativeTo(syncDirProjectRelative);
             IPath repoPath = syncDirRelative.makeAbsolute();
-//            IPath repoPath = current.getProjectRelativePath().makeRelativeTo(syncDir.getProjectRelativePath())
-//                .makeAbsolute();
             parseIgnoreFiles(current, repoPath.toPortableString());
-            current = (IFolder) current.findMember(repositoryImportRoot.segment(i));
+            IResource child = current.findMember(repositoryImportRoot.segment(i));
+            if(child instanceof IFolder) {
+                current = (IFolder) child;
+            } else {
+                // This must be a file then -> make sure it is the leave otherwise throw a Core Exception
+                if(i == repositoryImportRoot.segmentCount() - 1) {
+                    break;
+                } else {
+                    throw new CoreException("Encounter a File: '" + child.getProjectRelativePath().toPortableString() + " and it is not a leaf");
+                }
+            }
         }
-
     }
 
     private void recordNotIgnoredResources() throws CoreException {
@@ -233,7 +228,6 @@ public class ImportRepositoryContentManager {
 
                     String repositoryPath = rai.getResource().getPath();
 
-//                    FilterResult filterResult = filter.filter(contentSyncRoot, repositoryPath);
 //AS TODO: This is an adjustment to the 1.0.9 codebase
                     FilterResult filterResult = filter.filter(repositoryPath);
 
@@ -251,7 +245,6 @@ public class ImportRepositoryContentManager {
                     throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
                         "Failed reading current project's resources", e));
                 }
-//                throw new UnsupportedOperationException("This method needs to be implemented first");
             }
         });
 
@@ -274,8 +267,6 @@ public class ImportRepositoryContentManager {
     /**
      * Crawls the repository and recursively imports founds resources
      * @param path the current path to import from
-//     * @param tracer
-//     * @throws JSONException
      * @throws RepositoryException
      * @throws CoreException
      * @throws IOException
@@ -292,42 +283,36 @@ public class ImportRepositoryContentManager {
         logger.trace("For resource at path {0} got serialization data {1}", resource.getPath(), serializationData);
 
         final List<ResourceProxy> resourceChildren = new LinkedList<ResourceProxy>(resource.getChildren());
-        if (serializationData != null) {
+        if(serializationData != null) {
 
-            IPath serializationFolderPath = contentSyncRootDir.getProjectRelativePath().append(
-                serializationData.getFolderPath());
+            IPath serializationFolderPath = contentSyncRootDir.getProjectRelativePath().append(serializationData.getFolderPath());
 
-            switch (serializationData.getSerializationKind()) {
+            switch(serializationData.getSerializationKind()) {
                 case FILE: {
                     byte[] contents = executeCommand(repository.newGetNodeCommand(path));
                     createFile(project, getPathForPlainFileNode(resource, serializationFolderPath), contents);
 
-                    if (serializationData.hasContents()) {
+                    if(serializationData.hasContents()) {
                         createFolder(project, serializationFolderPath);
-                        createFile(project, serializationFolderPath.append(serializationData.getFileName()),
-                            serializationData.getContents());
+                        createFile(project, serializationFolderPath.append(serializationData.getFileName()), serializationData.getContents());
 
                         // special processing for nt:resource nodes
-                        for (Iterator<ResourceProxy> it = resourceChildren.iterator(); it.hasNext();) {
+                        for(Iterator<ResourceProxy> it = resourceChildren.iterator(); it.hasNext(); ) {
                             ResourceProxy child = it.next();
-                            if (Repository.NT_RESOURCE.equals(child.getProperties().get(Repository.JCR_PRIMARY_TYPE))) {
+                            if(Repository.NT_RESOURCE.equals(child.getProperties().get(Repository.JCR_PRIMARY_TYPE))) {
 
-                                ResourceProxy reloadedChildResource = executeCommand(repository
-                                    .newListChildrenNodeCommand(child.getPath()));
+                                ResourceProxy reloadedChildResource = executeCommand(repository.newListChildrenNodeCommand(child.getPath()));
 
-                                logger.trace(
-                                    "Skipping direct handling of {0} node at {1} ; will additionally handle {2} direct children",
-                                    Repository.NT_RESOURCE, child.getPath(), reloadedChildResource.getChildren()
-                                        .size());
+                                logger.trace("Skipping direct handling of {0} node at {1} ; will additionally handle {2} direct children", Repository.NT_RESOURCE, child.getPath(), reloadedChildResource.getChildren().size());
 
-                                if (reloadedChildResource.getChildren().size() != 0) {
+                                if(reloadedChildResource.getChildren().size() != 0) {
 
                                     String pathName = Text.getName(reloadedChildResource.getPath());
                                     pathName = serializationManager.getOsPath(pathName);
                                     createFolder(project, serializationFolderPath.append(pathName));
 
                                     // 2. recursively handle all resources
-                                    for (ResourceProxy grandChild : reloadedChildResource.getChildren()) {
+                                    for(ResourceProxy grandChild : reloadedChildResource.getChildren()) {
                                         crawlChildrenAndImport(grandChild.getPath());
                                     }
                                 }
@@ -346,17 +331,15 @@ public class ImportRepositoryContentManager {
 
                     parseIgnoreFiles(folder, path);
 
-                    if (serializationData.hasContents()) {
-                        createFile(project, serializationFolderPath.append(serializationData.getFileName()),
-                            serializationData.getContents());
+                    if(serializationData.hasContents()) {
+                        createFile(project, serializationFolderPath.append(serializationData.getFileName()), serializationData.getContents());
                     }
                     break;
                 }
 
                 case METADATA_FULL: {
-                    if (serializationData.hasContents()) {
-                        createFile(project, serializationFolderPath.append(serializationData.getFileName()),
-                            serializationData.getContents());
+                    if(serializationData.hasContents()) {
+                        createFile(project, serializationFolderPath.append(serializationData.getFileName()), serializationData.getContents());
                     }
                     break;
                 }
@@ -364,26 +347,23 @@ public class ImportRepositoryContentManager {
 
             logger.trace("Resource at {0} has children: {1}", resource.getPath(), resourceChildren);
 
-            if (serializationData.getSerializationKind() == SerializationKind.METADATA_FULL) {
+            if(serializationData.getSerializationKind() == SerializationKind.METADATA_FULL) {
                 return;
             }
         } else {
             logger.trace("No serialization data found for {0}", resource.getPath());
         }
 
-//        ProgressUtils.advance(monitor, 1);
+        for(ResourceProxy child : resourceChildren) {
 
-        for (ResourceProxy child : resourceChildren) {
-
-            if (ignoredResources.isIgnored(child.getPath())) {
+            if(ignoredResources.isIgnored(child.getPath())) {
                 continue;
             }
 
-            if (filter != null) {
-//                FilterResult filterResult = filter.filter(contentSyncRoot, child.getPath());
-//AS TODO: This is an adjustment to the 1.0.9 codebase
+            if(filter != null) {
+                //AS TODO: This is an adjustment to the 1.0.9 codebase
                 FilterResult filterResult = filter.filter(child.getPath());
-                if (filterResult == FilterResult.DENY) {
+                if(filterResult == FilterResult.DENY) {
                     continue;
                 }
             }

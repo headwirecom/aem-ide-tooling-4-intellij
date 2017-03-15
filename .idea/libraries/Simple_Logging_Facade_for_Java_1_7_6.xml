@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Simple Logging Facade for Java:1.7.6" type="repository">
+    <properties maven-id="org.slf4j:slf4j-simple:1.7.6" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-simple-1.7.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-simple-1.7.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-simple-1.7.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

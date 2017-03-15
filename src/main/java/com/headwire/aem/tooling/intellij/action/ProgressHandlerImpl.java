@@ -71,7 +71,7 @@ public class ProgressHandlerImpl
         subTasks.parent = this;
         if(progressIndicator != null) {
             progressIndicator.pushState();
-            progressIndicator.setText(title);
+            progressIndicator.setText(subTasks.getTitle());
         }
         return subTasks;
     }

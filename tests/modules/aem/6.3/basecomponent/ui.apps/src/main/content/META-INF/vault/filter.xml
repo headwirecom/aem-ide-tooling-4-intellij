@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/apps/base"/>
+
+    <filter root="/etc/clientlibs/base"/>
+
+    <filter root="/etc/designs/base">
+        <include pattern="/etc/designs/base/jcr:content"/>
+    </filter>
+<!--
+    <filter root="/etc/designs/base"/>
+-->
+    <filter root="/etc/designs/base/folder1"/>
+    <filter root="/etc/designs/base/folder3"/>
+
+</workspaceFilter>

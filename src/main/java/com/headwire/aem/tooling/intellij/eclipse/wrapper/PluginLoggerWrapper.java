@@ -35,14 +35,15 @@ public class PluginLoggerWrapper
     public PluginLoggerWrapper() {
         delegate = PluginManager.getLogger();
     }
+
     @Override
     public void error(String s) {
-        delegate.error(s);
+        delegate.warn(s);
     }
 
     @Override
     public void error(String s, Throwable throwable) {
-        delegate.error(s, throwable);
+        delegate.warn(s, throwable);
     }
 
     @Override

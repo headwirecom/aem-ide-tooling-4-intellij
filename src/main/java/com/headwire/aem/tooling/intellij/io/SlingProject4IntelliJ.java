@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
+import com.intellij.openapi.diagnostic.Logger;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
@@ -46,10 +47,13 @@ import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE
 public class SlingProject4IntelliJ
     implements SlingProject
 {
+    private Logger logger = Logger.getInstance(this.getClass());
+
     private ServerConfiguration.Module module;
     private SlingResource syncDirectory;
 
     public SlingProject4IntelliJ(ServerConfiguration.Module module) {
+        logger.debug("Getting Started, Module: " + module);
         this.module = module;
         Project project = module.getProject();
         VirtualFileSystem vfs = project.getBaseDir().getFileSystem();
@@ -94,7 +98,7 @@ public class SlingProject4IntelliJ
                 filter = null;
             }
         }
-        if(filterFile == null) {
+        if(filter == null && filterFile == null) {
             // First we check if the META-INF folder was already found
             VirtualFile metaInfFolder = module.getMetaInfFolder();
             if(metaInfFolder == null) {
@@ -107,17 +111,24 @@ public class SlingProject4IntelliJ
                     }
                 }
             }
+            logger.debug("Stored Meta-Inf Folder: '" + metaInfFolder + "'");
+            if(metaInfFolder != null && !metaInfFolder.exists()) {
+                logger.debug("Non-Existing Meta-Inf Folder: '" + metaInfFolder + "' -> reset");
+                metaInfFolder = null;
+            }
             if(metaInfFolder == null) {
                 // Lastly we check if we can find the folder somewhere in the maven project file system
                 UnifiedModule unifiedModule = module.getUnifiedModule();
                 VirtualFile test = module.getProject().getBaseDir().getFileSystem().findFileByPath(unifiedModule.getModuleDirectory());
                 metaInfFolder = findFileOrFolder(test, META_INF_FOLDER_NAME, true);
+                logger.debug("Module FS File: '" + test + "', META-INF folder: '" + metaInfFolder + "'");
                 module.setMetaInfFolder(metaInfFolder);
             }
             if(metaInfFolder != null) {
                 // Found META-INF folder
                 // Find filter.xml file
                 filterFile = findFileOrFolder(metaInfFolder, VAULT_FILTER_FILE_NAME, false);
+                logger.debug("Filter File: '" + filterFile + "'");
                 module.setFilterFile(filterFile);
                 Util.setModificationStamp(filterFile);
             }
@@ -127,10 +138,12 @@ public class SlingProject4IntelliJ
             InputStream contents = null;
             try {
                 contents = filterFile.getInputStream();
+                logger.debug("Filter File Content: '" + contents + "'");
                 filter = filterLocator.loadFilter(contents);
                 module.setFilter(filter);
                 Util.setModificationStamp(filterFile);
             } catch (IOException e) {
+                logger.debug("Reading Filter File Failed", e);
                 throw new ConnectorException(
                     "Failed loading filter file for module " + module
                         + " from location " + filterFile,
@@ -146,16 +159,20 @@ public class SlingProject4IntelliJ
     private VirtualFile findFileOrFolder(VirtualFile rootFile, String name, boolean isFolder) {
         VirtualFile ret = null;
         for(VirtualFile child: rootFile.getChildren()) {
+            String childName = child.getName();
+            if("jcr_root".equals(childName)) {
+                continue;
+            }
             if(child.isDirectory()) {
                 if(isFolder) {
-                    if(child.getName().equals(name)) {
+                    if(childName.equals(name)) {
                         return child;
                     }
                 }
                 ret = findFileOrFolder(child, name, isFolder);
                 if(ret != null) { break; }
             } else {
-                if(child.getName().equals(name)) {
+                if(childName.equals(name)) {
                     ret = child;
                     break;
                 }

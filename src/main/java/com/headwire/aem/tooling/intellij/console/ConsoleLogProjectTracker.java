@@ -37,6 +37,7 @@ import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ public class ConsoleLogProjectTracker
     private final Map<String, ConsoleLogConsole> myCategoryMap = ContainerUtil.newConcurrentMap();
     private final List<Notification> myInitial = ContainerUtil.createLockFreeCopyOnWriteList();
     private final ConsoleLogModel myProjectModel;
+    private final List<String> acceptGroupIds = Arrays.asList(ConsoleLogCategory.CONSOLE_LOG_CATEGORY, "HotSwap");
 
     public ConsoleLogProjectTracker(@NotNull final Project project) {
         super(project);
@@ -102,37 +104,40 @@ public class ConsoleLogProjectTracker
     }
 
     protected void printNotification(Notification notification) {
-        SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
-        if(selectionHandler != null) {
-            ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
-            ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
-            switch (logFilter) {
-                case debug:
-                    break;
-                case info:
-                    if (notification instanceof DebugNotification) {
-                        return;
-                    }
-                    break;
-                case warning:
-                    if (notification.getType() == NotificationType.INFORMATION) {
-                        return;
-                    }
-                    break;
-                case error:
-                default:
-                    if (notification.getType() != NotificationType.ERROR) {
-                        return;
-                    }
+        // Only show Plugin Log statements in our AEM Console
+        if(acceptGroupIds.contains(notification.getGroupId())) {
+            SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
+            if(selectionHandler != null) {
+                ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+                ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
+                switch(logFilter) {
+                    case debug:
+                        break;
+                    case info:
+                        if(notification instanceof DebugNotification) {
+                            return;
+                        }
+                        break;
+                    case warning:
+                        if(notification.getType() == NotificationType.INFORMATION) {
+                            return;
+                        }
+                        break;
+                    case error:
+                    default:
+                        if(notification.getType() != NotificationType.ERROR) {
+                            return;
+                        }
+                }
             }
-        }
-        myProjectModel.addNotification(notification);
+            myProjectModel.addNotification(notification);
 
-        ConsoleLogConsole console = getConsole(notification);
-        if(console == null) {
-            myInitial.add(notification);
-        } else {
-            doPrintNotification(notification, console);
+            ConsoleLogConsole console = getConsole(notification);
+            if(console == null) {
+                myInitial.add(notification);
+            } else {
+                doPrintNotification(notification, console);
+            }
         }
     }
 

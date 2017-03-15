@@ -3,11 +3,14 @@
     <properties maven-id="commons-io:commons-io:2.4" />
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4-sources.jar!/" />
     </SOURCES>
   </library>

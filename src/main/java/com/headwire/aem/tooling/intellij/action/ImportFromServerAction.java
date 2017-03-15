@@ -19,6 +19,7 @@
 package com.headwire.aem.tooling.intellij.action;
 
 import com.headwire.aem.tooling.intellij.communication.ImportRepositoryContentManager;
+import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
@@ -27,7 +28,6 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
-import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -36,9 +36,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
 import org.apache.sling.ide.serialization.SerializationManager;
+import org.apache.sling.ide.transport.Repository;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.InvocationTargetException;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import java.util.List;
 
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
@@ -47,6 +49,10 @@ import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_N
  * Created by Andreas Schaefer (Headwire.com) on 6/18/15.
  */
 public class ImportFromServerAction extends AbstractProjectAction {
+
+    public ImportFromServerAction() {
+        super("action.import.from.server");
+    }
 
     @Override
     public boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
@@ -93,6 +99,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
         serverConnectionManager.checkBinding(serverConfiguration, new ProgressHandlerImpl("Do Import from Server"));
         List<ServerConfiguration.Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
         ServerConfiguration.Module currentModuleLookup = null;
+        final MessageManager messageManager = ComponentProvider.getComponent(project, MessageManager.class);
         for(ServerConfiguration.Module module: moduleList) {
             if(module.isSlingPackage()) {
                 String contentPath = serverConnectionManager.findContentResource(module, file.getPath());
@@ -105,45 +112,43 @@ public class ImportFromServerAction extends AbstractProjectAction {
         }
         if(currentModuleLookup != null) {
             final ServerConfiguration.Module currentModule = currentModuleLookup;
-                ApplicationManager.getApplication().runWriteAction(
-                    new Runnable() {
-                        public void run() {
-                            try {
-                                final String description = AEMBundle.message("action.deploy.configuration.description");
-                                IServer server = new IServer(currentModule.getParent());
-                                String path = file.getPath();
-                                String modulePath = currentModule.getUnifiedModule().getModuleDirectory();
-                                String relativePath = path.substring(modulePath.length());
-                                if(relativePath.startsWith("/")) {
-                                    relativePath = relativePath.substring(1);
-                                }
-                                IPath projectRelativePath = new IPath(relativePath);
-                                IProject iProject = new IProject(currentModule);
-                                SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    IServer server = new IServer(currentModule.getParent());
+                    String path = file.getPath();
+                    String modulePath = currentModule.getUnifiedModule().getModuleDirectory();
+                    String relativePath = path.substring(modulePath.length());
+                    if(relativePath.startsWith("/")) {
+                        relativePath = relativePath.substring(1);
+                    }
+                    IPath projectRelativePath = new IPath(relativePath);
+                    IProject iProject = new IProject(currentModule);
+                    SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
 
-
-                                try {
-                                    ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(
-                                        server,
-                                        projectRelativePath,
-                                        iProject,
-                                        serializationManager
-                                    );
-                                    importManager.doImport(new NullProgressMonitor());
-                                } catch(InvocationTargetException e) {
-                                    e.printStackTrace();
-                                } catch(InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch(SerializationException e) {
-                                    e.printStackTrace();
-                                } catch(CoreException e) {
-                                    e.printStackTrace();
+                    try {
+                        ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(server, projectRelativePath, iProject, serializationManager);
+                        importManager.doImport(new NullProgressMonitor());
+                    } catch(CoreException e) {
+                        boolean done = false;
+                        if(e.getCause() instanceof org.apache.sling.ide.transport.RepositoryException) {
+                            if(e.getCause().getCause() instanceof PathNotFoundException) {
+                                if(messageManager != null) {
+                                    messageManager.sendDebugNotification("import.from.remote.resource.not.found", relativePath);
+                                    done = true;
                                 }
-                            } finally {
                             }
                         }
+                        if(!done && messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
+                    } catch(InterruptedException e) {
+                        if(messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
+                    } catch(SerializationException e) {
+                        if(messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
                     }
-                );
+                }
+            };
+            ApplicationManager.getApplication().invokeAndWait(
+                () -> ApplicationManager.getApplication().runWriteAction(runnable)
+            );
         }
     }
 }
