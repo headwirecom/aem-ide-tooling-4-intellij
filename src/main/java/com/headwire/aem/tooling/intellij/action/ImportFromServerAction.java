@@ -32,11 +32,11 @@ import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
 import org.apache.sling.ide.serialization.SerializationManager;
-import org.apache.sling.ide.transport.Repository;
 import org.jetbrains.annotations.NotNull;
 
 import javax.jcr.PathNotFoundException;
@@ -147,7 +147,8 @@ public class ImportFromServerAction extends AbstractProjectAction {
                 }
             };
             ApplicationManager.getApplication().invokeAndWait(
-                () -> ApplicationManager.getApplication().runWriteAction(runnable)
+                () -> ApplicationManager.getApplication().runWriteAction(runnable),
+                ModalityState.NON_MODAL
             );
         }
     }

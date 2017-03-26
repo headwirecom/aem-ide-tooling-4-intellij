@@ -149,11 +149,15 @@ public class ModuleManagerImpl
                         if(!"pom".equalsIgnoreCase(mavenProject.getPackaging())) {
                             // Use the Parent of the Module and Maven Pom File as they should be in the same folder
                             //AS TODO: We might want to check if one is the child folder of the other instead being in the same
-                            VirtualFile moduleFolder = module.getModuleFile().getParent();
-                            VirtualFile mavenFolder = mavenProject.getFile().getParent();
-                            if(moduleFolder.equals(mavenFolder)) {
-                                unifiedModule = new UnifiedModuleImpl(mavenProject, module);
-                                break;
+                            VirtualFile moduleFile = module.getModuleFile();
+                            VirtualFile mavenFile = mavenProject.getFile();
+                            if(moduleFile != null && mavenFile != null) {
+                                VirtualFile moduleFolder = moduleFile.getParent();
+                                VirtualFile mavenFolder = mavenFile.getParent();
+                                if(moduleFolder.equals(mavenFolder)) {
+                                    unifiedModule = new UnifiedModuleImpl(mavenProject, module);
+                                    break;
+                                }
                             }
                         }
                     }
