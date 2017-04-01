@@ -26,15 +26,19 @@ The plugin is distributed as ZIP file and can be installed into IntelliJ quite e
 ![IntelliJ Preferences Menu](./img/1.1.IntelliJ.Preferences.Menu.png) ![IntelliJ Settings Menu](./img/1.1b.IntelliJ.Settings.Menu.png)
 
 4) Search for Plugins
-5) Click on **Install plugin from disk**
+5) Click on **Browse repositories...**
 
-![IntelliJ Plugin Installation](./img/1.2.IntelliJ.Preferences.Install.Plugin.png)
+![IntelliJ Browse Repositories](./img/1.2b.Preferences.Browse.Repositories.Highlighted.png)
 
-6) Select the plugin ZIP file and click Ok
-7) Restart IntelliJ
-8) Go back to the Preferences, Plugins and make sure it is listed there
+6) Search for **AEM**
+7) Select **AEM IDE Tooling 4 IntelliJ** and click the green **Install** button
 
-![IntelliJ with installed AEM Tooling Plugin](./img/1.3.IntelliJ.Preferences.Review.Plugin.png)
+![Install IntelliJ Plugin](./img/1.2c.Choose.AEM.Tooling.Plugin.png)
+
+8) Restart IntelliJ
+9) Go back to the Preferences, Plugins and make sure it is listed there
+
+![IntelliJ with installed AEM Tooling Plugin](./img/1.3b.IntelliJ.Preferences.Review.Plugin.Release.Version.png)
 
 This concludes the initial setup for any project that does **not** have any OSGi services with **annotations**.
 
