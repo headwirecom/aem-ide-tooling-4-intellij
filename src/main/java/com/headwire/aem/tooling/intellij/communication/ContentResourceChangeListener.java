@@ -44,6 +44,7 @@ import com.intellij.openapi.vfs.VirtualFileCopyEvent;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.vfs.VirtualFileMoveEvent;
+import com.intellij.openapi.vfs.VirtualFilePropertyEvent;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowId;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -60,6 +61,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.headwire.aem.tooling.intellij.communication.ServerConnectionManager.FileChangeType;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
+import static com.intellij.openapi.vfs.VirtualFile.PROP_NAME;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 5/12/15.
@@ -148,7 +150,13 @@ public class ContentResourceChangeListener
         virtualFileAdapter = new VirtualFileAdapter() {
             @Override
             public void contentsChanged(@NotNull VirtualFileEvent event) {
-                if(event.isFromSave()) {
+                boolean listenToFS = true;
+                AEMPluginConfiguration pluginConfiguration = ComponentProvider.getComponent(project, AEMPluginConfiguration.class);
+                if(pluginConfiguration != null) {
+                    listenToFS = pluginConfiguration.isListenToFileSystemEvents();
+                }
+                // Either we listen to FS Events or Change must come from Save
+                if(listenToFS || event.isFromSave()) {
                     executeMake(event);
                     if (serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
                         handleChange(event.getFile(), FileChangeType.CHANGED);
@@ -199,6 +207,26 @@ public class ContentResourceChangeListener
             public void fileCopied(@NotNull VirtualFileCopyEvent event) {
                 if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
                     handleChange(event.getFile(), FileChangeType.CREATED);
+                }
+            }
+
+            @Override
+            public void beforePropertyChange(@NotNull VirtualFilePropertyEvent event) {
+                if(event.getPropertyName().equals(PROP_NAME)) {
+                    // Before the Property Change the file is still there and so we use that to remove it from the target server
+                    VirtualFile file = event.getFile();
+                    handleChange(file, FileChangeType.DELETED);
+                }
+            }
+
+            @Override
+            public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
+                if(event.getPropertyName().equals(PROP_NAME)) {
+                    if(serverConnectionManager.checkSelectedServerConfiguration(true, true)) {
+                        // Now the file has been renamed and we upload it to the target server
+                        VirtualFile file = event.getFile();
+                        handleChange(event.getFile(), FileChangeType.CREATED);
+                    }
                 }
             }
         };
@@ -329,10 +357,12 @@ public class ContentResourceChangeListener
                     try {
                         LinkedList<FileChange> work = null;
                         synchronized(queue) {
-                            work = new LinkedList<FileChange>(queue);
-                            queue.clear();
+                            if(queue.size() > 0) {
+                                work = new LinkedList<FileChange>(queue);
+                                queue.clear();
+                            }
                         }
-                        if(work.isEmpty()) {
+                        if(work == null) {
                             synchronized(queue) {
                                 try {
                                     // This should block until an entry is written to the queue

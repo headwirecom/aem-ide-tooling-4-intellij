@@ -277,6 +277,11 @@
                 text="AEM DC"
                 description="Show / Hide AEM DC Panel"
                 icon="/images/aemdc.png"/>
+        <action id="AEM.DC.Listening.Action"
+                text="Toggle to listen to file change events (only works if IDEA has focus)"
+                class="com.headwire.aem.tooling.intellij.action.ListenToFileSystemToggleConfigurationAction"
+                description="Toggle to listen to file change events (only works if IDEA has focus)"
+                icon="AllIcons.Ide.UpDown"/>
 
         <group id="AEM.Toolbar">
             <reference ref="AEM.Add.Action"/>
@@ -294,6 +299,7 @@
             <reference ref="AEM.Force.Deploy.Action"/>
             <reference ref="AEM.Cancel.Background.Action"/>
             <reference ref="AEM.DC.Panel.Action"/>
+            <reference ref="AEM.DC.Listening.Action"/>
         </group>
         <group id="AEM.Connection.Popup">
             <reference ref="AEM.Add.Action"/>

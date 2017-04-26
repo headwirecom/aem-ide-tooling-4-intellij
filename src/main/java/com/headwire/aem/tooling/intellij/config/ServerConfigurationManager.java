@@ -84,26 +84,18 @@ public class ServerConfigurationManager
     public static final String SYMBOLIC_NAME_MISMATCH = "symbolicNameMismatch";
 
     private MessageManager messageManager;
-//    private ServerConnectionManager serverConnectionManager;
     private ModuleManager moduleManager;
     private final EventDispatcher<ConfigurationListener> myEventDispatcher = EventDispatcher.create(ConfigurationListener.class);
     private List<ServerConfiguration> serverConfigurationList = new ArrayList<ServerConfiguration>();
 
     //AS TODO: We probably don't need that return value
     public boolean updateCurrentServerConfiguration() {
-//        boolean ret = false;
-//        if(serverConnectionManager == null) {
-//            serverConnectionManager = ComponentProvider.getComponent(myProject, ServerConnectionManager.class);
-//        }
-//        if(serverConnectionManager != null) {
-            // A Server Connection may or may not be connected so the only way to ensure a proper update is to update them all
-            for(ServerConfiguration serverConfiguration: serverConfigurationList) {
-                // Clear any bindings
-                serverConfiguration.unBind();
-                moduleManager.getUnifiedModules(serverConfiguration);
-            }
-//            ret = true;
-//        }
+        // A Server Connection may or may not be connected so the only way to ensure a proper update is to update them all
+        for(ServerConfiguration serverConfiguration: serverConfigurationList) {
+            // Clear any bindings
+            serverConfiguration.unBind();
+            moduleManager.getUnifiedModules(serverConfiguration);
+        }
         return true;
     }
 

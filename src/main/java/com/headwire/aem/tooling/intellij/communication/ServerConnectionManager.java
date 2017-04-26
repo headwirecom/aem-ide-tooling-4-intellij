@@ -953,6 +953,9 @@ public class ServerConnectionManager
                         switch(type) {
                             case CHANGED:
                             case CREATED:
+                            case MOVED:
+                                // Reset the Modification Timestamp to enforce a push to the server for moves and renames
+                                Util.resetModificationStamp(file, true);
                                 command = deploymentManager.addFileCommand(
                                     repository,
                                     deploymentManager.new IntelliJModuleWrapper(currentModule, myProject),

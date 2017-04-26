@@ -45,9 +45,13 @@ public class AEMPluginConfiguration
     extends ApplicationComponent.Adapter
     implements Configurable, PersistentStateComponent<Element> {
 
+    public static final String COMPONENT_NAME = "AEM Plugin Configuration";
+    public static final String DISPLAY_NAME = "AEM Plugin";
+
     private boolean incrementalBuilds = true;
     private int deployDelayInSeconds = -1;
     private String lastUsedServerConfiguration = "";
+    private boolean listenToFileSystemEvents = true;
 
     private AEMPluginConfigurationDialog configDialog;
 
@@ -56,7 +60,7 @@ public class AEMPluginConfiguration
 
     @NotNull
     public String getComponentName() {
-        return "AEM Plugin Configuration";
+        return COMPONENT_NAME;
     }
 
     public boolean isIncrementalBuilds() {
@@ -84,11 +88,20 @@ public class AEMPluginConfiguration
         return this;
     }
 
+    public boolean isListenToFileSystemEvents() {
+        return listenToFileSystemEvents;
+    }
+
+    public AEMPluginConfiguration setListenToFileSystemEvents(boolean listenToFileSystemEvents) {
+        this.listenToFileSystemEvents = listenToFileSystemEvents;
+        return this;
+    }
+
     // -------------- Configurable interface implementation --------------------------
 
     @Nls
     public String getDisplayName() {
-        return "AEM Plugin";
+        return DISPLAY_NAME;
     }
 
     public Icon getIcon() {
@@ -135,6 +148,7 @@ public class AEMPluginConfiguration
             String.valueOf(incrementalBuilds ? deployDelayInSeconds : -1)
         );
         aemNode.setAttribute("lastUsedServerConfiguration", lastUsedServerConfiguration);
+        aemNode.setAttribute("listenToFileSystemEvents", listenToFileSystemEvents + "");
         root.addContent(aemNode);
         return root;
     }
@@ -150,6 +164,7 @@ public class AEMPluginConfiguration
                 deployDelayInSeconds = -1;
             }
             lastUsedServerConfiguration = aemNode.getAttributeValue("lastUsedServerConfiguration", "");
+            listenToFileSystemEvents = aemNode.getAttributeValue("listenToFileSystemEvents", "false").equals("true");
         }
     }
 }

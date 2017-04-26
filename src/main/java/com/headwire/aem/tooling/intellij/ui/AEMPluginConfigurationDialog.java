@@ -31,6 +31,7 @@ public class AEMPluginConfigurationDialog {
     private JCheckBox incrementalBuild;
     private JSpinner deployDelay;
     private JLabel deployDelayLabel;
+    private JCheckBox listenToFileSystemEvents;
 
     public AEMPluginConfigurationDialog() {
     }
@@ -42,15 +43,18 @@ public class AEMPluginConfigurationDialog {
     public void setData(AEMPluginConfiguration data) {
         incrementalBuild.setSelected(data.isIncrementalBuilds());
         deployDelay.setValue(data.getDeployDelayInSeconds());
+        listenToFileSystemEvents.setSelected(data.isListenToFileSystemEvents());
     }
 
     public void getData(AEMPluginConfiguration data) {
         data.setIncrementalBuilds(incrementalBuild.isSelected());
         data.setDeployDelayInSeconds(UIUtil.obtainInteger(deployDelay, -1));
+        data.setListenToFileSystemEvents(listenToFileSystemEvents.isSelected());
     }
 
     public boolean isModified(AEMPluginConfiguration data) {
         return incrementalBuild.isSelected() != data.isIncrementalBuilds() ||
+            listenToFileSystemEvents.isSelected() != data.isListenToFileSystemEvents() ||
             UIUtil.obtainInteger(deployDelay, -1) != data.getDeployDelayInSeconds() ;
     }
 
