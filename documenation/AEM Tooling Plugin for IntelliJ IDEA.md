@@ -96,6 +96,15 @@ This plugin works both with **Maven** or with a plain IntelliJ project as long a
 created correctly. **Maven** for sure it the easiest way to handle a Sling / AEM project but that is not required
 anymore.
 
+In order to find and evaluate an OSGi Bundle the plugin needs to know the Symbolic Name of the bundle. There are multiple ways to configure it and the plugin cannot cover all possibilities. It is important that the plugin knows the correct Symbolic Name in order to find the bundle and to evaluate its state on the target server.
+It is **best practice** to **set** the symbolic name for a bundle as a generated value might change over time and that is not a good thing. Old bundles are uninstalled during deployment based on the Symbolic Name and when that changes the old bundle remains in the system which can cause  unexpected and random issues.
+This is the order on how the IntelliJ plugin tries to discover the Symbolic Name and first resolution is used:
+
+1. In a Maven Project the Symbolic Name is set in the **maven-bundle-plugin**. The IntelliJ plugin will find that configuration and use it so no further actions are needed
+2. If there is a Sling Facet configuration with a Symbolic Name. This is only setting for the discovery and **will not** set the Symbolic Name in the generated bundle
+3. The plugin will try to find the **MANIFEST.MF** file in the build directory and if found read out the Symbolic Name. If found this should match the deployed bundle but it is only available after the first build. 
+4. In a Maven Project the Symbolic Name is composed of the **group id**.**artifact id**. This is only a last resort and can fail if the last part of the group id matches the first part of the artifact id then the **maven bundle plugin** will remove the **leading part** of the artifact id.
+
 **Attention**: IntelliJ has no way to generate a ZIP file based on resources so to create an Sling Package. It will
 deploy the content but does **not create** a package.
 
@@ -106,8 +115,7 @@ To deploy and debug the remote AEM server the plugin needs to know which sever t
 For that the user needs to create at least one **Server Configuration**. It is possible to have multiple server
 configurations and to deploy to each of them separately, but only one connection may be active at a time.
 
-**Note**: Keep in mind that Server Configurations are **per Project** and Server Configurations must be created for
-each projects independently.
+**Note**: Keep in mind that Server Configurations are **per Project** and Server Configurations must be created for each projects independently.
 
 A Server Configuration is created by clicking on the plus (+) icon. After the creation the Server Configuration
 can be edited by the edit icon (3rd from the left). Configuration are only created / stored when the configuration
@@ -281,13 +289,11 @@ Then you will see the Configuration and its Modules together with their states:
 
 ![Server Connfiguration in Run Mode](./img/2.7.1.Plugin.Run.Server.Configuration.Running.png)
 
-**Attention**: the Felix Maven Plugin might change the **Symbolic Name** of a bundle if the last section of the
-**group id** matches the beginning of the **artifact id** (it will drop the duplication).
-The plugin will display this warning:
+**Attention**: if the Plugin cannot find the OSGi Bundle on the target server it will display this warning:
 
 ![Symbolic Name Mismatch Warning](./img/2.7.2.Plugin.Run.Server.Configuration.Mismatch.png)
 
-If this occurs, you can fix it by creating a **Sling Facet** and overwriting the Symbolic Name there.
+If this occurs, you can fix it by either setting the Symbolic Name in the **Maven Bundle Plugin** (sets the symbolic name of the bundle and the Plugin) or creating a **Sling Facet** and set the Symbolic Name there (only sets the Symbolic Name for the Plugin) which must match the deployed bundle.
 
 #### Deploy the Modules
 

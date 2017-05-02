@@ -504,6 +504,7 @@ public class ServerConfiguration
             return parent;
         }
 
+        /** @return Symbolic Name from the Unified Module or 'No Project' if UM is not available **/
         public String getSymbolicName() {
             return unifiedModule == null ? "No Project" : unifiedModule.getSymbolicName();
         }

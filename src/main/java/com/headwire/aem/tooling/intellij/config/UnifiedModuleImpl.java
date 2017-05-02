@@ -21,6 +21,7 @@ package com.headwire.aem.tooling.intellij.config;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleExtensionProperties.ModuleType;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacet;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacetConfiguration;
+import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.compiler.CompilerPaths;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -30,6 +31,7 @@ import org.jetbrains.idea.maven.model.MavenPlugin;
 import org.jetbrains.idea.maven.model.MavenResource;
 import org.jetbrains.idea.maven.project.MavenProject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,11 @@ public class UnifiedModuleImpl
     implements UnifiedModule
 {
     public static final String NO_OSGI_BUNDLE = "No OSGi Bundle";
+    public static final String BUNDLE_SYMBOLIC_NAME_FIELD = "Bundle-SymbolicName";
+    public static final String FELIX_GROUP_ID = "org.apache.felix";
+    public static final String BUNDLE_PLUGIN_ARTIFACT_ID = "maven-bundle-plugin";
+    public static final String INSTRUCTIONS_SECTION = "instructions";
+    public static final String MANIFEST_MF_FILE_NAME = "MANIFEST.MF";
 
     MavenProject mavenProject;
 
@@ -117,34 +124,67 @@ public class UnifiedModuleImpl
 
     @Override
     public String getSymbolicName() {
-        String ret = "";
-        if(slingConfiguration != null) {
-            ret = slingConfiguration.getOsgiSymbolicName();
-        }
-        if(ret.length() == 0 && mavenProject != null) {
+        // This is a verify central function as the Symbolic Name is the key to find the
+        // bundle on the target server.
+        //
+        // - If this is a Maven Plugin then we check the maven-bundle-plugin and
+        //   check if hte Symbolic Name is set there and use this one
+        // - Otherwise Check if there is a Symbolic Name specified in the Sling
+        //   Facet
+        // - Otherwise check if a Manifest.mf can be found and look for the 'Bundle-SymbolicName'
+        // - Otherwise take the groupId.artifactId
+
+        String answer = null;
+        if(mavenProject != null) {
             // Check if there is an Maven Bundle Plugin with an Symbolic Name override
-            boolean found = false;
             List<MavenPlugin> mavenPlugins = mavenProject.getPlugins();
-            for(MavenPlugin mavenPlugin: mavenPlugins) {
-                if("org.apache.felix".equals(mavenPlugin.getGroupId()) && "maven-bundle-plugin".equals(mavenPlugin.getArtifactId())) {
+            for(MavenPlugin mavenPlugin : mavenPlugins) {
+                if(FELIX_GROUP_ID.equals(mavenPlugin.getGroupId()) && BUNDLE_PLUGIN_ARTIFACT_ID.equals(mavenPlugin.getArtifactId())) {
                     Element configuration = mavenPlugin.getConfigurationElement();
                     if(configuration != null) {
-                        Element instructions = configuration.getChild("instructions");
+                        Element instructions = configuration.getChild(INSTRUCTIONS_SECTION);
                         if(instructions != null) {
-                            Element bundleSymbolicName = instructions.getChild("Bundle-SymbolicName");
+                            Element bundleSymbolicName = instructions.getChild(BUNDLE_SYMBOLIC_NAME_FIELD);
                             if(bundleSymbolicName != null) {
-                                ret = bundleSymbolicName.getValue();
-                                found = true;
+                                answer = bundleSymbolicName.getValue();
+                                answer = answer != null && answer.trim().isEmpty() ? null : answer.trim();
                             }
                         }
                     }
                 }
             }
-            if(!found) {
-                ret = mavenProject.getMavenId().getGroupId() + "." + mavenProject.getMavenId().getArtifactId();
+        }
+        if(answer == null && slingConfiguration != null) {
+            answer = slingConfiguration.getOsgiSymbolicName();
+        }
+        if(answer == null) {
+            VirtualFile baseDir = module.getProject().getBaseDir();
+            VirtualFile buildDir = baseDir.getFileSystem().findFileByPath(getBuildDirectoryPath());
+            if(buildDir != null) {
+                // Find a Metainf.mf file
+                VirtualFile manifest = Util.findFileOrFolder(buildDir, MANIFEST_MF_FILE_NAME, false);
+                if(manifest != null) {
+                    try {
+                        String content = new String(manifest.contentsToByteArray());
+                        int index = content.indexOf(BUNDLE_SYMBOLIC_NAME_FIELD);
+                        if(index >= 0) {
+                            int index2 = content.indexOf("\n", index);
+                            if(index2 >= 0) {
+                                answer = content.substring(index + BUNDLE_SYMBOLIC_NAME_FIELD.length() + 2, index2);
+                                answer = answer.trim().isEmpty() ? null : answer.trim();
+                            }
+                        }
+                    } catch(IOException e) {
+                        //AS TODO: Report the issues
+                        e.printStackTrace();
+                    }
+                }
             }
         }
-        return ret.length() == 0 ? NO_OSGI_BUNDLE : ret;
+        if(answer == null && mavenProject != null) {
+            answer = mavenProject.getMavenId().getGroupId() + "." + mavenProject.getMavenId().getArtifactId();
+        }
+        return answer == null ? NO_OSGI_BUNDLE : answer;
     }
 
     @Override

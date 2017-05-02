@@ -223,47 +223,36 @@ public class ServerConnectionManager
                         version = checkBundleVersion(version);
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
                         if(module.isOSGiBundle()) {
-                            //AS TODO: This looks like OSGi Symbolic Name
                             Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
-                            // If not remote Version is found there is a chance that the Felix Bundle did change
-                            // the symbolic names and here we test that and inform the user about it
+                            //AS TODO: Remove the check for the Felix Maven Bundle Plugin's behavior to remove leading
+                            //AS TODO: parts of the Artifact Id if they match the trailing parts of the group id.
+                            //AS TODO: It is up to the user now to handle it by reconciling the Symbolic Name with
+                            //AS TODO: the Maven Bundle Plugin or the Sling Facet
                             if(remoteVersion == null) {
-                                // If this is Maven and the last part of the package is also used at the beginning of the Artifact Id
-                                if(unifiedModule.isMavenBased() && !module.isIgnoreSymbolicNameMismatch()) {
-                                    MavenProject mavenProject = moduleManager.getMavenProject(unifiedModule);
-                                    if(mavenProject != null) {
-                                        String groupId = mavenProject.getMavenId().getGroupId();
-                                        String artifactId = mavenProject.getMavenId().getArtifactId();
-                                        int index = groupId.lastIndexOf('.');
-                                        String lastPackage = groupId.substring(index > 0 ? index + 1: 0);
-                                        if(artifactId.startsWith(lastPackage)) {
-                                            WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
-                                                private AtomicInteger response = new AtomicInteger(1);
-                                                @Override
-                                                public boolean isAsynchronous() {
-                                                    return true;
-                                                }
-
-                                                @Override
-                                                public AtomicInteger getResponse() {
-                                                    return response;
-                                                }
-
-                                                @Override
-                                                public void run() {
-                                                    int selection = messageManager.showAlertWithOptions(
-                                                        NotificationType.WARNING, "module.check.possible.symbolic.name.mismatch", module.getSymbolicName()
-                                                    );
-                                                    getResponse().set(selection);
-                                                }
-                                            };
-                                            com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait(runner);
-                                            if(runner.getResponse().get() == 0) {
-                                                // If ignore is selected then save it on that moduleL
-                                                module.setIgnoreSymbolicNameMismatch(true);
-                                            }
-                                        }
+                                WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
+                                    private AtomicInteger response = new AtomicInteger(1);
+                                    @Override
+                                    public boolean isAsynchronous() {
+                                        return true;
                                     }
+
+                                    @Override
+                                    public AtomicInteger getResponse() {
+                                        return response;
+                                    }
+
+                                    @Override
+                                    public void run() {
+                                        int selection = messageManager.showAlertWithOptions(
+                                            NotificationType.WARNING, "module.check.possible.symbolic.name.mismatch", module.getSymbolicName()
+                                        );
+                                        getResponse().set(selection);
+                                    }
+                                };
+                                com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait(runner);
+                                if(runner.getResponse().get() == 0) {
+                                    // If ignore is selected then save it on that moduleL
+                                    module.setIgnoreSymbolicNameMismatch(true);
                                 }
                             }
                             Version localVersion = new Version(version);
@@ -308,7 +297,7 @@ public class ServerConnectionManager
             }
         } catch(OsgiClientException e1) {
             // Mark connection as failed
-            updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
+                updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.failed);
             ret = false;
         }
         return ret;
