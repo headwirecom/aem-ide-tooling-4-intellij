@@ -149,11 +149,26 @@ public class ModuleManagerImpl
                         if(!"pom".equalsIgnoreCase(mavenProject.getPackaging())) {
                             // Use the Parent of the Module and Maven Pom File as they should be in the same folder
                             //AS TODO: We might want to check if one is the child folder of the other instead being in the same
-                            VirtualFile moduleFolder = module.getModuleFile().getParent();
-                            VirtualFile mavenFolder = mavenProject.getFile().getParent();
-                            if(moduleFolder.equals(mavenFolder)) {
-                                unifiedModule = new UnifiedModuleImpl(mavenProject, module);
-                                break;
+                            VirtualFile moduleFile = module.getModuleFile();
+                            if(moduleFile == null) {
+                                // Temporary issue where the IML file is not found by the Virtual File System
+                                // Fix: get the path, remove the IML file and find the Virtual File with that folder
+                                String filePath = module.getModuleFilePath();
+                                if(filePath != null) {
+                                    int index = filePath.lastIndexOf("/");
+                                    if(index > 0 && index < filePath.length() - 2) {
+                                        filePath = filePath.substring(0, index);
+                                        moduleFile = project.getBaseDir().getFileSystem().findFileByPath(filePath);
+                                    }
+                                }
+                            }
+                            if(moduleFile != null) {
+                                VirtualFile moduleFolder = moduleFile.getParent();
+                                VirtualFile mavenFolder = mavenProject.getFile().getParent();
+                                if(moduleFolder.equals(mavenFolder)) {
+                                    unifiedModule = new UnifiedModuleImpl(mavenProject, module);
+                                    break;
+                                }
                             }
                         }
                     }
