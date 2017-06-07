@@ -6,8 +6,7 @@ This plugin requires to run IntelliJ IDEA **2016.2** or higher.
 
 #### Releases:
 
-Latest Pre-Release of 1.0.1 (pr1) is out. Check out in the release
-section.
+Release of 1.0.1 is out. Check out in the release section.
 
 New Releases can be found in the **Code -> Release** section on
 GitHub: [AEM Intellij Plugin](https://github.com/headwirecom/aem-ide-tooling-4-intellij)
