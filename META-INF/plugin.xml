@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>AEM IDE Tooling 4 IntelliJ</name>
-    <version>1.0.1-beta</version>
+    <version>1.0.1</version>
     <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
@@ -16,6 +16,21 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li>1.0.1:
+                <ol>
+                    <li>
+                        Fixed an issue where the module file (.iml) is not found by IntelliJ right after the project
+                        is created
+                    </li><li>
+                        Issue 40: Cleaned up Symbolic Name Handling
+                    </li><li>
+                        Issue 36: Fixed the issue with the 'Import from..'
+                    </li><li>
+                        Added the proper handling of renaming and removing files. Added a toggle to enable / disabled
+                        file systems syncs
+                    </li>
+                </ol>
+            </li>
             <li>1.0:
                 <ol>
                     <li>

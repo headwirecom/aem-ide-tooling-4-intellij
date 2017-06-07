@@ -30,6 +30,12 @@ The **master** is the latest release code and it the same as the highest
 
 #### Updates:
 
+**1.0.1**:
+* Fixed an issue where the module file (.iml) is not found by IntelliJ right after the project is created
+* Issue 40: Cleaned up Symbolic Name Handling
+* nIssue 36: Fixed the issue with the 'Import from..'
+* Added the proper handling of renaming and removing files. Added a toggle to enable / disabled file systems syncs
+
 **1.0**:
 * Cleaning up Code
 * Improving Documentation
