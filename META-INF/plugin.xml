@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>AEM IDE Tooling 4 IntelliJ</name>
-    <version>1.0.1</version>
+    <version>1.0.2-beta</version>
     <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
@@ -16,6 +16,14 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li>1.0.2-beta:
+                <ol>
+                    <li>
+                        Removed the dialog to inform the user about a missing bundle on the server which
+                        causes a deadlock when starting the connection in Debug mode
+                    </li>
+                </ol>
+            </li>
             <li>1.0.1:
                 <ol>
                     <li>
