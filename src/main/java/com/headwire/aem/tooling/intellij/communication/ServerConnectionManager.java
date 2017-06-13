@@ -228,33 +228,33 @@ public class ServerConnectionManager
                             //AS TODO: parts of the Artifact Id if they match the trailing parts of the group id.
                             //AS TODO: It is up to the user now to handle it by reconciling the Symbolic Name with
                             //AS TODO: the Maven Bundle Plugin or the Sling Facet
-                            if(remoteVersion == null) {
-//                                WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
-//                                    private AtomicInteger response = new AtomicInteger(1);
-//                                    @Override
-//                                    public boolean isAsynchronous() {
-//                                        return true;
-//                                    }
-//
-//                                    @Override
-//                                    public AtomicInteger getResponse() {
-//                                        return response;
-//                                    }
-//
-//                                    @Override
-//                                    public void run() {
-////                                        int selection = messageManager.showAlertWithOptions(
-////                                            NotificationType.WARNING, "module.check.possible.symbolic.name.mismatch", module.getSymbolicName()
-////                                        );
-//                                        int selection = 1;
-//                                        getResponse().set(selection);
-//                                    }
-//                                };
-//                                com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait(runner);
-//                                if(runner.getResponse().get() == 0) {
-//                                    // If ignore is selected then save it on that moduleL
-//                                    module.setIgnoreSymbolicNameMismatch(true);
-//                                }
+                            if(remoteVersion == null && !module.isIgnoreSymbolicNameMismatch()) {
+                                // This was original a blocking Dialog but that caused a deadlock when starting a connection
+                                // in Debug mode. Now it is shown the first time the application can do it
+                                WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
+                                    private AtomicInteger response = new AtomicInteger(1);
+                                    @Override
+                                    public boolean isAsynchronous() {
+                                        return true;
+                                    }
+
+                                    @Override
+                                    public AtomicInteger getResponse() {
+                                        return response;
+                                    }
+
+                                    @Override
+                                    public void run() {
+                                        int selection = messageManager.showAlertWithOptions(
+                                            NotificationType.WARNING, "module.check.possible.symbolic.name.mismatch", module.getSymbolicName()
+                                        );
+                                        if(selection == 0) {
+                                            module.setIgnoreSymbolicNameMismatch(true);
+                                        }
+                                        getResponse().set(selection);
+                                    }
+                                };
+                                ApplicationManager.getApplication().invokeLater(runner);
                             }
                             Version localVersion = new Version(version);
                             messageManager.sendDebugNotification("debug.check.osgi.module", moduleName, symbolicName, remoteVersion, localVersion);
