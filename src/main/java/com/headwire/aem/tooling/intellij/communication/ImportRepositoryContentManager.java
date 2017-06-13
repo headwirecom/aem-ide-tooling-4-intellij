@@ -35,6 +35,8 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.headwire.aem.tooling.intellij.util.Util;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
 import org.apache.jackrabbit.vault.util.Text;
 import org.apache.sling.ide.filter.Filter;
@@ -106,7 +108,7 @@ public class ImportRepositoryContentManager {
         this.currentResources = new HashSet<IResource>();
     }
 
-    public void doImport(IProgressMonitor monitor) throws InterruptedException,
+    public void doImport(IProgressMonitor monitor, boolean recursive) throws InterruptedException,
         SerializationException, CoreException {
 
         MessageManager messageManager = project.getModule().getProject().getComponent(MessageManager.class);
@@ -160,7 +162,7 @@ public class ImportRepositoryContentManager {
                 if(!contentPath.startsWith("/")) {
                     contentPath = "/" + contentPath;
                 }
-                crawlChildrenAndImport(contentPath);
+                crawlResourceTreeAndImport(contentPath, recursive);
 
                 removeNotIgnoredAndNotUpdatedResources(new NullProgressMonitor());
 
@@ -272,7 +274,7 @@ public class ImportRepositoryContentManager {
      * @throws IOException
      */
     // TODO: This probably should be pushed into the service layer
-    private void crawlChildrenAndImport(String path)
+    private void crawlResourceTreeAndImport(String path, boolean recursive)
         throws RepositoryException, CoreException, IOException, SerializationException {
 
         logger.trace("crawlChildrenAndImport({0},  {1}, {2}, {3}", repository, path, project, projectRelativePath);
@@ -305,7 +307,7 @@ public class ImportRepositoryContentManager {
 
                                 logger.trace("Skipping direct handling of {0} node at {1} ; will additionally handle {2} direct children", Repository.NT_RESOURCE, child.getPath(), reloadedChildResource.getChildren().size());
 
-                                if(reloadedChildResource.getChildren().size() != 0) {
+                                if(recursive && reloadedChildResource.getChildren().size() != 0) {
 
                                     String pathName = Text.getName(reloadedChildResource.getPath());
                                     pathName = serializationManager.getOsPath(pathName);
@@ -313,7 +315,7 @@ public class ImportRepositoryContentManager {
 
                                     // 2. recursively handle all resources
                                     for(ResourceProxy grandChild : reloadedChildResource.getChildren()) {
-                                        crawlChildrenAndImport(grandChild.getPath());
+                                        crawlResourceTreeAndImport(grandChild.getPath(), recursive);
                                     }
                                 }
 
@@ -354,21 +356,23 @@ public class ImportRepositoryContentManager {
             logger.trace("No serialization data found for {0}", resource.getPath());
         }
 
-        for(ResourceProxy child : resourceChildren) {
+        if(recursive) {
+            for(ResourceProxy child : resourceChildren) {
 
-            if(ignoredResources.isIgnored(child.getPath())) {
-                continue;
-            }
-
-            if(filter != null) {
-                //AS TODO: This is an adjustment to the 1.0.9 codebase
-                FilterResult filterResult = filter.filter(child.getPath());
-                if(filterResult == FilterResult.DENY) {
+                if(ignoredResources.isIgnored(child.getPath())) {
                     continue;
                 }
-            }
 
-            crawlChildrenAndImport(child.getPath());
+                if(filter != null) {
+                    //AS TODO: This is an adjustment to the 1.0.9 codebase
+                    FilterResult filterResult = filter.filter(child.getPath());
+                    if(filterResult == FilterResult.DENY) {
+                        continue;
+                    }
+                }
+
+                crawlResourceTreeAndImport(child.getPath(), recursive);
+            }
         }
     }
 

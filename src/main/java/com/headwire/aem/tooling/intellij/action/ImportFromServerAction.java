@@ -29,6 +29,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
@@ -121,13 +122,21 @@ public class ImportFromServerAction extends AbstractProjectAction {
                     if(relativePath.startsWith("/")) {
                         relativePath = relativePath.substring(1);
                     }
+                    boolean recursive = true;
+                    if(relativePath.endsWith("/.content.xml")) {
+                        relativePath = relativePath.substring(0, relativePath.length() - "/.content.xml".length());
+                        recursive = false;
+                    }
                     IPath projectRelativePath = new IPath(relativePath);
                     IProject iProject = new IProject(currentModule);
                     SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
 
+                    // Need to remove the timestamp to make it possible to import form the server
+                    Util.resetModificationStamp(file, true);
+
                     try {
                         ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(server, projectRelativePath, iProject, serializationManager);
-                        importManager.doImport(new NullProgressMonitor());
+                        importManager.doImport(new NullProgressMonitor(), recursive);
                     } catch(CoreException e) {
                         boolean done = false;
                         if(e.getCause() instanceof org.apache.sling.ide.transport.RepositoryException) {
