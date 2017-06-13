@@ -19,6 +19,7 @@
 package com.headwire.aem.tooling.intellij.config;
 
 import com.headwire.aem.tooling.intellij.io.SlingProject4IntelliJ;
+import com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -49,7 +50,7 @@ public class ServerConfiguration
     public static final int DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS = 30;
     public static final int DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS = 15;
     public static final PublishType DEFAULT_PUBLISH_TYPE = PublishType.automaticallyOnChange;
-    public static final InstallationType DEFAULT_INSTALL_TYPE = InstallationType.installViaBundleUpload;
+    public static final SupportInstallationType DEFAULT_INSTALL_TYPE = SupportInstallationType.installAutomatically;
     public static final DefaultMode DEFAULT_MODE = DefaultMode.none;
     public static final ServerStatus DEFAULT_SERVER_STATUS = ServerStatus.notConnected;
     public static final SynchronizationStatus DEFAULT_SERVER_SYNCHRONIZATION_STATUS = SynchronizationStatus.notChecked;
@@ -61,7 +62,7 @@ public class ServerConfiguration
     protected static final String COMPONENT_NAME = "ServerConfiguration";
 
     public enum PublishType {never, automaticallyOnChange, automaticallyOnBuild};
-    public enum InstallationType {installViaBundleUpload, installFromFilesystem};
+    public enum SupportInstallationType {installAutomatically, installManually};
     public enum SynchronizationStatus {
         /** Module was not checked against Sling server **/
         notChecked("not running"),
@@ -131,7 +132,8 @@ public class ServerConfiguration
     private int startConnectionTimeout = DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS;
     private int stopConnectionTimeout = DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS;
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
-    private InstallationType installationType = DEFAULT_INSTALL_TYPE;
+    private SupportInstallationType installationType = DEFAULT_INSTALL_TYPE;
+    private String supportBundleVersion = ArtifactsLocatorImpl.DEFAULT_TOOLING_SUPPORT_BUNDLE_VERSION;
     private DefaultMode defaultMode = DEFAULT_MODE;
     private boolean buildWithMaven = DEFAULT_BUILD_WITH_MAVEN;
     @Deprecated //AS TODO: Remove later as soon as the Cancel Build Action is implemented
@@ -173,6 +175,7 @@ public class ServerConfiguration
         stopConnectionTimeout = source.stopConnectionTimeout;
         publishType = source.publishType;
         installationType = source.installationType;
+        supportBundleVersion = source.supportBundleVersion;
         serverStatus = source.serverStatus;
         if(source.configurationChangeListener != null) {
             configurationChangeListener = source.configurationChangeListener;
@@ -299,12 +302,23 @@ public class ServerConfiguration
         this.publishType = publishType != null ? publishType : DEFAULT_PUBLISH_TYPE;
     }
 
-    public InstallationType getInstallationType() {
+    public SupportInstallationType getInstallationType() {
         return installationType;
     }
 
-    public void setInstallationType(InstallationType installationType) {
+    public void setInstallationType(SupportInstallationType installationType) {
         this.installationType = installationType != null ? installationType : DEFAULT_INSTALL_TYPE;
+    }
+
+    public String getSupportBundleVersion() {
+        return supportBundleVersion;
+    }
+
+    public ServerConfiguration setSupportBundleVersion(String supportBundleVersion) {
+        this.supportBundleVersion = supportBundleVersion == null || supportBundleVersion.isEmpty() ?
+            ArtifactsLocatorImpl.DEFAULT_TOOLING_SUPPORT_BUNDLE_VERSION :
+            supportBundleVersion;
+        return this;
     }
 
     public ServerStatus getServerStatus() { return serverStatus; }

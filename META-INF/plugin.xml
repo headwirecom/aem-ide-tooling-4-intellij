@@ -19,8 +19,15 @@
             <li>1.0.2-beta:
                 <ol>
                     <li>
-                        Removed the dialog to inform the user about a missing bundle on the server which
-                        causes a deadlock when starting the connection in Debug mode
+                        Fixed a possible deadlock scenario when a Bundle is not deployed or has a symbolic
+                        name mismatch. Now the Dialog will show up after the Debug Connection is established.
+                    </li><li>
+                        'Import from' is not working correctly for .content.xml files (beforehand it was
+                        ignored).
+                    </li><li>
+                        Support of the Sling Tooling Support Bundle version 1.0.5-SNAPSHOT which is required
+                        for Sling 9 and up. Also the Configuration allows the user to configure the selection
+                        of the support versions even though for most parts the latest should work just fine.
                     </li>
                 </ol>
             </li>
@@ -187,10 +194,10 @@
             <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.SerializationManagerWrapper
             </implementation-class>
         </component>
-        <component>
-            <interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>
-        </component>
+        <!--<component>-->
+            <!--<interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>-->
+            <!--<implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>-->
+        <!--</component>-->
         <component>
             <interface-class>org.apache.sling.ide.filter.FilterLocator</interface-class>
             <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltFilterLocatorWrapper
@@ -243,6 +250,10 @@
         <component>
             <interface-class>com.headwire.aem.tooling.intellij.config.ModuleManager</interface-class>
             <implementation-class>com.headwire.aem.tooling.intellij.config.ModuleManagerImpl</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>
         </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.explorer.AemdcPanel</implementation-class>

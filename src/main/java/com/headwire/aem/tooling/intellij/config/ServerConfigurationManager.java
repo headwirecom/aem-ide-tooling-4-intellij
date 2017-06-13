@@ -72,6 +72,7 @@ public class ServerConfigurationManager
     public static final String STOP_CONNECTION_TIMEOUT = "stopConnectionTimeout";
     public static final String PUBLISH_TYPE = "publishType";
     public static final String INSTALLATION_TYPE = "installationType";
+    public static final String SUPPORT_BUNDLE_VERSION = "supportBundleType";
     //AS TODO: 'default' is just here to be backwards compatible -> delete later
     public static final String DEFAULT = "default";
     public static final String DEFAULT_CONFIGURATION = "defaultConfiguration";
@@ -244,6 +245,7 @@ public class ServerConfigurationManager
             childNode.setAttribute(STOP_CONNECTION_TIMEOUT, serverConfiguration.getStopConnectionTimeoutInSeconds() + "");
             childNode.setAttribute(PUBLISH_TYPE, serverConfiguration.getPublishType() + "");
             childNode.setAttribute(INSTALLATION_TYPE, serverConfiguration.getInstallationType() + "");
+            childNode.setAttribute(SUPPORT_BUNDLE_VERSION, serverConfiguration.getSupportBundleVersion());
             childNode.setAttribute(DEFAULT_CONFIGURATION, serverConfiguration.getDefaultMode() + "");
             childNode.setAttribute(BUILD_WITH_MAVEN, serverConfiguration.isBuildWithMaven() + "");
             childNode.setAttribute(BUILD_WITH_MAVEN_TIMEOUT_IN_SECONDS, serverConfiguration.getMavenBuildTimeoutInSeconds() + "");
@@ -282,6 +284,7 @@ public class ServerConfigurationManager
             serverConfiguration.setStopConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue(STOP_CONNECTION_TIMEOUT), -1));
             serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue(PUBLISH_TYPE), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
             serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue(INSTALLATION_TYPE), ServerConfiguration.DEFAULT_INSTALL_TYPE));
+            serverConfiguration.setSupportBundleVersion(child.getAttributeValue(SUPPORT_BUNDLE_VERSION));
             serverConfiguration.setConfigurationChangeListener(configurationChangeListener);
             DefaultMode defaultMode = Util.convertToEnum(child.getAttributeValue(DEFAULT_CONFIGURATION), ServerConfiguration.DEFAULT_MODE);
             //AS TODO: This is only necessary for backward compatibility for previous versions -> remove later

@@ -18,7 +18,12 @@
 
 package com.headwire.aem.tooling.intellij.util;
 
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration.SupportInstallationType;
+import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.project.Project;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
 
@@ -28,20 +33,40 @@ import java.net.URL;
  * Created by Andreas Schaefer (Headwire.com) on 5/5/15.
  */
 public class ArtifactsLocatorImpl
-    extends ApplicationComponent.Adapter
+    extends AbstractProjectComponent
+//    extends ApplicationComponent.Adapter
     implements EmbeddedArtifactLocator
 {
     private static final String ARTIFACTS_LOCATION = "artifacts";
+    public static final String DEFAULT_TOOLING_SUPPORT_BUNDLE_VERSION = "1.0.5-SNAPSHOT";
     public static final String[] PROVIDED_VERSIONS = {
         "1.0.2",
         "1.0.3-SNAPSHOT",
-        "1.0.5-SNAPSHOT"
+        DEFAULT_TOOLING_SUPPORT_BUNDLE_VERSION
     };
+
+    protected ArtifactsLocatorImpl(Project project) {
+        super(project);
+    }
 
     @Override
     public EmbeddedArtifact loadToolingSupportBundle() {
-
-        String version = PROVIDED_VERSIONS[2]; // TODO - remove version hardcoding
+        ServerConfiguration serverConfiguration = null;
+        SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
+        if(selectionHandler != null) {
+            serverConfiguration = selectionHandler.getCurrentConfiguration();
+            if(serverConfiguration != null) {
+                SupportInstallationType supportInstallationType = serverConfiguration.getInstallationType();
+                if(supportInstallationType.equals(SupportInstallationType.installManually)) {
+                    return null;
+                }
+//                serverConfiguration.get
+            }
+        }
+        String version = serverConfiguration.getSupportBundleVersion();
+        version = version == null || version.isEmpty() ?
+            DEFAULT_TOOLING_SUPPORT_BUNDLE_VERSION :
+            version;
         String artifactId = "org.apache.sling.tooling.support.install";
         String extension = "jar";
 

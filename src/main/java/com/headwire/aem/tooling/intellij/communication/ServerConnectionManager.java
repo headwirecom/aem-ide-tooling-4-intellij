@@ -383,26 +383,30 @@ public class ServerConnectionManager
                     messageManager.sendInfoNotification("remote.repository.version.installed.support.bundle", remoteVersion);
 
                     final EmbeddedArtifact supportBundle = artifactLocator.loadToolingSupportBundle();
-                    final Version embeddedVersion = new Version(supportBundle.getVersion());
+                    if(supportBundle != null) {
+                        final Version embeddedVersion = new Version(supportBundle.getVersion());
 
-                    if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
-                        ret = BundleStatus.outDated;
-                        if(!onlyCheck) {
-                            InputStream contents = null;
-                            try {
-                                messageManager.sendInfoNotification("remote.repository.begin.installing.support.bundle", embeddedVersion);
-                                contents = supportBundle.openInputStream();
-                                osgiClient.installBundle(contents, supportBundle.getName());
-                                ret = BundleStatus.upToDate;
-                            } finally {
-                                IOUtils.closeQuietly(contents);
+                        if(remoteVersion == null || remoteVersion.compareTo(embeddedVersion) < 0) {
+                            ret = BundleStatus.outDated;
+                            if(!onlyCheck) {
+                                InputStream contents = null;
+                                try {
+                                    messageManager.sendInfoNotification("remote.repository.begin.installing.support.bundle", embeddedVersion);
+                                    contents = supportBundle.openInputStream();
+                                    osgiClient.installBundle(contents, supportBundle.getName());
+                                    ret = BundleStatus.upToDate;
+                                } finally {
+                                    IOUtils.closeQuietly(contents);
+                                }
+                                remoteVersion = embeddedVersion;
                             }
-                            remoteVersion = embeddedVersion;
+                        } else {
+                            ret = BundleStatus.upToDate;
                         }
-                    } else {
-                        ret = BundleStatus.upToDate;
+                        messageManager.sendInfoNotification("remote.repository.finished.connection.to.remote");
+                    } else if(remoteVersion == null) {
+                        messageManager.sendErrorNotification("remote.repository.support.bundle.not.installed", serverConfiguration.getName());
                     }
-                    messageManager.sendInfoNotification("remote.repository.finished.connection.to.remote");
                 }
             } catch(IOException e) {
                 messageManager.sendErrorNotification("remote.repository.cannot.read.installation.support.bundle", serverConfiguration.getName(), e);

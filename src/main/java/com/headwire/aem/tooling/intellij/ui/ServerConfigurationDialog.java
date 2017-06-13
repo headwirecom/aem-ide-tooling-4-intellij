@@ -23,14 +23,19 @@ import javax.swing.*;
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.config.ServerConfiguration.SupportInstallationType;
+import com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
+import com.intellij.ui.ColoredListCellRenderer;
+import com.intellij.ui.SimpleTextAttributes;
 import org.bouncycastle.util.Arrays;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.DefaultMode;
 
@@ -51,8 +56,8 @@ public class ServerConfigurationDialog
     private JRadioButton neverAutomaticallyPublishContentRadioButton;
     private JRadioButton automaticallyPublishOnChangeRadioButton;
     private JRadioButton automaticallyPublishOnBuildRadioButton;
-    private JRadioButton installBundlesViaBundleRadioButton;
-    private JRadioButton installBundlesDirectlyFromRadioButton;
+    private JRadioButton installSupportBundleAutomaticallyRadioButton;
+    private JRadioButton installSupportBundleManuallyRadioButton;
     private JButton installButton;
     private JTextField name;
     private JTextField description;
@@ -61,6 +66,7 @@ public class ServerConfigurationDialog
     private JCheckBox defaultRunConfiguration;
     @Deprecated //AS TODO: Remove later as soon as the Cancel Build Action is implemented
     private JTextField mavenBuildTimeoutInSeconds;
+    private JList supportBundleList;
 
     private ServerConfiguration serverConfiguration;
     private ServerConnectionManager serverConnectionManager;
@@ -113,6 +119,19 @@ public class ServerConfigurationDialog
                 }
             }
         );
+        installSupportBundleAutomaticallyRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                supportBundleList.setEnabled(true);
+            }
+        });
+        installSupportBundleManuallyRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                supportBundleList.setEnabled(false);
+            }
+        });
+        supportBundleList.setCellRenderer(new StringListCellRenderer());
     }
 
     public ServerConfiguration getConfiguration() {
@@ -148,11 +167,13 @@ public class ServerConfigurationDialog
                     automaticallyPublishOnBuildRadioButton.isSelected() ? ServerConfiguration.PublishType.automaticallyOnBuild :
                         null;
         ret.setPublishType(publishType);
-        ServerConfiguration.InstallationType installationType =
-            installBundlesViaBundleRadioButton.isSelected() ? ServerConfiguration.InstallationType.installViaBundleUpload :
-                installBundlesDirectlyFromRadioButton.isSelected() ? ServerConfiguration.InstallationType.installViaBundleUpload :
+        SupportInstallationType installationType =
+            installSupportBundleAutomaticallyRadioButton.isSelected() ? SupportInstallationType.installAutomatically :
+                installSupportBundleManuallyRadioButton.isSelected() ? SupportInstallationType.installManually :
                         null;
         ret.setInstallationType(installationType);
+        //AS TODO: Add a check there to make sure a value is selected
+        ret.setSupportBundleVersion(supportBundleList.getSelectedValue() + "");
 
         return ret;
     }
@@ -194,15 +215,28 @@ public class ServerConfigurationDialog
                     break;
             }
             switch(serverConfiguration.getInstallationType()) {
-                case installViaBundleUpload:
-                    installBundlesViaBundleRadioButton.setSelected(true);
+                case installAutomatically:
+                    installSupportBundleAutomaticallyRadioButton.setSelected(true);
+                    supportBundleList.setEnabled(true);
                     break;
-                case installFromFilesystem:
-                    installBundlesDirectlyFromRadioButton.setSelected(true);
+                case installManually:
+                    installSupportBundleManuallyRadioButton.setSelected(true);
+                    supportBundleList.setEnabled(false);
                     break;
                 default:
-                    installBundlesViaBundleRadioButton.setSelected(true);
+                    installSupportBundleAutomaticallyRadioButton.setSelected(true);
                     break;
+            }
+            supportBundleList.setModel(new StringListModel(ArtifactsLocatorImpl.PROVIDED_VERSIONS));
+            // Select the current version
+            String bundleVersion = configuration.getSupportBundleVersion();
+            if(bundleVersion == null || bundleVersion.isEmpty()) {
+                bundleVersion = ArtifactsLocatorImpl.DEFAULT_TOOLING_SUPPORT_BUNDLE_VERSION;
+            }
+            supportBundleList.setSelectedValue(bundleVersion, true);
+            if(supportBundleList.getSelectedIndex() < 0) {
+                // Nothing was selected so select the default
+                supportBundleList.setSelectedValue(ArtifactsLocatorImpl.DEFAULT_TOOLING_SUPPORT_BUNDLE_VERSION, true);
             }
             // Preset the Dialog with dummy value if password is set
             char[] pwd = configuration.getPassword();
@@ -218,4 +252,69 @@ public class ServerConfigurationDialog
     protected JComponent createCenterPanel() {
         return contentPane;
     }
+
+    public static class StringListModel extends AbstractListModel {
+        private List<String> data;
+
+        public StringListModel(String[] data) {
+            this(java.util.Arrays.asList(data));
+        }
+
+        public StringListModel(List<String> data) {
+            this.data = data;
+        }
+
+        @Override
+        public int getSize() {
+            return data.size();
+        }
+
+        @Override
+        public Object getElementAt(int i) {
+            return data.get(i);
+        }
+
+        public List<String> getData() {
+            return data;
+        }
+
+        public boolean addString(String line) {
+            boolean ret = false;
+            int index = data.indexOf(line);
+            if(index < 0) {
+                data.add(line);
+                index = data.indexOf(line);
+                fireIntervalAdded(line, index, index);
+                ret = true;
+            }
+            return ret;
+        }
+
+        public boolean removeString(String line) {
+            boolean ret = false;
+            int index = data.indexOf(line);
+            if(index >= 0) {
+                data.remove(index);
+                fireIntervalRemoved(line, index, index);
+                ret = true;
+            }
+            return ret;
+        }
+
+        public void clear() {
+            data.clear();
+        }
+    }
+
+    public static class StringListCellRenderer
+        extends ColoredListCellRenderer
+    {
+        protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
+            append(
+                value.toString(),
+                SimpleTextAttributes.REGULAR_ATTRIBUTES
+            );
+        }
+    }
+
 }
