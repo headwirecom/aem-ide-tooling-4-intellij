@@ -108,6 +108,8 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.DEFAULT_BUNDLE_DEPLOYENT_RETRIES;
+import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.DEFAULT_BUNDLE_DEPLOYMENT_WAIT_PERIOD_IN_SECONDS;
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.WaitableRunner;
@@ -763,18 +765,31 @@ public class ServerConnectionManager
                                 // It can also happens if the plugin is unable to detect the correct Symbolic Name.
                                 messageManager.showAlertWithArguments("deploy.module.maven.missing.bundle", bundle.getName(), module.getSymbolicName());
                             } else {
+                                ServerConfiguration serverConfiguration = serverConfigurationManager.findConnectedServerConfiguration();
                                 String bundleState = "";
-                                int retry = 5;
+                                int retry = serverConfiguration != null ?
+                                    serverConfiguration.getBundleDeploymentRetries() :
+                                    DEFAULT_BUNDLE_DEPLOYENT_RETRIES;
+                                int waitPeriod = serverConfiguration != null ?
+                                    serverConfiguration.getBundleDeploymentWaitPeriodInSeconds() :
+                                    DEFAULT_BUNDLE_DEPLOYMENT_WAIT_PERIOD_IN_SECONDS;
                                 // Try 5 times to see if the bundles was activated successfully. If that fails show an
                                 // alert informing the user about it
+                                List<String> responses = new ArrayList<>();
                                 while(!"active".equals(bundleState) && retry >= 0) {
                                     retry--;
                                     try {
                                         Map<String, String> data = BundleDataUtil.getData(osgiClient, module.getSymbolicName());
                                         bundleState = data.get("state").toLowerCase();
+                                        responses.add(bundleState);
+                                        try {
+                                            Thread.sleep(waitPeriod * 1000);
+                                        } catch(InterruptedException e) {
+                                        }
                                     } catch(OsgiClientException e) {
                                     }
                                 }
+                                messageManager.sendDebugNotification("List of Bundle States: " + responses);
                                 if(!"active".equalsIgnoreCase(bundleState)) {
                                     messageManager.sendDebugNotification("Bundle: " + bundle.getName() + ", state: " + bundleState);
                                     messageManager.showAlertWithArguments("deploy.module.maven.bundle.not.active", bundle.getName(), module.getSymbolicName());

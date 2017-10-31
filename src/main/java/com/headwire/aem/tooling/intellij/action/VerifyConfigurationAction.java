@@ -149,66 +149,68 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                         ProgressHandler progressHandlerSubTaskLoop = progressHandlerSubTask.startSubTasks(2 * source.getModuleList().size(), "progress.verify.check.modules");
                         for(ServerConfiguration.Module module : source.getModuleList()) {
                             progressHandlerSubTaskLoop.next("progress.verify.check.module", module.getName());
-                            if(module.isSlingPackage()) {
-                                // Check if the Filter is available for Content Modules
-                                Filter filter = null;
-                                try {
-                                    filter = module.getSlingProject().loadFilter();
-                                    if(filter == null) {
-                                        boolean isGeneratedFilter = false;
-                                        SlingModuleFacet slingModuleFacet = SlingModuleFacet.getFacetByModule(module.getUnifiedModule().getModule());
-                                        if(slingModuleFacet != null) {
-                                            SlingModuleFacetConfiguration slingModuleFacetConfiguration = slingModuleFacet.getConfiguration();
-                                            if(slingModuleFacetConfiguration.isGeneratedFilter()) {
-                                                isGeneratedFilter = true;
+                            if(module.isPartOfBuild()) {
+                                if(module.isSlingPackage()) {
+                                    // Check if the Filter is available for Content Modules
+                                    Filter filter = null;
+                                    try {
+                                        filter = module.getSlingProject().loadFilter();
+                                        if(filter == null) {
+                                            boolean isGeneratedFilter = false;
+                                            SlingModuleFacet slingModuleFacet = SlingModuleFacet.getFacetByModule(module.getUnifiedModule().getModule());
+                                            if(slingModuleFacet != null) {
+                                                SlingModuleFacetConfiguration slingModuleFacetConfiguration = slingModuleFacet.getConfiguration();
+                                                if(slingModuleFacetConfiguration.isGeneratedFilter()) {
+                                                    isGeneratedFilter = true;
+                                                }
                                             }
-                                        }
-                                        if(!isGeneratedFilter) {
-                                            ret = false;
-                                            exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.not.found", module.getName());
-                                            module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                            if(exitNow == Messages.CANCEL) {
-                                                return false;
-                                            }
-                                        } else {
-                                            //AS TODO: Add a notification message here indicating that filter.xml presence was not tested as it was set to Generated
-                                        }
-                                    }
-                                } catch(ConnectorException e) {
-                                    ret = false;
-                                    exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.failure", module.getName(), e.getMessage());
-                                    module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                    if(exitNow == Messages.CANCEL) {
-                                        return false;
-                                    }
-                                }
-                                // Check if the Content Modules have a Content Resource
-                                List<String> resourceList = serverConnectionManager.findContentResources(module);
-                                if(resourceList.isEmpty()) {
-                                    ret = false;
-                                    exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.not.found", module.getName());
-                                    module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
-                                    if(exitNow == Messages.CANCEL) {
-                                        return false;
-                                    }
-                                }
-                                // Check if Content Module Folders all have a .content.xml
-                                Object temp = dataContext.getData(VERIFY_CONTENT_WITH_WARNINGS);
-                                boolean verifyWithWarnings = !(temp instanceof Boolean) || ((Boolean) temp);
-                                if(verifyWithWarnings && filter != null) {
-                                    progressHandlerSubTaskLoop.next("progress.verify.check.resource.files");
-                                    ProgressHandler progressHandlerSubTaskLoop2 = progressHandlerSubTaskLoop.startSubTasks(resourceList.size(), "Check Resources");
-                                    // Get the Content Root /jcr_root)
-                                    for(String contentPath : resourceList) {
-                                        progressHandlerSubTaskLoop2.next("progress.verify.check.resource.files", contentPath);
-                                        VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(contentPath);
-                                        if(rootFile != null) {
-                                            // Loop over all folders and check if .content.xml file is there
-                                            Result childResult = checkFolderContent(repository, messageManager, serverConnectionManager, module, null, rootFile, filter);
-                                            if(childResult.isCancelled) {
-                                                return false;
-                                            } else if(!childResult.isOk) {
+                                            if(!isGeneratedFilter) {
                                                 ret = false;
+                                                exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.not.found", module.getName());
+                                                module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
+                                                if(exitNow == Messages.CANCEL) {
+                                                    return false;
+                                                }
+                                            } else {
+                                                //AS TODO: Add a notification message here indicating that filter.xml presence was not tested as it was set to Generated
+                                            }
+                                        }
+                                    } catch(ConnectorException e) {
+                                        ret = false;
+                                        exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.filter.file.failure", module.getName(), e.getMessage());
+                                        module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
+                                        if(exitNow == Messages.CANCEL) {
+                                            return false;
+                                        }
+                                    }
+                                    // Check if the Content Modules have a Content Resource
+                                    List<String> resourceList = serverConnectionManager.findContentResources(module);
+                                    if(resourceList.isEmpty()) {
+                                        ret = false;
+                                        exitNow = messageManager.showAlertWithOptions(NotificationType.ERROR, "server.configuration.content.folder.not.found", module.getName());
+                                        module.setStatus(ServerConfiguration.SynchronizationStatus.compromised);
+                                        if(exitNow == Messages.CANCEL) {
+                                            return false;
+                                        }
+                                    }
+                                    // Check if Content Module Folders all have a .content.xml
+                                    Object temp = dataContext.getData(VERIFY_CONTENT_WITH_WARNINGS);
+                                    boolean verifyWithWarnings = !(temp instanceof Boolean) || ((Boolean) temp);
+                                    if(verifyWithWarnings && filter != null) {
+                                        progressHandlerSubTaskLoop.next("progress.verify.check.resource.files");
+                                        ProgressHandler progressHandlerSubTaskLoop2 = progressHandlerSubTaskLoop.startSubTasks(resourceList.size(), "Check Resources");
+                                        // Get the Content Root /jcr_root)
+                                        for(String contentPath : resourceList) {
+                                            progressHandlerSubTaskLoop2.next("progress.verify.check.resource.files", contentPath);
+                                            VirtualFile rootFile = project.getProjectFile().getFileSystem().findFileByPath(contentPath);
+                                            if(rootFile != null) {
+                                                // Loop over all folders and check if .content.xml file is there
+                                                Result childResult = checkFolderContent(repository, messageManager, serverConnectionManager, module, null, rootFile, filter);
+                                                if(childResult.isCancelled) {
+                                                    return false;
+                                                } else if(!childResult.isOk) {
+                                                    ret = false;
+                                                }
                                             }
                                         }
                                     }

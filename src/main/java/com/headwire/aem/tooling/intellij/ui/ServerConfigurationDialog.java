@@ -51,8 +51,8 @@ public class ServerConfigurationDialog
     private JPasswordField connectionPassword;
     private JTextField connectionPort;
     private JTextField connectionContextPath;
-    private JSpinner stopConnectionTimeout;
-    private JSpinner startConnectionTimeout;
+    private JSpinner bundleDeploymentWaitPeriodInSeconds;
+    private JSpinner bundleDeploymentTries;
     private JRadioButton neverAutomaticallyPublishContentRadioButton;
     private JRadioButton automaticallyPublishOnChangeRadioButton;
     private JRadioButton automaticallyPublishOnBuildRadioButton;
@@ -159,8 +159,8 @@ public class ServerConfigurationDialog
             ret.setPassword(password);
         }
         ret.setContextPath(connectionContextPath.getText());
-        ret.setStartConnectionTimeoutInSeconds(UIUtil.obtainInteger(startConnectionTimeout, -1));
-        ret.setStopConnectionTimeoutInSeconds(UIUtil.obtainInteger(stopConnectionTimeout, -1));
+        ret.setBundleDeploymentRetries(UIUtil.obtainInteger(bundleDeploymentTries, -1));
+        ret.setBundleDeploymentWaitPeriodInSeconds(UIUtil.obtainInteger(bundleDeploymentWaitPeriodInSeconds, -1));
         ServerConfiguration.PublishType publishType =
             neverAutomaticallyPublishContentRadioButton.isSelected() ? ServerConfiguration.PublishType.never :
                 automaticallyPublishOnChangeRadioButton.isSelected() ? ServerConfiguration.PublishType.automaticallyOnChange :
@@ -198,8 +198,8 @@ public class ServerConfigurationDialog
             connectionDebugPort.setText(serverConfiguration.getConnectionDebugPort() + "");
             connectionUserName.setText(serverConfiguration.getUserName());
             connectionContextPath.setText(serverConfiguration.getContextPath());
-            startConnectionTimeout.setValue(serverConfiguration.getStartConnectionTimeoutInSeconds());
-            stopConnectionTimeout.setValue(serverConfiguration.getStopConnectionTimeoutInSeconds());
+            bundleDeploymentTries.setValue(serverConfiguration.getBundleDeploymentRetries());
+            bundleDeploymentWaitPeriodInSeconds.setValue(serverConfiguration.getBundleDeploymentWaitPeriodInSeconds());
             switch(serverConfiguration.getPublishType()) {
                 case never:
                     neverAutomaticallyPublishContentRadioButton.setSelected(true);

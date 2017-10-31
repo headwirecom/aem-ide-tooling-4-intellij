@@ -47,8 +47,8 @@ public class ServerConfiguration
     public static final int DEFAULT_DEBUG_CONNECTION_PORT = 30303;
     public static final String DEFAULT_USER_NAME = "admin";
     public static final String DEFAULT_CONTEXT_PATH = "/";
-    public static final int DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS = 30;
-    public static final int DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS = 15;
+    public static final int DEFAULT_BUNDLE_DEPLOYENT_RETRIES = 5;
+    public static final int DEFAULT_BUNDLE_DEPLOYMENT_WAIT_PERIOD_IN_SECONDS = 5;
     public static final PublishType DEFAULT_PUBLISH_TYPE = PublishType.automaticallyOnChange;
     public static final SupportInstallationType DEFAULT_INSTALL_TYPE = SupportInstallationType.installAutomatically;
     public static final DefaultMode DEFAULT_MODE = DefaultMode.none;
@@ -129,8 +129,8 @@ public class ServerConfiguration
     private String userName = DEFAULT_USER_NAME;
     private char[] password = DEFAULT_USER_NAME.toCharArray();
     private String contextPath = DEFAULT_CONTEXT_PATH;
-    private int startConnectionTimeout = DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS;
-    private int stopConnectionTimeout = DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS;
+    private int bundleDeploymentRetries = DEFAULT_BUNDLE_DEPLOYENT_RETRIES;
+    private int bundleDeploymentWaitPeriodInSeconds = DEFAULT_BUNDLE_DEPLOYMENT_WAIT_PERIOD_IN_SECONDS;
     private PublishType publishType = DEFAULT_PUBLISH_TYPE;
     private SupportInstallationType installationType = DEFAULT_INSTALL_TYPE;
     private String supportBundleVersion = ArtifactsLocatorImpl.DEFAULT_TOOLING_SUPPORT_BUNDLE_VERSION;
@@ -171,8 +171,8 @@ public class ServerConfiguration
         userName = source.userName;
         password = source.password;
         contextPath = source.contextPath;
-        startConnectionTimeout = source.startConnectionTimeout;
-        stopConnectionTimeout = source.stopConnectionTimeout;
+        bundleDeploymentRetries = source.bundleDeploymentRetries;
+        bundleDeploymentWaitPeriodInSeconds = source.bundleDeploymentWaitPeriodInSeconds;
         publishType = source.publishType;
         installationType = source.installationType;
         supportBundleVersion = source.supportBundleVersion;
@@ -274,24 +274,23 @@ public class ServerConfiguration
         this.contextPath = StringUtils.isNotBlank(contextPath) ? contextPath : DEFAULT_CONTEXT_PATH;
     }
 
-    public int getStartConnectionTimeoutInSeconds() {
-        return startConnectionTimeout;
+    public int getBundleDeploymentRetries() {
+        return bundleDeploymentRetries;
     }
 
-    public void setStartConnectionTimeoutInSeconds(int startConnectionTimeoutInSeconds) {
-        this.startConnectionTimeout = startConnectionTimeoutInSeconds > 0 ?
-            startConnectionTimeoutInSeconds :
-            DEFAULT_START_CONNECTION_TIMEOUT_IN_SECONDS;
+    public void setBundleDeploymentRetries(int bundleDeploymentRetries) {
+        this.bundleDeploymentRetries = bundleDeploymentRetries > 0 ?
+            bundleDeploymentRetries :
+            DEFAULT_BUNDLE_DEPLOYENT_RETRIES;
     }
 
-    public int getStopConnectionTimeoutInSeconds() {
-        return stopConnectionTimeout;
+    public int getBundleDeploymentWaitPeriodInSeconds() {
+        return bundleDeploymentWaitPeriodInSeconds;
     }
 
-    public void setStopConnectionTimeoutInSeconds(int stopConnectionTimeoutInSeconds) {
-        this.stopConnectionTimeout = stopConnectionTimeoutInSeconds > 0 ?
-            stopConnectionTimeoutInSeconds :
-            DEFAULT_STOP_CONNECTION_TIMEOUT_IN_SECONDS;
+    public void setBundleDeploymentWaitPeriodInSeconds(int bundleDeploymentWaitPeriodInSeconds) {
+        this.bundleDeploymentWaitPeriodInSeconds = bundleDeploymentWaitPeriodInSeconds > 0 ?
+            bundleDeploymentWaitPeriodInSeconds : DEFAULT_BUNDLE_DEPLOYMENT_WAIT_PERIOD_IN_SECONDS;
     }
 
     public PublishType getPublishType() {

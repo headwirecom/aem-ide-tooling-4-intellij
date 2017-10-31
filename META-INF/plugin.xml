@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>AEM IDE Tooling 4 IntelliJ</name>
-    <version>1.0.2-beta</version>
+    <version>1.0.2</version>
     <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
@@ -16,7 +16,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>1.0.2-beta:
+            <li>1.0.2:
                 <ol>
                     <li>
                         Fixed a possible deadlock scenario when a Bundle is not deployed or has a symbolic
@@ -28,6 +28,9 @@
                         Support of the Sling Tooling Support Bundle version 1.0.5-SNAPSHOT which is required
                         for Sling 9 and up. Also the Configuration allows the user to configure the selection
                         of the support versions even though for most parts the latest should work just fine.
+                    </li><li>
+                        Added a Configurable Bundle Deployment Retries and Wait Period so that a user can
+                        configure the deployment based on its connection speed to the server.
                     </li>
                 </ol>
             </li>

@@ -68,8 +68,8 @@ public class ServerConfigurationManager
     public static final String USER_NAME = "userName";
     public static final String PASSWORD = "password";
     public static final String CONTEXT_PATH = "contextPath";
-    public static final String START_CONNECTION_TIMEOUT = "startConnectionTimeout";
-    public static final String STOP_CONNECTION_TIMEOUT = "stopConnectionTimeout";
+    public static final String BUNDLE_DEPLOYMENT_RETRIES = "bundleDeploymentRetries";
+    public static final String BUNDLE_DEPLOYMENT_WAIT_PERIOD = "bundleDeploymentWaitPeriod";
     public static final String PUBLISH_TYPE = "publishType";
     public static final String INSTALLATION_TYPE = "installationType";
     public static final String SUPPORT_BUNDLE_VERSION = "supportBundleType";
@@ -241,8 +241,8 @@ public class ServerConfigurationManager
             //AS TODO: Can we store that in an encrypted form?
             childNode.setAttribute(PASSWORD, new String(serverConfiguration.getPassword()));
             childNode.setAttribute(CONTEXT_PATH, serverConfiguration.getContextPath());
-            childNode.setAttribute(START_CONNECTION_TIMEOUT, serverConfiguration.getStartConnectionTimeoutInSeconds() + "");
-            childNode.setAttribute(STOP_CONNECTION_TIMEOUT, serverConfiguration.getStopConnectionTimeoutInSeconds() + "");
+            childNode.setAttribute(BUNDLE_DEPLOYMENT_RETRIES, serverConfiguration.getBundleDeploymentRetries() + "");
+            childNode.setAttribute(BUNDLE_DEPLOYMENT_WAIT_PERIOD, serverConfiguration.getBundleDeploymentWaitPeriodInSeconds() + "");
             childNode.setAttribute(PUBLISH_TYPE, serverConfiguration.getPublishType() + "");
             childNode.setAttribute(INSTALLATION_TYPE, serverConfiguration.getInstallationType() + "");
             childNode.setAttribute(SUPPORT_BUNDLE_VERSION, serverConfiguration.getSupportBundleVersion());
@@ -280,8 +280,8 @@ public class ServerConfigurationManager
             serverConfiguration.setUserName(child.getAttributeValue(USER_NAME));
             serverConfiguration.setPassword(child.getAttributeValue(PASSWORD).toCharArray());
             serverConfiguration.setContextPath(child.getAttributeValue(CONTEXT_PATH));
-            serverConfiguration.setStartConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue(START_CONNECTION_TIMEOUT), -1));
-            serverConfiguration.setStopConnectionTimeoutInSeconds(Util.convertToInt(child.getAttributeValue(STOP_CONNECTION_TIMEOUT), -1));
+            serverConfiguration.setBundleDeploymentRetries(Util.convertToInt(child.getAttributeValue(BUNDLE_DEPLOYMENT_RETRIES), -1));
+            serverConfiguration.setBundleDeploymentWaitPeriodInSeconds(Util.convertToInt(child.getAttributeValue(BUNDLE_DEPLOYMENT_WAIT_PERIOD), -1));
             serverConfiguration.setPublishType(Util.convertToEnum(child.getAttributeValue(PUBLISH_TYPE), ServerConfiguration.DEFAULT_PUBLISH_TYPE));
             serverConfiguration.setInstallationType(Util.convertToEnum(child.getAttributeValue(INSTALLATION_TYPE), ServerConfiguration.DEFAULT_INSTALL_TYPE));
             serverConfiguration.setSupportBundleVersion(child.getAttributeValue(SUPPORT_BUNDLE_VERSION));

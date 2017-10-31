@@ -29,6 +29,14 @@ The **master** is the latest release code and it the same as the highest
 
 #### Updates:
 
+**1.0.2**:
+* Fixed a possible deadlock scenario when a Bundle is not deployed or has a symbolic name mismatch. Now the Dialog will show up after the Debug Connection is established.
+* 'Import from' is not working correctly for .content.xml files (beforehand it was ignored).
+* Support of the Sling Tooling Support Bundle version 1.0.5-SNAPSHOT which is required for Sling 9 and up.
+  Also the Configuration allows the user to configure the selection
+  of the support versions even though for most parts the latest should work just fine.
+* Added a Configurable Bundle Deployment Retries and Wait Period so that a user can configure the deployment based on its connection speed to the server.
+
 **1.0.1**:
 * Fixed an issue where the module file (.iml) is not found by IntelliJ right after the project is created
 * Issue 40: Cleaned up Symbolic Name Handling
