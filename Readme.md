@@ -6,7 +6,7 @@ This plugin requires to run IntelliJ IDEA **2016.2** or higher.
 
 #### Releases:
 
-Release of 1.0.1 is out. Check out in the release section.
+Release of 1.0.2 is out. Check out in the release section.
 
 New Releases can be found in the **Code -> Release** section on
 GitHub: [AEM Intellij Plugin](https://github.com/headwirecom/aem-ide-tooling-4-intellij)
@@ -28,6 +28,9 @@ The **master** is the latest release code and it the same as the highest
 **release/v'version'** branch.
 
 #### Updates:
+
+**1.0.3-beta**:
+* Try to fix an issue with Mac OS X High Sierra
 
 **1.0.2**:
 * Fixed a possible deadlock scenario when a Bundle is not deployed or has a symbolic name mismatch. Now the Dialog will show up after the Debug Connection is established.

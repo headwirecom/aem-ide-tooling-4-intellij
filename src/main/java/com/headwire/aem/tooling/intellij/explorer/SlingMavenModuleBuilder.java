@@ -159,10 +159,10 @@ public class SlingMavenModuleBuilder
             "You can create either a blank Maven module or a module based on a <b>Maven archetype</b>.";
     }
 
-    @Override
-    public Icon getBigIcon() {
-        return AllIcons.Modules.Types.JavaModule;
-    }
+//    @Override
+//    public Icon getBigIcon() {
+//        return AllIcons.Modules.Types.JavaModule;
+//    }
 
     @Override
     public Icon getNodeIcon() {

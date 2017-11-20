@@ -19,9 +19,10 @@
 
 package org.apache.sling.ide.impl.vlt;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import org.apache.sling.ide.log.Logger;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 5/15/15.
@@ -38,6 +39,29 @@ public class Activator {
     }
 
     public Logger getPluginLogger() {
-        return ApplicationManager.getApplication().getComponent(Logger.class);
+        Logger answer = null;
+        // Use reflection to avoid runtime dependencies
+        try {
+            Class applicationManagerClass = Thread.currentThread().getContextClassLoader().loadClass("com.intellij.openapi.application.ApplicationManager");
+            Method applicationMethod = applicationManagerClass.getDeclaredMethod("getApplication", null);
+            Object application = applicationMethod.invoke(null, null);
+            if(application != null) {
+                Method componentMethod = application.getClass().getDeclaredMethod("getComponent", Class.class);
+                answer = (Logger) componentMethod.invoke(application, Logger.class);
+            }
+        } catch(ClassNotFoundException e) {
+            System.err.println("Could find Application Manager class");
+            e.printStackTrace();
+        } catch(NoSuchMethodException e) {
+            System.err.println("Could find 'getApplication' or 'getComponent' method");
+            e.printStackTrace();
+        } catch(IllegalAccessException e) {
+            System.err.println("Could not access 'getApplication' or 'getComponent' method");
+            e.printStackTrace();
+        } catch(InvocationTargetException e) {
+            System.err.println("Could not invoke 'getApplication' or 'getComponent' method");
+            e.printStackTrace();
+        }
+        return answer;
     }
 }
