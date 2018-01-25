@@ -33,13 +33,13 @@ public class ActivatorTest {
 
     @Test
     public void testActivator() throws Exception {
-        Activator activator = new Activator();
+        Activator2 activator = new Activator2();
 
 //        // Check if that works with just a null bundle context
 //        BundleContext bundleContext = new MyBundleContext();
 //        activator.start(bundleContext);
         // Obtain the Default instance
-        Activator test = Activator.getDefault();
+        Activator2 test = Activator2.getDefault();
         // Obtain the Plugin Logger
         Logger pluginLogger = test.getPluginLogger();
 

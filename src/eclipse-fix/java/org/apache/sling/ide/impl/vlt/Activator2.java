@@ -27,14 +27,14 @@ import java.lang.reflect.Method;
 /**
  * Created by Andreas Schaefer (Headwire.com) on 5/15/15.
  */
-public class Activator {
+public class Activator2 {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.apache.sling.ide.impl-vlt"; //$NON-NLS-1$
 
-    private static Activator instance = new Activator();
+    private static Activator2 instance = new Activator2();
 
-    public static Activator getDefault() {
+    public static Activator2 getDefault() {
         return instance;
     }
 

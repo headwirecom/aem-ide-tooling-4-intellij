@@ -13,23 +13,18 @@
     </content>
     <orderEntry type="jdk" jdkName="IntelliJ IDEA Community Edition IC-171.4073.35" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
-    <orderEntry type="library" name="org.osgi:org.osgi.compendium:4.3.1" level="project" />
-    <orderEntry type="library" name="Maven: javax.jcr:jcr:2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-api:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-core:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-jcr-commons:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-spi-commons:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.jackrabbit:jackrabbit-spi:2.4.0" level="project" />
-    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault.rcp:3.0.0" level="project" />
-    <orderEntry type="library" name="org.json:json:20140107" level="project" />
-    <orderEntry type="library" name="commons-io:commons-io:2.4" level="project" />
-    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.0.0" level="project" />
+    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault.rcp:3.1.38" level="project" />
+    <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.1.38" level="project" />
     <orderEntry type="library" name="Apache-Sling-IDE-trunk" level="project" />
     <orderEntry type="library" name="org.xhtmlrenderer:flying-saucer-core:9.1.1" level="project" />
     <orderEntry type="library" name="org.slf4j:slf4j-api:1.7.6" level="project" />
     <orderEntry type="library" name="Simple Logging Facade for Java:1.7.6" level="project" />
     <orderEntry type="library" name="org.slf4j:jcl-over-slf4j:1.7.6" level="project" />
     <orderEntry type="library" name="aemdc-with-dependencies" level="project" />
+    <orderEntry type="library" name="javax-jcr-2.0" level="project" />
+    <orderEntry type="library" name="org.osgi:org.osgi.framework:1.8.0" level="project" />
+    <orderEntry type="library" name="org.osgi:org.osgi.service.event:1.3.1" level="project" />
+    <orderEntry type="library" name="org.json:json:20140107" level="project" />
+    <orderEntry type="library" name="org.osgi:org.osgi.compendium:4.3.1" level="project" />
   </component>
 </module>

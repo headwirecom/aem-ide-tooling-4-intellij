@@ -18,17 +18,10 @@
 
 package com.headwire.aem.tooling.intellij.util;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
-import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.apache.sling.ide.osgi.OsgiClientException;
 import org.apache.sling.ide.osgi.impl.HttpOsgiClient;
@@ -38,7 +31,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.osgi.framework.Version;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,11 +38,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.jar.Manifest;
 
 /**
  * This class provides the data of a deployed bundle. It is written in a way
@@ -61,9 +50,6 @@ import java.util.jar.Manifest;
  * Created by Andreas Schaefer
  */
 public class BundleDataUtil {
-
-    private static final int DEFAULT_SOCKET_TIMEOUT_SECONDS = 30;
-    private static final int DEFAULT_CONNECT_TIMEOUT_SECONDS = 30;
 
     public static Map<String, String> getData(OsgiClient osgiClient, String bundleSymbolicName) throws OsgiClientException {
         Map<String, String> answer = new HashMap<>();

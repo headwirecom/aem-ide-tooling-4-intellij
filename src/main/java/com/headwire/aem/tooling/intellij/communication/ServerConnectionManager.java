@@ -469,6 +469,7 @@ public class ServerConnectionManager
             if(e.getCause().getClass() == IllegalArgumentException.class) {
                 messageManager.showAlertWithArguments("server.configuration.cannot.connect.repository.refused", serverConfiguration.getName());
             } else {
+                messageManager.sendErrorNotification("server.configuration.cannot.connect.repository", serverConfiguration.getName(), e);
                 messageManager.showAlertWithArguments("server.configuration.cannot.connect.repository", serverConfiguration.getName(), e);
             }
         }
