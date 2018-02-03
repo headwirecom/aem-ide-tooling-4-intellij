@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Apache-Sling-IDE-trunk">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api/target/org.apache.sling.ide.api-1.1.1-SNAPSHOT.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api-io/target/org.apache.sling.ide.api-io-1.1.1-SNAPSHOT.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/artifacts/target/org.apache.sling.ide.artifacts-1.1.1-SNAPSHOT.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/impl-resource/target/org.apache.sling.ide.impl-resource-1.1.1-SNAPSHOT.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/impl-vlt/target/org.apache.sling.ide.impl-vlt-1.1.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.api-1.1.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.api-io-1.1.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.artifacts-1.1.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.impl-resource-1.1.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.impl-vlt-1.1.1-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

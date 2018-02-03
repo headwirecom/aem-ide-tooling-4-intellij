@@ -1,0 +1,5 @@
+# IntelliJ Project Ignores
+.idea/workspace.xml
+.idea/tasks.xml
+out
+AEM IDE Tooling 4 IntelliJ.zip

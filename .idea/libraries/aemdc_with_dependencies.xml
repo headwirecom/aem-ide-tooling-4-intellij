@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="aemdc-with-dependencies">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../aemdc.hw/aemdc/target/aemdc-0.10.2-SNAPSHOT-jar-with-dependencies.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../aemdc.hw/aemdc/target/aemdc-0.10.3-SNAPSHOT-jar-with-dependencies.jar!/" />
       <root url="jar://$PROJECT_DIR$/../aemdc.hw/aemdc/target/aemdc-0.10.3-jar-with-dependencies.jar!/" />
     </CLASSES>
     <JAVADOC />
