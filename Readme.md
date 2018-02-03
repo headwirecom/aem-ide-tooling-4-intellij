@@ -6,7 +6,7 @@ This plugin requires to run IntelliJ IDEA **2016.2** or higher.
 
 #### Releases:
 
-Release of 1.0.3 is out. Check out in the release section.
+Release of 1.0.3.1 is out. Check out in the release section.
 
 New Releases can be found in the **Code -> Release** section on
 GitHub: [AEM Intellij Plugin](https://github.com/headwirecom/aem-ide-tooling-4-intellij)
@@ -29,12 +29,15 @@ The **master** is the latest release code and it the same as the highest
 
 #### Updates:
 
+**1.0.3.1**:
+* Book keeping release
+
 **1.0.3**:
 * Fix an issue with Mac OS X High Sierra to load a class
 
 **1.0.2**:
 * Fixed a possible deadlock scenario when a Bundle is not deployed or has a symbolic name mismatch. Now the Dialog will show up after the Debug Connection is established.
-* 'Import from' is not working correctly for .content.xml files (beforehand it was ignored).
+* 'Import from' is now working correctly for .content.xml files (beforehand it was ignored).
 * Support of the Sling Tooling Support Bundle version 1.0.5-SNAPSHOT which is required for Sling 9 and up.
   Also the Configuration allows the user to configure the selection
   of the support versions even though for most parts the latest should work just fine.

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>AEM IDE Tooling 4 IntelliJ</name>
-    <version>1.0.1</version>
+    <version>1.0.3.1</version>
     <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
@@ -16,6 +16,38 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li>1.0.3.1:
+                <ol>
+                    <li>
+                        Book keeping release
+                    </li>
+                </ol>
+            </li>
+            <li>1.0.3:
+                <ol>
+                    <li>
+                        Fix an issue with the Mac OS X High Sierra class loading crashes
+                    </li>
+                </ol>
+            </li>
+            <li>1.0.2:
+                <ol>
+                    <li>
+                        Fixed a possible deadlock scenario when a Bundle is not deployed or has a symbolic
+                        name mismatch. Now the Dialog will show up after the Debug Connection is established.
+                    </li><li>
+                        'Import from' is not working correctly for .content.xml files (beforehand it was
+                        ignored).
+                    </li><li>
+                        Support of the Sling Tooling Support Bundle version 1.0.5-SNAPSHOT which is required
+                        for Sling 9 and up. Also the Configuration allows the user to configure the selection
+                        of the support versions even though for most parts the latest should work just fine.
+                    </li><li>
+                        Added a Configurable Bundle Deployment Retries and Wait Period so that a user can
+                        configure the deployment based on its connection speed to the server.
+                    </li>
+                </ol>
+            </li>
             <li>1.0.1:
                 <ol>
                     <li>
@@ -179,10 +211,10 @@
             <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.SerializationManagerWrapper
             </implementation-class>
         </component>
-        <component>
-            <interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>
-        </component>
+        <!--<component>-->
+            <!--<interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>-->
+            <!--<implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>-->
+        <!--</component>-->
         <component>
             <interface-class>org.apache.sling.ide.filter.FilterLocator</interface-class>
             <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltFilterLocatorWrapper
@@ -235,6 +267,10 @@
         <component>
             <interface-class>com.headwire.aem.tooling.intellij.config.ModuleManager</interface-class>
             <implementation-class>com.headwire.aem.tooling.intellij.config.ModuleManagerImpl</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>
         </component>
         <component>
             <implementation-class>com.headwire.aem.tooling.intellij.explorer.AemdcPanel</implementation-class>
