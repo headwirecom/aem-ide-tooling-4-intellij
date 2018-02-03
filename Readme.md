@@ -6,7 +6,7 @@ This plugin requires to run IntelliJ IDEA **2016.2** or higher.
 
 #### Releases:
 
-Release of 1.0.3 is out. Check out in the release section.
+Release of 1.0.3.1 is out. Check out in the release section.
 
 New Releases can be found in the **Code -> Release** section on
 GitHub: [AEM Intellij Plugin](https://github.com/headwirecom/aem-ide-tooling-4-intellij)
@@ -28,6 +28,9 @@ The **master** is the latest release code and it the same as the highest
 **release/v'version'** branch.
 
 #### Updates:
+
+**1.0.3.1**:
+* Book keeping release
 
 **1.0.3**:
 * Fix an issue with Mac OS X High Sierra to load a class

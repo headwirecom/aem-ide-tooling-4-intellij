@@ -40,7 +40,7 @@ public class WebContentFXPanel
     private JFXPanel panel;
     private WebView browser;
     private WebEngine webEngine;
-    private String url = " https://www.headwire.com/t/intellij-1.0.2.html";
+    private String url = " https://www.headwire.com/t/intellij-1.0.3.1.html";
 
     public WebContentFXPanel() {
 
