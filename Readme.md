@@ -14,8 +14,20 @@ GitHub: [AEM Intellij Plugin](https://github.com/headwirecom/aem-ide-tooling-4-i
 #### For Devs
 
 The plugin has a dependency on the IntelliJ Maven and Git4Idea plugin (see
-META-INF/plugin.xml) and they **have** to be added to the **InteliJ SDK**
-and **not as a libarary**.
+META-INF/plugin.xml) and they **have** to be added to the **IntelliJ SDK**
+and **not as a library**.
+As of now do the following:
+1. Open the Project Structure Dialog
+2. Go down to the SDKs
+3. Select your SDK which has to be an IntelliJ Community Editon SDK
+4. Select **Classpath** on the right
+5. Click the **+** sign at the bottom
+6. Go to **content/plugins** and there add Git4Idea and Maven
+    1. maven/lib/maven.jar
+    2. maven/lib/maven-server-api.jar
+    3. git4idea/lib/git4idea.jar
+
+**Attention**: if you upgrade to a newer SDK you have to repeat these steps.
 
 If this is added as a Library then one will encounter Class Cast Exception due
 to duplicate classes.
