@@ -160,11 +160,6 @@ public class SlingMavenModuleBuilder
     }
 
     @Override
-    public Icon getBigIcon() {
-        return AllIcons.Modules.Types.JavaModule;
-    }
-
-    @Override
     public Icon getNodeIcon() {
         return IconLoader.getIcon("/images/sling.gif");
     }
