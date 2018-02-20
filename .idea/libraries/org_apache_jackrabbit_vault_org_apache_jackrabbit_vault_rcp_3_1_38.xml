@@ -9,7 +9,6 @@
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi-commons-2.14.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-commons-2.14.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/guava-15.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.6.6.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.2.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-client-2.14.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi2dav-2.14.0.jar!/" />
@@ -23,7 +22,6 @@
       <root url="jar://$PROJECT_DIR$/lib/vault-davex-3.1.38.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.1.38.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/jcl-over-slf4j-1.5.8.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/org.apache.jackrabbit.vault.rcp-3.1.38-javadoc.jar!/" />
@@ -33,7 +31,6 @@
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi-commons-2.14.0-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-commons-2.14.0-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/guava-15.0-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.6.6-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.2.2-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-client-2.14.0-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi2dav-2.14.0-javadoc.jar!/" />
@@ -55,7 +52,6 @@
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi-commons-2.14.0-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-commons-2.14.0-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/guava-15.0-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.6.6-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.2.2-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-jcr-client-2.14.0-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jackrabbit-spi2dav-2.14.0-sources.jar!/" />
@@ -69,7 +65,6 @@
       <root url="jar://$PROJECT_DIR$/lib/vault-davex-3.1.38-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/org.apache.jackrabbit.vault-3.1.38-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-io-2.4-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/jcl-over-slf4j-1.5.8-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
