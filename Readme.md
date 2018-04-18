@@ -41,6 +41,9 @@ The **master** is the latest release code and it the same as the highest
 
 #### Updates:
 
+**1.0.3.3-beta1**:
+* Working on issues with latest IntelliJ Releases.
+
 **1.0.3.2**:
 * Fixed an issue on Windows with Log4j's LocationAwareLogger.
 

@@ -106,7 +106,7 @@ public class SlingMavenModuleBuilder
 
     private Map<String, String> myPropertiesToCreateByArtifact;
 
-    public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
+    public void setupRootModel(ModifiableRootModel rootModel) {
         final Project project = rootModel.getProject();
 
         final VirtualFile root = createAndGetContentEntry();

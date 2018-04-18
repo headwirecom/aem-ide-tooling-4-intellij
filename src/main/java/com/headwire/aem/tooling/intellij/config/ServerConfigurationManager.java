@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
@@ -45,12 +46,14 @@ import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Defau
  * The Server Configuration Manager responsible for Loading & Saving the Server Configurations into the Workspace File
  * inside the IDEA folder (.idea/workspace.xml) and to provide the configurations to the plugin.
  *
+ * ATTENTION: Storage Id is removed in the latest IntelliJ Release. Removed Id and File and just use the file name
+ *
  * Created by Andreas Schaefer (Headwire.com) on 3/19/15.
  */
 @State(
     name = ServerConfiguration.COMPONENT_NAME,
     storages = {
-        @Storage(id = "serverConfigurations", file = StoragePathMacros.WORKSPACE_FILE)
+        @Storage("serverConfigurations.xml")
     }
 )
 public class ServerConfigurationManager
@@ -101,11 +104,22 @@ public class ServerConfigurationManager
 
     public class ConfigurationChangeListener {
         public void configurationChanged() {
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                public void run() {
-                myEventDispatcher.getMulticaster().configurationLoaded();
-                }
-            });
+            ApplicationManager.getApplication().invokeAndWait(
+                new Runnable() {
+                    public void run() {
+                        myEventDispatcher.getMulticaster().configurationLoaded();
+                    }
+                },
+                ModalityState.any()
+            );
+//            ApplicationManager.getApplication().invokeLater(
+//                new Runnable() {
+//                    public void run() {
+//                        myEventDispatcher.getMulticaster().configurationLoaded();
+//                    }
+//                },
+//                ModalityState.any()
+//            );
         }
     }
 
@@ -173,11 +187,30 @@ public class ServerConfigurationManager
         if(configuration != null && configuration != serverConfiguration) {
             configuration.copy(serverConfiguration);
         }
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            public void run() {
-                myEventDispatcher.getMulticaster().configurationLoaded();
-            }
-        });
+//        ApplicationManager.getApplication().invokeLater(
+//            new USCR(myEventDispatcher),
+////            new Runnable() {
+////                public void run() {
+////                    myEventDispatcher.getMulticaster().configurationLoaded();
+////                    String test = "done";
+////                }
+////            },
+//            ModalityState.any()
+//        );
+    }
+
+    private static class USCR implements Runnable {
+        private EventDispatcher<ConfigurationListener> myEventDispatcher;
+
+        public USCR(EventDispatcher<ConfigurationListener> myEventDispatcher) {
+            this.myEventDispatcher = myEventDispatcher;
+        }
+
+        @Override
+        public void run() {
+            myEventDispatcher.getMulticaster().configurationLoaded();
+            String test1A = "done";
+        }
     }
 
     /**
@@ -334,20 +367,38 @@ public class ServerConfigurationManager
                     try {
                         indicator.setText(title);
                         ApplicationManager.getApplication().runReadAction(
-                            new Runnable() {
-                                public void run() {
-                                    if(myEventDispatcher.getMulticaster() != null) {
-                                        myEventDispatcher.getMulticaster().configurationLoaded();
-                                    }
-                                }
-                            }
+                            new TBR(myEventDispatcher)
+//                            new Runnable() {
+//                                public void run() {
+//                                    if(myEventDispatcher.getMulticaster() != null) {
+//                                        myEventDispatcher.getMulticaster().configurationLoaded();
+//                                    }
+//                                    String test = "done";
+//                                }
+//                            }
                         );
                     } finally {
-
+                        String test2 = "done";
                     }
                 }
             }
         );
+    }
+
+    private static class TBR implements Runnable {
+        private EventDispatcher<ConfigurationListener> myEventDispatcher;
+
+        public TBR(EventDispatcher<ConfigurationListener> myEventDispatcher) {
+            this.myEventDispatcher = myEventDispatcher;
+        }
+
+        @Override
+        public void run() {
+            if(myEventDispatcher.getMulticaster() != null) {
+                myEventDispatcher.getMulticaster().configurationLoaded();
+            }
+            String test = "done";
+        }
     }
 
     public void addConfigurationListener(ConfigurationListener myConfigurationListener) {
@@ -364,11 +415,31 @@ public class ServerConfigurationManager
         if (app.isDispatchThread()) {
             task.queue();
         } else {
-            app.invokeLater(new Runnable() {
-                public void run() {
-                    task.queue();
-                }
-            });
+            app.invokeLater(
+                new QLR(task),
+//                new Runnable() {
+//                    public void run() {
+//                        task.queue();
+//                        String test3 = "done";
+//                    }
+//                },
+                ModalityState.any()
+            );
+            String test4 = "done";
+        }
+    }
+
+    private static class QLR implements Runnable {
+        private Task task;
+
+        public QLR(final Task task) {
+            this.task = task;
+        }
+
+        @Override
+        public void run() {
+            task.queue();
+            String test3 = "done";
         }
     }
 

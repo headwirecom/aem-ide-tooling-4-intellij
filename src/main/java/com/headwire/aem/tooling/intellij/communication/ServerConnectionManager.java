@@ -232,8 +232,11 @@ public class ServerConnectionManager
                                 WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
                                     private AtomicInteger response = new AtomicInteger(1);
                                     @Override
+//                                    public boolean isAsynchronous() {
+//                                        return true;
+//                                    }
                                     public boolean isAsynchronous() {
-                                        return true;
+                                        return false;
                                     }
 
                                     @Override

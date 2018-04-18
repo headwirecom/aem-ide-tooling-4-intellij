@@ -34,11 +34,13 @@ import javax.swing.*;
 
 /**
  * A component created just to be able to configure the plugin.
+ *
+ * ATTENTION: Storage Id is removed in the latest IntelliJ Release. Removed Id and File and just use the file name
  */
 @State(
         name = AEMPluginConfigurationDialog.COMPONENT_NAME,
         storages = {
-                @Storage(id = "other", file = "$APP_CONFIG$/aemPluginConfigurations.config")
+                @Storage("other.xml")
         }
 )
 public class AEMPluginConfiguration
