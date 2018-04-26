@@ -97,7 +97,9 @@ public class ServerConfigurationManager
         for(ServerConfiguration serverConfiguration: serverConfigurationList) {
             // Clear any bindings
             serverConfiguration.unBind();
+            LOGGER.debug("Update Service Configuration: '{}', '{}'", serverConfiguration.getName(), serverConfiguration.getDescription());
             moduleManager.getUnifiedModules(serverConfiguration);
+            LOGGER.debug("List of Unified Modules: '{}'", moduleManager.getUnifiedModules(serverConfiguration));
         }
         return true;
     }
@@ -187,16 +189,10 @@ public class ServerConfigurationManager
         if(configuration != null && configuration != serverConfiguration) {
             configuration.copy(serverConfiguration);
         }
-//        ApplicationManager.getApplication().invokeLater(
-//            new USCR(myEventDispatcher),
-////            new Runnable() {
-////                public void run() {
-////                    myEventDispatcher.getMulticaster().configurationLoaded();
-////                    String test = "done";
-////                }
-////            },
-//            ModalityState.any()
-//        );
+        ApplicationManager.getApplication().invokeLater(
+            new USCR(myEventDispatcher),
+            ModalityState.any()
+        );
     }
 
     private static class USCR implements Runnable {
@@ -368,14 +364,6 @@ public class ServerConfigurationManager
                         indicator.setText(title);
                         ApplicationManager.getApplication().runReadAction(
                             new TBR(myEventDispatcher)
-//                            new Runnable() {
-//                                public void run() {
-//                                    if(myEventDispatcher.getMulticaster() != null) {
-//                                        myEventDispatcher.getMulticaster().configurationLoaded();
-//                                    }
-//                                    String test = "done";
-//                                }
-//                            }
                         );
                     } finally {
                         String test2 = "done";
@@ -417,12 +405,6 @@ public class ServerConfigurationManager
         } else {
             app.invokeLater(
                 new QLR(task),
-//                new Runnable() {
-//                    public void run() {
-//                        task.queue();
-//                        String test3 = "done";
-//                    }
-//                },
                 ModalityState.any()
             );
             String test4 = "done";

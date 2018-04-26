@@ -63,6 +63,7 @@ import com.intellij.openapi.compiler.CompileScope;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
@@ -121,6 +122,7 @@ import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
 public class ServerConnectionManager
     extends AbstractProjectComponent
 {
+    private static final Logger LOGGER = Logger.getInstance(ServerConnectionManager.class);
 
     private static List<ServerConfiguration.ServerStatus> CONFIGURATION_CHECKED = Arrays.asList(
         ServerConfiguration.ServerStatus.checking,
@@ -252,11 +254,11 @@ public class ServerConnectionManager
                                         getResponse().set(selection);
                                     }
                                 };
-                                com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait(runner);
-                                if(runner.getResponse().get() == 0) {
-                                    // If ignore is selected then save it on that moduleL
-                                    module.setIgnoreSymbolicNameMismatch(true);
-                                }
+//                                com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait(runner);
+//                                if(runner.getResponse().get() == 0) {
+//                                    // If ignore is selected then save it on that moduleL
+//                                    module.setIgnoreSymbolicNameMismatch(true);
+//                                }
                             }
                             Version localVersion = new Version(version);
                             messageManager.sendDebugNotification("debug.check.osgi.module", moduleName, symbolicName, remoteVersion, localVersion);
@@ -352,7 +354,9 @@ public class ServerConnectionManager
     }
 
     public List<Module> findUnboundModules(@NotNull ServerConfiguration serverConfiguration) {
+        LOGGER.debug("Find Unbound Modules (Conf Name, Description): ", serverConfiguration.getName(), serverConfiguration.getDescription());
         List<UnifiedModule> unifiedModules = moduleManager.getUnifiedModules(serverConfiguration);
+        LOGGER.debug("Found Modules (Modules): ", unifiedModules);
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
         for(UnifiedModule unifiedModule : unifiedModules) {
             Module moduleFound = null;

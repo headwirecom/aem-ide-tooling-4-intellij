@@ -305,4 +305,18 @@ public class UnifiedModuleImpl
     public Module getModule() {
         return module;
     }
+
+    public String toString() {
+        return "UnifiedModuleImpl { " +
+            (
+                module == null ? "No Module" :
+                   "Name: '" + getName() + "'"
+            ) +
+            ", " +
+            (
+                mavenProject == null ? "No Maven Project" :
+                    "Maven Project Name: '" + mavenProject.getName() + "'"
+            ) +
+            " }";
+    }
 }
