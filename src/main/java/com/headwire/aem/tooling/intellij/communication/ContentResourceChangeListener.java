@@ -25,6 +25,7 @@ import com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerNodeDescriptor;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.headwire.aem.tooling.intellij.util.ExecutionUtil;
 import com.intellij.codeInsight.CodeSmellInfo;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -61,6 +62,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.headwire.aem.tooling.intellij.communication.ServerConnectionManager.FileChangeType;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeAndWait;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.InvokableRunner;
 import static com.intellij.openapi.vfs.VirtualFile.PROP_NAME;
 
 /**
@@ -268,8 +271,8 @@ public class ContentResourceChangeListener
             VirtualFile file = event.getFile();
             if("java".equalsIgnoreCase(file.getExtension())) {
                 //AS TODO: In order to use the Code Snell Detector this needs to be invoked in a Read Only Thread but part of the Dispatcher Thread
-                ApplicationManager.getApplication().invokeLater(
-                    new Runnable() {
+                invokeAndWait(
+                    new InvokableRunner() {
                         @Override
                         public void run() {
                             executeMakeInUIThread(event);

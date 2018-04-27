@@ -22,6 +22,7 @@ import com.headwire.aem.tooling.intellij.console.ConsoleLogCategory;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory;
 import com.headwire.aem.tooling.intellij.console.DebugNotification;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
+import com.headwire.aem.tooling.intellij.util.ExecutionUtil;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
@@ -39,6 +40,9 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeAndWait;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.InvokableRunner;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
@@ -178,8 +182,9 @@ public class MessageManager
     public void showAlert(@NotNull final NotificationType type, @NotNull final String title, @NotNull final String message) {
         // Make sure the Message is also placed inside the Log Console
         sendNotification(title, message, type);
-        ApplicationManager.getApplication().invokeLater(
-            new Runnable() {
+        invokeAndWait(
+            new InvokableRunner() {
+                @Override
                 public void run() {
                     Messages.showDialog(
                         myProject,

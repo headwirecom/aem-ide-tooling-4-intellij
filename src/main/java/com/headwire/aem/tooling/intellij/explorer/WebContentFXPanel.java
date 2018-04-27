@@ -26,8 +26,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Created by schaefa on 1/13/17.
@@ -40,19 +46,33 @@ public class WebContentFXPanel
     private JFXPanel panel;
     private WebView browser;
     private WebEngine webEngine;
-    private String url = " https://www.headwire.com/t/intellij.html";
+    private String url = "https://www.headwire.com/t/intellij-1.0.3.3.html";
+    private String altUrl = "https://www.headwire.com/t/intellij-1.0.3.1.html";
 
     public WebContentFXPanel() {
 
         Platform.setImplicitExit(false);
         panel = new JFXPanel();
         setContent(panel);
+
+        String actualUrl = url;
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpGet httpget = new HttpGet(url);
+            HttpResponse response = httpclient.execute(httpget);
+            if (response.getStatusLine().getStatusCode() != 200) {
+                actualUrl = altUrl;
+            }
+        } catch(IOException e) {
+            // Ignore
+        }
+        final String targetUrl = actualUrl;
         Platform.runLater(() -> {
-            initFX();
+            initFX(targetUrl);
         });
     }
 
-    private void initFX()
+    private void initFX(String pageUrl)
     {
         Scene scene = new Scene(new Group());
         ScrollPane scrollPane = new ScrollPane();
@@ -60,7 +80,7 @@ public class WebContentFXPanel
 
         browser = new WebView();
         webEngine = browser.getEngine();
-        webEngine.load(url);
+        webEngine.load(pageUrl);
 
         scene.setRoot(browser);
         panel.setScene(scene);

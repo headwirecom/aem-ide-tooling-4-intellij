@@ -43,6 +43,7 @@ import java.util.Map;
 
 import static com.headwire.aem.tooling.intellij.console.ConsoleLog.DEFAULT_CATEGORY;
 import static com.headwire.aem.tooling.intellij.console.ConsoleLog.LOG_REQUESTOR;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runReadAction;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 7/3/15.
@@ -146,11 +147,14 @@ public class ConsoleLogProjectTracker
             @Override
             public void run() {
                 if(!ShutDownTracker.isShutdownHookRunning() && !myProject.isDisposed()) {
-                    ApplicationManager.getApplication().runReadAction(new Runnable() {
-                        public void run() {
-                            console.doPrintNotification(notification);
+                    runReadAction(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                console.doPrintNotification(notification);
+                            }
                         }
-                    });
+                    );
                 }
             }
         });

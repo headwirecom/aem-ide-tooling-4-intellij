@@ -112,6 +112,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.WaitableRunner;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeAndWait;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeLater;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.InvokableRunner;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
 
 /**
@@ -230,7 +233,7 @@ public class ServerConnectionManager
                             //AS TODO: parts of the Artifact Id if they match the trailing parts of the group id.
                             //AS TODO: It is up to the user now to handle it by reconciling the Symbolic Name with
                             //AS TODO: the Maven Bundle Plugin or the Sling Facet
-                            if(remoteVersion == null) {
+                            if(remoteVersion == null && !module.isIgnoreSymbolicNameMismatch()) {
                                 WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
                                     private AtomicInteger response = new AtomicInteger(1);
                                     @Override
@@ -238,7 +241,7 @@ public class ServerConnectionManager
 //                                        return true;
 //                                    }
                                     public boolean isAsynchronous() {
-                                        return false;
+                                        return true;
                                     }
 
                                     @Override
@@ -254,11 +257,11 @@ public class ServerConnectionManager
                                         getResponse().set(selection);
                                     }
                                 };
-//                                com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait(runner);
-//                                if(runner.getResponse().get() == 0) {
-//                                    // If ignore is selected then save it on that moduleL
-//                                    module.setIgnoreSymbolicNameMismatch(true);
-//                                }
+                                com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait(runner);
+                                if(runner.getResponse().get() == 0) {
+                                    // If ignore is selected then save it on that moduleL
+                                    module.setIgnoreSymbolicNameMismatch(true);
+                                }
                             }
                             Version localVersion = new Version(version);
                             messageManager.sendDebugNotification("debug.check.osgi.module", moduleName, symbolicName, remoteVersion, localVersion);
@@ -684,8 +687,8 @@ public class ServerConnectionManager
                         // is ready
                         rem.startMavenBuild();
                         try {
-                            ApplicationManager.getApplication().invokeLater(
-                                new Runnable() {
+                            invokeLater(
+                                new InvokableRunner(ModalityState.NON_MODAL) {
                                     @Override
                                     public void run() {
                                         try {
@@ -698,8 +701,7 @@ public class ServerConnectionManager
                                             tw.hide(null);
                                         }
                                     }
-                                },
-                                ModalityState.NON_MODAL
+                                }
                             );
                         } catch (IllegalStateException e) {
                             if (firstRun) {

@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.DefaultMode;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.*;
+
 /**
  * The Server Configuration Manager responsible for Loading & Saving the Server Configurations into the Workspace File
  * inside the IDEA folder (.idea/workspace.xml) and to provide the configurations to the plugin.
@@ -106,22 +108,14 @@ public class ServerConfigurationManager
 
     public class ConfigurationChangeListener {
         public void configurationChanged() {
-            ApplicationManager.getApplication().invokeAndWait(
-                new Runnable() {
+            invokeAndWait(
+                new InvokableRunner(ModalityState.any()) {
+                    @Override
                     public void run() {
                         myEventDispatcher.getMulticaster().configurationLoaded();
                     }
-                },
-                ModalityState.any()
+                }
             );
-//            ApplicationManager.getApplication().invokeLater(
-//                new Runnable() {
-//                    public void run() {
-//                        myEventDispatcher.getMulticaster().configurationLoaded();
-//                    }
-//                },
-//                ModalityState.any()
-//            );
         }
     }
 
@@ -189,24 +183,15 @@ public class ServerConfigurationManager
         if(configuration != null && configuration != serverConfiguration) {
             configuration.copy(serverConfiguration);
         }
-        ApplicationManager.getApplication().invokeLater(
-            new USCR(myEventDispatcher),
-            ModalityState.any()
+        invokeLater(
+            new InvokableRunner(ModalityState.any()) {
+                @Override
+                public void run() {
+                    myEventDispatcher.getMulticaster().configurationLoaded();
+                    String test1A = "done";
+                }
+            }
         );
-    }
-
-    private static class USCR implements Runnable {
-        private EventDispatcher<ConfigurationListener> myEventDispatcher;
-
-        public USCR(EventDispatcher<ConfigurationListener> myEventDispatcher) {
-            this.myEventDispatcher = myEventDispatcher;
-        }
-
-        @Override
-        public void run() {
-            myEventDispatcher.getMulticaster().configurationLoaded();
-            String test1A = "done";
-        }
     }
 
     /**
@@ -352,7 +337,7 @@ public class ServerConfigurationManager
         }
         myIsInitialized = Boolean.TRUE;
         final String title = AEMBundle.message("tree.builder.configurations.loading.name");
-        queueLater(
+        queueTaskLater(
             new Task.Backgroundable(myProject, title, false) {
                 public void run(@NotNull final ProgressIndicator indicator) {
                     if (getProject().isDisposed()) {
@@ -362,8 +347,16 @@ public class ServerConfigurationManager
                     indicator.pushState();
                     try {
                         indicator.setText(title);
-                        ApplicationManager.getApplication().runReadAction(
-                            new TBR(myEventDispatcher)
+                        runReadAction(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(myEventDispatcher.getMulticaster() != null) {
+                                        myEventDispatcher.getMulticaster().configurationLoaded();
+                                    }
+                                    String test = "done";
+                                }
+                            }
                         );
                     } finally {
                         String test2 = "done";
@@ -373,55 +366,12 @@ public class ServerConfigurationManager
         );
     }
 
-    private static class TBR implements Runnable {
-        private EventDispatcher<ConfigurationListener> myEventDispatcher;
-
-        public TBR(EventDispatcher<ConfigurationListener> myEventDispatcher) {
-            this.myEventDispatcher = myEventDispatcher;
-        }
-
-        @Override
-        public void run() {
-            if(myEventDispatcher.getMulticaster() != null) {
-                myEventDispatcher.getMulticaster().configurationLoaded();
-            }
-            String test = "done";
-        }
-    }
-
     public void addConfigurationListener(ConfigurationListener myConfigurationListener) {
         //AS TODO: This class is loaded way ahead and so we fire a configuration listener if none are there
         boolean first = myEventDispatcher.getListeners().isEmpty();
         myEventDispatcher.addListener(myConfigurationListener);
         if(first) {
             myEventDispatcher.getMulticaster().configurationLoaded();
-        }
-    }
-
-    private static void queueLater(final Task task) {
-        final Application app = ApplicationManager.getApplication();
-        if (app.isDispatchThread()) {
-            task.queue();
-        } else {
-            app.invokeLater(
-                new QLR(task),
-                ModalityState.any()
-            );
-            String test4 = "done";
-        }
-    }
-
-    private static class QLR implements Runnable {
-        private Task task;
-
-        public QLR(final Task task) {
-            this.task = task;
-        }
-
-        @Override
-        public void run() {
-            task.queue();
-            String test3 = "done";
         }
     }
 
