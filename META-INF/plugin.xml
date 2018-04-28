@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>AEM IDE Tooling 4 IntelliJ</name>
-    <version>1.0.5-alpha</version>
+    <version>1.0.3.3-beta1</version>
     <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
@@ -23,8 +23,11 @@
                     </li>
                 </ol>
             </li>
-            <li>1.0.3.3-beta1:
+            <li>1.0.3.3:
                 <ol>
+                    <li>
+                        Ajusted the data storage to the latest IntelliJ API
+                    </li>
                     <li>
                         Updating to latest IntelliJ and fixing a blocking issue when connect in debug mode (pending)
                     </li>

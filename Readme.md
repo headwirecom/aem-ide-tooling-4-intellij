@@ -44,8 +44,9 @@ The **master** is the latest release code and it the same as the highest
 **1.0.5-alpha**:
 * Integration of the Latest Changes from Sling IDE to use OSGi independent libraries and the new Command Factory
 
-**1.0.3.3-beta1**:
+**1.0.3.3**:
 * Working on issues with latest IntelliJ Releases.
+* All threading is centralized in single class and with it fixed some issues with threading
 
 **1.0.3.2**:
 * Fixed an issue on Windows with Log4j's LocationAwareLogger.

@@ -18,8 +18,11 @@
 
 package com.headwire.aem.tooling.intellij.util;
 
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.Task;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CountDownLatch;
@@ -53,6 +56,64 @@ public class ExecutionUtil {
             }
         } catch(Exception e) {
             runner.handleException(e);
+        }
+    }
+
+    public static void invokeAndWait(final @NotNull InvokableRunner runner) {
+        ModalityState modalityState = runner.getModalityState();
+        if(modalityState != null) {
+            ApplicationManager.getApplication().invokeAndWait(runner, modalityState);
+        } else {
+            ApplicationManager.getApplication().invokeAndWait(runner);
+        }
+    }
+
+    public static void invokeLater(final @NotNull InvokableRunner runner) {
+        ModalityState modalityState = runner.getModalityState();
+        if(modalityState != null) {
+            ApplicationManager.getApplication().invokeLater(runner, modalityState);
+        } else {
+            ApplicationManager.getApplication().invokeLater(runner);
+        }
+    }
+
+    public static void runReadAction(final @NotNull Runnable runner) {
+        ApplicationManager.getApplication().runReadAction(runner);
+    }
+
+
+    public static void queueTaskLater(final Task task) {
+        final Application app = ApplicationManager.getApplication();
+        if (app.isDispatchThread()) {
+            task.queue();
+        } else {
+            app.invokeLater(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        task.queue();
+                        String test3 = "done";
+                    }
+                },
+                ModalityState.any()
+            );
+            String test4 = "done";
+        }
+    }
+
+    public static abstract class InvokableRunner
+        implements Runnable
+    {
+        private ModalityState modalityState;
+
+        public InvokableRunner() {}
+
+        public InvokableRunner(ModalityState modalityState) {
+            this.modalityState = modalityState;
+        }
+
+        public ModalityState getModalityState() {
+            return modalityState;
         }
     }
 

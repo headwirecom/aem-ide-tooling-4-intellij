@@ -63,6 +63,7 @@ import com.intellij.openapi.compiler.CompileScope;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
@@ -111,6 +112,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.WaitableRunner;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeAndWait;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeLater;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.InvokableRunner;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
 
 /**
@@ -121,6 +125,7 @@ import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
 public class ServerConnectionManager
     extends AbstractProjectComponent
 {
+    private static final Logger LOGGER = Logger.getInstance(ServerConnectionManager.class);
 
     private static List<ServerConfiguration.ServerStatus> CONFIGURATION_CHECKED = Arrays.asList(
         ServerConfiguration.ServerStatus.checking,
@@ -228,7 +233,7 @@ public class ServerConnectionManager
                             //AS TODO: parts of the Artifact Id if they match the trailing parts of the group id.
                             //AS TODO: It is up to the user now to handle it by reconciling the Symbolic Name with
                             //AS TODO: the Maven Bundle Plugin or the Sling Facet
-                            if(remoteVersion == null) {
+                            if(remoteVersion == null && !module.isIgnoreSymbolicNameMismatch()) {
                                 WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
                                     private AtomicInteger response = new AtomicInteger(1);
                                     @Override
@@ -236,7 +241,7 @@ public class ServerConnectionManager
 //                                        return true;
 //                                    }
                                     public boolean isAsynchronous() {
-                                        return false;
+                                        return true;
                                     }
 
                                     @Override
@@ -352,7 +357,9 @@ public class ServerConnectionManager
     }
 
     public List<Module> findUnboundModules(@NotNull ServerConfiguration serverConfiguration) {
+        LOGGER.debug("Find Unbound Modules (Conf Name, Description): ", serverConfiguration.getName(), serverConfiguration.getDescription());
         List<UnifiedModule> unifiedModules = moduleManager.getUnifiedModules(serverConfiguration);
+        LOGGER.debug("Found Modules (Modules): ", unifiedModules);
         List<Module> moduleList = new ArrayList<Module>(serverConfiguration.getModuleList());
         for(UnifiedModule unifiedModule : unifiedModules) {
             Module moduleFound = null;
@@ -680,8 +687,8 @@ public class ServerConnectionManager
                         // is ready
                         rem.startMavenBuild();
                         try {
-                            ApplicationManager.getApplication().invokeLater(
-                                new Runnable() {
+                            invokeLater(
+                                new InvokableRunner(ModalityState.NON_MODAL) {
                                     @Override
                                     public void run() {
                                         try {
@@ -694,8 +701,7 @@ public class ServerConnectionManager
                                             tw.hide(null);
                                         }
                                     }
-                                },
-                                ModalityState.NON_MODAL
+                                }
                             );
                         } catch (IllegalStateException e) {
                             if (firstRun) {

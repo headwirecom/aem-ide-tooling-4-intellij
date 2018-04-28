@@ -37,7 +37,7 @@ public class StartDebugConnectionAction
 
     @Override
     protected boolean isAsynchronous() {
-        return false;
+        return true;
     }
 
     @Override

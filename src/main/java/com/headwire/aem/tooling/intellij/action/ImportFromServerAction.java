@@ -29,6 +29,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.headwire.aem.tooling.intellij.util.ExecutionUtil;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
@@ -44,6 +45,8 @@ import javax.jcr.RepositoryException;
 import java.util.List;
 
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.InvokableRunner;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeAndWait;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/18/15.
@@ -112,7 +115,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
         }
         if(currentModuleLookup != null) {
             final ServerConfiguration.Module currentModule = currentModuleLookup;
-            Runnable runnable = new Runnable() {
+            InvokableRunner runnable = new InvokableRunner(ModalityState.NON_MODAL) {
                 public void run() {
                     IServer server = new IServer(currentModule.getParent());
                     String path = file.getPath();
@@ -146,10 +149,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
                     }
                 }
             };
-            ApplicationManager.getApplication().invokeAndWait(
-                () -> ApplicationManager.getApplication().runWriteAction(runnable),
-                ModalityState.NON_MODAL
-            );
+            invokeAndWait(runnable);
         }
     }
 }
