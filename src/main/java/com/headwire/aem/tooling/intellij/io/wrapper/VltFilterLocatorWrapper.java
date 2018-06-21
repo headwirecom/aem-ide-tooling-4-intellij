@@ -16,26 +16,37 @@
  *
  */
 
-package com.headwire.aem.tooling.intellij.io.eclipse;
+package com.headwire.aem.tooling.intellij.io.wrapper;
 
-import com.headwire.aem.tooling.intellij.io.IntelliJPluginLogger;
-import org.apache.sling.ide.io.PluginLogger;
-import org.apache.sling.ide.io.ServiceProvider;
-import org.apache.sling.ide.serialization.SerializationManager;
+import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.ServiceManager;
+import org.apache.sling.ide.impl.vlt.VaultFsLocator;
+import org.apache.sling.ide.impl.vlt.filter.VltFilterLocator;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Created by Andreas Schaefer (Headwire.com) on 11/16/15.
+ * Created by Andreas Schaefer (Headwire.com) on 6/19/15.
  */
-public class ServiceProvider4Eclipse
-    implements ServiceProvider
+public class VltFilterLocatorWrapper
+    extends VltFilterLocator
+    implements ApplicationComponent
 {
-    @Override
-    public PluginLogger createPluginLogger() {
-        return new EclipsePluginLogger();
+    public VltFilterLocatorWrapper(VaultFsLocator fsLocator) {
+        super(fsLocator);
     }
 
     @Override
-    public SerializationManager getSerializationManager() {
-        return null;
+    public void initComponent() {
     }
+
+    @Override
+    public void disposeComponent() {
+    }
+
+    @NotNull
+    @Override
+    public String getComponentName() {
+        return "VLT Filter Locator";
+    }
+
 }

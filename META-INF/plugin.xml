@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin>
     <id>com.headwire.aem.tooling.intellij</id>
     <name>AEM IDE Tooling 4 IntelliJ</name>
     <version>1.0.3.3-beta1</version>
@@ -217,45 +217,38 @@
         </component>
         <component>
             <interface-class>org.osgi.service.event.EventAdmin</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.EventAdminWrapper
-            </implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.io.wrapper.EventAdminWrapper</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.log.Logger</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.io.wrapper.PluginLoggerWrapper</implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.transport.RepositoryFactory</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltRepositoryFactoryWrapper
-            </implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.io.wrapper.VltRepositoryFactoryWrapper</implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.osgi.OsgiClientFactory</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.OsgiClientFactoryWrapper
-            </implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.io.wrapper.OsgiHttpClientFactoryWrapper</implementation-class>
         </component>
-        <component>
-            <interface-class>org.apache.sling.ide.serialization.SerializationManager</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.SerializationManagerWrapper
-            </implementation-class>
-        </component>
-        <!--<component>-->
-            <!--<interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>-->
-            <!--<implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>-->
-        <!--</component>-->
         <component>
             <interface-class>org.apache.sling.ide.filter.FilterLocator</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltFilterLocatorWrapper
-            </implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.io.wrapper.VltFilterLocatorWrapper</implementation-class>
         </component>
         <component>
             <interface-class>org.apache.sling.ide.impl.vlt.VaultFsLocator</interface-class>
             <implementation-class>org.apache.sling.ide.impl.vlt.VaultFsLocatorImpl</implementation-class>
         </component>
         <component>
-            <interface-class>org.apache.sling.ide.log.Logger</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.PluginLoggerWrapper
-            </implementation-class>
+            <interface-class>org.apache.sling.ide.serialization.SerializationManager</interface-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.io.wrapper.SerializationManagerWrapper</implementation-class>
         </component>
         <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration
-            </implementation-class>
+            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration</implementation-class>
+        </component>
+        <component>
+            <interface-class>org.apache.sling.ide.sync.content.SyncCommandFactory</interface-class>
+            <implementation-class>org.apache.sling.ide.sync.content.impl.DefaultSyncCommandFactory</implementation-class>
         </component>
 
     </application-components>

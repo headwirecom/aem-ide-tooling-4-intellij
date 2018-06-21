@@ -16,7 +16,7 @@
  *
  */
 
-package com.headwire.aem.tooling.intellij.eclipse.wrapper;
+package com.headwire.aem.tooling.intellij.io.wrapper;
 
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFolder;

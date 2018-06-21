@@ -1,38 +1,17 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
+package com.headwire.aem.tooling.intellij.sync.content;
 
-package com.headwire.aem.tooling.intellij.io;
-
-import com.headwire.aem.tooling.intellij.config.UnifiedModule;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.config.UnifiedModule;
+import com.headwire.aem.tooling.intellij.io.SlingResource4IntelliJ;
 import com.headwire.aem.tooling.intellij.util.Util;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
-import com.intellij.openapi.diagnostic.Logger;
 import org.apache.commons.io.IOUtils;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.filter.FilterLocator;
-import org.apache.sling.ide.io.ConnectorException;
-import org.apache.sling.ide.io.SlingDirectory;
-import org.apache.sling.ide.io.SlingProject;
-import org.apache.sling.ide.io.SlingResource;
 import org.apache.sling.ide.sync.content.WorkspaceDirectory;
 import org.apache.sling.ide.sync.content.WorkspacePath;
 import org.apache.sling.ide.sync.content.WorkspaceProject;
@@ -40,24 +19,24 @@ import org.apache.sling.ide.sync.content.WorkspaceProject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
+import java.util.Set;
 
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
 import static com.headwire.aem.tooling.intellij.util.Constants.META_INF_FOLDER_NAME;
 import static com.headwire.aem.tooling.intellij.util.Constants.VAULT_FILTER_FILE_NAME;
+import static com.headwire.aem.tooling.intellij.util.Util.findFileOrFolder;
 
-/**
- * Created by Andreas Schaefer (Headwire.com) on 11/16/15.
- */
-public class SlingProject4IntelliJ
-    implements SlingProject
+public class IntelliJWorkspaceProject
+    extends IntelliJWorkspaceResource
+    implements WorkspaceProject
 {
     private Logger logger = Logger.getInstance(this.getClass());
 
     private ServerConfiguration.Module module;
-    private SlingDirectory syncDirectory;
+    private WorkspaceDirectory syncDirectory;
 
-    public SlingProject4IntelliJ(ServerConfiguration.Module module) {
+    public IntelliJWorkspaceProject(ServerConfiguration.Module module, Set<String> ignoredFileNames) {
+        super(ignoredFileNames);
         logger.debug("Getting Started, Module: " + module);
         this.module = module;
         Project project = module.getProject();
@@ -66,25 +45,17 @@ public class SlingProject4IntelliJ
             if(Util.pathEndsWithFolder(path, JCR_ROOT_FOLDER_NAME)) {
                 File folder = new File(path);
                 if(folder.exists() && folder.isDirectory()) {
-                    syncDirectory = new SlingDirectory4IntelliJ(this, vfs.findFileByPath(path));
+                    syncDirectory = new IntelliJWorkspaceDirectory(this, vfs.findFileByPath(path), ignoredFileNames);
                     break;
                 }
             }
         }
     }
 
-    public ServerConfiguration.Module getModule() {
-        return module;
-    }
-
     @Override
-    public SlingResource findFileByPath(String path) {
-        SlingResource ret = null;
-        VirtualFile file = module.getProject().getBaseDir().getFileSystem().findFileByPath(path);
-        if(file != null) {
-            ret = new SlingResource4IntelliJ(module.getSlingProject(), file);
-        }
-        return ret;
+    /** This method is overrideen because we have to set the project to null in the constructure **/
+    public WorkspaceProject getProject() {
+        return this;
     }
 
     @Override
@@ -94,19 +65,6 @@ public class SlingProject4IntelliJ
 
     @Override
     public Filter getFilter() throws IOException {
-        try {
-            return loadFilter();
-        } catch (ConnectorException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public WorkspaceDirectory getDirectory(WorkspacePath path) {
-        return new SlingDirectory4IntelliJ((SlingProject) getProject(), path.asPortableString());
-    }
-
-    public Filter loadFilter() throws ConnectorException {
         // First check if the filter file is cached and if it isn't outdated. If it is found and not outdated
         // then we just return this one. If the filter is outdated then we just reload if the cache file
         // and if there is not file then we search for it. At the end we place both the file and filter in the cache.
@@ -153,7 +111,7 @@ public class SlingProject4IntelliJ
             }
         }
         if(filter == null && filterFile != null) {
-            FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+            FilterLocator filterLocator = ApplicationManager.getApplication().getComponent(FilterLocator.class);
             InputStream contents = null;
             try {
                 contents = filterFile.getInputStream();
@@ -163,7 +121,7 @@ public class SlingProject4IntelliJ
                 Util.setModificationStamp(filterFile);
             } catch (IOException e) {
                 logger.debug("Reading Filter File Failed", e);
-                throw new ConnectorException(
+                throw new IOException(
                     "Failed loading filter file for module " + module
                         + " from location " + filterFile,
                     e
@@ -175,63 +133,8 @@ public class SlingProject4IntelliJ
         return filter;
     }
 
-    private VirtualFile findFileOrFolder(VirtualFile rootFile, String name, boolean isFolder) {
-        VirtualFile ret = null;
-        for(VirtualFile child: rootFile.getChildren()) {
-            String childName = child.getName();
-            if("jcr_root".equals(childName)) {
-                continue;
-            }
-            if(child.isDirectory()) {
-                if(isFolder) {
-                    if(childName.equals(name)) {
-                        return child;
-                    }
-                }
-                ret = findFileOrFolder(child, name, isFolder);
-                if(ret != null) { break; }
-            } else {
-                if(childName.equals(name)) {
-                    ret = child;
-                    break;
-                }
-            }
-        }
-        return ret;
-    }
-
     @Override
-    public boolean exists() {
-        return false;
-    }
-
-    @Override
-    public boolean isIgnored() {
-        return false;
-    }
-
-    @Override
-    public WorkspacePath getLocalPath() {
-        return null;
-    }
-
-    @Override
-    public Path getOSPath() {
-        return null;
-    }
-
-    @Override
-    public WorkspaceProject getProject() {
-        return null;
-    }
-
-    @Override
-    public long getLastModified() {
-        return 0;
-    }
-
-    @Override
-    public Object getTransientProperty(String propertyName) {
-        return null;
+    public WorkspaceDirectory getDirectory(WorkspacePath path) {
+        return new IntelliJWorkspaceDirectory(getProject(), getResource().findFileByRelativePath(path.asPortableString()), getIgnoredFileNames());
     }
 }

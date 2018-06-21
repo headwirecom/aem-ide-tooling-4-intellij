@@ -6,8 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="org.apache.sling.ide.api" />
-        <module name="org.apache.sling.ide.api-io" />
         <module name="org.apache.sling.ide.impl-vlt-test" />
       </profile>
     </annotationProcessing>

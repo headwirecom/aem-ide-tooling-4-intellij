@@ -28,7 +28,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
-import com.headwire.aem.tooling.intellij.eclipse.wrapper.ResourcesPlugin;
+import com.headwire.aem.tooling.intellij.io.wrapper.ResourcesPlugin;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;

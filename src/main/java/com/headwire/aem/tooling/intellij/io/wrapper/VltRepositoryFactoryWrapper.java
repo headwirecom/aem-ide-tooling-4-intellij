@@ -16,25 +16,24 @@
  *
  */
 
-package com.headwire.aem.tooling.intellij.eclipse.wrapper;
+package com.headwire.aem.tooling.intellij.io.wrapper;
 
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.components.ServiceManager;
-import org.apache.sling.ide.impl.vlt.VaultFsLocator;
-import org.apache.sling.ide.impl.vlt.filter.VltFilterLocator;
+import org.apache.sling.ide.impl.vlt.VltRepositoryFactory;
+import org.apache.sling.ide.log.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.osgi.service.event.EventAdmin;
 
 /**
- * Created by Andreas Schaefer (Headwire.com) on 6/19/15.
+ * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
  */
-@Deprecated
-public class VltFilterLocatorWrapper
-    extends VltFilterLocator
+public class VltRepositoryFactoryWrapper
+    extends VltRepositoryFactory
     implements ApplicationComponent
 {
-    public VltFilterLocatorWrapper() {
-        VaultFsLocator fsLocator = ServiceManager.getService(VaultFsLocator.class);
-        bindVaultFsLocator(fsLocator);
+
+    public VltRepositoryFactoryWrapper(EventAdmin eventAdmin, Logger logger) {
+        super(eventAdmin, logger);
     }
 
     @Override
@@ -48,7 +47,6 @@ public class VltFilterLocatorWrapper
     @NotNull
     @Override
     public String getComponentName() {
-        return "VLT Filter Locator";
+        return "VLT Repository Factory";
     }
-
 }

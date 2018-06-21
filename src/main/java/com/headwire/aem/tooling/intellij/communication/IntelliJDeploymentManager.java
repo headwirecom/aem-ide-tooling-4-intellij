@@ -32,10 +32,11 @@ import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
 import org.apache.sling.ide.io.ServiceFactory;
 import org.apache.sling.ide.io.SlingResource;
 import org.apache.sling.ide.serialization.SerializationManager;
+import org.apache.sling.ide.sync.content.SyncCommandFactory;
+import org.apache.sling.ide.sync.content.impl.DefaultSyncCommandFactory;
 import org.apache.sling.ide.transport.Repository;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,6 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
+import static com.headwire.aem.tooling.intellij.util.AccessUtil.setPrivateFieldValue;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 2/13/16.
@@ -177,12 +179,21 @@ public class IntelliJDeploymentManager
     private MessageManager messageManager;
     private ServerConfigurationManager serverConfigurationManager;
 
+    private static SyncCommandFactory getSyncCommandFactory(Project project) {
+        SyncCommandFactory syncCommandFactory = new DefaultSyncCommandFactory();
+        SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
+        try {
+            setPrivateFieldValue(SyncCommandFactory.class, syncCommandFactory, "serializationManager", serializationManager);
+        } catch (IllegalAccessException e) {
+            // Ignore for now
+        } catch (NoSuchFieldException e) {
+            // Ignore for now
+        }
+        return syncCommandFactory;
+    }
+
     public IntelliJDeploymentManager(@NotNull Project project) {
-        super(
-            new NewResourceChangeCommandFactory(
-                ComponentProvider.getComponent(project, SerializationManager.class)
-            )
-        );
+        super(getSyncCommandFactory(project));
         messageManager = ComponentProvider.getComponent(project, MessageManager.class);
         serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
     }

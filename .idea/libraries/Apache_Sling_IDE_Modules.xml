@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="Apache Sling IDE Modules">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.sync-fs-1.2.3-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.artifacts-1.2.3-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.impl-vlt-1.2.3-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.impl-resource-1.2.3-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.api-1.2.3-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.sync-fs-1.2.3-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.artifacts-1.2.3-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.impl-vlt-1.2.3-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.impl-resource-1.2.3-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.sling.ide.api-1.2.3-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

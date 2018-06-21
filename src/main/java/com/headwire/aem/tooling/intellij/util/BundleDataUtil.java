@@ -18,17 +18,10 @@
 
 package com.headwire.aem.tooling.intellij.util;
 
-import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IProject;
-import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
-import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.apache.sling.ide.osgi.OsgiClientException;
 import org.apache.sling.ide.osgi.impl.HttpOsgiClient;
@@ -38,7 +31,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.osgi.framework.Version;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,11 +38,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.jar.Manifest;
 
 /**
  * This class provides the data of a deployed bundle. It is written in a way
@@ -105,27 +94,19 @@ public class BundleDataUtil {
         try {
             if(osgiClient instanceof TracingOsgiClient) {
                 try {
-                    osgiClient = getPrivateField(TracingOsgiClient.class, HttpOsgiClient.class, osgiClient, "osgiClient");
+                    osgiClient = AccessUtil.getPrivateFieldValue(TracingOsgiClient.class, HttpOsgiClient.class, osgiClient, "osgiClient");
                 } catch(NoSuchFieldException e) {
                     throw new OsgiClientException("Could not Access Server", e);
                 } catch(IllegalAccessException e) {
                     throw new OsgiClientException("Could not Access Server", e);
                 }
             }
-            return getPrivateField(HttpOsgiClient.class, RepositoryInfo.class, osgiClient, "repositoryInfo");
+            return AccessUtil.getPrivateFieldValue(HttpOsgiClient.class, RepositoryInfo.class, osgiClient, "repositoryInfo");
         } catch(NoSuchFieldException e) {
             throw new OsgiClientException("Failed to Obtain Repository Info", e);
         } catch(IllegalAccessException e) {
             throw new OsgiClientException("Failed to Obtain Repository Info", e);
         }
-    }
-
-    private static <T> T getPrivateField(Class instanceClass, Class<T> returnClass, Object instance, String name)
-        throws NoSuchFieldException, IllegalAccessException
-    {
-        Field field = instanceClass.getDeclaredField(name);
-        field.setAccessible(true);
-        return (T) field.get(instance);
     }
 
     private static HttpClient getHttpClient(OsgiClient osgiClient)
@@ -135,7 +116,7 @@ public class BundleDataUtil {
         try {
             if(osgiClient instanceof TracingOsgiClient) {
                 try {
-                    osgiClient = getPrivateField(TracingOsgiClient.class, HttpOsgiClient.class, osgiClient, "osgiClient");
+                    osgiClient = AccessUtil.getPrivateFieldValue(TracingOsgiClient.class, HttpOsgiClient.class, osgiClient, "osgiClient");
                 } catch(NoSuchFieldException e) {
                     throw new OsgiClientException("Could not Access Server", e);
                 } catch(IllegalAccessException e) {

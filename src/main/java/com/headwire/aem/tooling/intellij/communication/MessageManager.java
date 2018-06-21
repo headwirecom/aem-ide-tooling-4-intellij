@@ -23,6 +23,7 @@ import com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory;
 import com.headwire.aem.tooling.intellij.console.DebugNotification;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ExecutionUtil;
+import com.headwire.aem.tooling.intellij.util.ServiceProvider;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
@@ -52,7 +53,7 @@ public class MessageManager
 {
     private static final NotificationGroup NOTIFICATION_GROUP = NotificationGroup.toolWindowGroup(ConsoleLogCategory.CONSOLE_LOG_CATEGORY, ConsoleLogToolWindowFactory.TOOL_WINDOW_ID);
 
-    private Logger logger = Activator.getDefault().getPluginLogger();
+    private final Logger logger = ServiceProvider.getService(Logger.class);
 
     public MessageManager(@NotNull Project project) {
         super(project);

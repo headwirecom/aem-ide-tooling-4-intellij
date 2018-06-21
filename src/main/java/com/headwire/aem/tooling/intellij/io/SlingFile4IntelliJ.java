@@ -16,9 +16,33 @@
  *
  */
 
+package com.headwire.aem.tooling.intellij.io;
+
+import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.sling.ide.io.SlingFile;
+import org.apache.sling.ide.io.SlingProject;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
- * This package is here to test and see what it takes to implement Sling Resource etc in Eclipse
- *
- * Created by Andreas Schaefer (Headwire.com) on 12/22/15.
+ * Created by Andreas Schaefer (Headwire.com) on 11/15/15.
  */
-package com.headwire.aem.tooling.intellij.io.eclipse;
+public class SlingFile4IntelliJ
+    extends SlingResource4IntelliJ
+    implements SlingFile
+{
+
+    public SlingFile4IntelliJ(SlingProject project, VirtualFile file) {
+        super(project, file);
+    }
+
+    public SlingFile4IntelliJ(SlingProject project, String resourcePath) {
+        super(project, resourcePath);
+    }
+
+    @Override
+    public InputStream getContents() throws IOException {
+        return getContentStream();
+    }
+}

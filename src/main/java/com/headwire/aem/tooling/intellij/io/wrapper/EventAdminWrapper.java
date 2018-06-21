@@ -16,39 +16,41 @@
  *
  */
 
-package com.headwire.aem.tooling.intellij.eclipse.wrapper;
+package com.headwire.aem.tooling.intellij.io.wrapper;
 
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.components.ServiceManager;
-import org.apache.sling.ide.impl.vlt.VltRepositoryFactory;
-import org.jetbrains.annotations.NotNull;
+import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
  */
-@Deprecated
-public class VltRepositoryFactoryWrapper
-    extends VltRepositoryFactory
-    implements ApplicationComponent
+public class EventAdminWrapper
+//    extends ApplicationComponent.Adapter
+    implements EventAdmin, ApplicationComponent
 {
 
-    public VltRepositoryFactoryWrapper() {
-        EventAdmin eventAdmin = ServiceManager.getService(EventAdmin.class);
-        bindEventAdmin(eventAdmin);
+//    public EventAdminWrapper(Application application) {
+//    }
+//
+    @Override
+    public void postEvent(Event event) {
+
+    }
+
+    @Override
+    public void sendEvent(Event event) {
+
     }
 
     @Override
     public void initComponent() {
+
     }
 
     @Override
     public void disposeComponent() {
-    }
 
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "VLT Repository Factory";
     }
 }

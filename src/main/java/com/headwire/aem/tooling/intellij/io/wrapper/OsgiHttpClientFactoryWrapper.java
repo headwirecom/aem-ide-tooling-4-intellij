@@ -16,27 +16,29 @@
  *
  */
 
-package com.headwire.aem.tooling.intellij.eclipse.wrapper;
+package com.headwire.aem.tooling.intellij.io.wrapper;
 
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
-import org.apache.sling.ide.impl.vlt.VaultFsLocator;
-import org.apache.sling.ide.impl.vlt.serialization.VltSerializationManager;
+import org.apache.sling.ide.osgi.impl.HttpOsgiClientFactory;
 import org.jetbrains.annotations.NotNull;
+import org.osgi.service.event.EventAdmin;
 
 /**
-* Created by Andreas Schaefer (Headwire.com) on 5/14/15.
-*/
-@Deprecated
-class SerializationManagerWrapper
-    extends VltSerializationManager
+ * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
+ */
+public class OsgiHttpClientFactoryWrapper
+    extends HttpOsgiClientFactory
     implements ApplicationComponent
 {
-
-    public SerializationManagerWrapper() {
-        VaultFsLocator locator = ServiceManager.getService(VaultFsLocator.class);
-        bindVaultFsLocator(locator);
+    public OsgiHttpClientFactoryWrapper(EventAdmin eventAdmin) {
+        super(eventAdmin);
     }
+
+//    public OsgiHttpClientFactoryWrapper() {
+//        EventAdmin eventAdmin = ServiceManager.getService(EventAdmin.class);
+//        bindEventAdmin(eventAdmin);
+//    }
 
     @Override
     public void initComponent() {
@@ -51,6 +53,6 @@ class SerializationManagerWrapper
     @NotNull
     @Override
     public String getComponentName() {
-        return "Serialization Manager Wrapper";
+        return "OSGi Client Factory";
     }
 }

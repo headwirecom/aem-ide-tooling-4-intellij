@@ -67,7 +67,7 @@ import static com.headwire.aem.tooling.intellij.util.Constants.CONTENT_FILE_NAME
  * The <tt>ResourceChangeCommandFactory</tt> creates new {@link # Command commands} correspoding to resource addition,
  * change, or removal
  *
- * @deprecated This class was reactivated as it is still used for Import
+ * @deprecated use the **Default Sync Command Factory** instead
  */
 @Deprecated
 public class ResourceChangeCommandFactory {

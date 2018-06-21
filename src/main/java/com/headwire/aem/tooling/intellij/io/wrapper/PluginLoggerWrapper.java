@@ -16,43 +16,57 @@
  *
  */
 
-package com.headwire.aem.tooling.intellij.eclipse.wrapper;
+package com.headwire.aem.tooling.intellij.io.wrapper;
 
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationAdapter;
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.components.ApplicationComponent;
-import org.osgi.service.event.Event;
-import org.osgi.service.event.EventAdmin;
+import org.apache.sling.ide.log.Logger;
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 5/14/15.
  */
-@Deprecated
-public class EventAdminWrapper
+public class PluginLoggerWrapper
     extends ApplicationComponent.Adapter
-    implements EventAdmin
+    implements Logger
 {
+    private com.intellij.openapi.diagnostic.Logger delegate;
 
-    public EventAdminWrapper(Application application) {
+    public PluginLoggerWrapper() {
+        delegate = PluginManager.getLogger();
     }
 
     @Override
-    public void postEvent(Event event) {
-
+    public void error(String s) {
+        delegate.warn(s);
     }
 
     @Override
-    public void sendEvent(Event event) {
-
+    public void error(String s, Throwable throwable) {
+        delegate.warn(s, throwable);
     }
 
     @Override
-    public void initComponent() {
-
+    public void warn(String s) {
+        delegate.warn(s);
     }
 
     @Override
-    public void disposeComponent() {
+    public void warn(String s, Throwable throwable) {
+        delegate.warn(s, throwable);
+    }
 
+    @Override
+    public void trace(String s, Object... objects) {
+        delegate.debug(s, objects);
+    }
+
+    @Override
+    public void trace(String s, Throwable throwable) {
+        delegate.debug(s, throwable);
+    }
+
+    @Override
+    public void tracePerformance(String s, long l, Object... objects) {
+        delegate.debug(s, objects);
     }
 }

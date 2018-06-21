@@ -21,13 +21,13 @@ package com.headwire.aem.tooling.intellij.io;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.filter.Filter;
-import org.apache.sling.ide.io.ConnectorException;
-import org.apache.sling.ide.io.SlingProject;
-import org.apache.sling.ide.io.SlingResource;
-import org.apache.sling.ide.io.SlingResourceVisitor;
+import org.apache.sling.ide.io.*;
+import org.apache.sling.ide.sync.content.WorkspaceDirectory;
+import org.apache.sling.ide.sync.content.WorkspacePath;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +65,31 @@ public class SlingResource4IntelliJ
     }
 
     @Override
+    public boolean exists() {
+        return existsLocally();
+    }
+
+    @Override
+    public boolean isIgnored() {
+        //AS TODO: Implement this
+        return false;
+    }
+
+    @Override
     public SlingProject getProject() {
         return project;
+    }
+
+    @Override
+    public long getLastModified() {
+        //AS TODO: Implement this
+        return 0;
+    }
+
+    @Override
+    public Object getTransientProperty(String propertyName) {
+        //AS TODO: Implement this
+        return null;
     }
 
     @Override
@@ -85,21 +108,26 @@ public class SlingResource4IntelliJ
         return false;
     }
 
-    @Override
     public boolean isFolder() {
         //AS TODO: Handle the scenario when it is a Sling Server Resource only
         return file == null ? false : file.isDirectory();
     }
 
-    @Override
     public boolean isFile() {
         //AS TODO: Handle the scenario when it is a Sling Server Resource only
         return file == null ? true : !file.isDirectory();
     }
 
     @Override
-    public String getLocalPath() {
-        return getLocalPath(true);
+    public WorkspacePath getLocalPath() {
+        //AS TODO: Make this work correctly
+        return null;
+//        return getLocalPath(true);
+    }
+
+    @Override
+    public Path getOSPath() {
+        return null;
     }
 
     private String getLocalPath(boolean raw) {
@@ -148,13 +176,13 @@ public class SlingResource4IntelliJ
         return file.getInputStream();
     }
 
-    @Override
-    public SlingResource getParent() {
-        SlingResource ret = null;
+//    @Override
+    public WorkspaceDirectory getParent() {
+        SlingDirectory ret = null;
         if(file != null) {
             VirtualFile parent = file.getParent();
             if(!parent.getName().equals(JCR_ROOT_FOLDER_NAME)) {
-                ret = new SlingResource4IntelliJ(project, file.getParent());
+                ret = new SlingDirectory4IntelliJ(project, file.getParent());
             }
         } else if(resourcePath != null) {
             String path = resourcePath;
@@ -165,7 +193,7 @@ public class SlingResource4IntelliJ
                 int index = path.lastIndexOf('/');
                 if(index > 0) {
                     String parentResourcePath = path.substring(0, index);
-                    ret = new SlingResource4IntelliJ(project, parentResourcePath);
+                    ret = new SlingDirectory4IntelliJ(project, parentResourcePath);
                 }
             }
         }
@@ -179,7 +207,7 @@ public class SlingResource4IntelliJ
         if(parent.getName().equals(name)) {
             ret = parent;
         } else {
-            while ((parent = parent.getParent()) != null) {
+            while ((parent = (SlingDirectory) parent.getParent()) != null) {
                 if (parent.getName().equals(name)) {
                     ret = parent;
                     break;
@@ -250,8 +278,8 @@ public class SlingResource4IntelliJ
     }
 
     @Override
-    public SlingResource getSyncDirectory() {
-        return getProject().getSyncDirectory();
+    public SlingDirectory getSyncDirectory() {
+        return (SlingDirectory) getProject().getSyncDirectory();
     }
 
     @Override

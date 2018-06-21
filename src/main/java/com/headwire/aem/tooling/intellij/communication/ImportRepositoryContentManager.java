@@ -19,8 +19,8 @@
 package com.headwire.aem.tooling.intellij.communication;
 
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
-import com.headwire.aem.tooling.intellij.eclipse.ResourceAndInfo;
-import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
+//import com.headwire.aem.tooling.intellij.eclipse.ResourceAndInfo;
+//import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
 import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
@@ -35,12 +35,18 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.headwire.aem.tooling.intellij.io.SlingDirectory4IntelliJ;
+import com.headwire.aem.tooling.intellij.io.SlingFile4IntelliJ;
+import com.headwire.aem.tooling.intellij.io.SlingProject4IntelliJ;
+import com.headwire.aem.tooling.intellij.util.ServiceProvider;
 import org.apache.commons.io.IOUtils;
 import org.apache.jackrabbit.vault.util.Text;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.FilterResult;
 import org.apache.sling.ide.filter.IgnoredResources;
+import org.apache.sling.ide.io.SlingProject;
+import org.apache.sling.ide.io.SlingResource;
 import org.apache.sling.ide.log.Logger;
 import org.apache.sling.ide.serialization.SerializationData;
 import org.apache.sling.ide.serialization.SerializationDataBuilder;
@@ -48,9 +54,11 @@ import org.apache.sling.ide.serialization.SerializationException;
 import org.apache.sling.ide.serialization.SerializationKind;
 import org.apache.sling.ide.serialization.SerializationKindManager;
 import org.apache.sling.ide.serialization.SerializationManager;
+import org.apache.sling.ide.sync.content.SyncCommandFactory;
 import org.apache.sling.ide.transport.Command;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.RepositoryException;
+import org.apache.sling.ide.transport.ResourceAndInfo;
 import org.apache.sling.ide.transport.ResourceProxy;
 import org.apache.sling.ide.transport.Result;
 
@@ -76,7 +84,7 @@ public class ImportRepositoryContentManager {
     private final IServer server;
     private final IPath projectRelativePath;
     private final IProject project;
-    private final Logger logger;
+    private final Logger logger = ServiceProvider.getService(Logger.class);
 
     private SerializationManager serializationManager;
     private SerializationDataBuilder builder;
@@ -97,7 +105,7 @@ public class ImportRepositoryContentManager {
      */
     public ImportRepositoryContentManager(IServer server, IPath projectRelativePath, IProject project,
                                          SerializationManager serializationManager) throws SerializationException {
-        this.logger = Activator.getDefault().getPluginLogger();
+//        this.logger = Activator.getDefault().getPluginLogger();
         this.server = server;
         this.projectRelativePath = projectRelativePath;
         this.project = project;
@@ -150,7 +158,7 @@ public class ImportRepositoryContentManager {
 
                 //            ProgressUtils.advance(monitor, 1);
 
-                Activator.getDefault().getPluginLogger().trace("Starting import; repository start point is {0}, workspace start point is {1}", repositoryImportRoot, projectRelativePath);
+                logger.trace("Starting import; repository start point is {0}, workspace start point is {1}", repositoryImportRoot, projectRelativePath);
 
                 recordNotIgnoredResources();
 
@@ -169,7 +177,7 @@ public class ImportRepositoryContentManager {
                 //        } catch (OperationCanceledException e) {
                 //            throw e;
             } catch(Exception e) {
-                Activator.getDefault().getPluginLogger().error("Import failed: '" + e.getMessage() + "'", e);
+                logger.error("Import failed: '" + e.getMessage() + "'", e);
                 throw new CoreException("Failed to handle Import", e);
             } finally {
                 if(builder != null) {
@@ -207,7 +215,8 @@ public class ImportRepositoryContentManager {
 
     private void recordNotIgnoredResources() throws CoreException {
 
-        final ResourceChangeCommandFactory rccf = new ResourceChangeCommandFactory(serializationManager);
+        final SyncCommandFactory syncCommandFactory = ServiceProvider.getService(SyncCommandFactory.class);
+//        final ResourceChangeCommandFactory rccf = new ResourceChangeCommandFactory(serializationManager);
 
         IResource importStartingPoint = contentSyncRootDir.findMember(repositoryImportRoot);
         if (importStartingPoint == null) {
@@ -219,7 +228,12 @@ public class ImportRepositoryContentManager {
             public boolean visit(IResource resource) throws CoreException {
 
                 try {
-                    ResourceAndInfo rai = rccf.buildResourceAndInfo(resource, repository);
+                    final SlingProject slingProject = new SlingProject4IntelliJ(resource.getModule());
+                    SlingResource slingResource =
+                        resource.getType() == IResource.FOLDER ?
+                            new SlingDirectory4IntelliJ(slingProject, resource.getProjectRelativePath().toPortableString()) :
+                            new SlingFile4IntelliJ(slingProject, resource.getProjectRelativePath().toPortableString());
+                    ResourceAndInfo rai = syncCommandFactory.buildResourceAndInfo(slingResource, repository);
 
                     if (rai == null) {
                         // can be a prerequisite

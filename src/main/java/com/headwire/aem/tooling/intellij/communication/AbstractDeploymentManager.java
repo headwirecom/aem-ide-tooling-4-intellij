@@ -20,9 +20,9 @@ package com.headwire.aem.tooling.intellij.communication;
 
 import org.apache.sling.ide.io.ConnectorException;
 import org.apache.sling.ide.io.ExceptionConstants;
-import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
 import org.apache.sling.ide.io.SlingResource;
 import org.apache.sling.ide.serialization.SerializationException;
+import org.apache.sling.ide.sync.content.SyncCommandFactory;
 import org.apache.sling.ide.transport.Command;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.RepositoryException;
@@ -118,10 +118,10 @@ public abstract class AbstractDeploymentManager<M, P, F>
     public enum MessageType {INFO, WARNING, ERROR, DEBUG};
     public enum SynchronizationStatus {updating, upToDate, failed}
 
-    private NewResourceChangeCommandFactory commandFactory;
+    private SyncCommandFactory commandFactory;
 
-    public AbstractDeploymentManager(NewResourceChangeCommandFactory resourceChangeCommandFactory) {
-        commandFactory = resourceChangeCommandFactory;
+    public AbstractDeploymentManager(SyncCommandFactory commandFactory) {
+        this.commandFactory = commandFactory;
     }
 
     public void publishModule(ModuleWrapper module, boolean force) {
@@ -348,7 +348,8 @@ public abstract class AbstractDeploymentManager<M, P, F>
         SerializationException, IOException
     {
         SlingResource resource = module.obtainSlingResource(file);
-        return commandFactory.newCommandForAddedOrUpdated(repository, resource, forceDeploy);
+        return commandFactory.newCommandForAddedOrUpdatedResource(repository, resource);
+//        return commandFactory.newCommandForAddedOrUpdated(repository, resource, forceDeploy);
     }
 
     protected Command<?> removeFileCommand(
@@ -357,7 +358,8 @@ public abstract class AbstractDeploymentManager<M, P, F>
         SerializationException, IOException, ConnectorException
     {
         SlingResource resource = module.obtainSlingResource(file);
-        return commandFactory.newCommandForRemovedResources(repository, resource);
+        return commandFactory.newCommandForRemovedResource(repository, resource);
+//        return commandFactory.newCommandForRemovedResources(repository, resource);
     }
 
     protected Command<?> reorderChildNodesCommand(
