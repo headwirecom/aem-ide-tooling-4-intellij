@@ -18,8 +18,8 @@
 
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
+import com.headwire.aem.tooling.intellij.util.Constants;
 import org.apache.commons.io.IOUtils;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +47,7 @@ public class JarBuilder {
         try {
             IResource manifestResource = sourceDir.findMember(JarFile.MANIFEST_NAME);
             if (manifestResource == null || manifestResource.getType() != IResource.FILE) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "No file named "
+                throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, "No file named "
                     + JarFile.MANIFEST_NAME + " found under " + sourceDir));
             }
 
@@ -64,7 +64,7 @@ public class JarBuilder {
             zos.closeEntry();
             zipDir(sourceDir, zos, "");
         } catch (IOException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, e.getMessage(), e));
         } finally {
             IOUtils.closeQuietly(zos);
             IOUtils.closeQuietly(manifestInput);

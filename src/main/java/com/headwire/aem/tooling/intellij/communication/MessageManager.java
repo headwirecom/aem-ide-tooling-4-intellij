@@ -32,7 +32,6 @@ import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.apache.commons.lang.StringUtils;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.log.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

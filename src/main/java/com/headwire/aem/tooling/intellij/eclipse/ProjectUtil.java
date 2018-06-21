@@ -29,10 +29,11 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
 import com.headwire.aem.tooling.intellij.io.wrapper.ResourcesPlugin;
+import com.headwire.aem.tooling.intellij.util.Constants;
+import com.headwire.aem.tooling.intellij.util.ServiceProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.filter.FilterLocator;
 
@@ -124,7 +125,8 @@ public class ProjectUtil {
             }
         }
         if(filter == null && filterFile != null) {
-            FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+//            FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+            FilterLocator filterLocator = ServiceProvider.getService(FilterLocator.class);
             InputStream contents = null;
             try {
                 contents = filterFile.getInputStream();
@@ -132,7 +134,7 @@ public class ProjectUtil {
                 module.setFilter(filter);
                 Util.setModificationStamp(filterFile);
             } catch (IOException e) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID,
 //                    "Failed loading filter file for project " + project.getName()
                     "Failed loading filter file for module " + module
                         + " from location " + filterFile, e));
@@ -174,7 +176,8 @@ public class ProjectUtil {
      */
     public static Filter loadFilter(final IProject project) throws CoreException {
 
-        FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+//        FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+        FilterLocator filterLocator = ServiceProvider.getService(FilterLocator.class);
 
         IPath filterPath = findFilterPath(project);
         if (filterPath == null) {
@@ -189,7 +192,7 @@ public class ProjectUtil {
                 contents = filterFile.getContents();
                 filter = filterLocator.loadFilter(contents);
             } catch (IOException e) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID,
 //                    "Failed loading filter file for project " + project.getName()
                     "Failed loading filter file for project " + project
                         + " from location " + filterFile, e));
@@ -208,7 +211,8 @@ public class ProjectUtil {
      */
     public static IPath findFilterPath(final IProject project) {
 
-        FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+//        FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+        FilterLocator filterLocator = ServiceProvider.getService(FilterLocator.class);
 
         IFolder syncFolder = ProjectUtil.getSyncDirectory(project);
         if (syncFolder == null) {
@@ -224,7 +228,7 @@ public class ProjectUtil {
     public static IPath getSyncDirectoryValue(IProject project) {
 //        String value = null;
 //        try {
-//            value = project.getPersistentProperty(new QualifiedName(Activator.PLUGIN_ID, PROPERTY_SYNC_ROOT));
+//            value = project.getPersistentProperty(new QualifiedName(Constants.PLUGIN_ID, PROPERTY_SYNC_ROOT));
 //        } catch (CoreException e) {
 ////AS TODO: Handle Logging
 ////            Activator.getDefault().getPluginLogger().error(e.getMessage(), e);

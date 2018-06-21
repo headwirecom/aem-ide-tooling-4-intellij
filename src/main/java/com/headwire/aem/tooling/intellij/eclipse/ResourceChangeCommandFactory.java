@@ -29,10 +29,11 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.IResource;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IStatus;
 import com.headwire.aem.tooling.intellij.eclipse.stub.ResourceUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.headwire.aem.tooling.intellij.util.Constants;
+import com.headwire.aem.tooling.intellij.util.ServiceProvider;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.filter.FilterResult;
 import org.apache.sling.ide.log.Logger;
@@ -89,7 +90,7 @@ public class ResourceChangeCommandFactory {
             return addFileCommand(repository, addedOrUpdated, forceDeploy);
         } catch (IOException e) {
             throw new CoreException(
-                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed updating " + addedOrUpdated, e)
+                new Status(Status.ERROR, Constants.PLUGIN_ID, "Failed updating " + addedOrUpdated, e)
             );
         }
     }
@@ -147,7 +148,10 @@ public class ResourceChangeCommandFactory {
             Long resourceModificationTimeStamp = resource.getModificationStamp();
 
             if(modificationTimestamp != null && modificationTimestamp >= resourceModificationTimeStamp) {
-                Activator.getDefault().getPluginLogger()
+//                Activator.getDefault().getPluginLogger()
+//                    .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
+//                        resource, modificationTimestamp, resourceModificationTimeStamp);
+                ServiceProvider.getService(Logger.class)
                     .trace("Change for resource {0} ignored as the import timestamp {1} >= modification timestamp {2}",
                         resource, modificationTimestamp, resourceModificationTimeStamp);
                 return null;
@@ -161,7 +165,9 @@ public class ResourceChangeCommandFactory {
 //        }
 
         FileInfo info = createFileInfo(resource);
-        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
+//        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
+        ServiceProvider.getService(Logger.class)
+            .trace("For {0} built fileInfo {1}", resource, info);
 
         File syncDirectoryAsFile = ProjectUtil.getSyncDirectoryFullPath(resource.getProject()).toFile();
         IFolder syncDirectory = ProjectUtil.getSyncDirectory(resource.getProject());
@@ -174,7 +180,7 @@ public class ResourceChangeCommandFactory {
         if(filter == null) {
             MessageManager messageManager = module.getProject().getComponent(MessageManager.class);
             messageManager.showAlertWithArguments("server.configuration.filter.file.not.found", module.getName());
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
+            throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
         }
 
         ResourceProxy resourceProxy = null;
@@ -205,14 +211,16 @@ public class ResourceChangeCommandFactory {
                         syncDirectoryAsFile.getAbsolutePath().length());
                     info = new FileInfo(newLocation, newRelativeLocation, newName);
 
-                    Activator.getDefault().getPluginLogger()
+//                    Activator.getDefault().getPluginLogger()
+//                        .trace("Adjusted original location from {0} to {1}", resourceLocation, newLocation);
+                    ServiceProvider.getService(Logger.class)
                         .trace("Adjusted original location from {0} to {1}", resourceLocation, newLocation);
 
                 }
 
             } catch (IOException e) {
 //AS TODO: Add logging
-//                Status s = new Status(Status.WARNING, Activator.PLUGIN_ID, "Failed reading file at "
+//                Status s = new Status(Status.WARNING, Constants.PLUGIN_ID, "Failed reading file at "
 //                    + resource.getFullPath(), e);
 //                StatusManager.getManager().handle(s, StatusManager.LOG | StatusManager.SHOW);
                 return null;
@@ -286,7 +294,8 @@ public class ResourceChangeCommandFactory {
 
         FileInfo info = new FileInfo(resource.getLocation().toOSString(), relativePath.toOSString(), resource.getName());
 
-        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
+//        Activator.getDefault().getPluginLogger().trace("For {0} built fileInfo {1}", resource, info);
+        ServiceProvider.getService(Logger.class).trace("For {0} built fileInfo {1}", resource, info);
 
         return info;
     }
@@ -318,7 +327,8 @@ public class ResourceChangeCommandFactory {
 
         FilterResult filterResult = filter.filter(ProjectUtil.getSyncDirectoryFile(resource.getProject()).getPath());
 
-        Activator.getDefault().getPluginLogger().trace("Filter result for {0} for {1}", repositoryPath, filterResult);
+//        Activator.getDefault().getPluginLogger().trace("Filter result for {0} for {1}", repositoryPath, filterResult);
+        ServiceProvider.getService(Logger.class).trace("Filter result for {0} for {1}", repositoryPath, filterResult);
 
         return filterResult;
     }
@@ -336,7 +346,9 @@ public class ResourceChangeCommandFactory {
 
         String repositoryPath = relativePath.toOSString();
 
-        Activator.getDefault().getPluginLogger()
+//        Activator.getDefault().getPluginLogger()
+//            .trace("Repository path for deleted resource {0} is {1}", resource, repositoryPath);
+        ServiceProvider.getService(Logger.class)
             .trace("Repository path for deleted resource {0} is {1}", resource, repositoryPath);
 
         return repositoryPath;
@@ -394,7 +406,8 @@ public class ResourceChangeCommandFactory {
 
         // TODO - this too should be abstracted in the service layer, rather than in the Eclipse-specific code
 
-        Logger logger = Activator.getDefault().getPluginLogger();
+//        Logger logger = Activator.getDefault().getPluginLogger();
+        Logger logger = ServiceProvider.getService(Logger.class);
         logger.trace("Found plain nt:folder candidate at {0}, trying to find a covering resource for it",
             changedResource.getProjectRelativePath());
         // don't use isRoot() to prevent infinite loop when the final path is '//'
@@ -507,7 +520,7 @@ public class ResourceChangeCommandFactory {
             }
         } catch (RepositoryException e) {
             throw new CoreException(
-                new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed creating a "
+                new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Failed creating a "
                 + SerializationDataBuilder.class.getName(), e)
             );
         }
@@ -546,7 +559,10 @@ public class ResourceChangeCommandFactory {
 //            IResource childResource = ResourcesPlugin.getWorkspace().getRoot().findMember(childPath);
 //            if (childResource == null) {
             if (myFile == null) {
-                Activator.getDefault().getPluginLogger()
+//                Activator.getDefault().getPluginLogger()
+//                    .trace("For resource at with serialization data {0} the serialized child resource at {1} does not exist in the filesystem and will be ignored",
+//                        serializationFile, childPath);
+                ServiceProvider.getService(Logger.class)
                     .trace("For resource at with serialization data {0} the serialized child resource at {1} does not exist in the filesystem and will be ignored",
                         serializationFile, childPath);
                 childIterator.remove();
@@ -567,7 +583,10 @@ public class ResourceChangeCommandFactory {
             //AS TODO: Not sure why now we suddenly have empty paths but lets fix it here dirty
             if(!path.equals("") && !path.equals(resourceProxy.getPath())) {
                 resourceProxy.addChild(new ResourceProxy(path));
-                Activator.getDefault().getPluginLogger()
+//                Activator.getDefault().getPluginLogger()
+//                    .trace("For resource at with serialization data {0} the found a child resource at {1} which is not listed in the serialized child resources and will be added",
+//                        serializationFile, extraChildResource);
+                ServiceProvider.getService(Logger.class)
                     .trace("For resource at with serialization data {0} the found a child resource at {1} which is not listed in the serialized child resources and will be added",
                         serializationFile, extraChildResource);
             }
@@ -595,7 +614,7 @@ public class ResourceChangeCommandFactory {
             return removeFileCommand(repository, removed);
         } catch (IOException e) {
             throw new CoreException(
-                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed removing" + removed, e)
+                new Status(Status.ERROR, Constants.PLUGIN_ID, "Failed removing" + removed, e)
             );
         }
     }
@@ -603,7 +622,8 @@ public class ResourceChangeCommandFactory {
     private Command<?> removeFileCommand(Repository repository, IResource resource) throws CoreException, IOException {
 
         if (resource.isTeamPrivateMember(IResource.CHECK_ANCESTORS)) {
-            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
+//            Activator.getDefault().getPluginLogger().trace("Skipping team-private resource {0}", resource);
+            ServiceProvider.getService(Logger.class).trace("Skipping team-private resource {0}", resource);
             return null;
         }
 
@@ -620,7 +640,7 @@ public class ResourceChangeCommandFactory {
         if(filter == null) {
             MessageManager messageManager = module.getProject().getComponent(MessageManager.class);
             messageManager.showAlert("server.configuration.filter.file.not.found", module.getName());
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
+            throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Could not load Filter for Module: " + module.getName()));
         }
 
         FilterResult filterResult = getFilterResult(resource, null, filter);
@@ -639,9 +659,12 @@ public class ResourceChangeCommandFactory {
         ResourceProxy coveringParentData = findSerializationDataFromCoveringParent(resource, syncDirectory,
             resourceLocation, serializationFilePath);
         if (coveringParentData != null) {
-            Activator
-                .getDefault()
-                .getPluginLogger()
+//            Activator
+//                .getDefault()
+//                .getPluginLogger()
+//                .trace("Found covering resource data ( repository path = {0} ) for resource at {1},  skipping deletion and performing an update instead",
+//                    coveringParentData.getPath(), resource.getFullPath());
+            ServiceProvider.getService(Logger.class)
                 .trace("Found covering resource data ( repository path = {0} ) for resource at {1},  skipping deletion and performing an update instead",
                     coveringParentData.getPath(), resource.getFullPath());
             FileInfo info = createFileInfo(resource);
@@ -664,7 +687,7 @@ public class ResourceChangeCommandFactory {
             return repository.newReorderChildNodesCommand(rai.getResource());
         } catch (IOException e) {
             throw new CoreException(
-//                new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed reordering child nodes for "
+//                new Status(Status.ERROR, Constants.PLUGIN_ID, "Failed reordering child nodes for "
 //                + res, e)
                 "Failed reordering child nodes for: " + res,
                 e

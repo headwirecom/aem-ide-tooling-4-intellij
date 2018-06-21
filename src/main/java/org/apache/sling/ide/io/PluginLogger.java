@@ -13,29 +13,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
-
-package com.headwire.aem.tooling.intellij.util;
+package org.apache.sling.ide.io;
 
 /**
- * Created by Andreas Schaefer (Headwire.com) on 6/24/15.
+ * Created by Andreas Schaefer (Headwire.com) on 11/9/15.
  */
-public class Constants {
+public interface PluginLogger {
 
-    public static final String META_INF_FOLDER_NAME = "META-INF";
-    public static final String JCR_ROOT_FOLDER_NAME = "jcr_root";
-    public static final String CONTENT_FILE_NAME = ".content.xml";
-    public static final String VAULT_FILTER_FILE_NAME = "filter.xml";
+    public void error(String message);
 
-//    public static final String JCR_ROOT_PATH_INDICATOR = "/" + JCR_ROOT_FOLDER_NAME;
+    public void error(String message, Object... parameters);
 
-    // Component Ids for Status Messages
-    public static final int SERVER_CONNECTION_MANAGER = 10;
+    public void warn(String message);
 
-    // Action Ids for Status Messages
-    public static final int COMMAND_EXECUTION_FAILURE = 10;
-    public static final int COMMAND_EXECUTION_UNSUCCESSFUL = 11;
+    public void warn(String message, Object... parameters);
 
-    public static final int PLUGIN_ID = 1;
+    public void trace(String message);
+
+    public void trace(String message, Object... parameters);
 }

@@ -37,6 +37,7 @@ import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
 import com.headwire.aem.tooling.intellij.util.BundleDataUtil;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.headwire.aem.tooling.intellij.util.ServiceProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
@@ -72,10 +73,10 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.ide.artifacts.EmbeddedArtifact;
 import org.apache.sling.ide.artifacts.EmbeddedArtifactLocator;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.io.ConnectorException;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.apache.sling.ide.osgi.OsgiClientException;
+import org.apache.sling.ide.osgi.OsgiClientFactory;
 import org.apache.sling.ide.serialization.SerializationException;
 import org.apache.sling.ide.transport.Command;
 import org.apache.sling.ide.transport.Repository;
@@ -446,7 +447,8 @@ public class ServerConnectionManager
                         RepositoryInfo repositoryInfo = ServerUtil.getRepositoryInfo(
                             new IServer(serverConfiguration), new NullProgressMonitor()
                         );
-                        ret = Activator.getDefault().getOsgiClientFactory().createOsgiClient(repositoryInfo);
+//                        ret = Activator.getDefault().getOsgiClientFactory().createOsgiClient(repositoryInfo);
+                        ret = ServiceProvider.getService(OsgiClientFactory.class).createOsgiClient(repositoryInfo);
                     }
                 }
             } catch(URISyntaxException e) {

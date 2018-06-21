@@ -33,10 +33,10 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.ISlingLaunchpadServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 import com.headwire.aem.tooling.intellij.eclipse.stub.SlingLaunchpadServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
+import com.headwire.aem.tooling.intellij.util.Constants;
+import com.headwire.aem.tooling.intellij.util.ServiceProvider;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.transport.Repository;
 import org.apache.sling.ide.transport.RepositoryException;
 import org.apache.sling.ide.transport.RepositoryFactory;
@@ -71,7 +71,8 @@ public abstract class ServerUtil {
         if (server.getServerState()!=IServer.STATE_STARTED) {
             messageManager.showAlertWithArguments(NotificationType.ERROR, "deploy.connection.not.stared");
         } else {
-            RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+//            RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+            RepositoryFactory repository = ServiceProvider.getService(RepositoryFactory.class);
             try {
                 RepositoryInfo repositoryInfo = getRepositoryInfo(server, monitor);
                 ret = repository.getRepository(repositoryInfo, false);
@@ -87,28 +88,30 @@ public abstract class ServerUtil {
     }
 
     public static Repository connectRepository(IServer server, IProgressMonitor monitor) throws CoreException {
-        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+//        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+        RepositoryFactory repository = ServiceProvider.getService(RepositoryFactory.class);
         try {
             RepositoryInfo repositoryInfo = getRepositoryInfo(server, monitor);
             return repository.connectRepository(repositoryInfo);
         } catch (URISyntaxException e) {
-            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(new Status(Status.ERROR, Constants.PLUGIN_ID, e.getMessage(), e));
         } catch (RuntimeException e) {
-            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(new Status(Status.ERROR, Constants.PLUGIN_ID, e.getMessage(), e));
         } catch (RepositoryException e) {
-            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(new Status(Status.ERROR, Constants.PLUGIN_ID, e.getMessage(), e));
         }
     }
 
     public static void stopRepository(IServer server, IProgressMonitor monitor) throws CoreException {
-        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+//        RepositoryFactory repository = Activator.getDefault().getRepositoryFactory();
+        RepositoryFactory repository = ServiceProvider.getService(RepositoryFactory.class);
         try {
             RepositoryInfo repositoryInfo = getRepositoryInfo(server, monitor);
             repository.disconnectRepository(repositoryInfo);
         } catch (URISyntaxException e) {
-            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(new Status(Status.ERROR, Constants.PLUGIN_ID, e.getMessage(), e));
         } catch (RuntimeException e) {
-            throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            throw new CoreException(new Status(Status.ERROR, Constants.PLUGIN_ID, e.getMessage(), e));
         }
     }
 

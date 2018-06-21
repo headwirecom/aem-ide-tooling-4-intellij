@@ -19,9 +19,9 @@
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.util.Constants;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -75,10 +75,10 @@ public class IFile extends IResource {
                     this.virtualFile = child;
                     setContents(content, 0, null);
                 } catch(IOException e) {
-                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to create file: " + virtualFile, e));
+                    throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Failed to create file: " + virtualFile, e));
                 }
             } else {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Parent: " + parentPath + " (" + newFile.getPath() + ") could not be found"));
+                throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Parent: " + parentPath + " (" + newFile.getPath() + ") could not be found"));
             }
         }
     }
@@ -90,7 +90,7 @@ public class IFile extends IResource {
                 bytes = IOUtils.toByteArray(content);
                 virtualFile.setBinaryContent(bytes);
             } catch(IOException e) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to write bytes to: " + virtualFile, e));
+                throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Failed to write bytes to: " + virtualFile, e));
             }
         }
     }

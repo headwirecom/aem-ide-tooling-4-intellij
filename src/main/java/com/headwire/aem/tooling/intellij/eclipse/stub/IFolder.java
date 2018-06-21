@@ -18,8 +18,8 @@
 
 package com.headwire.aem.tooling.intellij.eclipse.stub;
 
+import com.headwire.aem.tooling.intellij.util.Constants;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -94,10 +94,10 @@ public class IFolder extends IResource {
                     virtualFile = parentFolder.findChild(folderName);
                 }
             } catch(IOException e) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to create file: " + file, e));
+                throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Failed to create file: " + file, e));
             }
         } else {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to create folder: " + file + " because parent could not be found"));
+            throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Failed to create folder: " + file + " because parent could not be found"));
         }
     }
 }

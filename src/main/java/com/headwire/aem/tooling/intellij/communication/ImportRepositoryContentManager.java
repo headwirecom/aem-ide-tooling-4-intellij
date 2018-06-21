@@ -19,8 +19,6 @@
 package com.headwire.aem.tooling.intellij.communication;
 
 import com.headwire.aem.tooling.intellij.eclipse.ProjectUtil;
-//import com.headwire.aem.tooling.intellij.eclipse.ResourceAndInfo;
-//import com.headwire.aem.tooling.intellij.eclipse.ResourceChangeCommandFactory;
 import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
 import com.headwire.aem.tooling.intellij.eclipse.stub.IFile;
@@ -38,11 +36,11 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.Status;
 import com.headwire.aem.tooling.intellij.io.SlingDirectory4IntelliJ;
 import com.headwire.aem.tooling.intellij.io.SlingFile4IntelliJ;
 import com.headwire.aem.tooling.intellij.io.SlingProject4IntelliJ;
+import com.headwire.aem.tooling.intellij.util.Constants;
 import com.headwire.aem.tooling.intellij.util.ServiceProvider;
 import org.apache.commons.io.IOUtils;
 import org.apache.jackrabbit.vault.util.Text;
 import org.apache.sling.ide.filter.Filter;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.FilterResult;
 import org.apache.sling.ide.filter.IgnoredResources;
 import org.apache.sling.ide.io.SlingProject;
@@ -256,7 +254,7 @@ public class ImportRepositoryContentManager {
 
                     return false;
                 } catch (IOException e) {
-                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                    throw new CoreException(new Status(IStatus.ERROR, Constants.PLUGIN_ID,
                         "Failed reading current project's resources", e));
                 }
             }

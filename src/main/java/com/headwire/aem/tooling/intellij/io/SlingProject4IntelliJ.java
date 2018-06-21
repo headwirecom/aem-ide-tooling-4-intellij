@@ -20,13 +20,13 @@ package com.headwire.aem.tooling.intellij.io;
 
 import com.headwire.aem.tooling.intellij.config.UnifiedModule;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
+import com.headwire.aem.tooling.intellij.util.ServiceProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
 import com.intellij.openapi.diagnostic.Logger;
 import org.apache.commons.io.IOUtils;
-import org.apache.sling.ide.eclipse.core.internal.Activator;
 import org.apache.sling.ide.filter.Filter;
 import org.apache.sling.ide.filter.FilterLocator;
 import org.apache.sling.ide.io.ConnectorException;
@@ -153,7 +153,8 @@ public class SlingProject4IntelliJ
             }
         }
         if(filter == null && filterFile != null) {
-            FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+//            FilterLocator filterLocator = Activator.getDefault().getFilterLocator();
+            FilterLocator filterLocator = ServiceProvider.getService(FilterLocator.class);
             InputStream contents = null;
             try {
                 contents = filterFile.getInputStream();
