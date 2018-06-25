@@ -32,6 +32,7 @@ import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.ExecutionUtil;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.project.Project;
@@ -117,36 +118,40 @@ public class ImportFromServerAction extends AbstractProjectAction {
             final ServerConfiguration.Module currentModule = currentModuleLookup;
             InvokableRunner runnable = new InvokableRunner(ModalityState.NON_MODAL) {
                 public void run() {
-                    IServer server = new IServer(currentModule.getParent());
-                    String path = file.getPath();
-                    String modulePath = currentModule.getUnifiedModule().getModuleDirectory();
-                    String relativePath = path.substring(modulePath.length());
-                    if(relativePath.startsWith("/")) {
-                        relativePath = relativePath.substring(1);
-                    }
-                    IPath projectRelativePath = new IPath(relativePath);
-                    IProject iProject = new IProject(currentModule);
-                    SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
+                    ApplicationManager.getApplication().runWriteAction(
+                        () -> {
+                            IServer server = new IServer(currentModule.getParent());
+                            String path = file.getPath();
+                            String modulePath = currentModule.getUnifiedModule().getModuleDirectory();
+                            String relativePath = path.substring(modulePath.length());
+                            if(relativePath.startsWith("/")) {
+                                relativePath = relativePath.substring(1);
+                            }
+                            IPath projectRelativePath = new IPath(relativePath);
+                            IProject iProject = new IProject(currentModule);
+                            SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
 
-                    try {
-                        ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(server, projectRelativePath, iProject, serializationManager);
-                        importManager.doImport(new NullProgressMonitor());
-                    } catch(CoreException e) {
-                        boolean done = false;
-                        if(e.getCause() instanceof org.apache.sling.ide.transport.RepositoryException) {
-                            if(e.getCause().getCause() instanceof PathNotFoundException) {
-                                if(messageManager != null) {
-                                    messageManager.sendDebugNotification("import.from.remote.resource.not.found", relativePath);
-                                    done = true;
+                            try {
+                                ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(server, projectRelativePath, iProject, serializationManager);
+                                importManager.doImport(new NullProgressMonitor());
+                            } catch(CoreException e) {
+                                boolean done = false;
+                                if(e.getCause() instanceof org.apache.sling.ide.transport.RepositoryException) {
+                                    if(e.getCause().getCause() instanceof PathNotFoundException) {
+                                        if(messageManager != null) {
+                                            messageManager.sendDebugNotification("import.from.remote.resource.not.found", relativePath);
+                                            done = true;
+                                        }
+                                    }
                                 }
+                                if(!done && messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
+                            } catch(InterruptedException e) {
+                                if(messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
+                            } catch(SerializationException e) {
+                                if(messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
                             }
                         }
-                        if(!done && messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
-                    } catch(InterruptedException e) {
-                        if(messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
-                    } catch(SerializationException e) {
-                        if(messageManager != null) { messageManager.sendDebugNotification("import.from.failed", e); }
-                    }
+                    );
                 }
             };
             invokeAndWait(runnable);

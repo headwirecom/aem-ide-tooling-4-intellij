@@ -6,6 +6,8 @@ This plugin requires to run IntelliJ IDEA **2016.2** or higher.
 
 #### Releases:
 
+Beta of 1.0.3.4 is out with a fix for the Import From action.
+ 
 Release of 1.0.3.3 is out. Check out in the release section.
 
 **Attention**: due to changes inside IntelliJ APIs some stored data might be lost during
@@ -44,6 +46,10 @@ The **master** is the latest release code and it the same as the highest
 **release/v'version'** branch.
 
 #### Updates:
+
+**1.0.3.4-beta1**:
+* A fix for the Import From User Action that fails because I cannot write from a
+  User Action.
 
 **1.0.3.3**:
 * Working on issues with latest IntelliJ Releases.
