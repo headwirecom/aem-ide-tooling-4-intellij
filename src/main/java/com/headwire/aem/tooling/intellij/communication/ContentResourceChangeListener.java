@@ -31,6 +31,7 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
@@ -271,13 +272,8 @@ public class ContentResourceChangeListener
             VirtualFile file = event.getFile();
             if("java".equalsIgnoreCase(file.getExtension())) {
                 //AS TODO: In order to use the Code Snell Detector this needs to be invoked in a Read Only Thread but part of the Dispatcher Thread
-                invokeAndWait(
-                    new InvokableRunner() {
-                        @Override
-                        public void run() {
-                            executeMakeInUIThread(event);
-                        }
-                    }
+                ReadAction.run(() ->
+                    executeMakeInUIThread(event)
                 );
             }
         }
@@ -293,12 +289,24 @@ public class ContentResourceChangeListener
                 CodeSmellDetector codeSmellDetector = CodeSmellDetector.getInstance(project);
                 boolean isOk = true;
                 if(codeSmellDetector != null) {
-                    List<CodeSmellInfo> codeSmellInfoList = codeSmellDetector.findCodeSmells(Arrays.asList(event.getFile()));
-                    for(CodeSmellInfo codeSmellInfo: codeSmellInfoList) {
-                        if(codeSmellInfo.getSeverity() == HighlightSeverity.ERROR) {
-                            isOk = false;
-                            break;
+                    try {
+                        List<CodeSmellInfo> codeSmellInfoList = codeSmellDetector.findCodeSmells(Arrays.asList(event.getFile()));
+                        for (CodeSmellInfo codeSmellInfo : codeSmellInfoList) {
+                            if (codeSmellInfo.getSeverity() == HighlightSeverity.ERROR) {
+                                isOk = false;
+                                break;
+                            }
                         }
+                    } catch(RuntimeException e) {
+                        // Swallow the exception if this is due to the Cannot Run Under Write Action issue
+                        if(!e.getMessage().contains("run under write action")) {
+                            throw e;
+                        }
+                        else {
+                            Logger.getInstance(ContentResourceChangeListener.class).info(
+                                "Found 'cannot run under write action -> ignored"
+                            );
+                         }
                     }
                 }
                 if(isOk) {

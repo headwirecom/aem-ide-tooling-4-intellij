@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>AEM IDE Tooling 4 IntelliJ</name>
-    <version>1.0.3.4-beta1</version>
+    <version>1.0.3.4-beta2</version>
     <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
@@ -16,12 +16,16 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>1.0.3.4-beta1:
+            <li>1.0.3.4-beta2:
                 <ol>
                     <li>
                         Added a fix of a threading issue inside the Import From action. IntelliJ does not permit (anymore)
                         to write in an User Action.
                     </li>
+                    <li>
+                        An exception during code change from the Code Smell Detector is ignored if it is based on
+                        the 'cannot run under write action' failure. There is not fix in sight from JetBrains or
+                        help on how to make this work so for now it is just ignored.
                 </ol>
             </li>
             <li>1.0.3.3:
