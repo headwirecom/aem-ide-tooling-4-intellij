@@ -31,6 +31,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
@@ -53,6 +54,8 @@ public abstract class AbstractProjectAction
     implements DumbAware
 
 {
+    final Logger LOG = Logger.getInstance(getClass());
+
     /** Map that contains the Toolbar Locks per Project **/
     private static Map<Project, Boolean> lockMap = new HashMap<Project, Boolean>();
     private static ProgressHandlerImpl progressHandler;

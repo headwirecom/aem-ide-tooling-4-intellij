@@ -36,7 +36,7 @@ public class ArtifactsLocatorImpl
     @Override
     public EmbeddedArtifact loadToolingSupportBundle() {
 
-        String version = "1.0.2"; // TODO - remove version hardcoding
+        String version = "1.0.4"; // TODO - remove version hardcoding
         String artifactId = "org.apache.sling.tooling.support.install";
         String extension = "jar";
 
@@ -72,8 +72,16 @@ public class ArtifactsLocatorImpl
     ) {
         URL resourceUrl = getClass().getClassLoader().getResource(resourceLocation);
         if(resourceUrl == null) {
-            throw new RuntimeException("Unable to locate bundle resource " + resourceLocation);
+            throw new ArtifactsLocatorException("Unable to locate bundle resource " + resourceLocation);
         }
         return resourceUrl;
+    }
+
+    public static class ArtifactsLocatorException
+        extends RuntimeException
+    {
+        public ArtifactsLocatorException(String message) {
+            super(message);
+        }
     }
 }

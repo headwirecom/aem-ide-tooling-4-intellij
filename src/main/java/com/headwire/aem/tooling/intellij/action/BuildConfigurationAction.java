@@ -50,12 +50,16 @@ public class BuildConfigurationAction
         ServerConfigurationManager configurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
         if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
+            //AS TODO: 7/23/2018 For temporary debugging purposes
+            LOG.debug("Server Configuration for Build Dialog: " + serverConfiguration);
             BuildSelectionDialog dialog = new BuildSelectionDialog(project, serverConfiguration);
             if(dialog.showAndGet()) {
                 // Modules might have changed and so update the tree
                 configurationManager.updateServerConfiguration(serverConfiguration);
             }
         }
+        //AS TODO: 7/23/2018 For temporary debugging purposes
+        else { LOG.debug("Selection / Server Connection or Configuration Manager is null -> ignored: " + selectionHandler + ", " + serverConnectionManager + ", " + configurationManager); }
     }
 
     @Override

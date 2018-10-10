@@ -99,9 +99,9 @@ public class ServerConfigurationManager
         for(ServerConfiguration serverConfiguration: serverConfigurationList) {
             // Clear any bindings
             serverConfiguration.unBind();
-            LOGGER.debug("Update Service Configuration: '{}', '{}'", serverConfiguration.getName(), serverConfiguration.getDescription());
+            LOGGER.debug("Update Service Configuration: '" + serverConfiguration.getName() + "', '" + serverConfiguration.getDescription() + "'");
             moduleManager.getUnifiedModules(serverConfiguration);
-            LOGGER.debug("List of Unified Modules: '{}'", moduleManager.getUnifiedModules(serverConfiguration));
+            LOGGER.debug("List of Unified Modules: '" + moduleManager.getUnifiedModules(serverConfiguration) + "'");
         }
         return true;
     }
@@ -283,6 +283,7 @@ public class ServerConfigurationManager
         List<Element> elementList = state.getChildren();
         serverConfigurationList.clear();
         for(Element child: elementList) {
+            LOGGER.debug("SCM.loadState(), handle server configuration element: " + child);
             ServerConfiguration serverConfiguration = new ServerConfiguration();
             serverConfiguration.setName(child.getAttributeValue(NAME));
             serverConfiguration.setHost(child.getAttributeValue(HOST));
@@ -320,6 +321,7 @@ public class ServerConfigurationManager
             serverConfiguration.setMavenBuildTimeoutInSeconds(new Integer(child.getAttributeValue(BUILD_WITH_MAVEN_TIMEOUT_IN_SECONDS, ServerConfiguration.DEFAULT_MAVEN_BUILD_TIME_OUT_IN_SECONDS + "")));
             serverConfiguration.setLogFilter(Util.convertToEnum(child.getAttributeValue(LOG_FILTER), ServerConfiguration.DEFAULT_LOG_FILTER));
             for(Element element: child.getChildren()) {
+                LOGGER.debug("SCM.loadState(), handle server module configuration element: " + element);
                 try {
                     String moduleName = element.getAttributeValue(MODULE_NAME, "");
                     boolean isPartOfBuild = new Boolean(element.getAttributeValue(PART_OF_BUILD, "true"));
@@ -364,6 +366,7 @@ public class ServerConfigurationManager
                 }
             }
         );
+        LOGGER.debug("SCM.loadState(), done loading Server Configuration: " + serverConfigurationList);
     }
 
     public void addConfigurationListener(ConfigurationListener myConfigurationListener) {

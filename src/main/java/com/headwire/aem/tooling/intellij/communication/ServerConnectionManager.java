@@ -35,6 +35,7 @@ import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
 
 import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl;
 import com.headwire.aem.tooling.intellij.util.BundleDataUtil;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
@@ -56,7 +57,6 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileScope;
@@ -88,7 +88,6 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
-import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.MavenDataKeys;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
@@ -116,6 +115,7 @@ import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeAndWait
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeLater;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.InvokableRunner;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
+import static com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl.ArtifactsLocatorException;
 
 /**
  * Handles the Server Connections for the Plugin, its state and flags
@@ -417,6 +417,8 @@ public class ServerConnectionManager
                 messageManager.sendErrorNotification("remote.repository.cannot.read.installation.support.bundle", serverConfiguration.getName(), e);
             } catch(OsgiClientException e) {
                 messageManager.sendErrorNotification("remote.repository.osgi.client.problem", serverConfiguration.getName(), e);
+            } catch(ArtifactsLocatorImpl.ArtifactsLocatorException e) {
+                messageManager.sendErrorNotification("remote.repository.cannot.load.installation.support.bundle", serverConfiguration.getName(), e);
             }
         } else {
             messageManager.sendNotification("deploy.module.bundle.no.configuration.selected", NotificationType.WARNING);

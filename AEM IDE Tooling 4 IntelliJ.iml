@@ -11,7 +11,7 @@
       <excludeFolder url="file://$MODULE_DIR$/eclipse.aem.tooling.generatedd.test.project" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/intellij" />
     </content>
-    <orderEntry type="jdk" jdkName="IntelliJ IDEA Community Edition IC-181.5540.7" jdkType="IDEA JDK" />
+    <orderEntry type="jdk" jdkName="IntelliJ IDEA Community Edition IC-182.4505.22" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault.rcp:3.1.38" level="project" />
     <orderEntry type="library" name="org.apache.jackrabbit.vault:org.apache.jackrabbit.vault:3.1.38" level="project" />

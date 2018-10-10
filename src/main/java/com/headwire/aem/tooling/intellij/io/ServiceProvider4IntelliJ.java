@@ -19,7 +19,6 @@
 package com.headwire.aem.tooling.intellij.io;
 
 import org.apache.sling.ide.io.PluginLogger;
-import org.apache.sling.ide.io.ProjectUtil;
 import org.apache.sling.ide.io.ServiceProvider;
 import org.apache.sling.ide.serialization.SerializationManager;
 

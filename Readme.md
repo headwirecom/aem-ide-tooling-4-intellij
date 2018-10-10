@@ -6,10 +6,11 @@ This plugin requires to run IntelliJ IDEA **2016.2** or higher.
 
 #### Releases:
 
-Beta of 1.0.3.4 is out with a fix for the Import From action.
+1.0.3.4 is out with a fix for the 'Import From' action and ignoring
+an error from the Code Smell IntelliJ feature that I used to check
+code before building it. For IntelliJ 2018.2 this renders that feature
+mute.
  
-Release of 1.0.3.3 is out. Check out in the release section.
-
 **Attention**: due to changes inside IntelliJ APIs some stored data might be lost during
 the update. If your configuration is lost then just recreate it, if your modules are gone
 then just hit **verify** to rebuild them.
@@ -47,12 +48,13 @@ The **master** is the latest release code and it the same as the highest
 
 #### Updates:
 
-**1.0.3.4-beta2**:
+**1.0.3.4**:
 * A fix for the Import From User Action that fails because I cannot write from a
   User Action.
 * An exception during code change from the Code Smell Detector is ignored if it is based on
   the 'cannot run under write action' failure. There is not fix in sight from JetBrains or
   help on how to make this work so for now it is just ignored.
+* Upgraded the Tooling Support Bundle to version 1.0.4.
   
 **1.0.3.3**:
 * Working on issues with latest IntelliJ Releases.
