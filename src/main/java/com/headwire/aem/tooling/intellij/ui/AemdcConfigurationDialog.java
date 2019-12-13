@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aemdc.companion.Config;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComponentWithBrowseButton;
@@ -118,7 +119,7 @@ public class AemdcConfigurationDialog extends DialogWrapper {
         super(project);
         this.project = project;
         this.baseDir = project.getBaseDir();
-        messageManager = ComponentProvider.getComponent(project, MessageManager.class);
+        messageManager = ServiceManager.getService(project, MessageManager.class);
 
         setTitle(AEMBundle.message("dialog.aemdc.configuration.title"));
         setModal(true);

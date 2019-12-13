@@ -29,22 +29,22 @@ import com.intellij.openapi.project.Project;
  */
 public class ComponentProvider {
 
-    public static <T> T getComponent(Class<T> clazz) {
-        return getComponent(null, clazz);
-    }
-
-    public static <T> T getComponent(Project project, Class<T> clazz) {
-        T ret = null;
-        if(project != null) {
-            // IntelliJ 15+ should find all components / servies here
-            ret = project.getComponent(clazz);
-        }
-        if(ret == null) {
-            // If not found then we try IntelliJ 14's way through the Application Manager
-            // which only works for Application Components but worth a shot
-            ret = ApplicationManager.getApplication().getComponent(clazz);
-        }
-        //AS TODO: We should report an error here and maybe throw an exception to make sure the plugin is proceeding
-        return ret;
-    }
+//    public static <T> T getComponent(Class<T> clazz) {
+//        return getComponent(null, clazz);
+//    }
+//
+//    public static <T> T getComponent(Project project, Class<T> clazz) {
+//        T ret = null;
+//        if(project != null) {
+//            // IntelliJ 15+ should find all components / servies here
+//            ret = project.getComponent(clazz);
+//        }
+//        if(ret == null) {
+//            // If not found then we try IntelliJ 14's way through the Application Manager
+//            // which only works for Application Components but worth a shot
+//            ret = ApplicationManager.getApplication().getComponent(clazz);
+//        }
+//        //AS TODO: We should report an error here and maybe throw an exception to make sure the plugin is proceeding
+//        return ret;
+//    }
 }

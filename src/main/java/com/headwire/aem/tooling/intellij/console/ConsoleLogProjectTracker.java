@@ -20,13 +20,14 @@ package com.headwire.aem.tooling.intellij.console;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
-import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.headwire.aem.tooling.intellij.util.AbstractProjectComponent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.notification.NotificationsAdapter;
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.DumbAwareRunnable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
@@ -50,6 +51,7 @@ import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runReadAction
  */
 public class ConsoleLogProjectTracker
     extends AbstractProjectComponent
+    implements Disposable
 {
     private final Map<String, ConsoleLogConsole> myCategoryMap = ContainerUtil.newConcurrentMap();
     private final List<Notification> myInitial = ContainerUtil.createLockFreeCopyOnWriteList();
@@ -92,22 +94,10 @@ public class ConsoleLogProjectTracker
         return myProjectModel;
     }
 
-    @Override
-    public void projectClosed() {
-        ConsoleLog consoleLog = ConsoleLog.getApplicationComponent();
-        if(consoleLog != null) {
-            ConsoleLogModel model = consoleLog.getModel();
-            if(model != null) {
-                model.setStatusMessage(null, 0);
-            }
-        }
-        StatusBar.Info.set("", null, LOG_REQUESTOR);
-    }
-
     protected void printNotification(Notification notification) {
         // Only show Plugin Log statements in our AEM Console
         if(acceptGroupIds.contains(notification.getGroupId())) {
-            SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
+            SlingServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, SlingServerTreeSelectionHandler.class);
             if(selectionHandler != null) {
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                 ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;
@@ -181,4 +171,15 @@ public class ConsoleLogProjectTracker
         return newConsole;
     }
 
+    @Override
+    public void dispose() {
+        ConsoleLog consoleLog = ConsoleLog.getApplicationComponent();
+        if(consoleLog != null) {
+            ConsoleLogModel model = consoleLog.getModel();
+            if(model != null) {
+                model.setStatusMessage(null, 0);
+            }
+        }
+        StatusBar.Info.set("", null, LOG_REQUESTOR);
+    }
 }

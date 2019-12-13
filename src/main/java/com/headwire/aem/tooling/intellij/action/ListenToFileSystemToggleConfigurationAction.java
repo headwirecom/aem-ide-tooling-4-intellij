@@ -26,6 +26,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ToggleAction;
 import com.intellij.openapi.actionSystem.Toggleable;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,7 +67,7 @@ public class ListenToFileSystemToggleConfigurationAction
     }
 
     public boolean isSelected(AnActionEvent event) {
-        AEMPluginConfiguration pluginConfiguration = ComponentProvider.getComponent(event.getProject(), AEMPluginConfiguration.class);
+        AEMPluginConfiguration pluginConfiguration = ServiceManager.getService(AEMPluginConfiguration.class);
         if(pluginConfiguration != null) {
             return pluginConfiguration.isListenToFileSystemEvents();
         } else {
@@ -75,7 +76,7 @@ public class ListenToFileSystemToggleConfigurationAction
     }
 
     public void setSelected(AnActionEvent event, boolean value) {
-        AEMPluginConfiguration pluginConfiguration = ComponentProvider.getComponent(event.getProject(), AEMPluginConfiguration.class);
+        AEMPluginConfiguration pluginConfiguration = ServiceManager.getService(AEMPluginConfiguration.class);
         if(pluginConfiguration != null) {
             pluginConfiguration.setListenToFileSystemEvents(value);
         }

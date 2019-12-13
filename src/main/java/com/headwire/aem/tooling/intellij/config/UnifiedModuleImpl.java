@@ -217,7 +217,11 @@ public class UnifiedModuleImpl
     @Override
     public boolean isOSGiBundle() {
         if(mavenProject != null) {
-            return mavenProject.getPackaging().equalsIgnoreCase("bundle");
+            boolean answer = mavenProject.getPackaging().equalsIgnoreCase("bundle");
+            if(!answer && slingConfiguration != null) {
+                answer = slingConfiguration.getModuleType() == ModuleType.bundle;
+            }
+            return answer;
         } else {
             return slingConfiguration.getModuleType() == ModuleType.bundle;
         }

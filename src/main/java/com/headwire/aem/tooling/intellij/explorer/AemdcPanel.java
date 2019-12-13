@@ -22,13 +22,13 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.ui.AemdcConfigurationDialog;
-import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aemdc.companion.Config;
 import com.headwire.aemdc.companion.RunnableCompanion;
 import com.headwire.aemdc.gui.MainApp;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
@@ -38,7 +38,6 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,7 +131,7 @@ public class AemdcPanel
             if(!Config.validateThisConfiguration(new File(project.getBasePath()), AEMDC_CONFIG_PROPERTIES).isEmpty()) {
                 if(!showDialog()) {
                     // Show dialog why panel is not shown
-                    ComponentProvider.getComponent(project, MessageManager.class).showAlertWithArguments(
+                    ServiceManager.getService(project, MessageManager.class).showAlertWithArguments(
                         NotificationType.ERROR,
                         "dialog.aemdc.invalid.configuration"
                     );
@@ -158,7 +157,7 @@ public class AemdcPanel
         if(aemdcConfigPropertiesFile == null) {
             if(project.getBaseDir().findChild(LAZYBONES_FOLDER) != null) {
                 // Ask the user if he wants to auto configure from the lazybones configuration
-                int response = ComponentProvider.getComponent(project, MessageManager.class).showAlertWithOptions(
+                int response = ServiceManager.getService(project, MessageManager.class).showAlertWithOptions(
                     NotificationType.INFORMATION,
                     "dialog.aemdc.do.auto.configuration"
                 );
@@ -166,12 +165,12 @@ public class AemdcPanel
                     try {
                         RunnableCompanion.main(new String[]{"-temp=" + project.getBasePath(), "config"});
                     } catch(IOException e) {
-                        ComponentProvider.getComponent(project, MessageManager.class).showAlertWithArguments(NotificationType.ERROR, "dialog.aemdc.failed.auto.configuration");
+                        ServiceManager.getService(project, MessageManager.class).showAlertWithArguments(NotificationType.ERROR, "dialog.aemdc.failed.auto.configuration");
                     }
                 }
             }
         }
-        SlingServerTreeSelectionHandler slingServerTreeSelectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
+        SlingServerTreeSelectionHandler slingServerTreeSelectionHandler = ServiceManager.getService(project, SlingServerTreeSelectionHandler.class);
         ServerConfiguration serverConfiguration = slingServerTreeSelectionHandler.getCurrentConfiguration();
         AemdcConfigurationDialog dialog = new AemdcConfigurationDialog(project, serverConfiguration);
         return dialog.showAndGet();
@@ -224,17 +223,6 @@ public class AemdcPanel
         }
     }
 
-    @Override
-    public void projectOpened() {
-        logger.debug("Project Opened");
-    }
-
-    @Override
-    public void projectClosed() {
-        logger.debug("Project Closed");
-    }
-
-    @Override
     public void initComponent() {
         String pluginPath = PathManager.getPluginsPath();
         logger.info("File Location: " + pluginPath);
@@ -252,20 +240,9 @@ public class AemdcPanel
         VirtualFile defaultFolder = virtualFileBy(defaultFolderPath);
 
         Platform.setImplicitExit(false);
-        ServerConfigurationManager serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
+        ServerConfigurationManager serverConfigurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
         Platform.runLater(() -> {
             initFX(project);
         });
-    }
-
-    @Override
-    public void disposeComponent() {
-        logger.debug("Dispose this Component");
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "AEM DC Panel";
     }
 }

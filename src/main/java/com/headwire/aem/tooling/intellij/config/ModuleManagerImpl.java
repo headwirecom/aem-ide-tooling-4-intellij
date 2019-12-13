@@ -21,8 +21,8 @@ package com.headwire.aem.tooling.intellij.config;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleExtensionProperties.ModuleType;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacet;
 import com.headwire.aem.tooling.intellij.facet.SlingModuleFacetConfiguration;
-import com.headwire.aem.tooling.intellij.util.ComponentProvider;
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.headwire.aem.tooling.intellij.util.AbstractProjectComponent;
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class ModuleManagerImpl
     extends AbstractProjectComponent
-    implements ModuleManager
+    implements ModuleManager, Disposable
 {
     private static final Logger LOGGER = Logger.getInstance(ModuleManagerImpl.class);
 
@@ -50,27 +50,8 @@ public class ModuleManagerImpl
     }
 
     @Override
-    public void projectOpened() {
-    }
-
-    @Override
-    public void projectClosed() {
-    }
-
-    @Override
-    public void initComponent() {
-        serverConfigurationManager = ComponentProvider.getComponent(ServerConfigurationManager.class);
-    }
-
-    @Override
-    public void disposeComponent() {
+    public void dispose() {
         serverConfigurationManager = null;
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return ModuleManager.class.getName();
     }
 
     @Override

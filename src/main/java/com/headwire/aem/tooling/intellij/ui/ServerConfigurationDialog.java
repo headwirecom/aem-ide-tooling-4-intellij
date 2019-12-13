@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
 import org.bouncycastle.util.Arrays;
@@ -77,8 +78,8 @@ public class ServerConfigurationDialog
         setModal(true);
         setUpDialog(serverConfiguration == null ? getConfiguration() : serverConfiguration);
         init();
-        serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
-        messageManager = ComponentProvider.getComponent(project, MessageManager.class);
+        serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        messageManager = ServiceManager.getService(project, MessageManager.class);
         // Implement the toggle if one is selected while the other is selected
         defaultRunConfiguration.addActionListener(
             new ActionListener() {

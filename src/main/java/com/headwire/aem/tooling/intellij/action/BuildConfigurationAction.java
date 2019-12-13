@@ -25,6 +25,7 @@ import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandle
 import com.headwire.aem.tooling.intellij.ui.BuildSelectionDialog;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,8 +47,8 @@ public class BuildConfigurationAction
     @Override
     protected void execute(@NotNull Project project, @NotNull DataContext dataContext, final ProgressHandler progressHandler) {
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
-        ServerConfigurationManager configurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
+        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        ServerConfigurationManager configurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
         if(selectionHandler != null && serverConnectionManager != null && configurationManager != null) {
             ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
             //AS TODO: 7/23/2018 For temporary debugging purposes
@@ -64,7 +65,7 @@ public class BuildConfigurationAction
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 }

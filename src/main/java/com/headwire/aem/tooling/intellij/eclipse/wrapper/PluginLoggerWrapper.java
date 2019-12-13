@@ -19,7 +19,6 @@
 package com.headwire.aem.tooling.intellij.eclipse.wrapper;
 
 import com.intellij.ide.plugins.PluginManager;
-import com.intellij.openapi.components.ApplicationComponent;
 import org.apache.sling.ide.log.Logger;
 
 /**
@@ -27,7 +26,6 @@ import org.apache.sling.ide.log.Logger;
  */
 @Deprecated
 public class PluginLoggerWrapper
-    extends ApplicationComponent.Adapter
     implements Logger
 {
     private com.intellij.openapi.diagnostic.Logger delegate;

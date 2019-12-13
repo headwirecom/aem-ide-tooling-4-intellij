@@ -35,6 +35,7 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.serialization.SerializationException;
@@ -61,7 +62,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
     @Override
     public boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
         boolean ret = false;
-        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         if(serverConnectionManager.isConfigurationSelected()) {
             // Now check if a file is selected
             VirtualFile[] virtualFiles = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
@@ -94,8 +95,8 @@ public class ImportFromServerAction extends AbstractProjectAction {
     }
 
     private void doImport(final Project project, final VirtualFile file) {
-        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
-        final SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
+        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        final SlingServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, SlingServerTreeSelectionHandler.class);
         if(!serverConnectionManager.checkSelectedServerConfiguration(true, false)) {
             return;
         }
@@ -103,7 +104,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
         serverConnectionManager.checkBinding(serverConfiguration, new ProgressHandlerImpl("Do Import from Server"));
         List<ServerConfiguration.Module> moduleList = selectionHandler.getModuleDescriptorListOfCurrentConfiguration();
         ServerConfiguration.Module currentModuleLookup = null;
-        final MessageManager messageManager = ComponentProvider.getComponent(project, MessageManager.class);
+        final MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
         for(ServerConfiguration.Module module: moduleList) {
             if(module.isSlingPackage()) {
                 String contentPath = serverConnectionManager.findContentResource(module, file.getPath());
@@ -129,7 +130,7 @@ public class ImportFromServerAction extends AbstractProjectAction {
                             }
                             IPath projectRelativePath = new IPath(relativePath);
                             IProject iProject = new IProject(currentModule);
-                            SerializationManager serializationManager = ComponentProvider.getComponent(project, SerializationManager.class);
+                            SerializationManager serializationManager = ServiceManager.getService(project, SerializationManager.class);
 
                             try {
                                 ImportRepositoryContentManager importManager = new ImportRepositoryContentManager(server, projectRelativePath, iProject, serializationManager);

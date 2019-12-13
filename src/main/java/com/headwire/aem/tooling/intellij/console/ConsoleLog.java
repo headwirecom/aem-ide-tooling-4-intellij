@@ -18,7 +18,6 @@
 
 package com.headwire.aem.tooling.intellij.console;
 
-import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.execution.filters.HyperlinkInfo;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.notification.EventLogCategory;
@@ -29,7 +28,7 @@ import com.intellij.notification.NotificationsAdapter;
 import com.intellij.notification.impl.NotificationsManagerImpl;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.RangeMarker;
 import com.intellij.openapi.editor.impl.DocumentImpl;
@@ -58,7 +57,7 @@ import com.intellij.util.text.CharArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -71,9 +70,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Andreas Schaefer (Headwire.com) on 5/6/15.
  */
-public class ConsoleLog
-    extends ApplicationComponent.Adapter
-{
+public class ConsoleLog {
     public static final String LOG_REQUESTOR = "Internal log requestor";
     public static final String HELP_ID = "reference.toolwindows.event.log";
     private static final String A_CLOSING = "</a>";
@@ -89,7 +86,6 @@ public class ConsoleLog
         this.application = application;
     }
 
-    @Override
     public void initComponent() {
         try {
             if(application != null) {
@@ -440,7 +436,7 @@ public class ConsoleLog
     }
 
     public static ConsoleLogProjectTracker getProjectComponent(Project project) {
-        return ComponentProvider.getComponent(project, ConsoleLogProjectTracker.class);
+        return ServiceManager.getService(project, ConsoleLogProjectTracker.class);
     }
 
     public static void addNotification(@NotNull Project project, @NotNull Notification notification) {

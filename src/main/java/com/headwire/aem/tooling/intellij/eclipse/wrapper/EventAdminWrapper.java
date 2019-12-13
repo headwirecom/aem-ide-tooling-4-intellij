@@ -19,8 +19,6 @@
 package com.headwire.aem.tooling.intellij.eclipse.wrapper;
 
 import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationAdapter;
-import com.intellij.openapi.components.ApplicationComponent;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 
@@ -29,7 +27,6 @@ import org.osgi.service.event.EventAdmin;
  */
 @Deprecated
 public class EventAdminWrapper
-    extends ApplicationComponent.Adapter
     implements EventAdmin
 {
 
@@ -43,16 +40,6 @@ public class EventAdminWrapper
 
     @Override
     public void sendEvent(Event event) {
-
-    }
-
-    @Override
-    public void initComponent() {
-
-    }
-
-    @Override
-    public void disposeComponent() {
 
     }
 }

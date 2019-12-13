@@ -83,7 +83,7 @@ Maven OSGi Bundle plugin will create bind / unbind methods based on the annotati
 
 8) Go back to the Preferences, Plugins and make sure it is listed there
 
-![IntelliJ with installed Felix SCR Annoation Processor](./img/1.4.IntelliJ.Preferences.Review.Felix.Plugin.png)
+![IntelliJ with installed Felix SCR Annotation Processor](./img/1.4.IntelliJ.Preferences.Review.Felix.Plugin.png)
 
 The **Felix OSGi Annotation Processor** hooks into the compilation process and at the end of it will handle the
 **Annotation** similar to what the Maven OSGi Bundle plugin does. So when the compilation concludes the created class has

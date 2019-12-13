@@ -23,6 +23,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.ide.util.treeView.*;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.util.ProgressIndicatorBase;
 import com.intellij.openapi.progress.util.ProgressIndicatorUtils;
@@ -52,7 +53,7 @@ final class SlingServerTreeBuilder extends AbstractTreeBuilder {
         super(tree, treeModel, new SlingServerTreeStructure(project), IndexComparator.INSTANCE);
         myProject = project;
         myConfigurationListener = new ConfigurationListenerImpl();
-        myConfig = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
+        myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
         myExpansionListener = new ExpandedStateUpdater();
         tree.addTreeExpansionListener(myExpansionListener);
         initRootNode();

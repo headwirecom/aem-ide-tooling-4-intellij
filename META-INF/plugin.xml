@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.headwire.aem.tooling.intellij</id>
     <name>AEM IDE Tooling 4 IntelliJ</name>
-    <version>1.0.3.4</version>
+    <version>1.0.3.5-beta</version>
     <vendor email="aemintellijplugin@headwire.com" url="https://www.headwire.com/aemintellijplugin">headwire.com Inc</vendor>
 
     <description><![CDATA[
@@ -16,6 +16,17 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li>1.0.3.5-beta:
+                <ol>
+                    <li>
+                        Migrated the Plugin to work with IntelliJ Plugin services rather than components so that it
+                        works with the latest releases of IntelliJ.
+                    </li>
+                    <li>
+                        Updated to the latest Aemdc code base
+                    </li>
+                </ol>
+            </li>
             <li>1.0.3.4:
                 <ol>
                     <li>
@@ -154,99 +165,39 @@
                 order="last"
                 nonDefaultProject="false"
         />
+
+        <postStartupActivity implementation="com.headwire.aem.tooling.intellij.explorer.PluginStartupActivity"/>
+
+        <applicationService serviceImplementation="com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration" />
+        <applicationService serviceImplementation="com.headwire.aem.tooling.intellij.console.ConsoleLog" />
+        <applicationService serviceInterface="org.osgi.service.event.EventAdmin"
+                            serviceImplementation="com.headwire.aem.tooling.intellij.eclipse.wrapper.EventAdminWrapper" />
+        <applicationService serviceInterface="org.apache.sling.ide.impl.vlt.VaultFsLocator"
+                            serviceImplementation="org.apache.sling.ide.impl.vlt.VaultFsLocatorImpl" />
+        <applicationService serviceInterface="org.apache.sling.ide.serialization.SerializationManager"
+                            serviceImplementation="com.headwire.aem.tooling.intellij.eclipse.wrapper.SerializationManagerWrapper" />
+        <applicationService serviceInterface="org.apache.sling.ide.transport.RepositoryFactory"
+                            serviceImplementation="com.headwire.aem.tooling.intellij.eclipse.wrapper.VltRepositoryFactoryWrapper" />
+        <applicationService serviceInterface="org.apache.sling.ide.osgi.OsgiClientFactory"
+                            serviceImplementation="com.headwire.aem.tooling.intellij.eclipse.wrapper.OsgiClientFactoryWrapper" />
+        <applicationService serviceInterface="org.apache.sling.ide.filter.FilterLocator"
+                            serviceImplementation="com.headwire.aem.tooling.intellij.eclipse.wrapper.VltFilterLocatorWrapper" />
+        <applicationService serviceInterface="org.apache.sling.ide.log.Logger"
+                            serviceImplementation="com.headwire.aem.tooling.intellij.eclipse.wrapper.PluginLoggerWrapper" />
+
+        <projectService serviceImplementation="com.headwire.aem.tooling.intellij.communication.MessageManager" />
+        <projectService serviceImplementation="com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler" />
+        <projectService serviceImplementation="com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager" />
+        <projectService serviceImplementation="com.headwire.aem.tooling.intellij.communication.ServerConnectionManager" />
+        <projectService serviceImplementation="com.headwire.aem.tooling.intellij.config.ServerConfigurationManager" />
+        <projectService serviceImplementation="com.headwire.aem.tooling.intellij.console.ConsoleLogProjectTracker" />
+        <projectService serviceInterface="com.headwire.aem.tooling.intellij.config.ModuleManager"
+                        serviceImplementation="com.headwire.aem.tooling.intellij.config.ModuleManagerImpl" />
+        <projectService serviceInterface="org.apache.sling.ide.artifacts.EmbeddedArtifactLocator"
+                        serviceImplementation="com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl" />
+        <projectService serviceImplementation="com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener" />
+        <projectService serviceImplementation="com.headwire.aem.tooling.intellij.explorer.AemdcPanel" />
     </extensions>
-
-    <application-components>
-        <!-- Add your application components here -->
-        <!-- AS NOTE: Any Wrapper class (ending in Wrapper) are classes that mimic the OSGi binding of other services -->
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLog</implementation-class>
-        </component>
-        <component>
-            <interface-class>org.osgi.service.event.EventAdmin</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.EventAdminWrapper
-            </implementation-class>
-        </component>
-        <component>
-            <interface-class>org.apache.sling.ide.transport.RepositoryFactory</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltRepositoryFactoryWrapper
-            </implementation-class>
-        </component>
-        <component>
-            <interface-class>org.apache.sling.ide.osgi.OsgiClientFactory</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.OsgiClientFactoryWrapper
-            </implementation-class>
-        </component>
-        <component>
-            <interface-class>org.apache.sling.ide.serialization.SerializationManager</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.SerializationManagerWrapper
-            </implementation-class>
-        </component>
-        <!--<component>-->
-            <!--<interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>-->
-            <!--<implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>-->
-        <!--</component>-->
-        <component>
-            <interface-class>org.apache.sling.ide.filter.FilterLocator</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.VltFilterLocatorWrapper
-            </implementation-class>
-        </component>
-        <component>
-            <interface-class>org.apache.sling.ide.impl.vlt.VaultFsLocator</interface-class>
-            <implementation-class>org.apache.sling.ide.impl.vlt.VaultFsLocatorImpl</implementation-class>
-        </component>
-        <component>
-            <interface-class>org.apache.sling.ide.log.Logger</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.eclipse.wrapper.PluginLoggerWrapper
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.config.general.AEMPluginConfiguration
-            </implementation-class>
-        </component>
-
-    </application-components>
-
-    <project-components>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.communication.MessageManager</implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.SlingServerTreeManager
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.config.ServerConfigurationManager
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.communication.ServerConnectionManager
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.console.ConsoleLogProjectTracker
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.communication.ContentResourceChangeListener
-            </implementation-class>
-        </component>
-        <component>
-            <interface-class>com.headwire.aem.tooling.intellij.config.ModuleManager</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.config.ModuleManagerImpl</implementation-class>
-        </component>
-        <component>
-            <interface-class>org.apache.sling.ide.artifacts.EmbeddedArtifactLocator</interface-class>
-            <implementation-class>com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl</implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.headwire.aem.tooling.intellij.explorer.AemdcPanel</implementation-class>
-        </component>
-    </project-components>
 
     <actions>
         <!-- Add your actions here -->

@@ -57,5 +57,4 @@ public class AEMPluginConfigurationDialog {
             listenToFileSystemEvents.isSelected() != data.isListenToFileSystemEvents() ||
             UIUtil.obtainInteger(deployDelay, -1) != data.getDeployDelayInSeconds() ;
     }
-
 }

@@ -24,6 +24,7 @@ import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandle
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +56,7 @@ public abstract class AbstractConnectionAction
                 final SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                 if(serverConfiguration != null) {
-                    AEMPluginConfiguration pluginConfiguration = ComponentProvider.getComponent(project, AEMPluginConfiguration.class);
+                    AEMPluginConfiguration pluginConfiguration = ServiceManager.getService(project, AEMPluginConfiguration.class);
                     String lastUsedServerConfiguration = pluginConfiguration != null ? pluginConfiguration.getLastUsedServerConfiguration() : "";
                     if(lastUsedServerConfiguration != null && lastUsedServerConfiguration.length() > 0 && !lastUsedServerConfiguration.equals(serverConfiguration.getName())) {
                         doPurge(project, progressHandler);

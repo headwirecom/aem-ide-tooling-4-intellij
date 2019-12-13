@@ -28,6 +28,7 @@ import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.ExecutionUtil;
 import com.intellij.codeInsight.CodeSmellInfo;
 import com.intellij.lang.annotation.HighlightSeverity;
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
@@ -35,7 +36,8 @@ import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.headwire.aem.tooling.intellij.util.AbstractProjectComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
@@ -72,6 +74,7 @@ import static com.intellij.openapi.vfs.VirtualFile.PROP_NAME;
  */
 public class ContentResourceChangeListener
     extends AbstractProjectComponent
+    implements Disposable
 {
 
     private AEMPluginConfiguration pluginConfiguration;
@@ -85,8 +88,8 @@ public class ContentResourceChangeListener
 
     public ContentResourceChangeListener(@NotNull Project project) {
         super(project);
-        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
-        pluginConfiguration = ComponentProvider.getComponent(project, AEMPluginConfiguration.class);
+        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
+        pluginConfiguration =  ServiceManager.getService(AEMPluginConfiguration.class);
         this.serverConnectionManager = serverConnectionManager;
         this.project = project;
 
@@ -96,7 +99,7 @@ public class ContentResourceChangeListener
             new Runnable() {
                 @Override
                 public void run() {
-                    SlingServerTreeManager slingServerTreeManager = ComponentProvider.getComponent(myProject, SlingServerTreeManager.class);
+                    SlingServerTreeManager slingServerTreeManager = ServiceManager.getService(myProject, SlingServerTreeManager.class);
                     if(slingServerTreeManager != null) {
                         // At the end of the Tool Window is created we run the Check if a project is marked as Default
                         Object modelRoot = slingServerTreeManager.getTree().getModel().getRoot();
@@ -137,7 +140,6 @@ public class ContentResourceChangeListener
         );
     }
 
-    @Override
     public void projectOpened() {
 
         // File Change Events are not handled right away but queued up and handled in
@@ -155,7 +157,7 @@ public class ContentResourceChangeListener
             @Override
             public void contentsChanged(@NotNull VirtualFileEvent event) {
                 boolean listenToFS = true;
-                AEMPluginConfiguration pluginConfiguration = ComponentProvider.getComponent(project, AEMPluginConfiguration.class);
+                AEMPluginConfiguration pluginConfiguration = ServiceManager.getService(AEMPluginConfiguration.class);
                 if(pluginConfiguration != null) {
                     listenToFS = pluginConfiguration.isListenToFileSystemEvents();
                 }
@@ -241,7 +243,7 @@ public class ContentResourceChangeListener
     }
 
     @Override
-    public void projectClosed() {
+    public void dispose() {
         if(runner != null) {
             runner.stop();
             runner = null;
@@ -328,7 +330,7 @@ public class ContentResourceChangeListener
                         }
                     );
                 } else {
-                    MessageManager messageManager = ComponentProvider.getComponent(project, MessageManager.class);
+                    MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
                     if(messageManager != null) {
                         messageManager.sendErrorNotification(
                             "server.update.file.change.with.error",

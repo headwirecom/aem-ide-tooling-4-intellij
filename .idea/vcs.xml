@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tests/modules/aem/6.3/aemdc-files" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tests/modules/aem/aemdc-files" vcs="Git" />
   </component>
 </project>

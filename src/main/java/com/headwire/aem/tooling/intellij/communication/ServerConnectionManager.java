@@ -21,23 +21,18 @@ package com.headwire.aem.tooling.intellij.communication;
 import com.headwire.aem.tooling.intellij.action.ProgressHandler;
 import com.headwire.aem.tooling.intellij.action.ProgressHandlerImpl;
 import com.headwire.aem.tooling.intellij.config.ModuleManager;
-import com.headwire.aem.tooling.intellij.config.UnifiedModule;
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
-
-//AS TODO: We should use Eclipse Stuff here -> find a way to make this IDE independent
+import com.headwire.aem.tooling.intellij.config.UnifiedModule;
 import com.headwire.aem.tooling.intellij.eclipse.ServerUtil;
 import com.headwire.aem.tooling.intellij.eclipse.stub.CoreException;
-
-//AS TODO: We should use Eclipse Stuff here -> find a way to make this IDE independent
 import com.headwire.aem.tooling.intellij.eclipse.stub.IServer;
 import com.headwire.aem.tooling.intellij.eclipse.stub.NullProgressMonitor;
-
 import com.headwire.aem.tooling.intellij.explorer.RunExecutionMonitor;
 import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandler;
+import com.headwire.aem.tooling.intellij.util.AbstractProjectComponent;
 import com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl;
 import com.headwire.aem.tooling.intellij.util.BundleDataUtil;
-import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
@@ -62,7 +57,7 @@ import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompileScope;
 import com.intellij.openapi.compiler.CompileStatusNotification;
 import com.intellij.openapi.compiler.CompilerManager;
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -110,12 +105,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.Module;
 import static com.headwire.aem.tooling.intellij.util.Constants.JCR_ROOT_FOLDER_NAME;
-import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.WaitableRunner;
-import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeAndWait;
-import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeLater;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.InvokableRunner;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.WaitableRunner;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeLater;
 import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runAndWait;
-import static com.headwire.aem.tooling.intellij.util.ArtifactsLocatorImpl.ArtifactsLocatorException;
 
 /**
  * Handles the Server Connections for the Plugin, its state and flags
@@ -150,10 +143,10 @@ public class ServerConnectionManager
 
     public ServerConnectionManager(@NotNull Project project) {
         super(project);
-        messageManager = ComponentProvider.getComponent(myProject, MessageManager.class);
-        serverConfigurationManager = ComponentProvider.getComponent(myProject, ServerConfigurationManager.class);
+        messageManager = ServiceManager.getService(myProject, MessageManager.class);
+        serverConfigurationManager = ServiceManager.getService(myProject, ServerConfigurationManager.class);
         deploymentManager = new IntelliJDeploymentManager(project);
-        moduleManager = ComponentProvider.getComponent(myProject, ModuleManager.class);
+        moduleManager = ServiceManager.getService(myProject, ModuleManager.class);
     }
 
     public void init(@NotNull SlingServerTreeSelectionHandler slingServerTreeSelectionHandler) {
@@ -229,17 +222,13 @@ public class ServerConnectionManager
                         updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.checking);
                         if(module.isOSGiBundle()) {
                             Version remoteVersion = osgiClient.getBundleVersion(module.getSymbolicName());
-                            //AS TODO: Remove the check for the Felix Maven Bundle Plugin's behavior to remove leading
-                            //AS TODO: parts of the Artifact Id if they match the trailing parts of the group id.
-                            //AS TODO: It is up to the user now to handle it by reconciling the Symbolic Name with
-                            //AS TODO: the Maven Bundle Plugin or the Sling Facet
-                            if(remoteVersion == null && !module.isIgnoreSymbolicNameMismatch()) {
+                            if(remoteVersion == null) {
+                                remoteVersion = osgiClient.getBundleVersion(symbolicName);
+                            }
+                            if(remoteVersion == null) {
                                 WaitableRunner<AtomicInteger> runner = new WaitableRunner<AtomicInteger>() {
                                     private AtomicInteger response = new AtomicInteger(1);
                                     @Override
-//                                    public boolean isAsynchronous() {
-//                                        return true;
-//                                    }
                                     public boolean isAsynchronous() {
                                         return true;
                                     }
@@ -264,15 +253,16 @@ public class ServerConnectionManager
                                 }
                             }
                             Version localVersion = new Version(version);
+                            int versionComparison = compareBundleVersion(localVersion, remoteVersion);
                             messageManager.sendDebugNotification("debug.check.osgi.module", moduleName, symbolicName, remoteVersion, localVersion);
                             boolean moduleUpToDate = remoteVersion != null && remoteVersion.compareTo(localVersion) >= 0;
                             String bundleState = BundleDataUtil.getData(osgiClient, module.getSymbolicName()).get("state");
                             messageManager.sendDebugNotification("debug.bundle.module.state", module.getName(), bundleState);
-                            if(remoteVersion == null) {
+                            if(versionComparison == -100) {
                                 // Mark as not deployed yet
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.notDeployed);
                                 ret = false;
-                            } else if(moduleUpToDate) {
+                            } else if(versionComparison >= 0) {
                                 // Mark as synchronized
                                 updateModuleStatus(module, ServerConfiguration.SynchronizationStatus.upToDate);
                             } else {
@@ -343,6 +333,43 @@ public class ServerConnectionManager
     }
 
     /**
+     * Compares two bundle versions. If will handle SNAPSHOTS in a way that it takes SNAPSHOT away
+     * from the version that ends with it and then takes the 4th part of the version (the snapshot number)
+     * away on the other version if the version number has 4 parts.
+     *
+     * @param first First Version
+     * @param second Second Version
+     * @return -100 if any of the arguments is null,
+     *         -1 if first version is smaller than the second
+     *         1 if the first version is greater
+     *         0 if they are equal
+     * than the second and 0 if they are the same
+     */
+    private int compareBundleVersion(@NotNull Version first, @NotNull Version second) {
+        if(first == null || second == null) { return -100; }
+        String firstString = first.toString();
+        String secondString = second.toString();
+        // Deal with Snapshots
+        if(firstString.endsWith(".SNAPSHOT")) {
+            firstString = firstString.substring(0, firstString.length() - ".SNAPSHOT".length());
+            if(secondString.split("\\.").length == 4) {
+                secondString = secondString.substring(0, secondString.lastIndexOf('.'));
+            }
+        } else {
+            if(secondString.endsWith(".SNAPSHOT")) {
+                secondString = secondString.substring(0, secondString.length() - ".SNAPSHOT".length());
+                if (firstString.split("\\.").length == 4) {
+                    firstString = firstString.substring(0, firstString.lastIndexOf('.'));
+                }
+            }
+        }
+        int comparison = firstString.compareTo(secondString);
+        return comparison < 0 ? -1 :
+            comparison > 0 ? 1 :
+                0;
+    }
+
+    /**
      * Binding is the process of connecting the Project's Modules with the Maven Modules (its sub projects)
      *
      * @param serverConfiguration The Server Connection that is checked and bound if not already done
@@ -385,7 +412,7 @@ public class ServerConnectionManager
         if(serverConfiguration != null) {
             try {
                 OsgiClient osgiClient = obtainOSGiClient();
-                EmbeddedArtifactLocator artifactLocator = ComponentProvider.getComponent(myProject, EmbeddedArtifactLocator.class);
+                EmbeddedArtifactLocator artifactLocator = ServiceManager.getService(myProject, EmbeddedArtifactLocator.class);
                 if(osgiClient != null && artifactLocator != null) {
                     Version remoteVersion = osgiClient.getBundleVersion(EmbeddedArtifactLocator.SUPPORT_BUNDLE_SYMBOLIC_NAME);
 

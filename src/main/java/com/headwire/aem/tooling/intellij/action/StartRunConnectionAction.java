@@ -25,6 +25,7 @@ import com.headwire.aem.tooling.intellij.explorer.SlingServerTreeSelectionHandle
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import org.apache.sling.ide.osgi.OsgiClient;
 import org.jetbrains.annotations.NotNull;
@@ -50,8 +51,8 @@ public class StartRunConnectionAction extends AbstractConnectionAction {
     }
 
     public void doRun(final Project project, final DataContext dataContext, final ProgressHandler progressHandler) {
-        final SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
-        final ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        final SlingServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, SlingServerTreeSelectionHandler.class);
+        final ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         if(selectionHandler != null && serverConnectionManager != null) {
             final String description = AEMBundle.message("action.check.configuration.description");
 

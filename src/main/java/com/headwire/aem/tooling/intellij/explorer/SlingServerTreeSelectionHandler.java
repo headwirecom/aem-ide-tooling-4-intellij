@@ -19,7 +19,7 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.config.ServerConfiguration;
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.headwire.aem.tooling.intellij.util.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.Tree;
 import org.jetbrains.annotations.NotNull;

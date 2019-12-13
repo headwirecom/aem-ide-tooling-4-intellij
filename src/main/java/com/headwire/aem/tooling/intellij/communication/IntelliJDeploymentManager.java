@@ -30,6 +30,7 @@ import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.headwire.aem.tooling.intellij.util.Util;
 import com.intellij.notification.NotificationType;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.sling.ide.io.NewResourceChangeCommandFactory;
@@ -180,11 +181,11 @@ public class IntelliJDeploymentManager
     public IntelliJDeploymentManager(@NotNull Project project) {
         super(
             new NewResourceChangeCommandFactory(
-                ComponentProvider.getComponent(project, SerializationManager.class)
+                ServiceManager.getService(SerializationManager.class)
             )
         );
-        messageManager = ComponentProvider.getComponent(project, MessageManager.class);
-        serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
+        messageManager = ServiceManager.getService(project, MessageManager.class);
+        serverConfigurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
     }
 
     @Override

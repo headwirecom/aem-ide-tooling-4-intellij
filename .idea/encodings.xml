@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+  <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/console/ConsoleLogCategory.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/eclipse/ResourceAndInfo.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/explorer/SlingServerModuleNodeDescriptor.java" charset="UTF-8" />
@@ -9,10 +9,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/ArchetypePropertiesStep.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/headwire/aem/tooling/intellij/ui/SlingArchetypesStep.form" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources/images/sling.gif" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/api" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../sling-git-fork/sling/tooling/ide/api-io" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

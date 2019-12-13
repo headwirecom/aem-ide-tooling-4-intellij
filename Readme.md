@@ -48,6 +48,10 @@ The **master** is the latest release code and it the same as the highest
 
 #### Updates:
 
+**1.0.3.5-beta**
+* Migrated the Plugin to work with IntelliJ Plugin services rather than components so that it works with the latest releases of IntelliJ.
+* Updated to the latest Aemdc code base
+
 **1.0.3.4**:
 * A fix for the Import From User Action that fails because I cannot write from a
   User Action.

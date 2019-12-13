@@ -22,12 +22,10 @@ import com.headwire.aem.tooling.intellij.console.ConsoleLogCategory;
 import com.headwire.aem.tooling.intellij.console.ConsoleLogToolWindowFactory;
 import com.headwire.aem.tooling.intellij.console.DebugNotification;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
-import com.headwire.aem.tooling.intellij.util.ExecutionUtil;
+import com.headwire.aem.tooling.intellij.util.AbstractProjectComponent;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.apache.commons.lang.StringUtils;
@@ -197,11 +195,5 @@ public class MessageManager
                 }
             }
         );
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "Message Manager";
     }
 }

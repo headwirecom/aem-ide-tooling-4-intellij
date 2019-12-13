@@ -20,16 +20,13 @@ package com.headwire.aem.tooling.intellij.config;
 
 import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
-import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.headwire.aem.tooling.intellij.util.AbstractProjectComponent;
 import com.headwire.aem.tooling.intellij.util.Util;
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -42,7 +39,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.headwire.aem.tooling.intellij.config.ServerConfiguration.DefaultMode;
-import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.*;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.InvokableRunner;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeAndWait;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.invokeLater;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.queueTaskLater;
+import static com.headwire.aem.tooling.intellij.util.ExecutionUtil.runReadAction;
 
 /**
  * The Server Configuration Manager responsible for Loading & Saving the Server Configurations into the Workspace File
@@ -123,8 +124,8 @@ public class ServerConfigurationManager
 
     public ServerConfigurationManager(final Project project) {
         super(project);
-        messageManager = ComponentProvider.getComponent(project, MessageManager.class);
-        moduleManager = ComponentProvider.getComponent(project, ModuleManager.class);
+        messageManager = ServiceManager.getService(project, MessageManager.class);
+        moduleManager = ServiceManager.getService(project, ModuleManager.class);
     }
 
     public ServerConfiguration[] getServerConfigurations() {
@@ -211,30 +212,6 @@ public class ServerConfigurationManager
     public boolean isInitialized() {
         final Boolean initialized = myIsInitialized;
         return initialized == null || initialized.booleanValue();
-    }
-
-    // ------ Project Component
-
-    @Override
-    public void projectOpened() {
-    }
-
-    @Override
-    public void projectClosed() {
-    }
-
-    @Override
-    public void initComponent() {
-    }
-
-    @Override
-    public void disposeComponent() {
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "Server Configuration Manager";
     }
 
     // -------------------- state persistence

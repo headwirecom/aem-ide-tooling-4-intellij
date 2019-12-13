@@ -22,7 +22,7 @@ import com.headwire.aem.tooling.intellij.communication.MessageManager;
 import com.headwire.aem.tooling.intellij.communication.ServerConnectionManager;
 import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
-import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.headwire.aem.tooling.intellij.util.AbstractProjectComponent;
 import com.intellij.execution.RunManagerAdapter;
 import com.intellij.execution.RunManagerEx;
 import com.intellij.ide.CommonActionsManager;
@@ -33,7 +33,7 @@ import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionPopupMenu;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.components.AbstractProjectComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.keymap.Keymap;
 import com.intellij.openapi.keymap.KeymapManagerListener;
 import com.intellij.openapi.keymap.ex.KeymapManagerEx;
@@ -50,15 +50,15 @@ import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.events.DomEvent;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.ToolTipManager;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+
+// TODO: AbstractTreeBuilder is going to be removed in 2020.3 so we need to find a solution for it
 
 /**
  * Created by Andreas Schaefer (Headwire.com) on 6/12/15.
@@ -95,17 +95,17 @@ public class SlingServerTreeManager
 
     public SlingServerTreeManager(@NotNull Project project) {
         super(project);
-        final MessageManager messageManager = ComponentProvider.getComponent(project, MessageManager.class);
+        final MessageManager messageManager = ServiceManager.getService(project, MessageManager.class);
         final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
         tree = new Tree(model);
         tree.setRootVisible(true);
         tree.setShowsRootHandles(true);
         tree.setCellRenderer(new NodeRenderer());
-        SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
+        SlingServerTreeSelectionHandler selectionHandler = ServiceManager.getService(project, SlingServerTreeSelectionHandler.class);
         selectionHandler.init(tree);
-        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         serverConnectionManager.init(selectionHandler);
-        myConfig = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
+        myConfig = ServiceManager.getService(project, ServerConfigurationManager.class);
         myBuilder = new SlingServerTreeBuilder(project, tree, model);
         TreeUtil.installActions(tree);
         new TreeSpeedSearch(tree);
@@ -194,12 +194,6 @@ public class SlingServerTreeManager
             myKeyMapListener = null;
             listener.stopListen();
         }
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "Sling Server Tree Manager";
     }
 
     public void adjustToolbar(DefaultActionGroup group) {

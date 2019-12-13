@@ -31,6 +31,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
@@ -130,7 +131,7 @@ public abstract class AbstractProjectAction
 
     @NotNull
     protected MessageManager getMessageManager(@NotNull Project project) {
-        return ComponentProvider.getComponent(project, MessageManager.class);
+        return ServiceManager.getService(project, MessageManager.class);
     }
 
     protected boolean doVerify(@NotNull final Project project, @Nullable final DataContext dataContext, @NotNull final ProgressHandler progressHandler) {
@@ -215,14 +216,14 @@ public abstract class AbstractProjectAction
     }
 
     protected SlingServerTreeSelectionHandler getSelectionHandler(@Nullable Project project) {
-        return project == null ? null : ComponentProvider.getComponent(project, SlingServerTreeSelectionHandler.class);
+        return project == null ? null : ServiceManager.getService(project, SlingServerTreeSelectionHandler.class);
     }
 
     protected ServerConnectionManager getConnectionManager(@Nullable Project project) {
-        return project == null ? null : ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        return project == null ? null : ServiceManager.getService(project, ServerConnectionManager.class);
     }
 
     protected ServerConfigurationManager getConfigurationManager(@Nullable Project project) {
-        return project == null ? null : ComponentProvider.getComponent(project, ServerConfigurationManager.class);
+        return project == null ? null : ServiceManager.getService(project, ServerConfigurationManager.class);
     }
 }

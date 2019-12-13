@@ -25,6 +25,7 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Disposer;
@@ -66,7 +67,7 @@ public class ConsoleLogModel
     void addNotification(Notification notification) {
         long stamp = System.currentTimeMillis();
         if(myProject != null) {
-            SlingServerTreeSelectionHandler selectionHandler = ComponentProvider.getComponent(myProject, SlingServerTreeSelectionHandler.class);
+            SlingServerTreeSelectionHandler selectionHandler = ServiceManager.getService(myProject, SlingServerTreeSelectionHandler.class);
             if(selectionHandler != null) {
                 ServerConfiguration serverConfiguration = selectionHandler.getCurrentConfiguration();
                 ServerConfiguration.LogFilter logFilter = serverConfiguration != null ? serverConfiguration.getLogFilter() : ServerConfiguration.LogFilter.info;

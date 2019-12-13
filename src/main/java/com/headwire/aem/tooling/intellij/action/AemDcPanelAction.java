@@ -26,6 +26,7 @@ import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,19 +65,19 @@ public class AemDcPanelAction extends AbstractProjectAction {
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
 
     public void toggle(final Project project, final ProgressHandler progressHandler, boolean showDialog) {
         SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         if(selectionHandler != null && serverConnectionManager != null) {
             ServerConfiguration source = selectionHandler.getCurrentConfiguration();
             if(source != null) {
                 // Before we can verify we need to ensure the Configuration is properly bound to Maven
                 serverConnectionManager.checkBinding(source, progressHandler);
-                AemdcPanel aemdcPanel = ComponentProvider.getComponent(project, AemdcPanel.class);
+                AemdcPanel aemdcPanel = ServiceManager.getService(project, AemdcPanel.class);
                 if(aemdcPanel != null) {
                     if(!showDialog) {
                         aemdcPanel.display(!aemdcPanel.isShown());

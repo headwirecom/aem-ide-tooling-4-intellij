@@ -23,6 +23,7 @@ import com.headwire.aem.tooling.intellij.config.ServerConfigurationManager;
 import com.headwire.aem.tooling.intellij.lang.AEMBundle;
 import com.headwire.aem.tooling.intellij.ui.ServerConfigurationDialog;
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +56,7 @@ public abstract class AbstractEditServerConfigurationAction
                 isOk = true;
                 ServerConfigurationDialog dialog = new ServerConfigurationDialog(project, source);
                 if(dialog.showAndGet()) {
-                    final ServerConfigurationManager configuration = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
+                    final ServerConfigurationManager configuration = ServiceManager.getService(project, ServerConfigurationManager.class);
                     // Check if there is not a name collision due to changed name
                     ServerConfiguration target = dialog.getConfiguration();
                     if(source != null && !source.getName().equals(target.getName())) {

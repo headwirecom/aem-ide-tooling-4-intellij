@@ -28,6 +28,7 @@ import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.containers.hash.HashMap;
 import com.intellij.util.messages.MessageBus;
@@ -58,7 +59,7 @@ public class RunExecutionMonitor {
         synchronized(instances) {
             ret = instances.get(project);
             if(ret == null) {
-                ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification("debug.runtime.execution.manager.created", project);
+                ServiceManager.getService(project, MessageManager.class).sendDebugNotification("debug.runtime.execution.manager.created", project);
                 ret = new RunExecutionMonitor(project);
                 instances.put(project, ret);
             }
@@ -89,7 +90,7 @@ public class RunExecutionMonitor {
     }
 
     private void init() {
-        serverConfigurationManager = ComponentProvider.getComponent(project, ServerConfigurationManager.class);
+        serverConfigurationManager = ServiceManager.getService(project, ServerConfigurationManager.class);
         final MessageBus bus = project.getMessageBus();
         connection = bus.connect();
         // Hook up to the Bus and Register an Execution Listener in order to know when Debug Connection is established
@@ -100,7 +101,7 @@ public class RunExecutionMonitor {
                 @Override
                 public void processStartScheduled(String executorId, ExecutionEnvironment env) {
                     if(RUN_EXECUTION.equals(executorId)) {
-                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
+                        ServiceManager.getService(project, MessageManager.class).sendDebugNotification(
                             "debug.runtime.execution.manager.scheduled", project
                         );
                     }
@@ -119,7 +120,7 @@ public class RunExecutionMonitor {
                             // Mark any Bundles inside the Tree as unknown
                         }
                     } else if(RUN_EXECUTION.equals(executorId)) {
-                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
+                        ServiceManager.getService(project, MessageManager.class).sendDebugNotification(
                             "debug.runtime.execution.manager.failed.to.start", project
                         );
                         stopSignal.countDown();
@@ -154,7 +155,7 @@ public class RunExecutionMonitor {
                             // Mark any Bundles inside the Tree as disconnected
                         }
                     } else if(runProfile instanceof MavenRunConfiguration) {
-                        ComponentProvider.getComponent(project, MessageManager.class).sendDebugNotification(
+                        ServiceManager.getService(project, MessageManager.class).sendDebugNotification(
                             "debug.runtime.execution.manager.ended", project
                         );
                         stopSignal.countDown();

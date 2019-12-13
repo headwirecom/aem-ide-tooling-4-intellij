@@ -19,6 +19,7 @@
 package com.headwire.aem.tooling.intellij.explorer;
 
 import com.headwire.aem.tooling.intellij.util.ComponentProvider;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
@@ -63,7 +64,7 @@ public class SlingPluginToolWindowFactory
         WebContentFXPanel info = new WebContentFXPanel();
         master.insertTab("Info", null, info, "Plugin Info", 1);
 
-        final AemdcPanel aemdcPanel = ComponentProvider.getComponent(project, AemdcPanel.class);
+        final AemdcPanel aemdcPanel = ServiceManager.getService(project, AemdcPanel.class);
         LOGGER.debug("AEMDC Panel found: '{}'", aemdcPanel);
         aemdcPanel.setContainer(master);
 
@@ -81,7 +82,7 @@ public class SlingPluginToolWindowFactory
                     return;
                 }
                 boolean visible = toolWindow.isVisible();
-                // If the Plugin became visible then we let the AEMDC Panel know to recrate the JFX Panel
+                // If the Plugin became visible then we let the AEMDC Panel know to recreate the JFX Panel
                 // to avoid the double buffering
                 if(!wasVisible && visible) {
                     aemdcPanel.reset();

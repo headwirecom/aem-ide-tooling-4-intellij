@@ -19,7 +19,6 @@
 package com.headwire.aem.tooling.intellij.config.general;
 
 import com.headwire.aem.tooling.intellij.ui.AEMPluginConfigurationDialog;
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -31,6 +30,8 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A component created just to be able to configure the plugin.
@@ -44,7 +45,6 @@ import javax.swing.*;
         }
 )
 public class AEMPluginConfiguration
-    extends ApplicationComponent.Adapter
     implements Configurable, PersistentStateComponent<Element> {
 
     public static final String COMPONENT_NAME = "AEM Plugin Configuration";
@@ -54,6 +54,7 @@ public class AEMPluginConfiguration
     private int deployDelayInSeconds = -1;
     private String lastUsedServerConfiguration = "";
     private boolean listenToFileSystemEvents = true;
+    private List<String> contentRootNames = new ArrayList<>();
 
     private AEMPluginConfigurationDialog configDialog;
 
@@ -96,6 +97,15 @@ public class AEMPluginConfiguration
 
     public AEMPluginConfiguration setListenToFileSystemEvents(boolean listenToFileSystemEvents) {
         this.listenToFileSystemEvents = listenToFileSystemEvents;
+        return this;
+    }
+
+    public List<String> getContentNames() {
+        return contentRootNames;
+    }
+
+    public AEMPluginConfiguration setContentNames(List<String> contentRootNames) {
+        this.contentRootNames = contentRootNames == null ? new ArrayList<>() : contentRootNames;
         return this;
     }
 

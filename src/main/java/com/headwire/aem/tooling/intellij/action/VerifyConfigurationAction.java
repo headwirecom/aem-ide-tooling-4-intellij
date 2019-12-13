@@ -31,6 +31,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -85,7 +86,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
 
     @Override
     protected boolean isEnabled(@NotNull Project project, @NotNull DataContext dataContext) {
-        ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+        ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
         // A user should be able to verify the project without connecting to it as it is done already
         return serverConnectionManager != null && serverConnectionManager.isConfigurationSelected();
     }
@@ -108,7 +109,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
             MessageManager messageManager = getMessageManager(project);
             int exitNow = Messages.OK;
             SlingServerTreeSelectionHandler selectionHandler = getSelectionHandler(project);
-            ServerConnectionManager serverConnectionManager = ComponentProvider.getComponent(project, ServerConnectionManager.class);
+            ServerConnectionManager serverConnectionManager = ServiceManager.getService(project, ServerConnectionManager.class);
             ServerConfigurationManager serverConfigurationManager = getConfigurationManager(project);
             if (selectionHandler != null && serverConnectionManager != null && messageManager != null) {
                 ServerConfiguration source = selectionHandler.getCurrentConfiguration();
@@ -154,7 +155,7 @@ public class VerifyConfigurationAction extends AbstractProjectAction {
                             ProgressHandler progressHandlerSubTaskLoop = progressHandlerSubTask.startSubTasks(2 * source.getModuleList().size(), "progress.verify.check.modules");
                             for (ServerConfiguration.Module module : source.getModuleList()) {
                                 progressHandlerSubTaskLoop.next("progress.verify.check.module", module.getName());
-                                if (module.isSlingPackage()) {
+                                if (module.isSlingPackage() && module.isPartOfBuild()) {
                                     // Check if the Filter is available for Content Modules
                                     Filter filter = null;
                                     try {
