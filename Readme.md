@@ -6,7 +6,12 @@ This plugin requires to run IntelliJ IDEA **2016.2** or higher.
 
 #### Releases:
 
-Release of 1.0.3.3 is out. Check out in the release section.
+Release of 1.0.3.5-beta is out. Check out in the release section.
+
+**Attention**: in 1.0.3.5 we migrated from Plugin Components to Plugin Services
+which might make the plugin incompatible with older IDEA plugins. Please let us
+know if you encounter this so that we can update the documentation and might
+find a resolution for it.
 
 **Attention**: due to changes inside IntelliJ APIs some stored data might be lost during
 the update. If your configuration is lost then just recreate it, if your modules are gone
