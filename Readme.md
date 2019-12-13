@@ -45,6 +45,18 @@ The **master** is the latest release code and it the same as the highest
 
 #### Updates:
 
+**1.0.3.5-beta**
+* Migrated the Plugin to work with IntelliJ Plugin services rather than components so that it works with the latest releases of IntelliJ.
+* Updated to the latest Aemdc code base
+
+**1.0.3.4**:
+* A fix for the Import From User Action that fails because I cannot write from a
+  User Action.
+* An exception during code change from the Code Smell Detector is ignored if it is based on
+  the 'cannot run under write action' failure. There is not fix in sight from JetBrains or
+  help on how to make this work so for now it is just ignored.
+* Upgraded the Tooling Support Bundle to version 1.0.4.
+
 **1.0.3.3**:
 * Working on issues with latest IntelliJ Releases.
 * All threading is centralized in single class and with it fixed some issues with threading
