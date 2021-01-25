@@ -1,5 +1,13 @@
 ### AEM Tooling for IntelliJ IDE Plugin
 
+#### End of Life Notice
+
+Due to constant change in IntelliJ which broke backwards compatibility we were faced with too
+much of a burden on the maintenance of this open-source project. We regret the decision to
+end the development of this plugin.
+
+We suggest that you use another plugin like: https://plugins.jetbrains.com/plugin/9863-aem-support.
+
 #### Requirements
 
 This plugin requires to run IntelliJ IDEA **2016.2** or higher.
